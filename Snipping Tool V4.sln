@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snipping Tool V4", "Snipping Tool V4\Snipping Tool V4.csproj", "{701C1E4D-A562-4903-899D-793E7011228D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{701C1E4D-A562-4903-899D-793E7011228D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{701C1E4D-A562-4903-899D-793E7011228D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{701C1E4D-A562-4903-899D-793E7011228D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{701C1E4D-A562-4903-899D-793E7011228D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC7B0AE6-0547-4E59-8E61-A47DEC552703}
+	EndGlobalSection
+EndGlobal
