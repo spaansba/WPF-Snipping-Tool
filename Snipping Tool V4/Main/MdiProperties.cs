@@ -7,18 +7,18 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.Xml;
 
-namespace Snipping_Tool_V4.Forms
+namespace Snipping_Tool_V4.Main
 {
     public static class mdiProperties
     {
         [DllImport("user32.dll")]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        private static extern int GetWindowLong(nint hWnd, int nIndex);
 
         [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        private static extern int SetWindowLong(nint hWnd, int nIndex, int dwNewLong);
 
         [DllImport("user32.dll")]
-        private static extern int SetWindowPos(IntPtr hWnd, IntPtr hWInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        private static extern int SetWindowPos(nint hWnd, nint hWInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_CLIENTEDGE = 0x200;
@@ -31,7 +31,7 @@ namespace Snipping_Tool_V4.Forms
 
         public static bool SetBevel(this Form form, bool show)
         {
-            foreach(Control c in form.Controls)
+            foreach (Control c in form.Controls)
             {
                 MdiClient client = c as MdiClient;
                 if (client != null)
@@ -46,7 +46,7 @@ namespace Snipping_Tool_V4.Forms
                         windowLong &= WS_EX_CLIENTEDGE;
                     }
                     SetWindowLong(c.Handle, GWL_EXSTYLE, windowLong);
-                    SetWindowPos(client.Handle, IntPtr.Zero, 0, 0, 0, 0,
+                    SetWindowPos(client.Handle, nint.Zero, 0, 0, 0, 0,
                         SWO_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER |
                         SWO_NOOWNERZORDER | SWP_FRAMECHANGED
                         );

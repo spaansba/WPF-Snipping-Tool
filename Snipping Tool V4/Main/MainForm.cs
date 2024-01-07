@@ -1,7 +1,6 @@
-﻿using Microsoft.VisualBasic;
-using Snipping_Tool_V4.Forms;
+﻿using Snipping_Tool_V4.Forms;
+using Snipping_Tool_V4.Main;
 using Snipping_Tool_V4.Modules;
-using System;
 using System.Reflection;
 using static Snipping_Tool_V4.Modules.UserformMotions;
 
@@ -9,9 +8,6 @@ namespace Snipping_Tool_V4
 {
     public partial class MainForm : Form
     {
-        //Form size consts
-        private const int formWidth = 530;
-        private const int formHeight = 200;
 
         // Create all the moving objects and their opened and closed values (widht or height are interchangable, we are only expanding in 1 direction)
         private UserformMotions sidePanel;
@@ -25,20 +21,33 @@ namespace Snipping_Tool_V4
 
         public MainForm()
         {
-            this.Width = formWidth;
-            this.Height = formHeight;
             InitializeComponent();
             mdiProp();
 
-            sidePanel = new UserformMotions(146, 52, true, "SidePanel", 15, this.sidebarFlowPanel, true);
-            sidePanelFirstMenu = new UserformMotions(136, 43, false, "SidePanelFirstMenu", 20, this.menuFlowPanel, false);
+            sidePanel = new UserformMotions((int)MainFormMeasurements.formSidePanelOpenWidth, (int)MainFormMeasurements.formSidePanelClosedWidth, true, "SidePanel", 15, this.sidebarFlowPanel, true, "Main");
+            sidePanelFirstMenu = new UserformMotions(136, 43, false, "SidePanelFirstMenu", 20, this.menuFlowPanel, false, "Main", this.menuButton);
 
             EnableDoubleBufferingForControls(this);
 
-            screenshot = new ScreenshotForm();
+            screenshot = new ScreenshotForm(this);
             ChildFormProperties(screenshot);
-
         }
+
+        /// <summary>
+        /// e.g. after taking a screenshot we want to reset the form to its original state
+        /// </summary>
+        public void resetFormState()
+        {
+            Width = (int)MainFormMeasurements.formWidth;
+            Height = (int)MainFormMeasurements.formHeight;
+            WindowState = FormWindowState.Normal;
+            FormBorderStyle = FormBorderStyle.Sizable;
+            Visible = true;
+            sidebarFlowPanel.Width = (int)MainFormMeasurements.formSidePanelClosedWidth;
+            menuHideExpandButton.Enabled = true;
+            BringToFront();
+        }
+
         #region Userform settings
         private void mdiProp()
         {
@@ -49,7 +58,7 @@ namespace Snipping_Tool_V4
         /// <summary>
         /// Activates double buffering for panels and buttons, it should reduce flickering on motion effects but not actually sure if it does.
         /// </summary>
-        private void EnableDoubleBufferingForControls(Control control)
+        private static void EnableDoubleBufferingForControls(Control control)
         {
             foreach (Control ctrl in control.Controls)
             {
@@ -71,7 +80,7 @@ namespace Snipping_Tool_V4
         }
         #endregion
         #region Moving panels
-        private void hamburgerBox_Click(object sender, EventArgs e)
+        private void menuHideExpandButton_Click(object sender, EventArgs e)
         {
             if (sidePanelFirstMenu.expanded) // Close all submenu's if we minimalize the menu bar
             {
@@ -123,24 +132,13 @@ namespace Snipping_Tool_V4
                 currentMovingObject = null;
             }
         }
-
-        private void setChildPanelsWidth(Panel mainPanel, int width)
-        {
-            foreach (Control c in mainPanel.Controls)
-            {
-                if (c is Panel panel)
-                {
-                    panel.Width = width;
-                }
-            }
-        }
         #endregion
         #region Loading the mdiForms within the main form
         private void screenshotButton_Click(object sender, EventArgs e)
         {
             if (screenshot == null)
             {
-                screenshot = new ScreenshotForm();
+                screenshot = new ScreenshotForm(this);
                 ChildFormProperties(screenshot);
             }
             else
@@ -152,7 +150,7 @@ namespace Snipping_Tool_V4
         {
             if (settings == null)
             {
-                settings = new SettingsForm();
+                settings = new SettingsForm(this);
                 ChildFormProperties(settings);
             }
             else
@@ -161,40 +159,15 @@ namespace Snipping_Tool_V4
             }
 
         }
-        private void ChildFormProperties(Form currentform)
+        private void ChildFormProperties(baseChildFormsTemplate currentform)
         {
             //currentform.FormClosed += generalCloseEvent_FormClosed;
             currentform.MdiParent = this;
             currentform.BackColor = Color.White;
-            currentform.FormBorderStyle = FormBorderStyle.None;
             currentform.Dock = DockStyle.Fill;
             currentform.Show();
-
         }
 
-        #endregion
-        #region Ability to drag the userform from within the top panel bar
-        private bool dragging = false;
-        private Point dragCursorPoint;
-        private Point dragFormPoint;
-        private void topPanel_MouseDown(object sender, MouseEventArgs e)
-        {
-            dragging = true;
-            dragCursorPoint = Cursor.Position;
-            dragFormPoint = this.Location;
-        }
-        private void topPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (dragging)
-            {
-                Point dif = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
-                this.Location = Point.Add(dragFormPoint, new Size(dif));
-            }
-        }
-        private void topPanel_MouseUp(object sender, MouseEventArgs e)
-        {
-            dragging = false;
-        }
         #endregion
     }
 }

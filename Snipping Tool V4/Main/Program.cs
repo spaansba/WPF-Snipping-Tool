@@ -1,6 +1,6 @@
 using Snipping_Tool_V4.Forms;
 
-namespace Snipping_Tool_V4
+namespace Snipping_Tool_V4.Main
 {
     internal static class Program
     {

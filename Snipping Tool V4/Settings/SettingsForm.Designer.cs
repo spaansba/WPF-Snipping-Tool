@@ -1,6 +1,6 @@
 ﻿namespace Snipping_Tool_V4.Forms
 {
-    partial class BackGroundForm
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,25 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
+            testButton = new ReaLTaiizor.Controls.AirButton();
             SuspendLayout();
             // 
-            // BackGroundForm
+            // testButton
+            // 
+            testButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            testButton.Font = new Font("Segoe UI", 9F);
+            testButton.Image = null;
+            testButton.Location = new Point(163, 116);
+            testButton.Name = "testButton";
+            testButton.NoRounding = false;
+            testButton.Size = new Size(243, 181);
+            testButton.TabIndex = 0;
+            testButton.Text = "airButton1";
+            testButton.Transparent = false;
+            testButton.Click += testButton_Click;
+            // 
+            // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            FormBorderStyle = FormBorderStyle.None;
-            Name = "BackGroundForm";
-            StartPosition = FormStartPosition.Manual;
-            Text = "BackGroundForm";
-            Load += BackGroundForm_Load;
-            Paint += BackGroundForm_Paint;
-            MouseDown += BackGroundForm_MouseDown;
-            MouseMove += BackGroundForm_MouseMove;
-            MouseUp += BackGroundForm_MouseUp;
+            ClientSize = new Size(539, 395);
+            Controls.Add(testButton);
+            Name = "SettingsForm";
+            Text = "SettingsForm";
+            Load += SettingsForm_Load;
             ResumeLayout(false);
         }
 
         #endregion
+
+        private ReaLTaiizor.Controls.AirButton testButton;
     }
 }

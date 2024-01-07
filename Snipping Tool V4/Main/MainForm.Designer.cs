@@ -31,13 +31,11 @@ namespace Snipping_Tool_V4
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Label label1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            topPanel = new Panel();
-            nightControlBox1 = new ReaLTaiizor.Controls.NightControlBox();
-            panel1 = new Panel();
-            hamburgerBox = new PictureBox();
             sidebarFlowPanel = new FlowLayoutPanel();
+            menuButtonPanel = new Panel();
+            divederline = new Label();
+            menuHideExpandButton = new Button();
             screenshotsSidebarPanel = new Panel();
             screenshotSidebarButton = new Button();
             colorPickerPanel = new Panel();
@@ -52,10 +50,8 @@ namespace Snipping_Tool_V4
             settingsPanel = new Panel();
             settingsSidebarButton = new Button();
             objectMotionTimer = new System.Windows.Forms.Timer(components);
-            label1 = new Label();
-            topPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)hamburgerBox).BeginInit();
             sidebarFlowPanel.SuspendLayout();
+            menuButtonPanel.SuspendLayout();
             screenshotsSidebarPanel.SuspendLayout();
             colorPickerPanel.SuspendLayout();
             menuFlowPanel.SuspendLayout();
@@ -65,96 +61,63 @@ namespace Snipping_Tool_V4
             settingsPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.ForeColor = SystemColors.Control;
-            label1.Location = new Point(46, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(82, 13);
-            label1.TabIndex = 4;
-            label1.Text = "Bart's Toolboxje";
-            label1.MouseDown += topPanel_MouseDown;
-            label1.MouseMove += topPanel_MouseMove;
-            label1.MouseUp += topPanel_MouseUp;
-            // 
-            // topPanel
-            // 
-            topPanel.BackColor = Color.Black;
-            topPanel.Controls.Add(nightControlBox1);
-            topPanel.Controls.Add(panel1);
-            topPanel.Controls.Add(label1);
-            topPanel.Controls.Add(hamburgerBox);
-            topPanel.Dock = DockStyle.Top;
-            topPanel.Location = new Point(0, 0);
-            topPanel.Name = "topPanel";
-            topPanel.Size = new Size(699, 31);
-            topPanel.TabIndex = 3;
-            topPanel.MouseDown += topPanel_MouseDown;
-            topPanel.MouseMove += topPanel_MouseMove;
-            topPanel.MouseUp += topPanel_MouseUp;
-            // 
-            // nightControlBox1
-            // 
-            nightControlBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            nightControlBox1.BackColor = Color.Transparent;
-            nightControlBox1.CloseHoverColor = Color.FromArgb(199, 80, 80);
-            nightControlBox1.CloseHoverForeColor = Color.White;
-            nightControlBox1.DefaultLocation = true;
-            nightControlBox1.DisableMaximizeColor = Color.FromArgb(105, 105, 105);
-            nightControlBox1.DisableMinimizeColor = Color.FromArgb(105, 105, 105);
-            nightControlBox1.EnableCloseColor = Color.FromArgb(160, 160, 160);
-            nightControlBox1.EnableMaximizeButton = true;
-            nightControlBox1.EnableMaximizeColor = Color.FromArgb(160, 160, 160);
-            nightControlBox1.EnableMinimizeButton = true;
-            nightControlBox1.EnableMinimizeColor = Color.FromArgb(160, 160, 160);
-            nightControlBox1.Location = new Point(560, 0);
-            nightControlBox1.MaximizeHoverColor = Color.FromArgb(15, 255, 255, 255);
-            nightControlBox1.MaximizeHoverForeColor = Color.White;
-            nightControlBox1.MinimizeHoverColor = Color.FromArgb(15, 255, 255, 255);
-            nightControlBox1.MinimizeHoverForeColor = Color.White;
-            nightControlBox1.Name = "nightControlBox1";
-            nightControlBox1.Size = new Size(139, 31);
-            nightControlBox1.TabIndex = 4;
-            // 
-            // panel1
-            // 
-            panel1.Location = new Point(0, 31);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(217, 46);
-            panel1.TabIndex = 6;
-            // 
-            // hamburgerBox
-            // 
-            hamburgerBox.Image = (Image)resources.GetObject("hamburgerBox.Image");
-            hamburgerBox.Location = new Point(12, 5);
-            hamburgerBox.Name = "hamburgerBox";
-            hamburgerBox.Size = new Size(28, 22);
-            hamburgerBox.TabIndex = 0;
-            hamburgerBox.TabStop = false;
-            hamburgerBox.Click += hamburgerBox_Click;
-            // 
             // sidebarFlowPanel
             // 
             sidebarFlowPanel.BackColor = Color.FromArgb(23, 24, 29);
+            sidebarFlowPanel.Controls.Add(menuButtonPanel);
             sidebarFlowPanel.Controls.Add(screenshotsSidebarPanel);
             sidebarFlowPanel.Controls.Add(colorPickerPanel);
             sidebarFlowPanel.Controls.Add(menuFlowPanel);
             sidebarFlowPanel.Controls.Add(settingsPanel);
             sidebarFlowPanel.Dock = DockStyle.Left;
             sidebarFlowPanel.FlowDirection = FlowDirection.TopDown;
-            sidebarFlowPanel.Location = new Point(0, 31);
+            sidebarFlowPanel.Location = new Point(0, 0);
             sidebarFlowPanel.Name = "sidebarFlowPanel";
-            sidebarFlowPanel.Padding = new Padding(0, 22, 0, 0);
-            sidebarFlowPanel.Size = new Size(147, 434);
+            sidebarFlowPanel.Padding = new Padding(0, 5, 0, 0);
+            sidebarFlowPanel.Size = new Size(147, 465);
             sidebarFlowPanel.TabIndex = 4;
+            // 
+            // menuButtonPanel
+            // 
+            menuButtonPanel.BackColor = Color.Transparent;
+            menuButtonPanel.Controls.Add(divederline);
+            menuButtonPanel.Controls.Add(menuHideExpandButton);
+            menuButtonPanel.Location = new Point(3, 8);
+            menuButtonPanel.Name = "menuButtonPanel";
+            menuButtonPanel.Size = new Size(180, 43);
+            menuButtonPanel.TabIndex = 7;
+            // 
+            // divederline
+            // 
+            divederline.BorderStyle = BorderStyle.Fixed3D;
+            divederline.Location = new Point(-3, 38);
+            divederline.Margin = new Padding(0);
+            divederline.Name = "divederline";
+            divederline.Size = new Size(149, 10);
+            divederline.TabIndex = 6;
+            // 
+            // menuHideExpandButton
+            // 
+            menuHideExpandButton.BackColor = Color.FromArgb(23, 24, 29);
+            menuHideExpandButton.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuHideExpandButton.ForeColor = Color.White;
+            menuHideExpandButton.Image = (Image)resources.GetObject("menuHideExpandButton.Image");
+            menuHideExpandButton.ImageAlign = ContentAlignment.MiddleLeft;
+            menuHideExpandButton.Location = new Point(-5, -8);
+            menuHideExpandButton.Name = "menuHideExpandButton";
+            menuHideExpandButton.Padding = new Padding(12, 0, 0, 8);
+            menuHideExpandButton.Size = new Size(163, 59);
+            menuHideExpandButton.TabIndex = 5;
+            menuHideExpandButton.Text = "            Hide Menu";
+            menuHideExpandButton.TextAlign = ContentAlignment.MiddleLeft;
+            menuHideExpandButton.UseVisualStyleBackColor = false;
+            menuHideExpandButton.Click += menuHideExpandButton_Click;
             // 
             // screenshotsSidebarPanel
             // 
             screenshotsSidebarPanel.BackColor = Color.Transparent;
             screenshotsSidebarPanel.Controls.Add(screenshotSidebarButton);
-            screenshotsSidebarPanel.Location = new Point(3, 25);
+            screenshotsSidebarPanel.Location = new Point(3, 57);
             screenshotsSidebarPanel.Name = "screenshotsSidebarPanel";
             screenshotsSidebarPanel.Size = new Size(180, 43);
             screenshotsSidebarPanel.TabIndex = 6;
@@ -180,7 +143,7 @@ namespace Snipping_Tool_V4
             // 
             colorPickerPanel.BackColor = Color.Transparent;
             colorPickerPanel.Controls.Add(colorPickerSidebarButton);
-            colorPickerPanel.Location = new Point(3, 74);
+            colorPickerPanel.Location = new Point(3, 106);
             colorPickerPanel.Name = "colorPickerPanel";
             colorPickerPanel.Size = new Size(180, 43);
             colorPickerPanel.TabIndex = 8;
@@ -207,7 +170,7 @@ namespace Snipping_Tool_V4
             menuFlowPanel.Controls.Add(menuPanel);
             menuFlowPanel.Controls.Add(panel4);
             menuFlowPanel.Controls.Add(panel5);
-            menuFlowPanel.Location = new Point(3, 123);
+            menuFlowPanel.Location = new Point(3, 155);
             menuFlowPanel.Name = "menuFlowPanel";
             menuFlowPanel.Size = new Size(180, 42);
             menuFlowPanel.TabIndex = 9;
@@ -297,7 +260,7 @@ namespace Snipping_Tool_V4
             // 
             settingsPanel.BackColor = Color.Transparent;
             settingsPanel.Controls.Add(settingsSidebarButton);
-            settingsPanel.Location = new Point(3, 171);
+            settingsPanel.Location = new Point(3, 203);
             settingsPanel.Name = "settingsPanel";
             settingsPanel.Size = new Size(180, 43);
             settingsPanel.TabIndex = 7;
@@ -329,17 +292,13 @@ namespace Snipping_Tool_V4
             AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(699, 465);
             Controls.Add(sidebarFlowPanel);
-            Controls.Add(topPanel);
             DoubleBuffered = true;
             Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.None;
             IsMdiContainer = true;
             Name = "MainForm";
-            Text = "MainForm";
-            topPanel.ResumeLayout(false);
-            topPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)hamburgerBox).EndInit();
+            Text = "Bart's Toolboxje";
             sidebarFlowPanel.ResumeLayout(false);
+            menuButtonPanel.ResumeLayout(false);
             screenshotsSidebarPanel.ResumeLayout(false);
             colorPickerPanel.ResumeLayout(false);
             menuFlowPanel.ResumeLayout(false);
@@ -351,12 +310,6 @@ namespace Snipping_Tool_V4
         }
 
         #endregion
-        private Panel topPanel;
-        private PictureBox hamburgerBox;
-        private Label label1;
-        private ReaLTaiizor.Controls.NightControlBox nightControlBox1;
-        private FlowLayoutPanel sidebarFlowPanel;
-        private Panel panel1;
         private Panel screenshotsSidebarPanel;
         private Button screenshotSidebarButton;
         private Panel colorPickerPanel;
@@ -373,5 +326,9 @@ namespace Snipping_Tool_V4
         private System.Windows.Forms.Timer menuTransition;
         private Button firstMenuButton;
         private System.Windows.Forms.Timer objectMotionTimer;
+        internal FlowLayoutPanel sidebarFlowPanel;
+        private Panel menuButtonPanel;
+        private Label divederline;
+        internal Button menuHideExpandButton;
     }
 }

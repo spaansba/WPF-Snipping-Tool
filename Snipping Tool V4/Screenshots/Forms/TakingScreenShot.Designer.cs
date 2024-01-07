@@ -1,6 +1,6 @@
 ﻿namespace Snipping_Tool_V4.Forms
 {
-    partial class SettingsForm
+    partial class TakingScreenShot
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,20 @@
         {
             SuspendLayout();
             // 
-            // SettingsForm
+            // BackGroundForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Name = "SettingsForm";
-            Text = "SettingsForm";
-            Load += SettingsForm_Load;
+            FormBorderStyle = FormBorderStyle.None;
+            Name = "BackGroundForm";
+            StartPosition = FormStartPosition.Manual;
+            Text = "BackGroundForm";
+            Load += BackGroundForm_Load;
+            Paint += BackGroundForm_Paint;
+            MouseDown += BackGroundForm_MouseDown;
+            MouseMove += BackGroundForm_MouseMove;
+            MouseUp += BackGroundForm_MouseUp;
             ResumeLayout(false);
         }
 
