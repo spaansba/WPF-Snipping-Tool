@@ -30,6 +30,7 @@ namespace Snipping_Tool_V4.Screenshots
         Arrow,
         Rectangle,
         Ellipse,
+        Circle, //Perfect circle unlike ellipse which can be stretched
         Text,
     }
 }

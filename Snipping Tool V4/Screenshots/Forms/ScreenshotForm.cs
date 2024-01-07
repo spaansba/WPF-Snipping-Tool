@@ -44,7 +44,35 @@ namespace Snipping_Tool_V4.Forms
 
             // Allows user to draw on the screenshot
             drawingManager = new ImageDrawingManager(screenshotResultPicture);
+
+            var table = tableLayoutPanel1(10);
+            var tools = Enum.GetValues<DrawingShape>();
+            
         }
+
+        private static TableLayoutPanel tableLayoutPanel1(int toolCount)
+        {
+            var columnCount = 7;
+            var (rowcount, remainder) = Math.DivRem(toolCount, columnCount);
+            if (remainder > 0)
+            {
+                rowcount++;
+            }
+            var table = new TableLayoutPanel();
+            for (var i = 0; i < rowcount; i++)
+            {
+                table.RowStyles.Add(new RowStyle(SizeType.Percent, 100 / rowcount));
+            }
+            for (var i = 0; i < columnCount; i++)
+            {
+                table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100 / columnCount));
+            }
+            table.Location = new Point(50, 50);
+            table.BackColor = Color.Red;
+            return table;
+
+        }
+
 
         #region Create New Screenshot
         private async void newScreenshotButton_Click(object sender, EventArgs e)
@@ -203,10 +231,6 @@ namespace Snipping_Tool_V4.Forms
         }
         #endregion
 
-        private void airButton1_Click(object sender, EventArgs e)
-        {
-
-        }
         #region Key and Click events (context menu)
         /// <summary>
         /// if CTRL Z is pressed remove the last drawing on the userform
@@ -217,14 +241,6 @@ namespace Snipping_Tool_V4.Forms
             {
                 drawingManager.controlZOnDrawing();
             }
-        }
-        /// <summary>
-        /// This event adds a right click option on the picture with save and copy options
-        /// Also if the user is mid drawing (the mouse button is down) and the user right clicks, the drawing will be cancelled
-        /// </summary>
-        private void screenshotResultPicture_MouseClick(object sender, MouseEventArgs e)
-        {
-
         }
         #endregion
 
@@ -245,10 +261,15 @@ namespace Snipping_Tool_V4.Forms
 
         private void RectangleShapeButton_Click(object sender, EventArgs e)
         {
-            drawingManager.chosenShape = DrawingShape.Rectangle;
+            drawingManager.CurrentTool = Tools.rectangle;
+         //   drawingManager.chosenShape = DrawingShape.Rectangle;
         }
 
         private void circleButton_Click(object sender, EventArgs e)
+        {
+            drawingManager.chosenShape = DrawingShape.Circle;
+        }
+        private void EllipseButton_Click(object sender, EventArgs e)
         {
             drawingManager.chosenShape = DrawingShape.Ellipse;
         }
@@ -262,6 +283,7 @@ namespace Snipping_Tool_V4.Forms
         {
             drawingManager.chosenSize = 10;
         }
+        
 
     }
 }

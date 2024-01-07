@@ -31,6 +31,13 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreenshotForm));
             screenshotPanel = new Panel();
+            shapesFlowPanel = new TableLayoutPanel();
+            redLineButton = new ReaLTaiizor.Controls.AirButton();
+            blackLineButton = new ReaLTaiizor.Controls.AirButton();
+            size10Button = new ReaLTaiizor.Controls.AirButton();
+            EllipseButton = new ReaLTaiizor.Controls.AirButton();
+            size3Button = new ReaLTaiizor.Controls.AirButton();
+            circleButton = new ReaLTaiizor.Controls.AirButton();
             label1 = new Label();
             screenshotResultPicture = new PictureBox();
             screenShotTimer = new System.Windows.Forms.Timer(components);
@@ -54,12 +61,10 @@
             deviderLabel = new Label();
             RectangleShapeButton = new ReaLTaiizor.Controls.AirButton();
             freeHandButton = new ReaLTaiizor.Controls.AirButton();
-            redLineButton = new ReaLTaiizor.Controls.AirButton();
-            blackLineButton = new ReaLTaiizor.Controls.AirButton();
-            size3Button = new ReaLTaiizor.Controls.AirButton();
-            size10Button = new ReaLTaiizor.Controls.AirButton();
-            circleButton = new ReaLTaiizor.Controls.AirButton();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            button1 = new Button();
             screenshotPanel.SuspendLayout();
+            shapesFlowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).BeginInit();
             timerFlowPanel.SuspendLayout();
             timerPanel.SuspendLayout();
@@ -75,6 +80,12 @@
             // 
             screenshotPanel.AutoScroll = true;
             screenshotPanel.AutoSize = true;
+            screenshotPanel.Controls.Add(shapesFlowPanel);
+            screenshotPanel.Controls.Add(redLineButton);
+            screenshotPanel.Controls.Add(blackLineButton);
+            screenshotPanel.Controls.Add(size10Button);
+            screenshotPanel.Controls.Add(EllipseButton);
+            screenshotPanel.Controls.Add(size3Button);
             screenshotPanel.Controls.Add(circleButton);
             screenshotPanel.Controls.Add(label1);
             screenshotPanel.Controls.Add(screenshotResultPicture);
@@ -84,10 +95,113 @@
             screenshotPanel.Size = new Size(555, 389);
             screenshotPanel.TabIndex = 1;
             // 
+            // shapesFlowPanel
+            // 
+            shapesFlowPanel.BackColor = Color.FromArgb(224, 224, 224);
+            shapesFlowPanel.ColumnCount = 4;
+            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.Controls.Add(button1, 0, 0);
+            shapesFlowPanel.Location = new Point(240, 4);
+            shapesFlowPanel.Margin = new Padding(0);
+            shapesFlowPanel.Name = "shapesFlowPanel";
+            shapesFlowPanel.RowCount = 3;
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.Size = new Size(113, 84);
+            shapesFlowPanel.TabIndex = 13;
+            // 
+            // redLineButton
+            // 
+            redLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            redLineButton.Font = new Font("Segoe UI", 9F);
+            redLineButton.Image = null;
+            redLineButton.Location = new Point(462, 136);
+            redLineButton.Name = "redLineButton";
+            redLineButton.NoRounding = false;
+            redLineButton.Size = new Size(81, 21);
+            redLineButton.TabIndex = 9;
+            redLineButton.Text = "Red Line";
+            redLineButton.Transparent = false;
+            redLineButton.Click += redLineButton_Click;
+            // 
+            // blackLineButton
+            // 
+            blackLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            blackLineButton.Font = new Font("Segoe UI", 9F);
+            blackLineButton.Image = null;
+            blackLineButton.Location = new Point(462, 109);
+            blackLineButton.Name = "blackLineButton";
+            blackLineButton.NoRounding = false;
+            blackLineButton.Size = new Size(81, 21);
+            blackLineButton.TabIndex = 10;
+            blackLineButton.Text = "Black Line";
+            blackLineButton.Transparent = false;
+            blackLineButton.Click += blackLineButton_Click;
+            // 
+            // size10Button
+            // 
+            size10Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            size10Button.Font = new Font("Segoe UI", 9F);
+            size10Button.Image = null;
+            size10Button.Location = new Point(477, 81);
+            size10Button.Name = "size10Button";
+            size10Button.NoRounding = false;
+            size10Button.Size = new Size(66, 21);
+            size10Button.TabIndex = 12;
+            size10Button.Text = "Size 10";
+            size10Button.Transparent = false;
+            size10Button.Click += size10Button_Click;
+            // 
+            // EllipseButton
+            // 
+            EllipseButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            EllipseButton.Font = new Font("Segoe UI", 9F);
+            EllipseButton.Image = null;
+            EllipseButton.Location = new Point(462, 27);
+            EllipseButton.Name = "EllipseButton";
+            EllipseButton.NoRounding = false;
+            EllipseButton.Size = new Size(81, 21);
+            EllipseButton.TabIndex = 6;
+            EllipseButton.Text = "Ellipse";
+            EllipseButton.Transparent = false;
+            EllipseButton.Click += EllipseButton_Click;
+            // 
+            // size3Button
+            // 
+            size3Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            size3Button.Font = new Font("Segoe UI", 9F);
+            size3Button.Image = null;
+            size3Button.Location = new Point(477, 54);
+            size3Button.Name = "size3Button";
+            size3Button.NoRounding = false;
+            size3Button.Size = new Size(66, 21);
+            size3Button.TabIndex = 11;
+            size3Button.Text = "Size 3";
+            size3Button.Transparent = false;
+            size3Button.Click += size3Button_Click;
+            // 
+            // circleButton
+            // 
+            circleButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            circleButton.Font = new Font("Segoe UI", 9F);
+            circleButton.Image = null;
+            circleButton.Location = new Point(462, 0);
+            circleButton.Name = "circleButton";
+            circleButton.NoRounding = false;
+            circleButton.Size = new Size(81, 21);
+            circleButton.TabIndex = 5;
+            circleButton.Text = "Circle";
+            circleButton.Transparent = false;
+            circleButton.Click += circleButton_Click;
+            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(291, 6);
+            label1.Location = new Point(413, 170);
             label1.Name = "label1";
             label1.Size = new Size(139, 15);
             label1.TabIndex = 3;
@@ -100,7 +214,6 @@
             screenshotResultPicture.Size = new Size(247, 142);
             screenshotResultPicture.TabIndex = 2;
             screenshotResultPicture.TabStop = false;
-            screenshotResultPicture.MouseClick += screenshotResultPicture_MouseClick;
             // 
             // screenShotTimer
             // 
@@ -117,7 +230,7 @@
             timerFlowPanel.Controls.Add(timerPanel3);
             timerFlowPanel.Controls.Add(timerPanel4);
             timerFlowPanel.Controls.Add(timerPanel5);
-            timerFlowPanel.Location = new Point(94, -3);
+            timerFlowPanel.Location = new Point(94, -2);
             timerFlowPanel.Margin = new Padding(0);
             timerFlowPanel.Name = "timerFlowPanel";
             timerFlowPanel.Size = new Size(117, 47);
@@ -362,75 +475,30 @@
             freeHandButton.Transparent = false;
             freeHandButton.Click += freeHandButton_Click;
             // 
-            // redLineButton
+            // tableLayoutPanel2
             // 
-            redLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            redLineButton.Font = new Font("Segoe UI", 9F);
-            redLineButton.Image = null;
-            redLineButton.Location = new Point(363, 0);
-            redLineButton.Name = "redLineButton";
-            redLineButton.NoRounding = false;
-            redLineButton.Size = new Size(81, 21);
-            redLineButton.TabIndex = 9;
-            redLineButton.Text = "Red Line";
-            redLineButton.Transparent = false;
-            redLineButton.Click += redLineButton_Click;
+            tableLayoutPanel2.ColumnCount = 4;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.Location = new Point(0, 0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 3;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.Size = new Size(200, 100);
+            tableLayoutPanel2.TabIndex = 0;
             // 
-            // blackLineButton
+            // button1
             // 
-            blackLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            blackLineButton.Font = new Font("Segoe UI", 9F);
-            blackLineButton.Image = null;
-            blackLineButton.Location = new Point(363, 21);
-            blackLineButton.Name = "blackLineButton";
-            blackLineButton.NoRounding = false;
-            blackLineButton.Size = new Size(81, 21);
-            blackLineButton.TabIndex = 10;
-            blackLineButton.Text = "Black Line";
-            blackLineButton.Transparent = false;
-            blackLineButton.Click += blackLineButton_Click;
-            // 
-            // size3Button
-            // 
-            size3Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            size3Button.Font = new Font("Segoe UI", 9F);
-            size3Button.Image = null;
-            size3Button.Location = new Point(291, 1);
-            size3Button.Name = "size3Button";
-            size3Button.NoRounding = false;
-            size3Button.Size = new Size(66, 21);
-            size3Button.TabIndex = 11;
-            size3Button.Text = "Size 3";
-            size3Button.Transparent = false;
-            size3Button.Click += size3Button_Click;
-            // 
-            // size10Button
-            // 
-            size10Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            size10Button.Font = new Font("Segoe UI", 9F);
-            size10Button.Image = null;
-            size10Button.Location = new Point(291, 23);
-            size10Button.Name = "size10Button";
-            size10Button.NoRounding = false;
-            size10Button.Size = new Size(66, 21);
-            size10Button.TabIndex = 12;
-            size10Button.Text = "Size 10";
-            size10Button.Transparent = false;
-            size10Button.Click += size10Button_Click;
-            // 
-            // circleButton
-            // 
-            circleButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            circleButton.Font = new Font("Segoe UI", 9F);
-            circleButton.Image = null;
-            circleButton.Location = new Point(462, 0);
-            circleButton.Name = "circleButton";
-            circleButton.NoRounding = false;
-            circleButton.Size = new Size(81, 21);
-            circleButton.TabIndex = 5;
-            circleButton.Text = "Circle";
-            circleButton.Transparent = false;
-            circleButton.Click += circleButton_Click;
+            button1.Image = (Image)resources.GetObject("button1.Image");
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(22, 22);
+            button1.TabIndex = 14;
+            button1.UseVisualStyleBackColor = true;
             // 
             // ScreenshotForm
             // 
@@ -439,10 +507,6 @@
             BackColor = Color.FromArgb(255, 255, 252);
             ClientSize = new Size(555, 434);
             ControlBox = false;
-            Controls.Add(size10Button);
-            Controls.Add(size3Button);
-            Controls.Add(blackLineButton);
-            Controls.Add(redLineButton);
             Controls.Add(freeHandButton);
             Controls.Add(RectangleShapeButton);
             Controls.Add(deviderLabel);
@@ -461,6 +525,7 @@
             KeyDown += ScreenshotForm_KeyDown;
             screenshotPanel.ResumeLayout(false);
             screenshotPanel.PerformLayout();
+            shapesFlowPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).EndInit();
             timerFlowPanel.ResumeLayout(false);
             timerPanel.ResumeLayout(false);
@@ -504,5 +569,9 @@
         private ReaLTaiizor.Controls.AirButton size3Button;
         private ReaLTaiizor.Controls.AirButton size10Button;
         private ReaLTaiizor.Controls.AirButton circleButton;
+        private ReaLTaiizor.Controls.AirButton EllipseButton;
+        private TableLayoutPanel shapesFlowPanel;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Button button1;
     }
 }
