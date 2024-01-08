@@ -125,56 +125,55 @@ namespace Snipping_Tool_V4.Modules
         /// <param name="e">paintevents from the userform paint event</param>
         private void drawPreviewRoster(PaintEventArgs e, Rectangle ellipseBounds)
         {
-            using (Pen squarePen = new Pen(Color.FromArgb(60, Color.Black), 1))
+            Pen squarePen = PenCache.GetPen(Color.FromArgb(60, Color.Black), 1);
+
+            int pixelSize = 9; // The size of the black squares
+            int numSquaresPerAxes = pixelSize * 2; 
+
+            // Calculate the start location of the squares
+            int startX = ellipseBounds.X - (pixelSize / 2);
+            int startY = ellipseBounds.Y - (pixelSize / 2);
+
+            List<Point> middleSquares = new();
+            Point middleMiddleSquares = new Point(0, 0);
+
+            // Draw the black squares around the pixels of the ellipse
+            for (int i = 0; i < numSquaresPerAxes; i++)
             {
-                int pixelSize = 9; // The size of the black squares
-                int numSquaresPerAxes = pixelSize * 2; 
-
-                // Calculate the start location of the squares
-                int startX = ellipseBounds.X - (pixelSize / 2);
-                int startY = ellipseBounds.Y - (pixelSize / 2);
-
-                List<Point> middleSquares = new();
-                Point middleMiddleSquares = new Point(0, 0);
-
-                // Draw the black squares around the pixels of the ellipse
-                for (int i = 0; i < numSquaresPerAxes; i++)
+                for (int j = 0; j < numSquaresPerAxes; j++)
                 {
-                    for (int j = 0; j < numSquaresPerAxes; j++)
+                    int x = startX + (i * pixelSize);
+                    int y = startY + (j * pixelSize);
+
+                    if (j == 7 && i == 7)
                     {
-                        int x = startX + (i * pixelSize);
-                        int y = startY + (j * pixelSize);
-
-                        if (j == 7 && i == 7)
-                        {
-                            middleMiddleSquares = new Point(x, y);
-                        }
-                        else if (j == 7 || i == 7)
-                        {
-                            middleSquares.Add(new Point(x, y));
-                        }
-                        else
-                        {
-                            e.Graphics.DrawRectangle(squarePen, x, y, pixelSize, pixelSize);
-                        }
-
+                        middleMiddleSquares = new Point(x, y);
                     }
+                    else if (j == 7 || i == 7)
+                    {
+                        middleSquares.Add(new Point(x, y));
+                    }
+                    else
+                    {
+                        e.Graphics.DrawRectangle(squarePen, x, y, pixelSize, pixelSize);
+                    }
+
                 }
-
-                //Create lightblue brush and fill the middle y/x squares
-                Color lightBlue = Color.FromArgb(40, 0, 100, 255);
-                SolidBrush lightBlueBrush = new SolidBrush(lightBlue);
-
-                foreach (Point square in middleSquares)
-                {
-
-                    e.Graphics.FillRectangle(lightBlueBrush, square.X, square.Y, pixelSize, pixelSize);
-                }
-
-                // Draw the absolute middle square
-                squarePen.Color = Color.FromArgb(255, Color.Black);
-                e.Graphics.DrawRectangle(squarePen, middleMiddleSquares.X, middleMiddleSquares.Y, pixelSize, pixelSize);
             }
+
+            //Create lightblue brush and fill the middle y/x squares
+            Color lightBlue = Color.FromArgb(40, 0, 100, 255);
+            SolidBrush lightBlueBrush = new SolidBrush(lightBlue);
+
+            foreach (Point square in middleSquares)
+            {
+
+                e.Graphics.FillRectangle(lightBlueBrush, square.X, square.Y, pixelSize, pixelSize);
+            }
+
+            // Draw the absolute middle square
+            Pen middleSquarePen = PenCache.GetPen(Color.FromArgb(255, Color.Black));
+            e.Graphics.DrawRectangle(middleSquarePen, middleMiddleSquares.X, middleMiddleSquares.Y, pixelSize, pixelSize);
         }
     }
 }

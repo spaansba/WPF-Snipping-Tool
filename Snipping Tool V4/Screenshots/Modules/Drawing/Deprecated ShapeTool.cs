@@ -7,7 +7,7 @@
 
 //namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 //{
-//    public abstract class ShapeTool : DrawingTool
+//  //  public abstract class ShapeTool : DrawingTool
 //    {
 //        public abstract Point startPoint { get; set; }
 //        public abstract Point endPoint { get; set; }

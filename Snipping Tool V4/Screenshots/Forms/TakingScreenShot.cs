@@ -3,6 +3,7 @@ using Snipping_Tool_V4.Screenshots;
 using Snipping_Tool_V4.Screenshots.Modules;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Snipping_Tool_V4.Forms
 {
@@ -178,6 +179,8 @@ namespace Snipping_Tool_V4.Forms
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
+            Pen rectPen = PenCache.GetPen(Color.Green, 2);
+
             if (mousePressed && startPoint != currentPoint && screenshotMode == ScreenshotMode.Rectangle)
             {
                 choosenScreenshot = new Rectangle(
@@ -189,10 +192,7 @@ namespace Snipping_Tool_V4.Forms
                 // Draw the untransparent part of the original image within the selected rectangle
                 e.Graphics.DrawImage(originalBitmap, choosenScreenshot, choosenScreenshot, GraphicsUnit.Pixel);
 
-                using (Pen rectPen = new Pen(Color.Green, 2))
-                {
-                    e.Graphics.DrawRectangle(rectPen, choosenScreenshot);
-                }
+                e.Graphics.DrawRectangle(rectPen, choosenScreenshot);
 
                 previewEllipse = new(currentPoint, originalBitmap, userScreenInformation);
                 previewEllipse.drawPreviewEllipse(e);
@@ -200,18 +200,13 @@ namespace Snipping_Tool_V4.Forms
             }
             else
             {
-                using (Pen pen = new Pen(Color.Green, 2))
-                {
-                    e.Graphics.DrawRectangle(pen, choosenScreenshot);
-                }
+                e.Graphics.DrawRectangle(rectPen, choosenScreenshot);
             }
 
             if (screenshotMode == ScreenshotMode.Window)
             {
-                using (Pen rectPen = new Pen(Color.Green, 3))
-                {
-                    e.Graphics.DrawRectangle(rectPen, hoveredWindowRect);
-                }
+                e.Graphics.DrawRectangle(rectPen, hoveredWindowRect);
+
             }
 ;
 

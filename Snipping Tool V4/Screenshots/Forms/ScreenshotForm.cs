@@ -5,17 +5,20 @@ using Snipping_Tool_V4.Screenshots;
 using Snipping_Tool_V4.Main;
 using Snipping_Tool_V4.Screenshots.Modules.Drawing;
 using System.Drawing;
+using Snipping_Tool_V4.Screenshots.Modules.ViewModels;
+using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 namespace Snipping_Tool_V4.Forms
 {
     public partial class ScreenshotForm : baseChildFormsTemplate
     {
-        private Form takingScreenshotForm;
+        private Form takingScreenshotForm = new Form();
         public MainForm mainForm;
 
         // Create all the moving objects and their opened and closed values (widht or height are interchangable, we are only expanding in 1 direction)
         private UserformMotions timerMotion;
-        private UserformMotions currentMovingObject;
+        private UserformMotions currentMovingObject = null;
 
         // To check if we are currently taking a screenshot 
         public bool takingScreenshot = false;
@@ -27,12 +30,10 @@ namespace Snipping_Tool_V4.Forms
         // Mode options
         private ScreenshotMode screenShotMode;
 
-
         private UserScreenInformation screenInfo = new UserScreenInformation();
 
         //For image drawing (we call erasing / shapes also "drawing" for simplicity)
-        private ImageDrawingManager drawingManager;
-
+        private ScreenshotDrawingViewModel viewModel = new ScreenshotDrawingViewModel();
 
         public ScreenshotForm(MainForm mainform)
         {
@@ -43,41 +44,62 @@ namespace Snipping_Tool_V4.Forms
             mainForm = mainform;
 
             // Allows user to draw on the screenshot
-            drawingManager = new ImageDrawingManager(screenshotResultPicture);
+        //    drawingManager = new ScreenshotDrawingViewModel(screenshotResultPicture);
 
-            var table = tableLayoutPanel1(10);
-            var tools = Enum.GetValues<DrawingShape>();
-            
+            this.viewModel.DrawingChanged += (_, _) => this.screenshotResultPicture.Invalidate();
+            screenshotResultPicture.Paint += (_, e) =>
+            {
+                if (screenshotResultPicture.Image != null)
+                {
+                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    this.viewModel.Draw(e.Graphics);
+                }
+            };
+
+            screenshotResultPicture.MouseDown += (_, e) =>
+            {
+                if (screenshotResultPicture.Image == null)
+                {
+                    return;
+                }
+
+                switch (e.Button, viewModel.CurrentTool)
+                {
+                    case (MouseButtons.Left, not null):
+                        viewModel.Begin(e.Location);
+                        break;
+                    case (MouseButtons.Right, not null):
+                        viewModel.Reset();
+                        screenshotResultPicture.Invalidate();
+                        break;
+                    case (MouseButtons.Right, null):
+                        imageContextMenu imageContextMenu2 = new imageContextMenu(screenshotResultPicture);
+                        imageContextMenu2.ShowContextMenu(e.Location);
+                        break;
+                }
+            };
+
+            screenshotResultPicture.MouseMove += (_, e) =>
+            {
+                if (e.Button == MouseButtons.Left && screenshotResultPicture.Image != null)
+                {
+                    viewModel.Continue(e.Location);
+                }
+            };
+
+            screenshotResultPicture.MouseUp += (_, e) =>
+            {
+                if (screenshotResultPicture.Image != null && viewModel.CurrentTool.IsActive)
+                {
+                    viewModel.Finish(e.Location);
+                }
+            };
         }
-
-        private static TableLayoutPanel tableLayoutPanel1(int toolCount)
-        {
-            var columnCount = 7;
-            var (rowcount, remainder) = Math.DivRem(toolCount, columnCount);
-            if (remainder > 0)
-            {
-                rowcount++;
-            }
-            var table = new TableLayoutPanel();
-            for (var i = 0; i < rowcount; i++)
-            {
-                table.RowStyles.Add(new RowStyle(SizeType.Percent, 100 / rowcount));
-            }
-            for (var i = 0; i < columnCount; i++)
-            {
-                table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100 / columnCount));
-            }
-            table.Location = new Point(50, 50);
-            table.BackColor = Color.Red;
-            return table;
-
-        }
-
 
         #region Create New Screenshot
         private async void newScreenshotButton_Click(object sender, EventArgs e)
         {
-            drawingManager.ClearDrawings(); // Clear all user drawings
+            viewModel.Clear(); // Clear all user drawings
             // Check if the user wants to create a new screenshot or want to cancel the current screenshot
             if (takingScreenshot)
             {
@@ -239,49 +261,48 @@ namespace Snipping_Tool_V4.Forms
         {
             if (e.Control && e.KeyCode == Keys.Z)
             {
-                drawingManager.controlZOnDrawing();
+                viewModel.Undo();
             }
         }
         #endregion
 
         private void redLineButton_Click(object sender, EventArgs e)
         {
-            drawingManager.chosenColor = Color.Red;
+            viewModel.PenColor = Color.Red;
         }
 
         private void blackLineButton_Click(object sender, EventArgs e)
         {
-            drawingManager.chosenColor = Color.Black;
+            viewModel.PenColor = Color.Black;
         }
 
         private void freeHandButton_Click(object sender, EventArgs e)
         {
-            drawingManager.chosenShape = DrawingShape.Freehand;
+            viewModel.CurrentTool = Tools.freehand;
         }
 
         private void RectangleShapeButton_Click(object sender, EventArgs e)
         {
-            drawingManager.CurrentTool = Tools.rectangle;
-         //   drawingManager.chosenShape = DrawingShape.Rectangle;
+            viewModel.CurrentTool = Tools.rectangle;
         }
 
         private void circleButton_Click(object sender, EventArgs e)
         {
-            drawingManager.chosenShape = DrawingShape.Circle;
+        //    drawingManager.chosenShape = DrawingShape.Circle;
         }
         private void EllipseButton_Click(object sender, EventArgs e)
         {
-            drawingManager.chosenShape = DrawingShape.Ellipse;
+        //    drawingManager.chosenShape = DrawingShape.Ellipse;
         }
 
         private void size3Button_Click(object sender, EventArgs e)
         {
-            drawingManager.chosenSize = 3;
+            viewModel.PenThickness = 3;
         }
 
         private void size10Button_Click(object sender, EventArgs e)
         {
-            drawingManager.chosenSize = 10;
+            viewModel.PenThickness = 10;
         }
         
 
