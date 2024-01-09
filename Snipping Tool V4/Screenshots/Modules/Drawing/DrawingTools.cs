@@ -35,22 +35,50 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         }
     }
 
-  // public delegate void DrawShape(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill);
-  // public delegate Shape CreateRectangulareShape(Pen? stroke, Brush? fill, Rectangle bounds);
-    public delegate void DrawOrFillShape(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill);
+    public delegate void DrawOrFillShape(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides);
 
     public static class Tools
     {
+        public static RectangularShapeTool triangle { get; } = new RectangularShapeTool(DrawOrFillPolygon, 3);
+        public static RectangularShapeTool pentagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 5);
+        public static RectangularShapeTool hexagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 6);
+        public static RectangularShapeTool heptagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 7);
         public static RectangularShapeTool rectangle { get; } = new RectangularShapeTool(DrawOrFillRectangle);
         public static RectangularShapeTool ellipse { get; } = new RectangularShapeTool(DrawOrFillEllipse);
 
-        public static void DrawOrFillRectangle(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
+        /// <summary>
+        /// Draws a polygon with the given number of sides
+        /// TODO: Fix the polygon drawing so that it is centered in the rectangle
+        /// </summary>
+        public static void DrawOrFillPolygon(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides)
+        {
+            PointF[] points = new PointF[(int)sides];
+            double angleIncrement = (2 * Math.PI) / (int)sides;
+
+            PointF center = new PointF(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
+            double radius = Math.Min(bounds.Width, bounds.Height) / 2;
+
+            // Calculate the distance from the center to the furthest point
+            double distanceFromCenter = radius * Math.Cos(angleIncrement / 2);
+
+            for (int i = 0; i < (int)sides; i++)
+            {
+                double angle = i * angleIncrement - Math.PI / 2; // Starting from the top
+                float x = center.X + (float)(distanceFromCenter * Math.Cos(angle));
+                float y = center.Y + (float)(distanceFromCenter * Math.Sin(angle));
+                points[i] = new PointF(x, y);
+            }
+
+            if (stroke != null) graphics.DrawPolygon(stroke, points);
+            if (fill != null) graphics.FillPolygon(fill, points);
+        }
+
+        public static void DrawOrFillRectangle(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides)
         {
             if (stroke != null) graphics.DrawRectangle(stroke, bounds);
             if (fill != null) graphics.FillRectangle(fill, bounds);
         }
-
-        public static void DrawOrFillEllipse(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
+        public static void DrawOrFillEllipse(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides)
         {
             if (stroke != null) graphics.DrawEllipse(stroke, bounds);
             if (fill != null) graphics.FillEllipse(fill, bounds);
@@ -74,12 +102,21 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
     {
         public Point Start { get; private set; }
         public Point End { get; private set; }
+
         private readonly DrawOrFillShape drawOrFillShape;
 
+        private readonly int sides;
+
+        public RectangularShapeTool(DrawOrFillShape drawOrFillShape, int sides)
+        {
+            this.drawOrFillShape = drawOrFillShape;
+            this.sides = sides;
+        }
         public RectangularShapeTool(DrawOrFillShape drawOrFillShape)
         {
             this.drawOrFillShape = drawOrFillShape;
         }
+
 
         public override void Begin(Point location, Pen? stroke)
         {
@@ -103,14 +140,14 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         public override void Finish(Point newLocation, IList<Shape> shapeList)
         {
             End = CalculateNewEndLocation(newLocation);
-            var newShape = new RectangularShape(this.drawOrFillShape, stroke, fill, this.GetRectangle());
+            var newShape = new RectangularShape(this.drawOrFillShape, stroke, fill, this.GetRectangle(), sides);
             shapeList.Add(newShape);
             base.Finish(newLocation, shapeList);
         }
 
         public override void Draw(Graphics graphics)
         {
-            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, this.GetRectangle(), stroke, fill);
+            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, this.GetRectangle(), stroke, fill, sides);
         }
 
         public override void DrawToolIcon(Graphics graphics, Pen stroke, Brush fill, Rectangle rect)

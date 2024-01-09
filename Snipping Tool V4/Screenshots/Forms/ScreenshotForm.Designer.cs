@@ -31,6 +31,9 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreenshotForm));
             screenshotPanel = new Panel();
+            haptagonButton = new ReaLTaiizor.Controls.AirButton();
+            HexagonButton = new ReaLTaiizor.Controls.AirButton();
+            pentagonButton = new ReaLTaiizor.Controls.AirButton();
             shapesFlowPanel = new TableLayoutPanel();
             button1 = new Button();
             redLineButton = new ReaLTaiizor.Controls.AirButton();
@@ -38,7 +41,7 @@
             size10Button = new ReaLTaiizor.Controls.AirButton();
             EllipseButton = new ReaLTaiizor.Controls.AirButton();
             size3Button = new ReaLTaiizor.Controls.AirButton();
-            circleButton = new ReaLTaiizor.Controls.AirButton();
+            triangleButton = new ReaLTaiizor.Controls.AirButton();
             label1 = new Label();
             screenshotResultPicture = new PictureBox();
             screenShotTimer = new System.Windows.Forms.Timer(components);
@@ -80,13 +83,16 @@
             // 
             screenshotPanel.AutoScroll = true;
             screenshotPanel.AutoSize = true;
+            screenshotPanel.Controls.Add(haptagonButton);
+            screenshotPanel.Controls.Add(HexagonButton);
+            screenshotPanel.Controls.Add(pentagonButton);
             screenshotPanel.Controls.Add(shapesFlowPanel);
             screenshotPanel.Controls.Add(redLineButton);
             screenshotPanel.Controls.Add(blackLineButton);
             screenshotPanel.Controls.Add(size10Button);
             screenshotPanel.Controls.Add(EllipseButton);
             screenshotPanel.Controls.Add(size3Button);
-            screenshotPanel.Controls.Add(circleButton);
+            screenshotPanel.Controls.Add(triangleButton);
             screenshotPanel.Controls.Add(label1);
             screenshotPanel.Controls.Add(screenshotResultPicture);
             screenshotPanel.Dock = DockStyle.Fill;
@@ -94,6 +100,48 @@
             screenshotPanel.Name = "screenshotPanel";
             screenshotPanel.Size = new Size(555, 389);
             screenshotPanel.TabIndex = 1;
+            // 
+            // haptagonButton
+            // 
+            haptagonButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            haptagonButton.Font = new Font("Segoe UI", 9F);
+            haptagonButton.Image = null;
+            haptagonButton.Location = new Point(456, 137);
+            haptagonButton.Name = "haptagonButton";
+            haptagonButton.NoRounding = false;
+            haptagonButton.Size = new Size(81, 21);
+            haptagonButton.TabIndex = 16;
+            haptagonButton.Text = "Heptagon";
+            haptagonButton.Transparent = false;
+            haptagonButton.Click += haptagonButton_Click;
+            // 
+            // HexagonButton
+            // 
+            HexagonButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            HexagonButton.Font = new Font("Segoe UI", 9F);
+            HexagonButton.Image = null;
+            HexagonButton.Location = new Point(456, 110);
+            HexagonButton.Name = "HexagonButton";
+            HexagonButton.NoRounding = false;
+            HexagonButton.Size = new Size(81, 21);
+            HexagonButton.TabIndex = 15;
+            HexagonButton.Text = "Hexagon";
+            HexagonButton.Transparent = false;
+            HexagonButton.Click += HexagonButton_Click;
+            // 
+            // pentagonButton
+            // 
+            pentagonButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            pentagonButton.Font = new Font("Segoe UI", 9F);
+            pentagonButton.Image = null;
+            pentagonButton.Location = new Point(456, 83);
+            pentagonButton.Name = "pentagonButton";
+            pentagonButton.NoRounding = false;
+            pentagonButton.Size = new Size(81, 21);
+            pentagonButton.TabIndex = 14;
+            pentagonButton.Text = "Pentagon";
+            pentagonButton.Transparent = false;
+            pentagonButton.Click += pentagonButton_Click;
             // 
             // shapesFlowPanel
             // 
@@ -128,7 +176,7 @@
             redLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             redLineButton.Font = new Font("Segoe UI", 9F);
             redLineButton.Image = null;
-            redLineButton.Location = new Point(462, 136);
+            redLineButton.Location = new Point(447, 306);
             redLineButton.Name = "redLineButton";
             redLineButton.NoRounding = false;
             redLineButton.Size = new Size(81, 21);
@@ -142,7 +190,7 @@
             blackLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             blackLineButton.Font = new Font("Segoe UI", 9F);
             blackLineButton.Image = null;
-            blackLineButton.Location = new Point(462, 109);
+            blackLineButton.Location = new Point(447, 279);
             blackLineButton.Name = "blackLineButton";
             blackLineButton.NoRounding = false;
             blackLineButton.Size = new Size(81, 21);
@@ -156,7 +204,7 @@
             size10Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             size10Button.Font = new Font("Segoe UI", 9F);
             size10Button.Image = null;
-            size10Button.Location = new Point(477, 81);
+            size10Button.Location = new Point(462, 251);
             size10Button.Name = "size10Button";
             size10Button.NoRounding = false;
             size10Button.Size = new Size(66, 21);
@@ -184,7 +232,7 @@
             size3Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             size3Button.Font = new Font("Segoe UI", 9F);
             size3Button.Image = null;
-            size3Button.Location = new Point(477, 54);
+            size3Button.Location = new Point(462, 224);
             size3Button.Name = "size3Button";
             size3Button.NoRounding = false;
             size3Button.Size = new Size(66, 21);
@@ -193,24 +241,24 @@
             size3Button.Transparent = false;
             size3Button.Click += size3Button_Click;
             // 
-            // circleButton
+            // triangleButton
             // 
-            circleButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            circleButton.Font = new Font("Segoe UI", 9F);
-            circleButton.Image = null;
-            circleButton.Location = new Point(462, 0);
-            circleButton.Name = "circleButton";
-            circleButton.NoRounding = false;
-            circleButton.Size = new Size(81, 21);
-            circleButton.TabIndex = 5;
-            circleButton.Text = "Circle";
-            circleButton.Transparent = false;
-            circleButton.Click += circleButton_Click;
+            triangleButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            triangleButton.Font = new Font("Segoe UI", 9F);
+            triangleButton.Image = null;
+            triangleButton.Location = new Point(456, 54);
+            triangleButton.Name = "triangleButton";
+            triangleButton.NoRounding = false;
+            triangleButton.Size = new Size(81, 21);
+            triangleButton.TabIndex = 5;
+            triangleButton.Text = "Triangle";
+            triangleButton.Transparent = false;
+            triangleButton.Click += circleButton_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(413, 170);
+            label1.Location = new Point(398, 340);
             label1.Name = "label1";
             label1.Size = new Size(139, 15);
             label1.TabIndex = 3;
@@ -569,10 +617,13 @@
         private Label label1;
         private ReaLTaiizor.Controls.AirButton size3Button;
         private ReaLTaiizor.Controls.AirButton size10Button;
-        private ReaLTaiizor.Controls.AirButton circleButton;
+        private ReaLTaiizor.Controls.AirButton triangleButton;
         private ReaLTaiizor.Controls.AirButton EllipseButton;
         private TableLayoutPanel shapesFlowPanel;
         private TableLayoutPanel tableLayoutPanel2;
         private Button button1;
+        private ReaLTaiizor.Controls.AirButton haptagonButton;
+        private ReaLTaiizor.Controls.AirButton HexagonButton;
+        private ReaLTaiizor.Controls.AirButton pentagonButton;
     }
 }

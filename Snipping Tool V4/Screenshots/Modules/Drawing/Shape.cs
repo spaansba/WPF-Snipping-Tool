@@ -18,9 +18,9 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         public Pen? stroke { get; }
         public Brush? fill { get; }
 
-        public static void DrawCurrentShapeInRectangle(DrawOrFillShape drawOrFillShape, Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
+        public static void DrawCurrentShapeInRectangle(DrawOrFillShape drawOrFillShape, Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides)
         {
-            drawOrFillShape(graphics, bounds, stroke, fill);
+            drawOrFillShape(graphics, bounds, stroke, fill, sides);
         }
     }
 
@@ -28,15 +28,24 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
     {
         public override Rectangle bounds { get; }
         private readonly DrawOrFillShape drawOrFillShape;
+        private readonly int sides;
 
         public RectangularShape(DrawOrFillShape drawOrFillShape, Pen? stroke, Brush? fill, Rectangle bounds) : base(stroke, fill)
         {
             this.bounds = bounds;
             this.drawOrFillShape = drawOrFillShape;
         }
+
+        public RectangularShape(DrawOrFillShape drawOrFillShape, Pen? stroke, Brush? fill, Rectangle bounds, int sides) : base(stroke, fill)
+        {
+            this.bounds = bounds;
+            this.drawOrFillShape = drawOrFillShape;
+            this.sides = sides;
+        }
+
         public override void Draw(Graphics graphics)
         {
-            drawOrFillShape(graphics, bounds, stroke, fill);
+            drawOrFillShape(graphics, bounds, stroke, fill, sides);
         }
     }
 

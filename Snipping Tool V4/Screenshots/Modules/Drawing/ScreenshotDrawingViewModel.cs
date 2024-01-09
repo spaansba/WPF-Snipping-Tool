@@ -1,12 +1,11 @@
 ﻿using Snipping_Tool_V4.Modules;
-using Snipping_Tool_V4.Screenshots.Modules.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Snipping_Tool_V4.Screenshots.Modules.ViewModels
+namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 {
     public class ScreenshotDrawingViewModel
     {
@@ -17,11 +16,11 @@ namespace Snipping_Tool_V4.Screenshots.Modules.ViewModels
         public List<Shape> Shapes { get; set; } = new();
 
         public event EventHandler? DrawingChanged;
-        private void RaiseDrawingChanged() => this.DrawingChanged?.Invoke(this, EventArgs.Empty);
+        private void RaiseDrawingChanged() => DrawingChanged?.Invoke(this, EventArgs.Empty);
 
         public void Begin(Point location)
         {
-            CurrentTool?.Begin(location, PenCache.GetPen(this.Pen.Color, this.PenThickness));
+            CurrentTool?.Begin(location, PenCache.GetPen(Pen.Color, PenThickness));
             RaiseDrawingChanged();
         }
 
@@ -29,29 +28,29 @@ namespace Snipping_Tool_V4.Screenshots.Modules.ViewModels
         {
             if (CurrentTool != null && CurrentTool.IsActive)
             {
-                this.CurrentTool.Continue(location);
+                CurrentTool.Continue(location);
                 RaiseDrawingChanged();
             }
         }
 
         public void Finish(Point location)
         {
-            this.CurrentTool?.Finish(location, this.Shapes);
+            CurrentTool?.Finish(location, Shapes);
             RaiseDrawingChanged();
         }
 
         public void Undo()
         {
-            if (this.Shapes.Count > 0)
+            if (Shapes.Count > 0)
             {
-                this.Shapes.RemoveAt(this.Shapes.Count - 1);
+                Shapes.RemoveAt(Shapes.Count - 1);
                 RaiseDrawingChanged();
             }
         }
 
         public void Clear()
         {
-            this.Shapes.Clear();
+            Shapes.Clear();
             RaiseDrawingChanged();
         }
 
@@ -67,14 +66,14 @@ namespace Snipping_Tool_V4.Screenshots.Modules.ViewModels
 
         public void Draw(Graphics graphics)
         {
-            foreach (Shape shape in this.Shapes)
+            foreach (Shape shape in Shapes)
             {
                 shape.Draw(graphics);
             }
 
-            if (this.CurrentTool != null && this.CurrentTool.IsActive)
+            if (CurrentTool != null && CurrentTool.IsActive)
             {
-                this.CurrentTool.Draw(graphics);
+                CurrentTool.Draw(graphics);
             }
         }
     }

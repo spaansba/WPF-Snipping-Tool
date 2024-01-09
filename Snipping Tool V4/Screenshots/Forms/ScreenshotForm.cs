@@ -5,7 +5,6 @@ using Snipping_Tool_V4.Screenshots;
 using Snipping_Tool_V4.Main;
 using Snipping_Tool_V4.Screenshots.Modules.Drawing;
 using System.Drawing;
-using Snipping_Tool_V4.Screenshots.Modules.ViewModels;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
@@ -269,7 +268,7 @@ namespace Snipping_Tool_V4.Forms
             }
 
             if (e.Control && e.KeyCode == Keys.Z)
-            { 
+            {
                 viewModel.Undo();
             }
             else if (e.KeyCode == Keys.ShiftKey)
@@ -310,7 +309,7 @@ namespace Snipping_Tool_V4.Forms
 
         private void circleButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.ellipse;
+            viewModel.CurrentTool = Tools.triangle;
         }
 
         private void EllipseButton_Click(object sender, EventArgs e)
@@ -326,6 +325,21 @@ namespace Snipping_Tool_V4.Forms
         private void size10Button_Click(object sender, EventArgs e)
         {
             viewModel.PenThickness = 10;
+        }
+
+        private void pentagonButton_Click(object sender, EventArgs e)
+        {
+            viewModel.CurrentTool = Tools.pentagon;
+        }
+
+        private void HexagonButton_Click(object sender, EventArgs e)
+        {
+            viewModel.CurrentTool = Tools.hexagon;
+        }
+
+        private void haptagonButton_Click(object sender, EventArgs e)
+        {
+            viewModel.CurrentTool = Tools.heptagon;
         }
     }
 }
