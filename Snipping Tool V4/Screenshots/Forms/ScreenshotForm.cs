@@ -94,7 +94,7 @@ namespace Snipping_Tool_V4.Forms
 
             // Set the default tool to freehand/ 4/ black
             // TODO: Activate the radiobuttons ones we made it
-            viewModel.CurrentTool = Tools.freehand;
+            viewModel.CurrentTool = Tools.Freehand;
             viewModel.PenThickness = 4;
             viewModel.PenColor = Color.Black;
         }
@@ -299,22 +299,22 @@ namespace Snipping_Tool_V4.Forms
 
         private void freeHandButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.freehand;
+            viewModel.CurrentTool = Tools.Freehand;
         }
 
         private void RectangleShapeButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.rectangle;
+            viewModel.CurrentTool = Tools.Rectangle;
         }
 
         private void circleButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.triangle;
+            viewModel.CurrentTool = Tools.Triangle;
         }
 
         private void EllipseButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.ellipse;
+            viewModel.CurrentTool = Tools.Ellipse;
         }
 
         private void size3Button_Click(object sender, EventArgs e)
@@ -329,17 +329,17 @@ namespace Snipping_Tool_V4.Forms
 
         private void pentagonButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.pentagon;
+            viewModel.CurrentTool = Tools.Pentagon;
         }
 
         private void HexagonButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.hexagon;
+            viewModel.CurrentTool = Tools.Hexagon;
         }
 
         private void haptagonButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.heptagon;
+            viewModel.CurrentTool = Tools.Heptagon;
         }
     }
 }

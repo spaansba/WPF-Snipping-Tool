@@ -39,12 +39,14 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 
     public static class Tools
     {
-        public static RectangularShapeTool triangle { get; } = new RectangularShapeTool(DrawOrFillPolygon, 3);
-        public static RectangularShapeTool pentagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 5);
-        public static RectangularShapeTool hexagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 6);
-        public static RectangularShapeTool heptagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 7);
-        public static RectangularShapeTool rectangle { get; } = new RectangularShapeTool(DrawOrFillRectangle);
-        public static RectangularShapeTool ellipse { get; } = new RectangularShapeTool(DrawOrFillEllipse);
+
+        public static FreehandTool Freehand { get; } = new();
+        public static RectangularShapeTool Triangle { get; } = new RectangularShapeTool(DrawOrFillPolygon, 3);
+        public static RectangularShapeTool Pentagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 5);
+        public static RectangularShapeTool Hexagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 6);
+        public static RectangularShapeTool Heptagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 7);
+        public static RectangularShapeTool Rectangle { get; } = new RectangularShapeTool(DrawOrFillRectangle);
+        public static RectangularShapeTool Ellipse { get; } = new RectangularShapeTool(DrawOrFillEllipse);
 
         /// <summary>
         /// Draws a polygon with the given number of sides
@@ -84,7 +86,6 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
             if (fill != null) graphics.FillEllipse(fill, bounds);
         }
 
-        public static FreehandTool freehand { get; } = new();
     }
 
     public abstract class ShapeTool : Tool
