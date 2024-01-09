@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreenshotForm));
             screenshotPanel = new Panel();
             shapesFlowPanel = new TableLayoutPanel();
+            button1 = new Button();
             redLineButton = new ReaLTaiizor.Controls.AirButton();
             blackLineButton = new ReaLTaiizor.Controls.AirButton();
             size10Button = new ReaLTaiizor.Controls.AirButton();
@@ -62,7 +63,6 @@
             RectangleShapeButton = new ReaLTaiizor.Controls.AirButton();
             freeHandButton = new ReaLTaiizor.Controls.AirButton();
             tableLayoutPanel2 = new TableLayoutPanel();
-            button1 = new Button();
             screenshotPanel.SuspendLayout();
             shapesFlowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).BeginInit();
@@ -113,6 +113,15 @@
             shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             shapesFlowPanel.Size = new Size(113, 84);
             shapesFlowPanel.TabIndex = 13;
+            // 
+            // button1
+            // 
+            button1.Image = (Image)resources.GetObject("button1.Image");
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(22, 22);
+            button1.TabIndex = 14;
+            button1.UseVisualStyleBackColor = true;
             // 
             // redLineButton
             // 
@@ -491,15 +500,6 @@
             tableLayoutPanel2.Size = new Size(200, 100);
             tableLayoutPanel2.TabIndex = 0;
             // 
-            // button1
-            // 
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(22, 22);
-            button1.TabIndex = 14;
-            button1.UseVisualStyleBackColor = true;
-            // 
             // ScreenshotForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -523,6 +523,7 @@
             Text = "ScreenshotForm";
             Deactivate += ScreenshotForm_Deactivate;
             KeyDown += ScreenshotForm_KeyDown;
+            KeyUp += ScreenshotForm_KeyUp;
             screenshotPanel.ResumeLayout(false);
             screenshotPanel.PerformLayout();
             shapesFlowPanel.ResumeLayout(false);

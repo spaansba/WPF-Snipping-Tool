@@ -43,10 +43,8 @@ namespace Snipping_Tool_V4.Forms
             timerMotion = new UserformMotions(timerMotionMenuOpen, timerMotionMenuClosed, false, "Timer", 15, this.timerFlowPanel, false, "Screenshot", this.timerButton, timerChildButtons);
             mainForm = mainform;
 
-            // Allows user to draw on the screenshot
-        //    drawingManager = new ScreenshotDrawingViewModel(screenshotResultPicture);
-
             this.viewModel.DrawingChanged += (_, _) => this.screenshotResultPicture.Invalidate();
+
             screenshotResultPicture.Paint += (_, e) =>
             {
                 if (screenshotResultPicture.Image != null)
@@ -94,6 +92,12 @@ namespace Snipping_Tool_V4.Forms
                     viewModel.Finish(e.Location);
                 }
             };
+
+            // Set the default tool to freehand/ 4/ black
+            // TODO: Activate the radiobuttons ones we made it
+            viewModel.CurrentTool = Tools.freehand;
+            viewModel.PenThickness = 4;
+            viewModel.PenColor = Color.Black;
         }
 
         #region Create New Screenshot
@@ -259,11 +263,29 @@ namespace Snipping_Tool_V4.Forms
         /// </summary>
         private void ScreenshotForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.Z)
+            if (viewModel.CurrentTool == null)
             {
+                return;
+            }
+
+            if (e.Control && e.KeyCode == Keys.Z)
+            { 
                 viewModel.Undo();
             }
+            else if (e.KeyCode == Keys.ShiftKey)
+            {
+                viewModel.SetShiftPressed(true);
+            }
         }
+        private void ScreenshotForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey && viewModel.CurrentTool != null)
+            {
+                viewModel.SetShiftPressed(false);
+            }
+        }
+
+
         #endregion
 
         private void redLineButton_Click(object sender, EventArgs e)
@@ -288,11 +310,12 @@ namespace Snipping_Tool_V4.Forms
 
         private void circleButton_Click(object sender, EventArgs e)
         {
-        //    drawingManager.chosenShape = DrawingShape.Circle;
+            viewModel.CurrentTool = Tools.ellipse;
         }
+
         private void EllipseButton_Click(object sender, EventArgs e)
         {
-        //    drawingManager.chosenShape = DrawingShape.Ellipse;
+            viewModel.CurrentTool = Tools.ellipse;
         }
 
         private void size3Button_Click(object sender, EventArgs e)
@@ -304,7 +327,5 @@ namespace Snipping_Tool_V4.Forms
         {
             viewModel.PenThickness = 10;
         }
-        
-
     }
 }

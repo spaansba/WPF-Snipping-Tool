@@ -19,28 +19,6 @@ namespace Snipping_Tool_V4.Screenshots.Modules.ViewModels
         public event EventHandler? DrawingChanged;
         private void RaiseDrawingChanged() => this.DrawingChanged?.Invoke(this, EventArgs.Empty);
 
-
-        public void Undo()
-        {
-            if (this.Shapes.Count > 0)
-            {
-                this.Shapes.RemoveAt(this.Shapes.Count - 1);
-                RaiseDrawingChanged();
-            }
-        }
-
-        public void Clear()
-        {
-            this.Shapes.Clear();
-            RaiseDrawingChanged();
-        }
-
-        public void Reset()
-        {
-            CurrentTool.Reset();
-            RaiseDrawingChanged();
-        }
-
         public void Begin(Point location)
         {
             CurrentTool?.Begin(location, PenCache.GetPen(this.Pen.Color, this.PenThickness));
@@ -62,7 +40,30 @@ namespace Snipping_Tool_V4.Screenshots.Modules.ViewModels
             RaiseDrawingChanged();
         }
 
+        public void Undo()
+        {
+            if (this.Shapes.Count > 0)
+            {
+                this.Shapes.RemoveAt(this.Shapes.Count - 1);
+                RaiseDrawingChanged();
+            }
+        }
 
+        public void Clear()
+        {
+            this.Shapes.Clear();
+            RaiseDrawingChanged();
+        }
+
+        public void Reset()
+        {
+            CurrentTool.Reset();
+            RaiseDrawingChanged();
+        }
+        public void SetShiftPressed(bool shiftPressed)
+        {
+            CurrentTool.shiftPressed = shiftPressed;
+        }
 
         public void Draw(Graphics graphics)
         {
