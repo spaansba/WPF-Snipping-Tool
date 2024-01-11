@@ -7,6 +7,7 @@ using Snipping_Tool_V4.Screenshots.Modules.Drawing;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using Snipping_Tool_V4.Screenshots.Modules.Screen_Screenshot;
 
 namespace Snipping_Tool_V4.Forms
 {
@@ -97,6 +98,10 @@ namespace Snipping_Tool_V4.Forms
             viewModel.CurrentTool = Tools.Freehand;
             viewModel.PenThickness = 4;
             viewModel.PenColor = Color.Black;
+
+            //Create RadioButtons for the tools
+            CreateToolButtonForShapeSelection();
+
         }
 
         #region Create New Screenshot
@@ -286,6 +291,18 @@ namespace Snipping_Tool_V4.Forms
 
 
         #endregion
+
+        private void CreateToolButtonForShapeSelection()
+        {
+            Panel panel = this.shapesFlowPanel;
+            ToolButton button;
+            foreach (var tool in Tools.ShapeTools)
+            {
+                button = new ToolButton(tool, panel);
+                button.Click += (_, _) => viewModel.CurrentTool = tool;
+                panel.Controls.Add(button);
+            }
+        }
 
         private void redLineButton_Click(object sender, EventArgs e)
         {

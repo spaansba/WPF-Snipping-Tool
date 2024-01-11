@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using static ReaLTaiizor.Util.RoundInt;
@@ -25,7 +26,7 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 
         public abstract void Draw(Graphics graphics);
 
-        public abstract void DrawToolIcon(Graphics graphics, Pen stroke, Brush fill, Rectangle rect);
+        public abstract void DrawToolIcon(Graphics graphics, Pen? stroke, Brush? fill, Rectangle rect);
 
         public abstract Point CalculateNewEndLocation(Point location);
 
@@ -85,6 +86,20 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
             if (stroke != null) graphics.DrawEllipse(stroke, bounds);
             if (fill != null) graphics.FillEllipse(fill, bounds);
         }
+
+        /// <summary>
+        /// List of all Tools, used to populate the ToolBox on the Form
+        /// </summary>
+        public static List<RectangularShapeTool> ShapeTools = new List<RectangularShapeTool>()
+        {
+            Rectangle,
+            Ellipse,
+            Triangle,
+            Pentagon,
+            Hexagon,
+            Heptagon,
+        };
+
 
     }
 
@@ -151,9 +166,9 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
             Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, this.GetRectangle(), stroke, fill, sides);
         }
 
-        public override void DrawToolIcon(Graphics graphics, Pen stroke, Brush fill, Rectangle rect)
+        public override void DrawToolIcon(Graphics graphics, Pen? stroke, Brush? fill, Rectangle rect)
         {
-        //    drawShapeOutline(graphics, rect, stroke);
+            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, rect, stroke, fill, sides);
         }
 
         #region Helper Methods  

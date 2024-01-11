@@ -35,7 +35,6 @@
             HexagonButton = new ReaLTaiizor.Controls.AirButton();
             pentagonButton = new ReaLTaiizor.Controls.AirButton();
             shapesFlowPanel = new TableLayoutPanel();
-            button1 = new Button();
             redLineButton = new ReaLTaiizor.Controls.AirButton();
             blackLineButton = new ReaLTaiizor.Controls.AirButton();
             size10Button = new ReaLTaiizor.Controls.AirButton();
@@ -66,8 +65,8 @@
             RectangleShapeButton = new ReaLTaiizor.Controls.AirButton();
             freeHandButton = new ReaLTaiizor.Controls.AirButton();
             tableLayoutPanel2 = new TableLayoutPanel();
+            radioButton1 = new RadioButton();
             screenshotPanel.SuspendLayout();
-            shapesFlowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).BeginInit();
             timerFlowPanel.SuspendLayout();
             timerPanel.SuspendLayout();
@@ -83,6 +82,7 @@
             // 
             screenshotPanel.AutoScroll = true;
             screenshotPanel.AutoSize = true;
+            screenshotPanel.Controls.Add(radioButton1);
             screenshotPanel.Controls.Add(haptagonButton);
             screenshotPanel.Controls.Add(HexagonButton);
             screenshotPanel.Controls.Add(pentagonButton);
@@ -151,25 +151,15 @@
             shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.Controls.Add(button1, 0, 0);
-            shapesFlowPanel.Location = new Point(240, 4);
+            shapesFlowPanel.Location = new Point(94, 44);
             shapesFlowPanel.Margin = new Padding(0);
             shapesFlowPanel.Name = "shapesFlowPanel";
             shapesFlowPanel.RowCount = 3;
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.Size = new Size(113, 84);
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            shapesFlowPanel.Size = new Size(281, 210);
             shapesFlowPanel.TabIndex = 13;
-            // 
-            // button1
-            // 
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(22, 22);
-            button1.TabIndex = 14;
-            button1.UseVisualStyleBackColor = true;
             // 
             // redLineButton
             // 
@@ -548,6 +538,17 @@
             tableLayoutPanel2.Size = new Size(200, 100);
             tableLayoutPanel2.TabIndex = 0;
             // 
+            // radioButton1
+            // 
+            radioButton1.Appearance = Appearance.Button;
+            radioButton1.Location = new Point(45, 297);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(46, 30);
+            radioButton1.TabIndex = 17;
+            radioButton1.TabStop = true;
+            radioButton1.Text = "radioButton1";
+            radioButton1.UseVisualStyleBackColor = true;
+            // 
             // ScreenshotForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -574,7 +575,6 @@
             KeyUp += ScreenshotForm_KeyUp;
             screenshotPanel.ResumeLayout(false);
             screenshotPanel.PerformLayout();
-            shapesFlowPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).EndInit();
             timerFlowPanel.ResumeLayout(false);
             timerPanel.ResumeLayout(false);
@@ -621,9 +621,9 @@
         private ReaLTaiizor.Controls.AirButton EllipseButton;
         private TableLayoutPanel shapesFlowPanel;
         private TableLayoutPanel tableLayoutPanel2;
-        private Button button1;
         private ReaLTaiizor.Controls.AirButton haptagonButton;
         private ReaLTaiizor.Controls.AirButton HexagonButton;
         private ReaLTaiizor.Controls.AirButton pentagonButton;
+        private RadioButton radioButton1;
     }
 }
