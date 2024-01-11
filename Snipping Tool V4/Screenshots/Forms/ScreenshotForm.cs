@@ -294,13 +294,16 @@ namespace Snipping_Tool_V4.Forms
 
         private void CreateToolButtonForShapeSelection()
         {
-            Panel panel = this.shapesFlowPanel;
-            ToolButton button;
+            Panel shapePanel = this.shapesFlowPanel;
+            int ButtonWidth = shapePanel.Width / 4; //TODO: Make rows/columns count dynamic
+            int buttonHeight = shapePanel.Height / 3;
+
+            Size buttonSize = new Size(ButtonWidth, buttonHeight); 
             foreach (var tool in Tools.ShapeTools)
             {
-                button = new ToolButton(tool, panel);
+                ToolButton button = new ToolButton(tool, buttonSize);
                 button.Click += (_, _) => viewModel.CurrentTool = tool;
-                panel.Controls.Add(button);
+                shapePanel.Controls.Add(button);
             }
         }
 
