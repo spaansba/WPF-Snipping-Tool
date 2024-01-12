@@ -61,7 +61,7 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         }
         public void SetShiftPressed(bool shiftPressed)
         {
-            CurrentTool.shiftPressed = shiftPressed;
+            CurrentTool.LockedAspectRatio = shiftPressed;
         }
 
         public void Draw(Graphics graphics)

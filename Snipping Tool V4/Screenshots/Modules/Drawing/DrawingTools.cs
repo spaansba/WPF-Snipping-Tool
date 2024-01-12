@@ -13,7 +13,7 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
     public abstract class Tool
     {
         public bool IsActive { get; private set; }
-        public bool shiftPressed { get; set; } = false; //TODO: Ask if its bad that this is not private set, gets set in the viewmodel
+        public bool LockedAspectRatio { get; set; } = false; 
         public virtual void Begin(Point location, Pen? stroke)
         {
             IsActive = true;
@@ -58,17 +58,14 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
             PointF[] points = new PointF[(int)sides];
             double angleIncrement = (2 * Math.PI) / (int)sides;
 
-            PointF center = new PointF(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
+            PointF center = new PointF(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2);
             double radius = Math.Min(bounds.Width, bounds.Height) / 2;
-
-            // Calculate the distance from the center to the furthest point
-            double distanceFromCenter = radius * Math.Cos(angleIncrement / 2);
 
             for (int i = 0; i < (int)sides; i++)
             {
                 double angle = i * angleIncrement - Math.PI / 2; // Starting from the top
-                float x = center.X + (float)(distanceFromCenter * Math.Cos(angle));
-                float y = center.Y + (float)(distanceFromCenter * Math.Sin(angle));
+                float x = center.X + (float)(radius * Math.Cos(angle));
+                float y = center.Y + (float)(radius * Math.Sin(angle));
                 points[i] = new PointF(x, y);
             }
 
@@ -177,7 +174,7 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         /// </summary>
         public override Point CalculateNewEndLocation(Point location)
         {
-            if (shiftPressed)
+            if (LockedAspectRatio)
             {
                 int x = location.X;
                 int y = location.Y;
@@ -256,7 +253,7 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         {
             SetLastShiftPressLocation(location);
 
-            if (shiftPressed)
+            if (LockedAspectRatio)
             {
                 //Check if the location is horizontal or vertical further away from the last shift press location
                 int x = location.X;
@@ -281,12 +278,12 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 
         private void SetLastShiftPressLocation(Point location)
         {
-            if (!shiftPressed)
+            if (!LockedAspectRatio)
             {
                 LastShiftPressLocation = new Point(0, 0);
             }
 
-            if (shiftPressed)
+            if (LockedAspectRatio)
             {
                 if (LastShiftPressLocation == new Point(0, 0))
                 {
