@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using static ReaLTaiizor.Util.RoundInt;
-
-namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
+﻿namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 {
 
     public abstract class Tool
     {
         public bool IsActive { get; private set; }
-        public bool LockedAspectRatio { get; set; } = false; 
+        public bool LockedAspectRatio { get; set; } = false;
         public virtual void Begin(Point location, Pen? stroke)
         {
             IsActive = true;
@@ -36,49 +27,111 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         }
     }
 
-    public delegate void DrawOrFillShape(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides);
+    public delegate void DrawOrFillShape(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill);
 
     public static class Tools
     {
 
         public static FreehandTool Freehand { get; } = new();
-        public static RectangularShapeTool Triangle { get; } = new RectangularShapeTool(DrawOrFillPolygon, 3);
-        public static RectangularShapeTool Pentagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 5);
-        public static RectangularShapeTool Hexagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 6);
-        public static RectangularShapeTool Heptagon { get; } = new RectangularShapeTool(DrawOrFillPolygon, 7);
+        public static RectangularShapeTool Triangle { get; } = new RectangularShapeTool(DrawOrFillTriangle);
+        public static RectangularShapeTool Pentagon { get; } = new RectangularShapeTool(DrawOrFillPentagon);
+        public static RectangularShapeTool Hexagon { get; } = new RectangularShapeTool(DrawOrFillHexagon);
         public static RectangularShapeTool Rectangle { get; } = new RectangularShapeTool(DrawOrFillRectangle);
         public static RectangularShapeTool Ellipse { get; } = new RectangularShapeTool(DrawOrFillEllipse);
+        public static RectangularShapeTool Star { get; } = new RectangularShapeTool(DrawOrFillStar);
+        public static RectangularShapeTool Heart { get; } = new RectangularShapeTool(DrawOrFillHeart);
 
-        /// <summary>
-        /// Draws a polygon with the given number of sides
-        /// TODO: Fix the polygon drawing so that it is centered in the rectangle
-        /// </summary>
-        public static void DrawOrFillPolygon(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides)
+        public static void DrawPolygonX(Graphics graphics, Point[] points, Pen? stroke, Brush? fill)
         {
-            PointF[] points = new PointF[(int)sides];
-            double angleIncrement = (2 * Math.PI) / (int)sides;
-
-            PointF center = new PointF(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2);
-            double radius = Math.Min(bounds.Width, bounds.Height) / 2;
-
-            for (int i = 0; i < (int)sides; i++)
+            if (fill != null)
+                graphics.FillPolygon(fill, points);
+            if (stroke != null)
+                graphics.DrawPolygon(stroke, points);
+        }
+        public static void DrawOrFillTriangle(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
+        {
+            Point[] points = new Point[] {
+                new Point(bounds.Left + bounds.Width / 2, bounds.Top),
+                new Point(bounds.Right, bounds.Bottom),
+                new Point(bounds.Left, bounds.Bottom)
+                };
+            DrawPolygonX(graphics, points, stroke, fill);
+        }
+        public static void DrawOrFillPentagon(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
+        {
+            Point[] points = new Point[]
             {
-                double angle = i * angleIncrement - Math.PI / 2; // Starting from the top
-                float x = center.X + (float)(radius * Math.Cos(angle));
-                float y = center.Y + (float)(radius * Math.Sin(angle));
-                points[i] = new PointF(x, y);
-            }
+                new Point(bounds.Left + bounds.Width / 2, bounds.Top),
+                new Point(bounds.Right, bounds.Top + bounds.Height / 3),
+                new Point(bounds.Right - bounds.Width / 4, bounds.Bottom),
+                new Point(bounds.Left + bounds.Width / 4, bounds.Bottom),
+                new Point(bounds.Left, bounds.Top + bounds.Height / 3)
+                };
+            DrawPolygonX(graphics, points, stroke, fill);
+        }
+        public static void DrawOrFillHexagon(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
+        {
+            Point[] points = new Point[] {
+                new Point(bounds.Left + bounds.Width / 4, bounds.Top),
+                new Point(bounds.Right - bounds.Width / 4, bounds.Top),
+                new Point(bounds.Right, bounds.Top + bounds.Height / 2),
+                new Point(bounds.Right - bounds.Width / 4, bounds.Bottom),
+                new Point(bounds.Left + bounds.Width / 4, bounds.Bottom),
+                new Point(bounds.Left, bounds.Top + bounds.Height / 2)
+                };
 
-            if (stroke != null) graphics.DrawPolygon(stroke, points);
-            if (fill != null) graphics.FillPolygon(fill, points);
+            DrawPolygonX(graphics, points, stroke, fill);
         }
 
-        public static void DrawOrFillRectangle(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides)
+        public static void DrawOrFillStar(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
+        {
+            int width = bounds.Width;
+            int height = bounds.Height;
+            int left = bounds.Left;
+            int top = bounds.Top;
+            Point[] points = new Point[]
+            {
+                new Point(left + width/2, top), // Top center
+                new Point(left + (int)Math.Round(width * 0.38), top +(int) Math.Round(height * 0.38)), // Inner top left
+                new Point(left, top + (int)Math.Round(height * 0.40)), // left
+                new Point(left + (int)Math.Round(width * 0.32), top + (int)Math.Round(height * 0.62)), // Inner bottom left
+                new Point(left + (int)Math.Round(width * 0.20), top + height), // bottom left
+                new Point(left + width/2, top + (int)Math.Round(height * 0.74)), // Inner Bottom Center
+                new Point(left + (int)Math.Round(width * 0.80), top + height), // Bottom Right
+                new Point(left + (int)Math.Round(width * 0.68), top + (int)Math.Round(height * 0.62)), // Inner bottom right
+                new Point(left + width, top + (int)Math.Round(height * 0.40)), // Right
+                new Point(left + (int)Math.Round(width * 0.62), top + (int)Math.Round(height * 0.38)), // Inner Top right
+            };
+
+            DrawPolygonX(graphics, points, stroke, fill);
+        }
+
+        public static void DrawOrFillHeart(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
+        {
+            // Draw a heart shape from braziers
+            Point[] points = new Point[]
+            {
+                new Point(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 4),
+                new Point(bounds.Left + bounds.Width / 4, bounds.Top),
+                new Point(bounds.Left, bounds.Top + bounds.Height / 4),
+                new Point(bounds.Left, bounds.Top + bounds.Height / 2),
+                new Point(bounds.Left + bounds.Width / 4, bounds.Top + bounds.Height * 3 / 4),
+                new Point(bounds.Left + bounds.Width / 2, bounds.Bottom),
+                new Point(bounds.Right - bounds.Width / 4, bounds.Top + bounds.Height * 3 / 4),
+                new Point(bounds.Right, bounds.Top + bounds.Height / 2),
+                new Point(bounds.Right, bounds.Top + bounds.Height / 4),
+                new Point(bounds.Right - bounds.Width / 4, bounds.Top)
+            };
+            DrawPolygonX(graphics, points, stroke, fill);
+        }
+
+
+        public static void DrawOrFillRectangle(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
         {
             if (stroke != null) graphics.DrawRectangle(stroke, bounds);
             if (fill != null) graphics.FillRectangle(fill, bounds);
         }
-        public static void DrawOrFillEllipse(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides)
+        public static void DrawOrFillEllipse(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
         {
             if (stroke != null) graphics.DrawEllipse(stroke, bounds);
             if (fill != null) graphics.FillEllipse(fill, bounds);
@@ -91,13 +144,12 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         {
             Rectangle,
             Ellipse,
-            Triangle,
             Pentagon,
+            Triangle,
             Hexagon,
-            Heptagon,
+            Star,
+            Heart
         };
-
-
     }
 
     public abstract class ShapeTool : Tool
@@ -118,13 +170,6 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 
         private readonly DrawOrFillShape drawOrFillShape;
 
-        private readonly int sides;
-
-        public RectangularShapeTool(DrawOrFillShape drawOrFillShape, int sides)
-        {
-            this.drawOrFillShape = drawOrFillShape;
-            this.sides = sides;
-        }
         public RectangularShapeTool(DrawOrFillShape drawOrFillShape)
         {
             this.drawOrFillShape = drawOrFillShape;
@@ -134,13 +179,13 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         public override void Begin(Point location, Pen? stroke)
         {
             Start = location;
-            End = CalculateNewEndLocation(location); 
+            End = CalculateNewEndLocation(location);
             base.Begin(location, stroke);
         }
 
         public override void Reset()
         {
-            Start = new Point(0, 0);
+            Start = new Point();
             End = new Point(0, 0);
             base.Reset();
         }
@@ -153,19 +198,19 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         public override void Finish(Point newLocation, IList<Shape> shapeList)
         {
             End = CalculateNewEndLocation(newLocation);
-            var newShape = new RectangularShape(this.drawOrFillShape, stroke, fill, this.GetRectangle(), sides);
+            var newShape = new RectangularShape(this.drawOrFillShape, stroke, fill, this.GetRectangle());
             shapeList.Add(newShape);
             base.Finish(newLocation, shapeList);
         }
 
         public override void Draw(Graphics graphics)
         {
-            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, this.GetRectangle(), stroke, fill, sides);
+            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, this.GetRectangle(), stroke, fill);
         }
 
         public override void DrawToolIcon(Graphics graphics, Pen? stroke, Brush? fill, Rectangle rect)
         {
-            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, rect, stroke, fill, sides);
+            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, rect, stroke, fill);
         }
 
         #region Helper Methods  

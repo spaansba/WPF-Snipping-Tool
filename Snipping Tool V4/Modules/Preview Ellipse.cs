@@ -1,10 +1,5 @@
 ﻿using Snipping_Tool_V4.Screenshots.Modules;
-using System;
-using System.Collections.Generic;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Snipping_Tool_V4.Modules
 {
@@ -128,7 +123,7 @@ namespace Snipping_Tool_V4.Modules
             Pen squarePen = PenCache.GetPen(Color.FromArgb(60, Color.Black), 1);
 
             int pixelSize = 9; // The size of the black squares
-            int numSquaresPerAxes = pixelSize * 2; 
+            int numSquaresPerAxes = pixelSize * 2;
 
             // Calculate the start location of the squares
             int startX = ellipseBounds.X - (pixelSize / 2);

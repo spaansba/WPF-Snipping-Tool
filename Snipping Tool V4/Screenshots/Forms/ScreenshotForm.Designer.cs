@@ -31,19 +31,19 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreenshotForm));
             screenshotPanel = new Panel();
-            radioButton1 = new RadioButton();
-            haptagonButton = new ReaLTaiizor.Controls.AirButton();
-            HexagonButton = new ReaLTaiizor.Controls.AirButton();
-            pentagonButton = new ReaLTaiizor.Controls.AirButton();
-            shapesFlowPanel = new TableLayoutPanel();
             redLineButton = new ReaLTaiizor.Controls.AirButton();
             blackLineButton = new ReaLTaiizor.Controls.AirButton();
             size10Button = new ReaLTaiizor.Controls.AirButton();
-            EllipseButton = new ReaLTaiizor.Controls.AirButton();
             size3Button = new ReaLTaiizor.Controls.AirButton();
-            triangleButton = new ReaLTaiizor.Controls.AirButton();
             label1 = new Label();
             screenshotResultPicture = new PictureBox();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            freeHandButton = new PictureBox();
+            pictureBox2 = new PictureBox();
+            pictureBox1 = new PictureBox();
+            symbolMainPanel = new Panel();
+            expandSymbolsButton = new Button();
+            shapesFlowPanel = new TableLayoutPanel();
             screenShotTimer = new System.Windows.Forms.Timer(components);
             timerFlowPanel = new FlowLayoutPanel();
             timerPanel = new Panel();
@@ -63,11 +63,14 @@
             newScreenshotButton = new Button();
             topBarLabel = new Label();
             deviderLabel = new Label();
-            RectangleShapeButton = new ReaLTaiizor.Controls.AirButton();
-            freeHandButton = new ReaLTaiizor.Controls.AirButton();
             tableLayoutPanel2 = new TableLayoutPanel();
             screenshotPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).BeginInit();
+            flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)freeHandButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            symbolMainPanel.SuspendLayout();
             timerFlowPanel.SuspendLayout();
             timerPanel.SuspendLayout();
             timerNoTimerPanel.SuspendLayout();
@@ -82,103 +85,25 @@
             // 
             screenshotPanel.AutoScroll = true;
             screenshotPanel.AutoSize = true;
-            screenshotPanel.Controls.Add(radioButton1);
-            screenshotPanel.Controls.Add(haptagonButton);
-            screenshotPanel.Controls.Add(HexagonButton);
-            screenshotPanel.Controls.Add(pentagonButton);
-            screenshotPanel.Controls.Add(shapesFlowPanel);
             screenshotPanel.Controls.Add(redLineButton);
             screenshotPanel.Controls.Add(blackLineButton);
             screenshotPanel.Controls.Add(size10Button);
-            screenshotPanel.Controls.Add(EllipseButton);
             screenshotPanel.Controls.Add(size3Button);
-            screenshotPanel.Controls.Add(triangleButton);
             screenshotPanel.Controls.Add(label1);
             screenshotPanel.Controls.Add(screenshotResultPicture);
             screenshotPanel.Dock = DockStyle.Fill;
-            screenshotPanel.Location = new Point(0, 45);
+            screenshotPanel.Location = new Point(0, 50);
             screenshotPanel.Name = "screenshotPanel";
-            screenshotPanel.Size = new Size(555, 389);
+            screenshotPanel.Size = new Size(555, 384);
             screenshotPanel.TabIndex = 1;
-            // 
-            // radioButton1
-            // 
-            radioButton1.Appearance = Appearance.Button;
-            radioButton1.Location = new Point(45, 297);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(46, 30);
-            radioButton1.TabIndex = 17;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "radioButton1";
-            radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // haptagonButton
-            // 
-            haptagonButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            haptagonButton.Font = new Font("Segoe UI", 9F);
-            haptagonButton.Image = null;
-            haptagonButton.Location = new Point(456, 137);
-            haptagonButton.Name = "haptagonButton";
-            haptagonButton.NoRounding = false;
-            haptagonButton.Size = new Size(81, 21);
-            haptagonButton.TabIndex = 16;
-            haptagonButton.Text = "Heptagon";
-            haptagonButton.Transparent = false;
-            haptagonButton.Click += haptagonButton_Click;
-            // 
-            // HexagonButton
-            // 
-            HexagonButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            HexagonButton.Font = new Font("Segoe UI", 9F);
-            HexagonButton.Image = null;
-            HexagonButton.Location = new Point(456, 110);
-            HexagonButton.Name = "HexagonButton";
-            HexagonButton.NoRounding = false;
-            HexagonButton.Size = new Size(81, 21);
-            HexagonButton.TabIndex = 15;
-            HexagonButton.Text = "Hexagon";
-            HexagonButton.Transparent = false;
-            HexagonButton.Click += HexagonButton_Click;
-            // 
-            // pentagonButton
-            // 
-            pentagonButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            pentagonButton.Font = new Font("Segoe UI", 9F);
-            pentagonButton.Image = null;
-            pentagonButton.Location = new Point(456, 83);
-            pentagonButton.Name = "pentagonButton";
-            pentagonButton.NoRounding = false;
-            pentagonButton.Size = new Size(81, 21);
-            pentagonButton.TabIndex = 14;
-            pentagonButton.Text = "Pentagon";
-            pentagonButton.Transparent = false;
-            pentagonButton.Click += pentagonButton_Click;
-            // 
-            // shapesFlowPanel
-            // 
-            shapesFlowPanel.BackColor = Color.FromArgb(224, 224, 224);
-            shapesFlowPanel.ColumnCount = 4;
-            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.Location = new Point(256, 17);
-            shapesFlowPanel.Margin = new Padding(0);
-            shapesFlowPanel.Name = "shapesFlowPanel";
-            shapesFlowPanel.RowCount = 4;
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.Size = new Size(127, 127);
-            shapesFlowPanel.TabIndex = 13;
+            screenshotPanel.Paint += screenshotPanel_Paint;
             // 
             // redLineButton
             // 
             redLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             redLineButton.Font = new Font("Segoe UI", 9F);
             redLineButton.Image = null;
-            redLineButton.Location = new Point(447, 306);
+            redLineButton.Location = new Point(462, 85);
             redLineButton.Name = "redLineButton";
             redLineButton.NoRounding = false;
             redLineButton.Size = new Size(81, 21);
@@ -192,7 +117,7 @@
             blackLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             blackLineButton.Font = new Font("Segoe UI", 9F);
             blackLineButton.Image = null;
-            blackLineButton.Location = new Point(447, 279);
+            blackLineButton.Location = new Point(462, 58);
             blackLineButton.Name = "blackLineButton";
             blackLineButton.NoRounding = false;
             blackLineButton.Size = new Size(81, 21);
@@ -206,7 +131,7 @@
             size10Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             size10Button.Font = new Font("Segoe UI", 9F);
             size10Button.Image = null;
-            size10Button.Location = new Point(462, 251);
+            size10Button.Location = new Point(477, 30);
             size10Button.Name = "size10Button";
             size10Button.NoRounding = false;
             size10Button.Size = new Size(66, 21);
@@ -215,26 +140,12 @@
             size10Button.Transparent = false;
             size10Button.Click += size10Button_Click;
             // 
-            // EllipseButton
-            // 
-            EllipseButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            EllipseButton.Font = new Font("Segoe UI", 9F);
-            EllipseButton.Image = null;
-            EllipseButton.Location = new Point(462, 27);
-            EllipseButton.Name = "EllipseButton";
-            EllipseButton.NoRounding = false;
-            EllipseButton.Size = new Size(81, 21);
-            EllipseButton.TabIndex = 6;
-            EllipseButton.Text = "Ellipse";
-            EllipseButton.Transparent = false;
-            EllipseButton.Click += EllipseButton_Click;
-            // 
             // size3Button
             // 
             size3Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             size3Button.Font = new Font("Segoe UI", 9F);
             size3Button.Image = null;
-            size3Button.Location = new Point(462, 224);
+            size3Button.Location = new Point(477, 3);
             size3Button.Name = "size3Button";
             size3Button.NoRounding = false;
             size3Button.Size = new Size(66, 21);
@@ -243,24 +154,10 @@
             size3Button.Transparent = false;
             size3Button.Click += size3Button_Click;
             // 
-            // triangleButton
-            // 
-            triangleButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            triangleButton.Font = new Font("Segoe UI", 9F);
-            triangleButton.Image = null;
-            triangleButton.Location = new Point(456, 54);
-            triangleButton.Name = "triangleButton";
-            triangleButton.NoRounding = false;
-            triangleButton.Size = new Size(81, 21);
-            triangleButton.TabIndex = 5;
-            triangleButton.Text = "Triangle";
-            triangleButton.Transparent = false;
-            triangleButton.Click += circleButton_Click;
-            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(398, 340);
+            label1.Location = new Point(413, 119);
             label1.Name = "label1";
             label1.Size = new Size(139, 15);
             label1.TabIndex = 3;
@@ -273,6 +170,102 @@
             screenshotResultPicture.Size = new Size(247, 142);
             screenshotResultPicture.TabIndex = 2;
             screenshotResultPicture.TabStop = false;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.BackColor = Color.FromArgb(224, 224, 224);
+            flowLayoutPanel1.Controls.Add(freeHandButton);
+            flowLayoutPanel1.Controls.Add(pictureBox2);
+            flowLayoutPanel1.Controls.Add(pictureBox1);
+            flowLayoutPanel1.Location = new Point(228, 4);
+            flowLayoutPanel1.Margin = new Padding(0);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(54, 43);
+            flowLayoutPanel1.TabIndex = 13;
+            // 
+            // freeHandButton
+            // 
+            freeHandButton.BackColor = Color.FromArgb(224, 224, 224);
+            freeHandButton.Image = (Image)resources.GetObject("freeHandButton.Image");
+            freeHandButton.Location = new Point(0, 0);
+            freeHandButton.Margin = new Padding(0);
+            freeHandButton.Name = "freeHandButton";
+            freeHandButton.Size = new Size(20, 20);
+            freeHandButton.SizeMode = PictureBoxSizeMode.CenterImage;
+            freeHandButton.TabIndex = 14;
+            freeHandButton.TabStop = false;
+            freeHandButton.Click += freeHandButton_Click;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.BackColor = Color.FromArgb(224, 224, 224);
+            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Location = new Point(24, 0);
+            pictureBox2.Margin = new Padding(4, 0, 0, 0);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(20, 20);
+            pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox2.TabIndex = 15;
+            pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = Color.FromArgb(224, 224, 224);
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(0, 23);
+            pictureBox1.Margin = new Padding(0, 3, 0, 0);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(20, 20);
+            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox1.TabIndex = 16;
+            pictureBox1.TabStop = false;
+            // 
+            // symbolMainPanel
+            // 
+            symbolMainPanel.BackColor = Color.FromArgb(224, 224, 224);
+            symbolMainPanel.BorderStyle = BorderStyle.FixedSingle;
+            symbolMainPanel.Controls.Add(expandSymbolsButton);
+            symbolMainPanel.Controls.Add(shapesFlowPanel);
+            symbolMainPanel.Location = new Point(308, 9);
+            symbolMainPanel.Name = "symbolMainPanel";
+            symbolMainPanel.Size = new Size(117, 30);
+            symbolMainPanel.TabIndex = 16;
+            // 
+            // expandSymbolsButton
+            // 
+            expandSymbolsButton.BackColor = Color.LightGray;
+            expandSymbolsButton.Dock = DockStyle.Right;
+            expandSymbolsButton.FlatAppearance.BorderSize = 0;
+            expandSymbolsButton.FlatStyle = FlatStyle.Flat;
+            expandSymbolsButton.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            expandSymbolsButton.ImageAlign = ContentAlignment.TopCenter;
+            expandSymbolsButton.Location = new Point(101, 0);
+            expandSymbolsButton.Margin = new Padding(0);
+            expandSymbolsButton.Name = "expandSymbolsButton";
+            expandSymbolsButton.Size = new Size(14, 28);
+            expandSymbolsButton.TabIndex = 17;
+            expandSymbolsButton.Text = "^";
+            expandSymbolsButton.UseVisualStyleBackColor = false;
+            expandSymbolsButton.Click += expandSymbolsButton_Click;
+            // 
+            // shapesFlowPanel
+            // 
+            shapesFlowPanel.BackColor = Color.White;
+            shapesFlowPanel.ColumnCount = 4;
+            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.Location = new Point(0, 0);
+            shapesFlowPanel.Margin = new Padding(0);
+            shapesFlowPanel.Name = "shapesFlowPanel";
+            shapesFlowPanel.RowCount = 4;
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesFlowPanel.Size = new Size(103, 103);
+            shapesFlowPanel.TabIndex = 13;
             // 
             // screenShotTimer
             // 
@@ -292,7 +285,7 @@
             timerFlowPanel.Location = new Point(94, -2);
             timerFlowPanel.Margin = new Padding(0);
             timerFlowPanel.Name = "timerFlowPanel";
-            timerFlowPanel.Size = new Size(117, 47);
+            timerFlowPanel.Size = new Size(117, 50);
             timerFlowPanel.TabIndex = 8;
             // 
             // timerPanel
@@ -302,7 +295,7 @@
             timerPanel.Location = new Point(0, 0);
             timerPanel.Margin = new Padding(0);
             timerPanel.Name = "timerPanel";
-            timerPanel.Size = new Size(125, 47);
+            timerPanel.Size = new Size(125, 50);
             timerPanel.TabIndex = 0;
             // 
             // timerButton
@@ -314,10 +307,10 @@
             timerButton.Font = new Font("Microsoft Sans Serif", 9.75F);
             timerButton.Image = (Image)resources.GetObject("timerButton.Image");
             timerButton.ImageAlign = ContentAlignment.MiddleLeft;
-            timerButton.Location = new Point(0, 0);
+            timerButton.Location = new Point(0, 2);
             timerButton.Margin = new Padding(0);
             timerButton.Name = "timerButton";
-            timerButton.Size = new Size(125, 47);
+            timerButton.Size = new Size(125, 50);
             timerButton.TabIndex = 9;
             timerButton.Text = "         &Timer (0)  ▼";
             timerButton.UseVisualStyleBackColor = false;
@@ -326,7 +319,7 @@
             // timerNoTimerPanel
             // 
             timerNoTimerPanel.Controls.Add(timerNoTimer);
-            timerNoTimerPanel.Location = new Point(0, 47);
+            timerNoTimerPanel.Location = new Point(0, 50);
             timerNoTimerPanel.Margin = new Padding(0);
             timerNoTimerPanel.Name = "timerNoTimerPanel";
             timerNoTimerPanel.Size = new Size(125, 22);
@@ -351,7 +344,7 @@
             // 
             timerPanel1.BackColor = Color.Transparent;
             timerPanel1.Controls.Add(timer1);
-            timerPanel1.Location = new Point(0, 69);
+            timerPanel1.Location = new Point(0, 72);
             timerPanel1.Margin = new Padding(0);
             timerPanel1.Name = "timerPanel1";
             timerPanel1.Size = new Size(125, 22);
@@ -375,7 +368,7 @@
             // timerPanel2
             // 
             timerPanel2.Controls.Add(timer2);
-            timerPanel2.Location = new Point(0, 91);
+            timerPanel2.Location = new Point(0, 94);
             timerPanel2.Margin = new Padding(0);
             timerPanel2.Name = "timerPanel2";
             timerPanel2.Size = new Size(125, 22);
@@ -399,7 +392,7 @@
             // timerPanel3
             // 
             timerPanel3.Controls.Add(timer3);
-            timerPanel3.Location = new Point(0, 113);
+            timerPanel3.Location = new Point(0, 116);
             timerPanel3.Margin = new Padding(0);
             timerPanel3.Name = "timerPanel3";
             timerPanel3.Size = new Size(125, 22);
@@ -423,7 +416,7 @@
             // timerPanel4
             // 
             timerPanel4.Controls.Add(timer4);
-            timerPanel4.Location = new Point(0, 135);
+            timerPanel4.Location = new Point(0, 138);
             timerPanel4.Margin = new Padding(0);
             timerPanel4.Name = "timerPanel4";
             timerPanel4.Size = new Size(125, 22);
@@ -447,7 +440,7 @@
             // timerPanel5
             // 
             timerPanel5.Controls.Add(timer5);
-            timerPanel5.Location = new Point(0, 157);
+            timerPanel5.Location = new Point(0, 160);
             timerPanel5.Margin = new Padding(0);
             timerPanel5.Name = "timerPanel5";
             timerPanel5.Size = new Size(125, 24);
@@ -479,7 +472,7 @@
             newScreenshotButton.ForeColor = Color.Black;
             newScreenshotButton.Image = (Image)resources.GetObject("newScreenshotButton.Image");
             newScreenshotButton.ImageAlign = ContentAlignment.MiddleLeft;
-            newScreenshotButton.Location = new Point(0, -3);
+            newScreenshotButton.Location = new Point(0, 1);
             newScreenshotButton.Margin = new Padding(0);
             newScreenshotButton.Name = "newScreenshotButton";
             newScreenshotButton.RightToLeft = RightToLeft.No;
@@ -495,7 +488,7 @@
             topBarLabel.Dock = DockStyle.Top;
             topBarLabel.Location = new Point(0, 0);
             topBarLabel.Name = "topBarLabel";
-            topBarLabel.Size = new Size(555, 45);
+            topBarLabel.Size = new Size(555, 50);
             topBarLabel.TabIndex = 3;
             // 
             // deviderLabel
@@ -503,36 +496,8 @@
             deviderLabel.BackColor = Color.FromArgb(64, 64, 64);
             deviderLabel.Location = new Point(218, 8);
             deviderLabel.Name = "deviderLabel";
-            deviderLabel.Size = new Size(1, 31);
+            deviderLabel.Size = new Size(1, 32);
             deviderLabel.TabIndex = 3;
-            // 
-            // RectangleShapeButton
-            // 
-            RectangleShapeButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            RectangleShapeButton.Font = new Font("Segoe UI", 9F);
-            RectangleShapeButton.Image = null;
-            RectangleShapeButton.Location = new Point(462, 1);
-            RectangleShapeButton.Name = "RectangleShapeButton";
-            RectangleShapeButton.NoRounding = false;
-            RectangleShapeButton.Size = new Size(81, 21);
-            RectangleShapeButton.TabIndex = 3;
-            RectangleShapeButton.Text = "Rectangle";
-            RectangleShapeButton.Transparent = false;
-            RectangleShapeButton.Click += RectangleShapeButton_Click;
-            // 
-            // freeHandButton
-            // 
-            freeHandButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            freeHandButton.Font = new Font("Segoe UI", 9F);
-            freeHandButton.Image = null;
-            freeHandButton.Location = new Point(462, 21);
-            freeHandButton.Name = "freeHandButton";
-            freeHandButton.NoRounding = false;
-            freeHandButton.Size = new Size(81, 21);
-            freeHandButton.TabIndex = 4;
-            freeHandButton.Text = "Free Hand";
-            freeHandButton.Transparent = false;
-            freeHandButton.Click += freeHandButton_Click;
             // 
             // tableLayoutPanel2
             // 
@@ -557,8 +522,8 @@
             BackColor = Color.FromArgb(255, 255, 252);
             ClientSize = new Size(555, 434);
             ControlBox = false;
-            Controls.Add(freeHandButton);
-            Controls.Add(RectangleShapeButton);
+            Controls.Add(flowLayoutPanel1);
+            Controls.Add(symbolMainPanel);
             Controls.Add(deviderLabel);
             Controls.Add(newScreenshotButton);
             Controls.Add(timerFlowPanel);
@@ -577,6 +542,11 @@
             screenshotPanel.ResumeLayout(false);
             screenshotPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).EndInit();
+            flowLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)freeHandButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            symbolMainPanel.ResumeLayout(false);
             timerFlowPanel.ResumeLayout(false);
             timerPanel.ResumeLayout(false);
             timerNoTimerPanel.ResumeLayout(false);
@@ -611,20 +581,18 @@
         internal Panel screenshotPanel;
         private Label topBarLabel;
         private Label deviderLabel;
-        private ReaLTaiizor.Controls.AirButton RectangleShapeButton;
-        private ReaLTaiizor.Controls.AirButton freeHandButton;
         private ReaLTaiizor.Controls.AirButton redLineButton;
         private ReaLTaiizor.Controls.AirButton blackLineButton;
         private Label label1;
         private ReaLTaiizor.Controls.AirButton size3Button;
         private ReaLTaiizor.Controls.AirButton size10Button;
-        private ReaLTaiizor.Controls.AirButton triangleButton;
-        private ReaLTaiizor.Controls.AirButton EllipseButton;
         private TableLayoutPanel shapesFlowPanel;
         private TableLayoutPanel tableLayoutPanel2;
-        private ReaLTaiizor.Controls.AirButton haptagonButton;
-        private ReaLTaiizor.Controls.AirButton HexagonButton;
-        private ReaLTaiizor.Controls.AirButton pentagonButton;
-        private RadioButton radioButton1;
+        private Panel symbolMainPanel;
+        private Button expandSymbolsButton;
+        private PictureBox freeHandButton;
+        private PictureBox pictureBox2;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private PictureBox pictureBox1;
     }
 }

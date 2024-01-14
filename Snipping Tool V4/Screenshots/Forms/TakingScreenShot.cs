@@ -1,9 +1,7 @@
 ﻿using Snipping_Tool_V4.Modules;
 using Snipping_Tool_V4.Screenshots;
 using Snipping_Tool_V4.Screenshots.Modules;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Snipping_Tool_V4.Forms
 {
@@ -63,7 +61,7 @@ namespace Snipping_Tool_V4.Forms
             // Only run if BOTH mouse buttons are not pressed
             if (!AreAnyMouseButtonsPressed())
             {
-                
+
                 Refresh();
                 mousePressed = false;
 
@@ -74,7 +72,7 @@ namespace Snipping_Tool_V4.Forms
                 // Get the image from the user
                 if (topLeftPicture == bottomRightPicture) // means user selected a window instead of making their own snippet
                 {
-                    
+
                     int indexTopWindow = windowInformation.currentWindowTupleOnTop;
                     var selectedTopWindow = windowInformation.VisibleParentWindows[indexTopWindow];
 
@@ -138,7 +136,7 @@ namespace Snipping_Tool_V4.Forms
             {
                 Tag = "Top Window Label",
                 AutoSize = true,
-                Padding = new Padding(5,5,5,5),
+                Padding = new Padding(5, 5, 5, 5),
                 Font = new Font("Microsoft Sans Serif", 10),
                 Text = labelText,
                 Location = new Point(20, 20)

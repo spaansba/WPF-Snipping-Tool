@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Snipping_Tool_V4.Main;
 using System.Diagnostics;
-using Snipping_Tool_V4.Main;
 
 namespace Snipping_Tool_V4.Forms
 {

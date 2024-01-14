@@ -1,27 +1,33 @@
-﻿using Snipping_Tool_V4.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Snipping_Tool_V4.Modules;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 {
-    public class ScreenshotDrawingViewModel
+    public partial class ScreenshotDrawingViewModel : ObservableObject
     {
-        public Tool? CurrentTool { get; set; }
         public int PenThickness { get; set; }
         public Color PenColor { get; set; } = Color.Black;
-        public Pen Pen => new Pen(PenColor, PenThickness);
+        public Pen Stroke => new Pen(PenColor, PenThickness);
         public List<Shape> Shapes { get; set; } = new();
 
         public event EventHandler? DrawingChanged;
         private void RaiseDrawingChanged() => DrawingChanged?.Invoke(this, EventArgs.Empty);
 
+        [ObservableProperty]
+        private Tool? currentTool;
+
+
         public void Begin(Point location)
         {
-            CurrentTool?.Begin(location, PenCache.GetPen(Pen.Color, PenThickness));
+            CurrentTool?.Begin(location, PenCache.GetPen(Stroke.Color, PenThickness));
             RaiseDrawingChanged();
+        }
+
+        public void SetButtonState()
+        {
+
         }
 
         public void Continue(Point location)
@@ -59,6 +65,7 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
             CurrentTool.Reset();
             RaiseDrawingChanged();
         }
+
         public void SetShiftPressed(bool shiftPressed)
         {
             CurrentTool.LockedAspectRatio = shiftPressed;

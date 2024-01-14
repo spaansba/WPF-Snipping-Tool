@@ -1,12 +1,4 @@
-﻿using Snipping_Tool_V4.Forms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Snipping_Tool_V4.Modules
+﻿namespace Snipping_Tool_V4.Modules
 {
     public class UserformMotions
     {

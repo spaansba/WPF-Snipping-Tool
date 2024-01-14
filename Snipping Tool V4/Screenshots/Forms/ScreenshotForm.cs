@@ -1,13 +1,11 @@
-﻿using Snipping_Tool_V4.Modules;
-using static Snipping_Tool_V4.Modules.UserformMotions;
-using Snipping_Tool_V4.Screenshots.Modules;
+﻿using Snipping_Tool_V4.Main;
+using Snipping_Tool_V4.Modules;
 using Snipping_Tool_V4.Screenshots;
-using Snipping_Tool_V4.Main;
+using Snipping_Tool_V4.Screenshots.Modules;
 using Snipping_Tool_V4.Screenshots.Modules.Drawing;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Windows.Forms;
 using Snipping_Tool_V4.Screenshots.Modules.Screen_Screenshot;
+using System.Drawing.Drawing2D;
+using static Snipping_Tool_V4.Modules.UserformMotions;
 
 namespace Snipping_Tool_V4.Forms
 {
@@ -23,9 +21,14 @@ namespace Snipping_Tool_V4.Forms
         // To check if we are currently taking a screenshot 
         public bool takingScreenshot = false;
         private ScreenshotTimer screenshotDelay = 0;
-        private const int timerMotionMenuClosed = 47;
+        private const int timerMotionMenuClosed = 50;
         private const int timerMotionMenuOpen = 176;
         private const int pictureModeWidth = 350;
+
+        //
+        private readonly Size symbolPanelOpenSize = new Size(117, 103);
+        private readonly Size symbolPanelClosedSize = new Size(117, 26);
+        private bool symbolPanelOpen = false;
 
         // Mode options
         private ScreenshotMode screenShotMode;
@@ -97,7 +100,7 @@ namespace Snipping_Tool_V4.Forms
             // TODO: Activate the radiobuttons ones we made it
             viewModel.CurrentTool = Tools.Freehand;
             viewModel.PenThickness = 4;
-            viewModel.PenColor = Color.Black;
+            viewModel.PenColor = Color.DeepSkyBlue;
 
             //Create RadioButtons for the tools
             CreateToolButtonForShapeSelection();
@@ -164,7 +167,7 @@ namespace Snipping_Tool_V4.Forms
             // Make the main userform smaller and invisble and att a timer
             mainForm.menuHideExpandButton.Enabled = false;
             screenshotResultPicture.Image = null;
-            mainForm.Height = timerButton.Height + (int)MainFormMeasurements.titleBarHeight;
+            mainForm.Height = topBarLabel.Height + 10 + (int)MainFormMeasurements.titleBarHeight;
             mainForm.sidebarFlowPanel.Width = 0; // disable side menu bar when taking a picture
             mainForm.Width = pictureModeWidth;
             mainForm.Visible = false;
@@ -295,14 +298,13 @@ namespace Snipping_Tool_V4.Forms
         private void CreateToolButtonForShapeSelection()
         {
             TableLayoutPanel shapePanel = this.shapesFlowPanel;
-            int ButtonWidth = shapePanel.Width / 4 ; //TODO: Make rows/columns count dynamic
+            int ButtonWidth = shapePanel.Width / 4; //TODO: Make rows/columns count dynamic
             int buttonHeight = shapePanel.Height / 4;
 
-            Size buttonSize = new Size(ButtonWidth, buttonHeight); 
+            Size buttonSize = new Size(ButtonWidth, buttonHeight);
             foreach (var tool in Tools.ShapeTools)
             {
-                ToolButton button = new ToolButton(tool, buttonSize);
-                button.Click += (_, _) => viewModel.CurrentTool = tool;
+                ToolButton button = new ToolButton(tool, buttonSize, viewModel);
                 shapePanel.Controls.Add(button);
             }
         }
@@ -322,21 +324,6 @@ namespace Snipping_Tool_V4.Forms
             viewModel.CurrentTool = Tools.Freehand;
         }
 
-        private void RectangleShapeButton_Click(object sender, EventArgs e)
-        {
-            viewModel.CurrentTool = Tools.Rectangle;
-        }
-
-        private void circleButton_Click(object sender, EventArgs e)
-        {
-            viewModel.CurrentTool = Tools.Triangle;
-        }
-
-        private void EllipseButton_Click(object sender, EventArgs e)
-        {
-            viewModel.CurrentTool = Tools.Ellipse;
-        }
-
         private void size3Button_Click(object sender, EventArgs e)
         {
             viewModel.PenThickness = 3;
@@ -347,19 +334,23 @@ namespace Snipping_Tool_V4.Forms
             viewModel.PenThickness = 10;
         }
 
-        private void pentagonButton_Click(object sender, EventArgs e)
+        private void expandSymbolsButton_Click(object sender, EventArgs e)
         {
-            viewModel.CurrentTool = Tools.Pentagon;
+            if (symbolPanelOpen)
+            {
+                symbolMainPanel.Size = symbolPanelClosedSize;
+                symbolPanelOpen = false;
+            }
+            else
+            {
+                symbolMainPanel.Size = symbolPanelOpenSize;
+                symbolPanelOpen = true;
+            }
         }
 
-        private void HexagonButton_Click(object sender, EventArgs e)
+        private void screenshotPanel_Paint(object sender, PaintEventArgs e)
         {
-            viewModel.CurrentTool = Tools.Hexagon;
-        }
 
-        private void haptagonButton_Click(object sender, EventArgs e)
-        {
-            viewModel.CurrentTool = Tools.Heptagon;
         }
     }
 }

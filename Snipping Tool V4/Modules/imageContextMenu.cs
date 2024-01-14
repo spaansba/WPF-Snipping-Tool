@@ -1,7 +1,4 @@
-﻿
-using Snipping_Tool_V4.Screenshots.Modules.Drawing;
-
-/// <summary>
+﻿/// <summary>
 /// This class is made to add a right click option to a picture to either copy or save the image
 /// </summary>
 public class imageContextMenu

@@ -1,10 +1,5 @@
 ﻿using Snipping_Tool_V4.Forms;
 using Snipping_Tool_V4.Main;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Snipping_Tool_V4.Screenshots.Modules
 {

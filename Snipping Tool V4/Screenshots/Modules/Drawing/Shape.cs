@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
+﻿namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 {
     public abstract class Shape
     {
@@ -18,9 +12,9 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         public Pen? stroke { get; }
         public Brush? fill { get; }
 
-        public static void DrawCurrentShapeInRectangle(DrawOrFillShape drawOrFillShape, Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill, int? sides)
+        public static void DrawCurrentShapeInRectangle(DrawOrFillShape drawOrFillShape, Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
         {
-            drawOrFillShape(graphics, bounds, stroke, fill, sides);
+            drawOrFillShape(graphics, bounds, stroke, fill);
         }
     }
 
@@ -45,7 +39,7 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 
         public override void Draw(Graphics graphics)
         {
-            drawOrFillShape(graphics, bounds, stroke, fill, sides);
+            drawOrFillShape(graphics, bounds, stroke, fill);
         }
     }
 

@@ -1,9 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Drawing2D;
 using System.Reflection;
-using System.Security.Cryptography;
 
 namespace Snipping_Tool_V4.Modules
 {
