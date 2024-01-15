@@ -1,57 +1,153 @@
 ﻿using Snipping_Tool_V4.Modules;
 using Snipping_Tool_V4.Screenshots.Modules.Drawing;
+using Snipping_Tool_V4.Screenshots.Modules.Drawing.Tools;
 
 namespace Snipping_Tool_V4.Screenshots.Modules.Screen_Screenshot
 {
-    public class ToolButton : PictureBox
+    public abstract class PictureBoxButton<Type> : PictureBox
     {
-        public Tool Tool { get; }
-        private readonly int SizeOffset = 2;
-        private static Brush SelectedFill { get; } = new SolidBrush(Color.FromArgb(30, Color.Blue));
-        private static Brush Fill { get; set; } = new SolidBrush(Color.FromArgb(50, Color.LightBlue));
-        private static Pen SelectedStroke { get; set; } = PenCache.GetPen(Color.Black, 1);
-        private ScreenshotDrawingViewModel Viewmodel { get; set; }
+        protected Type Value { get; }
 
-        public ToolButton(Tool tool, Size size, ScreenshotDrawingViewModel viewModel)
+        //TODO: MAke all buttons disabled if in screenshot taking mode or when there is no picture in the picture box
+        protected static Brush SelectionRectangleFill { get; } = new SolidBrush(Color.FromArgb(30, Color.Blue));
+        protected static Pen SelectionRectangleStroke { get; set; } = PenCache.GetPen(Color.Black, 1);
+        protected ScreenshotDrawingViewModel Viewmodel { get; }
+        protected abstract void HandleClick();
+        protected abstract bool IsSelected { get; }
+        protected abstract void Draw(Graphics graphics, Rectangle rect);
+
+        public PictureBoxButton(Type value, Size size, ScreenshotDrawingViewModel viewModel)
         {
-            Tool = tool;
+            Value = value;
             Viewmodel = viewModel;
+            viewModel.PropertyChanged += (_, _) => this.Invalidate(); // Invalidate when the current tool changes, so if we select a tool programatically the button will update
             this.BackColor = Color.Transparent;
-            this.Tag = tool;
-            this.AutoSize = false;
-            this.ClientSize = size;
+            this.Tag = value;
             this.DoubleBuffered = true;
-            viewModel.PropertyChanged += (_, _) => this.Invalidate();
-        }
-
-        protected override void OnClick(EventArgs e)
-        {
-            this.Viewmodel.CurrentTool = this.Tool;
-            base.OnClick(e);
-            foreach (ToolButton button in this.Parent.Controls)
-            {
-                button.Invalidate();
-            }
+            this.Margin = new Padding(1);
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            if (this.Viewmodel.CurrentTool == this.Tool)
+            Rectangle rect = new Rectangle(Point.Empty, this.Size).Shrink(new Padding(1)); // shrink by 1 to make room for the border
+
+            if (this.IsSelected && typeof(Type) != typeof(Color))
             {
-                var bounds = new Rectangle(1, 1, this.Size.Width - SizeOffset, this.Size.Height - SizeOffset); // - 2 to account for the border
-                e.Graphics.FillRectangle(SelectedFill, bounds);
-                e.Graphics.DrawRectangle(SelectedStroke, bounds);
+                e.Graphics.FillRectangle(SelectionRectangleFill, rect);
+                e.Graphics.DrawRectangle(SelectionRectangleStroke, rect);
+            }
+
+            rect = rect.Shrink(new Padding(2));
+            Draw(e.Graphics, rect);
+        }
+
+        protected override void OnClick(EventArgs e)
+        {
+            HandleClick();
+            base.OnClick(e);
+        }
+    }
+    public class ToolButton : PictureBoxButton<Tool>
+    {
+        public ToolButton(Tool value, Size size, ScreenshotDrawingViewModel viewModel) : base(value, size, viewModel)
+        {
+        }
+
+        protected override void HandleClick()
+        {
+            this.Viewmodel.CurrentTool = this.Value;
+        }
+
+        protected override bool IsSelected => this.Viewmodel.CurrentTool == this.Value;
+
+        protected override void Draw(Graphics g, Rectangle bounds)
+        {
+            Pen userStroke;
+            if (Viewmodel.Stroke.Color == Color.White || Viewmodel.Stroke.Color == Color.Transparent)
+            {
+                userStroke = PenCache.GetPen(Color.LightGray, 1);
             }
             else
             {
-                this.BackColor = Color.Transparent;
+                userStroke = PenCache.GetPen(this.Viewmodel.Stroke.Color, 1);
             }
+           
 
-            var rect = new Rectangle(SizeOffset, SizeOffset, this.Size.Width - (SizeOffset * 2), this.Size.Height - (SizeOffset * 2));
+            this.Value.DrawToolIcon(g, userStroke, Viewmodel.Fill, bounds);
+        }
+    }
 
-            Pen userStroke = PenCache.GetPen(Viewmodel.Stroke.Color, 1);
-            this.Tool.DrawToolIcon(e.Graphics, userStroke, Fill, rect);
+    public class LineThicknessButton : PictureBoxButton<int>
+    {
+        public LineThicknessButton(int value, Size size, ScreenshotDrawingViewModel viewModel) : base(value, size, viewModel)
+        {
+        }
+
+        protected override void HandleClick()
+        {
+            this.Viewmodel.PenThickness = this.Value;
+        }
+
+        protected override bool IsSelected => this.Viewmodel.PenThickness == this.Value;
+
+        protected override void Draw(Graphics g, Rectangle bounds)
+        {
+            Pen userStroke = PenCache.GetPen(this.Viewmodel.Stroke.Color, 1);
+            g.DrawLine(userStroke, new Point(bounds.Left,bounds.Top), new Point(bounds.Right, bounds.Bottom));
+        }
+    }
+
+    public class ColorSelectionStrokeButton : PictureBoxButton<Color>
+    {
+        public ColorSelectionStrokeButton(Color value, Size size, ScreenshotDrawingViewModel viewModel) : base(value, size, viewModel)
+        {
+        }
+
+        protected override void HandleClick()
+        {
+            ColorDialog colorDialog = new ColorDialog() { FullOpen = true };
+
+            if (colorDialog.ShowDialog() == DialogResult.OK && colorDialog.Color != Color.Transparent)
+                this.Viewmodel.PenColor = colorDialog.Color;
+        }
+
+        protected override bool IsSelected => this.Viewmodel.Stroke.Color == this.Value;
+
+        protected override void Draw(Graphics g, Rectangle bounds)
+        {
+            Pen userStroke = PenCache.GetPen(this.Viewmodel.Stroke.Color, 1);
+            g.FillRectangle(userStroke.Brush, bounds);
+        }
+    }
+    public class ColorSelectionFillButton : PictureBoxButton<Color>
+    {
+        public ColorSelectionFillButton(Color value, Size size, ScreenshotDrawingViewModel viewModel) : base(value, size, viewModel)
+        {
+        }
+
+        protected override void HandleClick()
+        {
+            ColorDialog colorDialog = new ColorDialog() { FullOpen = true };
+
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+                this.Viewmodel.FillColor = colorDialog.Color;
+        }
+
+        protected override bool IsSelected => this.Viewmodel.fillColor == this.Value;
+
+        protected override void Draw(Graphics g, Rectangle bounds)
+        {
+            Brush fill;
+            if (Viewmodel.fillColor == Color.Transparent)
+            {
+                fill = new SolidBrush(Color.White);
+            }
+            else
+            {
+                fill = this.Viewmodel.Fill;
+            }
+            g.FillRectangle(fill, bounds);
         }
     }
 }

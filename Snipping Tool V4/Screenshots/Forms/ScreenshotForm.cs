@@ -3,6 +3,7 @@ using Snipping_Tool_V4.Modules;
 using Snipping_Tool_V4.Screenshots;
 using Snipping_Tool_V4.Screenshots.Modules;
 using Snipping_Tool_V4.Screenshots.Modules.Drawing;
+using Snipping_Tool_V4.Screenshots.Modules.Drawing.Tools;
 using Snipping_Tool_V4.Screenshots.Modules.Screen_Screenshot;
 using System.Drawing.Drawing2D;
 using static Snipping_Tool_V4.Modules.UserformMotions;
@@ -11,6 +12,9 @@ namespace Snipping_Tool_V4.Forms
 {
     public partial class ScreenshotForm : baseChildFormsTemplate
     {
+        // TODO: Make it so when one of the selfmade dropdowns is open that on next click anywhere the dropdown closes
+        // TODO: Create hover effect for the tools/dropdowns
+
         private Form takingScreenshotForm = new Form();
         public MainForm mainForm;
 
@@ -22,7 +26,7 @@ namespace Snipping_Tool_V4.Forms
         public bool takingScreenshot = false;
         private ScreenshotTimer screenshotDelay = 0;
         private const int timerMotionMenuClosed = 50;
-        private const int timerMotionMenuOpen = 176;
+        private const int timerMotionMenuOpen = 186;
         private const int pictureModeWidth = 350;
 
         //
@@ -99,12 +103,9 @@ namespace Snipping_Tool_V4.Forms
             // Set the default tool to freehand/ 4/ black
             // TODO: Activate the radiobuttons ones we made it
             viewModel.CurrentTool = Tools.Freehand;
-            viewModel.PenThickness = 4;
-            viewModel.PenColor = Color.DeepSkyBlue;
 
-            //Create RadioButtons for the tools
-            CreateToolButtonForShapeSelection();
-
+            //Create RadioButtons for the drawing tools
+            CreateDrawingToolButtons();
         }
 
         #region Create New Screenshot
@@ -295,33 +296,41 @@ namespace Snipping_Tool_V4.Forms
 
         #endregion
 
-        private void CreateToolButtonForShapeSelection()
+        private void CreateDrawingToolButtons()
         {
-            TableLayoutPanel shapePanel = this.shapesFlowPanel;
+            TableLayoutPanel shapePanel = this.shapesTablePanel;
             int ButtonWidth = shapePanel.Width / 4; //TODO: Make rows/columns count dynamic
             int buttonHeight = shapePanel.Height / 4;
 
             Size buttonSize = new Size(ButtonWidth, buttonHeight);
             foreach (var tool in Tools.ShapeTools)
             {
-                ToolButton button = new ToolButton(tool, buttonSize, viewModel);
-                shapePanel.Controls.Add(button);
+                PictureBoxButton<Tool> toolButton = new ToolButton(tool, buttonSize, viewModel);
+                shapePanel.Controls.Add(toolButton);
             }
-        }
 
-        private void redLineButton_Click(object sender, EventArgs e)
-        {
-            viewModel.PenColor = Color.Red;
-        }
+            TableLayoutPanel specialToolsPanel = specialToolsTablePanel;
+            ButtonWidth = specialToolsPanel.Width / 2; //TODO: Make rows/columns count dynamic
+            buttonHeight = specialToolsPanel.Height / 2;
 
-        private void blackLineButton_Click(object sender, EventArgs e)
-        {
-            viewModel.PenColor = Color.Black;
-        }
+            buttonSize = new Size(ButtonWidth, buttonHeight);
+            foreach (var tool in Tools.SpecialTools)
+            {
+                PictureBoxButton<Tool> toolButton = new ToolButton(tool, buttonSize, viewModel);
+                specialToolsPanel.Controls.Add(toolButton);
+            }
 
-        private void freeHandButton_Click(object sender, EventArgs e)
-        {
-            viewModel.CurrentTool = Tools.Freehand;
+            TableLayoutPanel colorPickerPanel = colorPickerTablePanel;
+            ButtonWidth = colorPickerPanel.Width / 2; //TODO: Make rows/columns count dynamic
+            buttonHeight = colorPickerPanel.Height;
+
+            PictureBoxButton<Color> colorStrokeButton = new ColorSelectionStrokeButton(viewModel.penColor, buttonSize, viewModel);
+            PictureBoxButton<Color> colorFillButton = new ColorSelectionFillButton(viewModel.fillColor, buttonSize, viewModel);
+            colorPickerPanel.Controls.Add(colorStrokeButton);
+            colorPickerPanel.Controls.Add(colorFillButton);
+
+            CustomDropdownBox customDropdownBox = new ShapeFillDropdown();
+            symbolOptionsTablePanel.Controls.Add(customDropdownBox);
         }
 
         private void size3Button_Click(object sender, EventArgs e)
@@ -349,6 +358,11 @@ namespace Snipping_Tool_V4.Forms
         }
 
         private void screenshotPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void topBarLabel_Click(object sender, EventArgs e)
         {
 
         }

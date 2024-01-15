@@ -1,4 +1,6 @@
-﻿namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
+﻿using Snipping_Tool_V4.Screenshots.Modules.Drawing.Tools;
+
+namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 {
     public abstract class Shape
     {

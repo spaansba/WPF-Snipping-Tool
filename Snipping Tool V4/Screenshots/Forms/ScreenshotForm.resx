@@ -117,42 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="freeHandButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAA
-        cAAAAHABznhikwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAE5SURBVDhPjdK9
-        TsJQGMbxBqhegxvgZrwKL4CREEIIs3Ewzg64sjgwOhnBL4xKYkjYjF+LiaMr1+AV1P/z+pa0pSBv8qN9
-        zznPoQcaRFG0FmoTZ/jG0Xw8uWgZDz+i5v0pju0+uTAPtYEndDPj2uQgtTiLUvgeHUyxl5mfpgJJVIg7
-        1L3fxQ9sE6qG/qrwCA3vy3iGNtGTdHGLMC9cwg2a3lfwgrL3Os4DQuvjoE8qfIWW9wq/6up9HdrcwjY2
-        vwmCIi7R9r6KN8ThBhQuxRkb90mFB+h4v413VL1v4hqpsM35ghPM0IPCH7r6XAs61kLY5u3j7xcu4Bxf
-        iMNt6Fi5YVHpL5p4swVtoifRrz1EMRtKUu3jE4c+oCfRcS6wMiyqMXagTSbQcfSi/BsWlb5Nm+hJ7GVZ
-        XxT8Aijkz2HyQlnAAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="pictureBox2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAA
-        cAAAAHABznhikwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAADPSURBVDhPvdI9
-        DgFBGMbxodCQOIaehE5N4QY+ziDiLCoHUDmCoNJyASLx1aP1f2YybCS7O1vwJL9kZ+3zZnaW+UcaOKBl
-        Vxmj8hVjXJBpiC+3kcccTwQNqeGMDnKYYIUm/P3YxJVLUKqIHfK97SkWKCIancneXX4SWtbvek7Pv6Nt
-        6eYJA2QqK2t0UYGG7BBcVh4ou0s75Ii+XbkklpUt6u7SJjoktayMsEHBrlz869yQWFZ06jNoiHai1+lB
-        f9/Uso+GDKEDvGMJfZ1fxpgXLj0zbKt19e8AAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAA
-        cAAAAHABznhikwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAADQSURBVDhPrdLJ
-        agJBFEbhIhuNOCSgCBFEXGgSCeKwCO7dKQqirhQxw4Nm51vl/N6iUNxcxQMffauQbnsI96yAHyyOqxBW
-        0DqHEX7RQg0DnJXBE/aYaoPm0DqLIXSCBl7whw+k9EPxpovpn6XWkbc+ejbelm5HUpPI2xtebbS+I28V
-        lG20SpE3vV5JdSNv4yh18VCurYN3G11tsbHRekbVRle7KKWrH1CHXo9u5xN56GEtoXTUuogHbZzWhl5N
-        EzqBvrZH6BOfQen4Be3foxD+AV8cFNyuR5Z6AAAAAElFTkSuQmCC
-</value>
-  </data>
   <metadata name="screenShotTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="timerButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAA

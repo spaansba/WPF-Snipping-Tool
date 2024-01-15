@@ -1,11 +1,15 @@
-﻿namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
+﻿using Snipping_Tool_V4.Properties;
+using System.Security.Policy;
+
+namespace Snipping_Tool_V4.Screenshots.Modules.Drawing.Tools
 {
+    public delegate void DrawOrFillShape(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill);
 
     public abstract class Tool
     {
         public bool IsActive { get; private set; }
         public bool LockedAspectRatio { get; set; } = false;
-        public virtual void Begin(Point location, Pen? stroke)
+        public virtual void Begin(Point location, Pen? stroke, Brush? fill)
         {
             IsActive = true;
         }
@@ -27,12 +31,14 @@
         }
     }
 
-    public delegate void DrawOrFillShape(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill);
-
     public static class Tools
     {
 
         public static FreehandTool Freehand { get; } = new();
+        public static EraserTool Eraser { get; } = new();
+        public static RectangleSelectorTool RectangleSelector { get; } = new();
+        public static ColorSelectorTool ColorSelector { get; } = new();
+        public static BucketTool BucketTool { get; } = new();
         public static RectangularShapeTool Triangle { get; } = new RectangularShapeTool(DrawOrFillTriangle);
         public static RectangularShapeTool Pentagon { get; } = new RectangularShapeTool(DrawOrFillPentagon);
         public static RectangularShapeTool Hexagon { get; } = new RectangularShapeTool(DrawOrFillHexagon);
@@ -40,6 +46,34 @@
         public static RectangularShapeTool Ellipse { get; } = new RectangularShapeTool(DrawOrFillEllipse);
         public static RectangularShapeTool Star { get; } = new RectangularShapeTool(DrawOrFillStar);
         public static RectangularShapeTool Heart { get; } = new RectangularShapeTool(DrawOrFillHeart);
+
+        #region List of Tools for populating the ToolBox on the Form
+        /// <summary>
+        /// List of all Tools, used to populate the ToolBox on the Form
+        /// </summary>
+        public static List<ShapeTool> ShapeTools = new List<ShapeTool>()
+        {
+            Rectangle,
+            Ellipse,
+            Pentagon,
+            Triangle,
+            Hexagon,
+            Star,
+            Heart
+        };
+
+        /// <summary>
+        /// List of all Special Tools, used to populate the ToolBox on the Form
+        /// </summary>
+        public static List<SpecialTools> SpecialTools = new List<SpecialTools>()
+        {
+            Freehand,
+            Eraser,
+            RectangleSelector,
+            ColorSelector,
+            BucketTool
+        };
+        #endregion
 
         public static void DrawPolygonX(Graphics graphics, Point[] points, Pen? stroke, Brush? fill)
         {
@@ -125,7 +159,6 @@
             DrawPolygonX(graphics, points, stroke, fill);
         }
 
-
         public static void DrawOrFillRectangle(Graphics graphics, Rectangle bounds, Pen? stroke, Brush? fill)
         {
             if (stroke != null) graphics.DrawRectangle(stroke, bounds);
@@ -136,206 +169,5 @@
             if (stroke != null) graphics.DrawEllipse(stroke, bounds);
             if (fill != null) graphics.FillEllipse(fill, bounds);
         }
-
-        /// <summary>
-        /// List of all Tools, used to populate the ToolBox on the Form
-        /// </summary>
-        public static List<RectangularShapeTool> ShapeTools = new List<RectangularShapeTool>()
-        {
-            Rectangle,
-            Ellipse,
-            Pentagon,
-            Triangle,
-            Hexagon,
-            Star,
-            Heart
-        };
-    }
-
-    public abstract class ShapeTool : Tool
-    {
-        public Pen? stroke { get; private set; }
-        public Brush? fill { get; private set; } // TODO: Implement fill
-        public override void Begin(Point location, Pen? stroke)
-        {
-            this.stroke = stroke;
-            base.Begin(location, stroke);
-        }
-    }
-
-    public class RectangularShapeTool : ShapeTool
-    {
-        public Point Start { get; private set; }
-        public Point End { get; private set; }
-
-        private readonly DrawOrFillShape drawOrFillShape;
-
-        public RectangularShapeTool(DrawOrFillShape drawOrFillShape)
-        {
-            this.drawOrFillShape = drawOrFillShape;
-        }
-
-
-        public override void Begin(Point location, Pen? stroke)
-        {
-            Start = location;
-            End = CalculateNewEndLocation(location);
-            base.Begin(location, stroke);
-        }
-
-        public override void Reset()
-        {
-            Start = new Point();
-            End = new Point(0, 0);
-            base.Reset();
-        }
-
-        public override void Continue(Point newLocation)
-        {
-            End = CalculateNewEndLocation(newLocation);
-        }
-
-        public override void Finish(Point newLocation, IList<Shape> shapeList)
-        {
-            End = CalculateNewEndLocation(newLocation);
-            var newShape = new RectangularShape(this.drawOrFillShape, stroke, fill, this.GetRectangle());
-            shapeList.Add(newShape);
-            base.Finish(newLocation, shapeList);
-        }
-
-        public override void Draw(Graphics graphics)
-        {
-            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, this.GetRectangle(), stroke, fill);
-        }
-
-        public override void DrawToolIcon(Graphics graphics, Pen? stroke, Brush? fill, Rectangle rect)
-        {
-            Shape.DrawCurrentShapeInRectangle(drawOrFillShape, graphics, rect, stroke, fill);
-        }
-
-        #region Helper Methods  
-        /// <summary>
-        /// IF shift is held down, calculate the end location to be a perfect shape in a perfect square
-        /// </summary>
-        public override Point CalculateNewEndLocation(Point location)
-        {
-            if (LockedAspectRatio)
-            {
-                int x = location.X;
-                int y = location.Y;
-                int width = Math.Abs(Start.X - x);
-                int height = Math.Abs(Start.Y - y);
-                int max = Math.Max(width, height);
-                if (Start.X < x) x = Start.X + max;
-                else x = Start.X - max;
-                if (Start.Y < y) y = Start.Y + max;
-                else y = Start.Y - max;
-                return new Point(x, y);
-            }
-            else
-            {
-                return location;
-            }
-        }
-
-        private Rectangle GetRectangle()
-        {
-            return new Rectangle(
-                Math.Min(Start.X, End.X), Math.Min(Start.Y, End.Y),
-                Math.Abs(Start.X - End.X), Math.Abs(Start.Y - End.Y));
-        }
-        #endregion
-
-    }
-
-    public sealed class FreehandTool : ShapeTool
-    {
-        public Point Start { get; private set; }
-        public Point End { get; private set; }
-        public Point LastShiftPressLocation { get; private set; }
-
-        private List<Point> drawingPoints { get; set; }
-
-        public override void Reset()
-        {
-            List<Point> drawingPoints = new();
-            base.Reset();
-        }
-
-        public override void Begin(Point location, Pen? stroke)
-        {
-            Start = location;
-            drawingPoints = new List<Point>();
-            drawingPoints.Add(location);
-            base.Begin(location, stroke);
-        }
-        public override void Continue(Point newLocation)
-        {
-            drawingPoints.Add(CalculateNewEndLocation(newLocation));
-        }
-
-        public override void Finish(Point newLocation, IList<Shape> shapeList)
-        {
-            End = CalculateNewEndLocation(newLocation);
-            drawingPoints.Add(newLocation);
-            var newShape = new FreehandShape(this.stroke, fill, this.drawingPoints);
-            shapeList.Add(newShape);
-            base.Finish(newLocation, shapeList);
-        }
-
-        public override void Draw(Graphics graphics)
-        {
-            FreehandShape.DrawFreeHand(graphics, this.drawingPoints, this.stroke);
-        }
-
-        public override void DrawToolIcon(Graphics graphics, Pen stroke, Brush fill, Rectangle rect)
-        {
-            throw new NotImplementedException();
-        }
-
-        #region Calculate End Location in Case Shift is Pressed
-        public override Point CalculateNewEndLocation(Point location)
-        {
-            SetLastShiftPressLocation(location);
-
-            if (LockedAspectRatio)
-            {
-                //Check if the location is horizontal or vertical further away from the last shift press location
-                int x = location.X;
-                int y = location.Y;
-                int xDistance = Math.Abs(LastShiftPressLocation.X - x);
-                int yDistance = Math.Abs(LastShiftPressLocation.Y - y);
-                if (xDistance > yDistance)
-                {
-                    y = LastShiftPressLocation.Y;
-                }
-                else
-                {
-                    x = LastShiftPressLocation.X;
-                }
-                return new Point(x, y);
-            }
-            else
-            {
-                return location;
-            }
-        }
-
-        private void SetLastShiftPressLocation(Point location)
-        {
-            if (!LockedAspectRatio)
-            {
-                LastShiftPressLocation = new Point(0, 0);
-            }
-
-            if (LockedAspectRatio)
-            {
-                if (LastShiftPressLocation == new Point(0, 0))
-                {
-                    LastShiftPressLocation = location;
-                }
-            }
-        }
-        #endregion
     }
 }

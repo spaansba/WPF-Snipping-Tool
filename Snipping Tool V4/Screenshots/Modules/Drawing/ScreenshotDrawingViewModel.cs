@@ -1,15 +1,30 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Snipping_Tool_V4.Modules;
+using Snipping_Tool_V4.Screenshots.Modules.Drawing.Tools;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+//https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers#summary-table
 
 namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
 {
     public partial class ScreenshotDrawingViewModel : ObservableObject
     {
-        public int PenThickness { get; set; }
-        public Color PenColor { get; set; } = Color.Black;
-        public Pen Stroke => new Pen(PenColor, PenThickness);
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Stroke))] // If thickness changes, Notify stroke pen
+        private int penThickness = 4;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Stroke))] // If color changes, Notify stroke pen
+        public Color penColor = Color.Black;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Fill))] // If color changes, Notify fill brush
+        public Color fillColor = Color.Transparent;
+        //Color.FromArgb(Color.LightBlue);
+        
+        public Brush Fill => new SolidBrush(FillColor);
+
+        public Pen Stroke => PenCache.GetPen(penColor, penThickness);
         public List<Shape> Shapes { get; set; } = new();
 
         public event EventHandler? DrawingChanged;
@@ -18,16 +33,10 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Drawing
         [ObservableProperty]
         private Tool? currentTool;
 
-
         public void Begin(Point location)
         {
-            CurrentTool?.Begin(location, PenCache.GetPen(Stroke.Color, PenThickness));
+            CurrentTool?.Begin(location, PenCache.GetPen(Stroke.Color, PenThickness), Fill);
             RaiseDrawingChanged();
-        }
-
-        public void SetButtonState()
-        {
-
         }
 
         public void Continue(Point location)

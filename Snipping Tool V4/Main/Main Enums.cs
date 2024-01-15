@@ -2,7 +2,7 @@
 {
     public enum MainFormMeasurements
     {
-        formWidth = 699,
+        formWidth = 855,
         formHeight = 465,
         titleBarHeight = 32,
         formSidePanelOpenWidth = 146,

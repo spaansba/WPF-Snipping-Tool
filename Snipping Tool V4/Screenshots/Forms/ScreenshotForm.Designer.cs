@@ -30,20 +30,16 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreenshotForm));
-            screenshotPanel = new Panel();
-            redLineButton = new ReaLTaiizor.Controls.AirButton();
-            blackLineButton = new ReaLTaiizor.Controls.AirButton();
-            size10Button = new ReaLTaiizor.Controls.AirButton();
-            size3Button = new ReaLTaiizor.Controls.AirButton();
-            label1 = new Label();
+            picturePanel = new Panel();
             screenshotResultPicture = new PictureBox();
-            flowLayoutPanel1 = new FlowLayoutPanel();
-            freeHandButton = new PictureBox();
-            pictureBox2 = new PictureBox();
-            pictureBox1 = new PictureBox();
+            label3 = new Label();
+            label2 = new Label();
+            colorPickerTablePanel = new TableLayoutPanel();
+            size3Button = new ReaLTaiizor.Controls.AirButton();
+            size10Button = new ReaLTaiizor.Controls.AirButton();
             symbolMainPanel = new Panel();
             expandSymbolsButton = new Button();
-            shapesFlowPanel = new TableLayoutPanel();
+            shapesTablePanel = new TableLayoutPanel();
             screenShotTimer = new System.Windows.Forms.Timer(components);
             timerFlowPanel = new FlowLayoutPanel();
             timerPanel = new Panel();
@@ -64,12 +60,11 @@
             topBarLabel = new Label();
             deviderLabel = new Label();
             tableLayoutPanel2 = new TableLayoutPanel();
-            screenshotPanel.SuspendLayout();
+            specialToolsTablePanel = new TableLayoutPanel();
+            label1 = new Label();
+            symbolOptionsTablePanel = new TableLayoutPanel();
+            picturePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).BeginInit();
-            flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)freeHandButton).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             symbolMainPanel.SuspendLayout();
             timerFlowPanel.SuspendLayout();
             timerPanel.SuspendLayout();
@@ -81,71 +76,61 @@
             timerPanel5.SuspendLayout();
             SuspendLayout();
             // 
-            // screenshotPanel
+            // picturePanel
             // 
-            screenshotPanel.AutoScroll = true;
-            screenshotPanel.AutoSize = true;
-            screenshotPanel.Controls.Add(redLineButton);
-            screenshotPanel.Controls.Add(blackLineButton);
-            screenshotPanel.Controls.Add(size10Button);
-            screenshotPanel.Controls.Add(size3Button);
-            screenshotPanel.Controls.Add(label1);
-            screenshotPanel.Controls.Add(screenshotResultPicture);
-            screenshotPanel.Dock = DockStyle.Fill;
-            screenshotPanel.Location = new Point(0, 50);
-            screenshotPanel.Name = "screenshotPanel";
-            screenshotPanel.Size = new Size(555, 384);
-            screenshotPanel.TabIndex = 1;
-            screenshotPanel.Paint += screenshotPanel_Paint;
+            picturePanel.AutoScroll = true;
+            picturePanel.AutoSize = true;
+            picturePanel.Controls.Add(screenshotResultPicture);
+            picturePanel.Dock = DockStyle.Fill;
+            picturePanel.Location = new Point(0, 50);
+            picturePanel.Name = "picturePanel";
+            picturePanel.Size = new Size(709, 384);
+            picturePanel.TabIndex = 1;
+            picturePanel.Paint += screenshotPanel_Paint;
             // 
-            // redLineButton
+            // screenshotResultPicture
             // 
-            redLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            redLineButton.Font = new Font("Segoe UI", 9F);
-            redLineButton.Image = null;
-            redLineButton.Location = new Point(462, 85);
-            redLineButton.Name = "redLineButton";
-            redLineButton.NoRounding = false;
-            redLineButton.Size = new Size(81, 21);
-            redLineButton.TabIndex = 9;
-            redLineButton.Text = "Red Line";
-            redLineButton.Transparent = false;
-            redLineButton.Click += redLineButton_Click;
+            screenshotResultPicture.Location = new Point(239, 88);
+            screenshotResultPicture.Name = "screenshotResultPicture";
+            screenshotResultPicture.Size = new Size(247, 142);
+            screenshotResultPicture.TabIndex = 2;
+            screenshotResultPicture.TabStop = false;
             // 
-            // blackLineButton
+            // label3
             // 
-            blackLineButton.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            blackLineButton.Font = new Font("Segoe UI", 9F);
-            blackLineButton.Image = null;
-            blackLineButton.Location = new Point(462, 58);
-            blackLineButton.Name = "blackLineButton";
-            blackLineButton.NoRounding = false;
-            blackLineButton.Size = new Size(81, 21);
-            blackLineButton.TabIndex = 10;
-            blackLineButton.Text = "Black Line";
-            blackLineButton.Transparent = false;
-            blackLineButton.Click += blackLineButton_Click;
+            label3.BackColor = Color.FromArgb(64, 64, 64);
+            label3.Location = new Point(583, 7);
+            label3.Name = "label3";
+            label3.Size = new Size(1, 32);
+            label3.TabIndex = 19;
             // 
-            // size10Button
+            // label2
             // 
-            size10Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
-            size10Button.Font = new Font("Segoe UI", 9F);
-            size10Button.Image = null;
-            size10Button.Location = new Point(477, 30);
-            size10Button.Name = "size10Button";
-            size10Button.NoRounding = false;
-            size10Button.Size = new Size(66, 21);
-            size10Button.TabIndex = 12;
-            size10Button.Text = "Size 10";
-            size10Button.Transparent = false;
-            size10Button.Click += size10Button_Click;
+            label2.BackColor = Color.FromArgb(64, 64, 64);
+            label2.Location = new Point(510, 7);
+            label2.Name = "label2";
+            label2.Size = new Size(1, 32);
+            label2.TabIndex = 18;
+            // 
+            // colorPickerTablePanel
+            // 
+            colorPickerTablePanel.BackColor = Color.FromArgb(224, 224, 224);
+            colorPickerTablePanel.ColumnCount = 2;
+            colorPickerTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            colorPickerTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            colorPickerTablePanel.Location = new Point(520, 14);
+            colorPickerTablePanel.Name = "colorPickerTablePanel";
+            colorPickerTablePanel.RowCount = 1;
+            colorPickerTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            colorPickerTablePanel.Size = new Size(52, 26);
+            colorPickerTablePanel.TabIndex = 13;
             // 
             // size3Button
             // 
             size3Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
             size3Button.Font = new Font("Segoe UI", 9F);
             size3Button.Image = null;
-            size3Button.Location = new Point(477, 3);
+            size3Button.Location = new Point(596, 28);
             size3Button.Name = "size3Button";
             size3Button.NoRounding = false;
             size3Button.Size = new Size(66, 21);
@@ -154,79 +139,27 @@
             size3Button.Transparent = false;
             size3Button.Click += size3Button_Click;
             // 
-            // label1
+            // size10Button
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(413, 119);
-            label1.Name = "label1";
-            label1.Size = new Size(139, 15);
-            label1.TabIndex = 3;
-            label1.Text = "temp buttons for testing:";
-            // 
-            // screenshotResultPicture
-            // 
-            screenshotResultPicture.Location = new Point(116, 112);
-            screenshotResultPicture.Name = "screenshotResultPicture";
-            screenshotResultPicture.Size = new Size(247, 142);
-            screenshotResultPicture.TabIndex = 2;
-            screenshotResultPicture.TabStop = false;
-            // 
-            // flowLayoutPanel1
-            // 
-            flowLayoutPanel1.BackColor = Color.FromArgb(224, 224, 224);
-            flowLayoutPanel1.Controls.Add(freeHandButton);
-            flowLayoutPanel1.Controls.Add(pictureBox2);
-            flowLayoutPanel1.Controls.Add(pictureBox1);
-            flowLayoutPanel1.Location = new Point(228, 4);
-            flowLayoutPanel1.Margin = new Padding(0);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(54, 43);
-            flowLayoutPanel1.TabIndex = 13;
-            // 
-            // freeHandButton
-            // 
-            freeHandButton.BackColor = Color.FromArgb(224, 224, 224);
-            freeHandButton.Image = (Image)resources.GetObject("freeHandButton.Image");
-            freeHandButton.Location = new Point(0, 0);
-            freeHandButton.Margin = new Padding(0);
-            freeHandButton.Name = "freeHandButton";
-            freeHandButton.Size = new Size(20, 20);
-            freeHandButton.SizeMode = PictureBoxSizeMode.CenterImage;
-            freeHandButton.TabIndex = 14;
-            freeHandButton.TabStop = false;
-            freeHandButton.Click += freeHandButton_Click;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.BackColor = Color.FromArgb(224, 224, 224);
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(24, 0);
-            pictureBox2.Margin = new Padding(4, 0, 0, 0);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(20, 20);
-            pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox2.TabIndex = 15;
-            pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.FromArgb(224, 224, 224);
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(0, 23);
-            pictureBox1.Margin = new Padding(0, 3, 0, 0);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(20, 20);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox1.TabIndex = 16;
-            pictureBox1.TabStop = false;
+            size10Button.Customization = "7e3t//Ly8v/r6+v/5ubm/+vr6//f39//p6en/zw8PP8UFBT/gICA/w==";
+            size10Button.Font = new Font("Segoe UI", 9F);
+            size10Button.Image = null;
+            size10Button.Location = new Point(596, 5);
+            size10Button.Name = "size10Button";
+            size10Button.NoRounding = false;
+            size10Button.Size = new Size(66, 21);
+            size10Button.TabIndex = 12;
+            size10Button.Text = "Size 10";
+            size10Button.Transparent = false;
+            size10Button.Click += size10Button_Click;
             // 
             // symbolMainPanel
             // 
             symbolMainPanel.BackColor = Color.FromArgb(224, 224, 224);
             symbolMainPanel.BorderStyle = BorderStyle.FixedSingle;
             symbolMainPanel.Controls.Add(expandSymbolsButton);
-            symbolMainPanel.Controls.Add(shapesFlowPanel);
-            symbolMainPanel.Location = new Point(308, 9);
+            symbolMainPanel.Controls.Add(shapesTablePanel);
+            symbolMainPanel.Location = new Point(333, 10);
             symbolMainPanel.Name = "symbolMainPanel";
             symbolMainPanel.Size = new Size(117, 30);
             symbolMainPanel.TabIndex = 16;
@@ -248,24 +181,24 @@
             expandSymbolsButton.UseVisualStyleBackColor = false;
             expandSymbolsButton.Click += expandSymbolsButton_Click;
             // 
-            // shapesFlowPanel
+            // shapesTablePanel
             // 
-            shapesFlowPanel.BackColor = Color.White;
-            shapesFlowPanel.ColumnCount = 4;
-            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.Location = new Point(0, 0);
-            shapesFlowPanel.Margin = new Padding(0);
-            shapesFlowPanel.Name = "shapesFlowPanel";
-            shapesFlowPanel.RowCount = 4;
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            shapesFlowPanel.Size = new Size(103, 103);
-            shapesFlowPanel.TabIndex = 13;
+            shapesTablePanel.BackColor = Color.White;
+            shapesTablePanel.ColumnCount = 4;
+            shapesTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            shapesTablePanel.Location = new Point(0, 0);
+            shapesTablePanel.Margin = new Padding(0);
+            shapesTablePanel.Name = "shapesTablePanel";
+            shapesTablePanel.RowCount = 4;
+            shapesTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            shapesTablePanel.Size = new Size(101, 103);
+            shapesTablePanel.TabIndex = 13;
             // 
             // screenShotTimer
             // 
@@ -285,7 +218,7 @@
             timerFlowPanel.Location = new Point(94, -2);
             timerFlowPanel.Margin = new Padding(0);
             timerFlowPanel.Name = "timerFlowPanel";
-            timerFlowPanel.Size = new Size(117, 50);
+            timerFlowPanel.Size = new Size(117, 52);
             timerFlowPanel.TabIndex = 8;
             // 
             // timerPanel
@@ -295,7 +228,7 @@
             timerPanel.Location = new Point(0, 0);
             timerPanel.Margin = new Padding(0);
             timerPanel.Name = "timerPanel";
-            timerPanel.Size = new Size(125, 50);
+            timerPanel.Size = new Size(125, 52);
             timerPanel.TabIndex = 0;
             // 
             // timerButton
@@ -319,7 +252,7 @@
             // timerNoTimerPanel
             // 
             timerNoTimerPanel.Controls.Add(timerNoTimer);
-            timerNoTimerPanel.Location = new Point(0, 50);
+            timerNoTimerPanel.Location = new Point(0, 52);
             timerNoTimerPanel.Margin = new Padding(0);
             timerNoTimerPanel.Name = "timerNoTimerPanel";
             timerNoTimerPanel.Size = new Size(125, 22);
@@ -344,7 +277,7 @@
             // 
             timerPanel1.BackColor = Color.Transparent;
             timerPanel1.Controls.Add(timer1);
-            timerPanel1.Location = new Point(0, 72);
+            timerPanel1.Location = new Point(0, 74);
             timerPanel1.Margin = new Padding(0);
             timerPanel1.Name = "timerPanel1";
             timerPanel1.Size = new Size(125, 22);
@@ -368,7 +301,7 @@
             // timerPanel2
             // 
             timerPanel2.Controls.Add(timer2);
-            timerPanel2.Location = new Point(0, 94);
+            timerPanel2.Location = new Point(0, 96);
             timerPanel2.Margin = new Padding(0);
             timerPanel2.Name = "timerPanel2";
             timerPanel2.Size = new Size(125, 22);
@@ -392,7 +325,7 @@
             // timerPanel3
             // 
             timerPanel3.Controls.Add(timer3);
-            timerPanel3.Location = new Point(0, 116);
+            timerPanel3.Location = new Point(0, 118);
             timerPanel3.Margin = new Padding(0);
             timerPanel3.Name = "timerPanel3";
             timerPanel3.Size = new Size(125, 22);
@@ -416,7 +349,7 @@
             // timerPanel4
             // 
             timerPanel4.Controls.Add(timer4);
-            timerPanel4.Location = new Point(0, 138);
+            timerPanel4.Location = new Point(0, 140);
             timerPanel4.Margin = new Padding(0);
             timerPanel4.Name = "timerPanel4";
             timerPanel4.Size = new Size(125, 22);
@@ -440,7 +373,7 @@
             // timerPanel5
             // 
             timerPanel5.Controls.Add(timer5);
-            timerPanel5.Location = new Point(0, 160);
+            timerPanel5.Location = new Point(0, 162);
             timerPanel5.Margin = new Padding(0);
             timerPanel5.Name = "timerPanel5";
             timerPanel5.Size = new Size(125, 24);
@@ -488,8 +421,9 @@
             topBarLabel.Dock = DockStyle.Top;
             topBarLabel.Location = new Point(0, 0);
             topBarLabel.Name = "topBarLabel";
-            topBarLabel.Size = new Size(555, 50);
+            topBarLabel.Size = new Size(709, 50);
             topBarLabel.TabIndex = 3;
+            topBarLabel.Click += topBarLabel_Click;
             // 
             // deviderLabel
             // 
@@ -515,19 +449,63 @@
             tableLayoutPanel2.Size = new Size(200, 100);
             tableLayoutPanel2.TabIndex = 0;
             // 
+            // specialToolsTablePanel
+            // 
+            specialToolsTablePanel.BackColor = Color.FromArgb(224, 224, 224);
+            specialToolsTablePanel.ColumnCount = 3;
+            specialToolsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            specialToolsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            specialToolsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            specialToolsTablePanel.Location = new Point(236, 2);
+            specialToolsTablePanel.Margin = new Padding(0);
+            specialToolsTablePanel.Name = "specialToolsTablePanel";
+            specialToolsTablePanel.RowCount = 2;
+            specialToolsTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            specialToolsTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            specialToolsTablePanel.Size = new Size(72, 48);
+            specialToolsTablePanel.TabIndex = 13;
+            // 
+            // label1
+            // 
+            label1.BackColor = Color.FromArgb(64, 64, 64);
+            label1.Location = new Point(320, 7);
+            label1.Name = "label1";
+            label1.Size = new Size(1, 32);
+            label1.TabIndex = 17;
+            // 
+            // symbolOptionsTablePanel
+            // 
+            symbolOptionsTablePanel.BackColor = Color.FromArgb(224, 224, 224);
+            symbolOptionsTablePanel.ColumnCount = 1;
+            symbolOptionsTablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            symbolOptionsTablePanel.Location = new Point(455, 1);
+            symbolOptionsTablePanel.Name = "symbolOptionsTablePanel";
+            symbolOptionsTablePanel.RowCount = 2;
+            symbolOptionsTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            symbolOptionsTablePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            symbolOptionsTablePanel.Size = new Size(45, 48);
+            symbolOptionsTablePanel.TabIndex = 15;
+            // 
             // ScreenshotForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(255, 255, 252);
-            ClientSize = new Size(555, 434);
+            ClientSize = new Size(709, 434);
             ControlBox = false;
-            Controls.Add(flowLayoutPanel1);
-            Controls.Add(symbolMainPanel);
+            Controls.Add(size3Button);
+            Controls.Add(symbolOptionsTablePanel);
+            Controls.Add(size10Button);
+            Controls.Add(label3);
+            Controls.Add(label1);
+            Controls.Add(label2);
+            Controls.Add(specialToolsTablePanel);
+            Controls.Add(colorPickerTablePanel);
             Controls.Add(deviderLabel);
             Controls.Add(newScreenshotButton);
+            Controls.Add(symbolMainPanel);
             Controls.Add(timerFlowPanel);
-            Controls.Add(screenshotPanel);
+            Controls.Add(picturePanel);
             Controls.Add(topBarLabel);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
@@ -539,13 +517,8 @@
             Deactivate += ScreenshotForm_Deactivate;
             KeyDown += ScreenshotForm_KeyDown;
             KeyUp += ScreenshotForm_KeyUp;
-            screenshotPanel.ResumeLayout(false);
-            screenshotPanel.PerformLayout();
+            picturePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)screenshotResultPicture).EndInit();
-            flowLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)freeHandButton).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             symbolMainPanel.ResumeLayout(false);
             timerFlowPanel.ResumeLayout(false);
             timerPanel.ResumeLayout(false);
@@ -578,21 +551,20 @@
         private Button newScreenshotButton;
         internal Button timerButton;
         internal PictureBox screenshotResultPicture;
-        internal Panel screenshotPanel;
+        internal Panel picturePanel;
         private Label topBarLabel;
         private Label deviderLabel;
-        private ReaLTaiizor.Controls.AirButton redLineButton;
-        private ReaLTaiizor.Controls.AirButton blackLineButton;
-        private Label label1;
         private ReaLTaiizor.Controls.AirButton size3Button;
         private ReaLTaiizor.Controls.AirButton size10Button;
-        private TableLayoutPanel shapesFlowPanel;
+        private TableLayoutPanel shapesTablePanel;
         private TableLayoutPanel tableLayoutPanel2;
         private Panel symbolMainPanel;
         private Button expandSymbolsButton;
-        private PictureBox freeHandButton;
-        private PictureBox pictureBox2;
-        private FlowLayoutPanel flowLayoutPanel1;
-        private PictureBox pictureBox1;
+        private TableLayoutPanel specialToolsTablePanel;
+        private TableLayoutPanel colorPickerTablePanel;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private TableLayoutPanel symbolOptionsTablePanel;
     }
 }

@@ -290,7 +290,7 @@ namespace Snipping_Tool_V4
             // MainForm
             // 
             AutoScaleMode = AutoScaleMode.None;
-            ClientSize = new Size(699, 465);
+            ClientSize = new Size(839, 465);
             Controls.Add(sidebarFlowPanel);
             DoubleBuffered = true;
             Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
