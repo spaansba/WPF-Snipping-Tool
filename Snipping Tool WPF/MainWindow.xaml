@@ -5,34 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Snipping_Tool_WPF"
         mc:Ignorable="d" FontSize="13" FontFamily="Segou UI Light"
-        Title="MainWindow" Height="450" Width="800" MinHeight="400" MinWidth="400">
+        Title="MainWindow" Height="450" Width="500" MinHeight="400" MinWidth="400">
 
     <Window.Resources>
         <Style x:Key="TopBarButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"  />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
+
+        <Image x:Key="ScreenshotImage" Source="/Assets/UI Icons/NewScreenshot.png"
+                Width="30" Height="30" x:Shared="True">
+        </Image>
     </Window.Resources>
 
-
     <DockPanel x:Name="TopDockPanel">
-        <WrapPanel x:Name="ButtonBarLabel" Orientation="Horizontal" Background="#FFF4F4F4"
-                    DockPanel.Dock ="Top">
+        <ItemsControl Background="#FFF4F4F4" DockPanel.Dock="Top">
+            
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
 
-            <!-- New Screenshot button -->
-            <Button x:Name="NewScreenshotButton" Style="{StaticResource TopBarButtonStyle}" >
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="C:\Users\barts\OneDrive\Bureaublad\Resources\NewScreenshot.png"
-                           Width="30" Height="30">
-                    </Image>
-                    <TextBlock Text="New" Padding="5,0" FontWeight="DemiBold"
-                               VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-        </WrapPanel>
-        <StackPanel>
-            <!-- Placeholder -->
-        </StackPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:IconAndContentData}">
+                    <Button x:Name="NewSchreenshotButton" Style="{StaticResource TopBarButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <ContentPresenter Content="{Binding Icon}"/>
+                            <TextBlock Text="{Binding Content}" Padding="5,0" FontWeight="DemiBold"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+            <local:IconAndContentData Content="New" Icon="{StaticResource ScreenshotImage}"/>
+            <local:IconAndContentData Content="Button2" Icon="{StaticResource ScreenshotImage}"/>
+            <local:IconAndContentData Content="Button3" Icon="{StaticResource ScreenshotImage}"/>
+            <local:IconAndContentData Content="Button4" Icon="{StaticResource ScreenshotImage}"/>
+            <local:IconAndContentData Content="Button5" Icon="{StaticResource ScreenshotImage}"/>
+        </ItemsControl>
     </DockPanel>
 
 </Window>
