@@ -2,6 +2,7 @@
 using Snipping_Tool_V4.Modules;
 using Snipping_Tool_V4.Screenshots.Modules.Drawing;
 using Snipping_Tool_V4.Screenshots.Modules.Drawing.Tools;
+using System.ComponentModel;
 using System.Configuration;
 using System.Windows.Forms;
 
@@ -11,6 +12,7 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Screen_Screenshot
 
     {
         public virtual ImageList imageList { get; set; }
+        public abstract int ListCount { get; }
 
         public CustomDropdownBox()
         {
@@ -22,18 +24,13 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Screen_Screenshot
             this.FlatStyle = FlatStyle.Flat;
             this.Margin = new Padding(0);
             this.BackColor = Color.FromArgb(224, 224, 224);
-            this.DrawItem += CustomDropdownBox_DrawItem;
             this.Region = new Region(new Rectangle(1, 1, this.Width - 20, this.Height - 1)); //Remove the white border and the dropdown arrow
         }
 
-        // Todo: Change this as currently the hover event is not working 
-        private void CustomDropdownBox_DrawItem(object sender, DrawItemEventArgs e)
+        protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            Brush brush = new SolidBrush(Color.FromArgb(224, 224, 224)); // Clear the previous drawn item otherwise it will keep drawing itself
-
-            e.Graphics.FillRectangle(brush, e.Bounds);
-
             Image image = imageList.Images[e.Index];
+
             // Adding 2px border around image for better allignment
             int borderSize = 2;
             Bitmap borderedImage = new Bitmap(image.Width + 2 * borderSize, image.Height + 2 * borderSize);
@@ -58,16 +55,15 @@ namespace Snipping_Tool_V4.Screenshots.Modules.Screen_Screenshot
 
     public sealed class ShapeFillDropdown : CustomDropdownBox
     {
-        public override ImageList imageList
-        {
-            set => base.imageList = value;
-        }
+        public override ImageList imageList { set => base.imageList = value;}
+
+        public override int ListCount => throw new NotImplementedException();
 
         public ShapeFillDropdown()
         {
             imageList = new ImageList();
             imageList.Images.Add(Properties.Resources.BucketTool);
-            imageList.Images.Add(Properties.Resources.BucketTool);
+            imageList.Images.Add(Properties.Resources.SelectionTool);
             this.imageList = imageList;
             this.Items.Add("No Fill");
             this.Items.Add("Solid Fill");
