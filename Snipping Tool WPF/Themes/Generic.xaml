@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Snipping_Tool_WPF">
+    <!-- Maring/Padding is Left Top Right Bottom -->
+    <Style TargetType="{x:Type local:CustomButton}" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:CustomButton}">
+                    <Border x:Name="CustomBorder" MinWidth="70">
+                        <DockPanel Margin="{TemplateBinding Padding}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <ContentPresenter x:Name="IconPresenter"
+                                              DockPanel.Dock="{TemplateBinding IconLocation}"
+                                              Content="{TemplateBinding Icon}"
+                                              Focusable="False"
+                                              Margin="0,5,0,2"/>
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              RecognizesAccessKey="True" Focusable="False"/>
+                        </DockPanel>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IconLocation" Value="Left"> 
+                            <Setter TargetName="ContentPresenter" Property="VerticalAlignment" Value="Center"/>
+                            <Setter TargetName="ContentPresenter" Property="Margin" Value="0,0,5,0"/>
+                            <Setter TargetName="IconPresenter" Property="VerticalAlignment" Value="Center"/>
+                            <Setter TargetName="IconPresenter" Property="Margin" Value="5,5,6,0"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" TargetName="CustomBorder">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="Gray" Opacity="0.3" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="CustomBorder">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="Gray" Opacity="0.18" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#FFF4F4F4" TargetName="CustomBorder" />
+                            <Setter Property="BorderBrush" Value="#FFADB2B5" TargetName="CustomBorder" />
+                            <Setter Property="TextElement.Foreground" Value="#FF838383" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+    </Style>
+</ResourceDictionary>
