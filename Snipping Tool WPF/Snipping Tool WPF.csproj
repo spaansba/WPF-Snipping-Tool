@@ -21,4 +21,8 @@
     <Resource Include="Assets\UI Icons\NewScreenshot.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\" />
+  </ItemGroup>
+
 </Project>

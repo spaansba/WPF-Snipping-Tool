@@ -6,13 +6,10 @@
         xmlns:local="clr-namespace:Snipping_Tool_WPF" 
         xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
         mc:Ignorable="d" FontSize="13" FontFamily="Segou UI Light"
-        Title="Snipping Tool" Height="450" Width="800" MinHeight="400" MinWidth="400" 
+        Title="Snipping Tool" Height="450" Width="800" MinHeight="400" MinWidth="600" 
         Background="#FFF4F4F4">
 
     <Window.Resources>
-        <SolidColorBrush x:Key="SemiWhite" Color="#E1E1DE"/>
-        <SolidColorBrush x:Key="SemiBlack" Color="#363941"/>
-        
         <Style x:Key="TopBarButtonStyle" TargetType="local:CustomButton">
             <Setter Property="Background" Value="Transparent"  />
             <Setter Property="BorderThickness" Value="0" />
@@ -30,60 +27,34 @@
     </Window.Resources>
 
     <DockPanel>
-        <ItemsControl x:Name="PrimaryTopPanel" Background="#202020" DockPanel.Dock="Top" Padding="6,6,6,0">
-
+        <DockPanel x:Name="PrimaryTopPanel" Background="#202020" DockPanel.Dock="Top" TextElement.Foreground="{StaticResource SemiWhite}">
+            <DockPanel DockPanel.Dock ="Left">
+                <local:CustomButton Content="Menu" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
+            </DockPanel>
+            <DockPanel DockPanel.Dock="Right">
+                <local:CustomButton Content="History" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
+            </DockPanel>
             <!-- Maring/Padding is Left Top Right Bottom -->
-            <!-- For if we want to change the CustomButton properties for this dock -->
-            <ItemsControl.Resources>
-                <Style TargetType="local:CustomButton">
-                </Style>
-            </ItemsControl.Resources>
 
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <!--TODO: Trigger if buttons dont fit, make a dropdown with all buttons that dont fit anymore -->
+                <local:CustomButton Content="Pencils" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
+                <local:CustomButton Content="Shapes" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
+                <local:CustomButton Content="Stickers" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
+                <local:CustomButton Content="Text" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
+            </StackPanel>
 
-            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Window}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="100"/>
-                </Grid.ColumnDefinitions>
+        </DockPanel>
 
-                <local:CustomButton Foreground="{StaticResource SemiWhite}" Content="Menu" Icon="{StaticResource ScreenshotImage}" IconLocation="Top" Grid.Column="0"/>
+        <DockPanel x:Name="SidePanel" Background="LightGray" DockPanel.Dock="Right" Width="250">
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
-                    <!--TODO: Trigger if buttons dont fit, make a dropdown with all buttons that dont fit anymore -->
-                    <local:CustomButton Foreground="{StaticResource SemiWhite}" Content="Pencils" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
-                    <local:CustomButton Foreground="{StaticResource SemiWhite}" Content="Shapes" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
-                    <local:CustomButton Foreground="{StaticResource SemiWhite}" Content="Stickers" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
-                    <local:CustomButton Foreground="{StaticResource SemiWhite}" Content="Text" Icon="{StaticResource ScreenshotImage}" IconLocation="Top"/>
-                </StackPanel>
-
-                <local:CustomButton Foreground="{StaticResource SemiWhite}" Content="History" Icon="{StaticResource ScreenshotImage}" IconLocation="Top" Grid.Column="2"/>
-            </Grid>
-        </ItemsControl>
-
-        <ItemsControl x:Name="SidePanel" Background="LightGray" DockPanel.Dock="Right" Width="300">
-            <!--TODO: Trigger if sidepanel gets to small collapse it into a few buttons -->
-        </ItemsControl>
-
-        <ItemsControl x:Name="SecondaryTopPanel" Background="LightGray" DockPanel.Dock="Top" Padding="6">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <local:CustomButton Foreground="{StaticResource SemiBlack}" Content="Screenshot" Icon="{StaticResource ScreenshotImage}" IconLocation="Left" Margin="0,0,8,0"/>
-            <local:CustomButton Foreground="{StaticResource SemiBlack}" Content="Empty Canvas" Icon="{StaticResource ScreenshotImage}" IconLocation="Left"/>
-
-        </ItemsControl>
+        </DockPanel>
+        <DockPanel x:Name="SecondaryTopPanel" Background="LightGray" DockPanel.Dock="Top">
+            <local:CustomButton Padding="6" Foreground="{StaticResource SemiBlack}" Content="Screenshot" Icon="{StaticResource ScreenshotImage}" IconLocation="Left" Margin="0,0,8,0"/>
+            <local:CustomButton Padding="6" Foreground="{StaticResource SemiBlack}" Content="Empty Canvas" Icon="{StaticResource ScreenshotImage}" IconLocation="Left"/>
+            <TextBlock/>
+        </DockPanel>
 
         <TextBlock DockPanel.Dock="Bottom"/>
-        
     </DockPanel>
-
 </Window>

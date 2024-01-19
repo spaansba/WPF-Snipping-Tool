@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:Snipping_Tool_WPF">
     <!-- Maring/Padding is Left Top Right Bottom -->
     <Style TargetType="{x:Type local:CustomButton}" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Template">
+        <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type local:CustomButton}">
                     <Border x:Name="CustomBorder" MinWidth="70">
@@ -15,9 +15,11 @@
                                               DockPanel.Dock="{TemplateBinding IconLocation}"
                                               Content="{TemplateBinding Icon}"
                                               Focusable="False"
-                                              Margin="0,5,0,2"/>
+                                              Margin="0,5,0,2"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
                             <ContentPresenter x:Name="ContentPresenter"
-                                              RecognizesAccessKey="True" Focusable="False"/>
+                                              RecognizesAccessKey="True" Focusable="False"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
                         </DockPanel>
                     </Border>
 
