@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Snipping_Tool_WPF.Settings
+namespace SnippingToolWPF.Settings
 {
     // Just a class to organize my Setting Ideas 
     class Setting_Ideas

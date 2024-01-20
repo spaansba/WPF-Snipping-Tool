@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Snipping_Tool_WPF
+namespace SnippingToolWPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace Snipping_Tool_WPF
+namespace SnippingToolWPF
 {
     /// <summary>
     /// Interaction logic for App.xaml

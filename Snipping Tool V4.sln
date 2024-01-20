@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snipping Tool V4", "Snipping Tool V4\Snipping Tool V4.csproj", "{701C1E4D-A562-4903-899D-793E7011228D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snipping Tool WPF", "Snipping Tool WPF\Snipping Tool WPF.csproj", "{6FD1808E-ABB2-44A6-8963-FAB8D131F031}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippingToolWPF", "SnippingToolWPF\SnippingToolWPF.csproj", "{E11EF40D-F9AE-48B8-B023-BD79739A58F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{701C1E4D-A562-4903-899D-793E7011228D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{701C1E4D-A562-4903-899D-793E7011228D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{701C1E4D-A562-4903-899D-793E7011228D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FD1808E-ABB2-44A6-8963-FAB8D131F031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FD1808E-ABB2-44A6-8963-FAB8D131F031}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FD1808E-ABB2-44A6-8963-FAB8D131F031}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FD1808E-ABB2-44A6-8963-FAB8D131F031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E11EF40D-F9AE-48B8-B023-BD79739A58F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E11EF40D-F9AE-48B8-B023-BD79739A58F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E11EF40D-F9AE-48B8-B023-BD79739A58F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E11EF40D-F9AE-48B8-B023-BD79739A58F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

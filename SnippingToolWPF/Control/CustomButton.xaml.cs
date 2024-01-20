@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 
-namespace Snipping_Tool_WPF
+namespace SnippingToolWPF
 {
     public class CustomButton : Button
     {

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <RootNamespace>Snipping_Tool_WPF</RootNamespace>
+    <RootNamespace>SnippingToolWPF</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -19,10 +19,6 @@
 
   <ItemGroup>
     <Resource Include="Assets\UI Icons\NewScreenshot.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Modules\" />
   </ItemGroup>
 
 </Project>
