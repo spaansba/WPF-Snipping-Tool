@@ -8,39 +8,43 @@ using System.Windows;
 
 namespace SnippingToolWPF
 {
-    public class CustomButton : Button
+    public static class CustomButton
     {
-        static CustomButton()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(CustomButton),
-            new FrameworkPropertyMetadata(typeof(CustomButton))
-            );
-        }
-
-        public static readonly DependencyProperty IconLocationProperty =
-        DependencyProperty.Register(
-        name: nameof(IconLocation),
-        propertyType: typeof(Dock),
+        public static readonly DependencyProperty IconLocationProperty = DependencyProperty.RegisterAttached( 
+        name: "IconLocation",
+        propertyType: typeof(Dock), 
         ownerType: typeof(CustomButton),
-        typeMetadata: new FrameworkPropertyMetadata(defaultValue: Dock.Left));
+        defaultMetadata: new FrameworkPropertyMetadata(default(Dock)));
 
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
-            name: nameof(Icon),
-            propertyType: typeof(object),
-            ownerType: typeof(CustomButton));
+        public static Dock GetIconLocation(DependencyObject target) => (Dock)target.GetValue(IconLocationProperty);
+        public static void SetIconLocation(DependencyObject target, Dock value) => target.SetValue(IconLocationProperty, value);
 
-        public object? Icon
-        {
-            get => GetValue(IconLocationProperty);
-            set => SetValue(IconLocationProperty, value);
-        }
+        public static readonly DependencyProperty IconProperty = DependencyProperty.RegisterAttached(
+        name: "Icon",
+        propertyType: typeof(object),
+        ownerType: typeof(CustomButton),
+        defaultMetadata: new FrameworkPropertyMetadata());
 
-        public Dock IconLocation
-        {
-            get => (Dock)GetValue(IconLocationProperty);
-            set => SetValue(IconLocationProperty, value);
-        }
+        public static object? GetIcon(DependencyObject target) => target.GetValue(IconProperty);
+        public static void SetIcon(DependencyObject target, object? value) => target.SetValue(IconProperty, value);
 
+        public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.RegisterAttached(
+        name: "IconTemplate",
+        propertyType: typeof(DataTemplate),
+        ownerType: typeof(CustomButton),
+        defaultMetadata: new FrameworkPropertyMetadata());
+
+        public static DataTemplate? GetIconTemplate(DependencyObject target) => (DataTemplate?)target.GetValue(IconTemplateProperty);
+        public static void SetIconTemplate(DependencyObject target, DataTemplate? value) => target.SetValue(IconTemplateProperty, value);
+
+        public static readonly DependencyProperty IconTemplateSelectorProperty = DependencyProperty.RegisterAttached(
+        name: "IconTemplateSelector",
+        propertyType: typeof(DataTemplateSelector),
+        ownerType: typeof(CustomButton),
+        defaultMetadata: new FrameworkPropertyMetadata());
+
+        public static DataTemplateSelector? GetIconTemplateSelector(DependencyObject target) => (DataTemplateSelector?)target.GetValue(IconTemplateSelectorProperty);
+
+        public static void SetIconTemplateSelector(DependencyObject target, DataTemplateSelector? value) => target.SetValue(IconTemplateSelectorProperty, value);
     }
 }

@@ -1,7 +1,10 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Color x:Key="SemiWhiteColor">#E1E1DE</Color>
     <Color x:Key="SemiDarkColor">#363941</Color>
-    <SolidColorBrush x:Key="SemiWhite" Color="{StaticResource SemiWhiteColor}"/>
-    <SolidColorBrush x:Key="SemiBlack" Color="{StaticResource SemiDarkColor}"/>
+    <Color x:Key="DarkGray">#202020</Color>
+    <Color x:Key="LightGray">LightGray</Color>
+    <SolidColorBrush x:Key="MainForegroundBrush" Color="{StaticResource SemiWhiteColor}" />
+    <SolidColorBrush x:Key="AlternateForegroundBrush" Color="{StaticResource SemiDarkColor}" />
+    <SolidColorBrush x:Key="MainBackgroundBrush" Color="{StaticResource DarkGray}" />
+    <SolidColorBrush x:Key="AlternateBackgroundBrush" Color="{StaticResource LightGray}" />
 </ResourceDictionary>
