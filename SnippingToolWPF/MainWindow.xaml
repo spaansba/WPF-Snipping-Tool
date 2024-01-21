@@ -27,7 +27,7 @@
                    TextElement.Foreground="{StaticResource MainForegroundBrush}">
             
             <DockPanel.Resources>
-                <Style BasedOn="{StaticResource CustomButton}" TargetType="ButtonBase"/>
+                <Style TargetType="ButtonBase" BasedOn="{StaticResource CustomButton}"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{StaticResource SemiWhiteColor}" />
             </DockPanel.Resources>
 
@@ -39,7 +39,7 @@
                     local:CustomButton.IconLocation="Top" Content="History"
                     DockPanel.Dock="Right" />
 
-            <ListBox HorizontalAlignment="Center"
+            <ListBox HorizontalAlignment="Center" 
                      ItemsSource="{Binding AllSidePanelContentKinds}"
                      SelectedItem="{Binding SidePanelContentKind}">
                 <ListBox.Resources>
