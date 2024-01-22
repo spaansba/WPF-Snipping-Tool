@@ -15,13 +15,13 @@ namespace SnippingToolWPF
 
         public object? SidePanelContent => SidePanelContentKind switch
         {
-            SidePanelContentKind.Pencils => "Pencils",
+            SidePanelContentKind.Pencils => "Pencils", // Headers of each button
             SidePanelContentKind.Shapes => "Shapes",
             SidePanelContentKind.Stickers => "Stickers",
             SidePanelContentKind.Text => "Text",
             _ => null,
         };
 
-        public IReadOnlyList<SidePanelContentKind> ALllSidePanelsContentKinds { get; } = Enum.GetValues<SidePanelContentKind>();
+        public IReadOnlyList<SidePanelContentKind> AllSidePanelContentKinds { get; } = Enum.GetValues<SidePanelContentKind>();
     }
 }

@@ -6,6 +6,10 @@
         Background="#FFF4F4F4" FontFamily="Segou UI Light"
         FontSize="13" mc:Ignorable="d">
 
+    <Window.DataContext>
+        <local:DrawingViewModel />
+    </Window.DataContext>
+
     <Window.Resources>
         <Canvas x:Key="ScreenshotImage" Width="30"
                 Height="30" x:Shared="False">
@@ -18,6 +22,29 @@
                        Stroke="{StaticResource MainForegroundBrush}"
                        StrokeDashArray="3 3" StrokeThickness="1" />
         </Canvas>
+        
+        <!-- Selecting the correct sidepanel based on topbar button press -->
+        <DataTemplate x:Key="ScreenshotIconDataTemplate">
+            <ContentPresenter Content="{StaticResource ScreenshotImage}" />
+        </DataTemplate>
+        <local:SidePanelContentKindIconSelector x:Key="SidePanelContentKindIconSelector"
+                                                            Pencils="{StaticResource ScreenshotIconDataTemplate}"
+                                                            Shapes="{StaticResource ScreenshotIconDataTemplate}"
+                                                            Stickers="{StaticResource ScreenshotIconDataTemplate}"
+                                                            Text="{StaticResource ScreenshotIconDataTemplate}" />
+
+        <DataTemplate x:Key="PencilsTemplate">
+        </DataTemplate>
+
+        <DataTemplate x:Key="ShapesTemplate">
+        </DataTemplate>
+
+        <DataTemplate x:Key="StickersTemplate">
+        </DataTemplate>
+
+        <DataTemplate x:Key="TextTemplate">
+        </DataTemplate>
+
     </Window.Resources>
     <!--  Maring/Padding is Left Top Right Bottom  -->
     <DockPanel>
@@ -25,9 +52,10 @@
                    Background="{StaticResource MainBackgroundBrush}"
                    DockPanel.Dock="Top"
                    TextElement.Foreground="{StaticResource MainForegroundBrush}">
-            
+
             <DockPanel.Resources>
-                <Style TargetType="ButtonBase" BasedOn="{StaticResource CustomButton}"/>
+                <Style BasedOn="{StaticResource CustomButton}" TargetType="ToggleButton" />
+                <Style BasedOn="{StaticResource CustomButton}" TargetType="Button" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{StaticResource SemiWhiteColor}" />
             </DockPanel.Resources>
 
@@ -39,58 +67,62 @@
                     local:CustomButton.IconLocation="Top" Content="History"
                     DockPanel.Dock="Right" />
 
-            <ListBox HorizontalAlignment="Center" 
+            <!--  found this HorizontalContentAlignment and scrollviewer property with Snoop, be proud please  -->
+            <ListBox x:Name="ToolBarTopMiddle" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                     Background="Transparent" BorderThickness="0"
+                     Foreground="{StaticResource MainForegroundBrush}"
                      ItemsSource="{Binding AllSidePanelContentKinds}"
-                     SelectedItem="{Binding SidePanelContentKind}">
-                <ListBox.Resources>
-                    <DataTemplate x:Key="ScreenshotIconDataTemplate">
-                        <ContentPresenter Content="{StaticResource ScreenshotImage}"/>
-                    </DataTemplate>
-                    <local:SidePanelContentKindIconSelector x:Key="SidePanelContentKindIconSelector"
-                                                            Pencils="{StaticResource ScreenshotIconDataTemplate}"
-                                                            Shapes="{StaticResource ScreenshotIconDataTemplate}"
-                                                            Stickers="{StaticResource ScreenshotIconDataTemplate}"
-                                                            Text="{StaticResource ScreenshotIconDataTemplate}"/>
-                </ListBox.Resources>
+                     SelectedItem="{Binding SidePanelContentKind}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource CustomListBoxItem}">
-                        <Setter Property="local:CustomButton.Icon" Value="{Binding}"/>
-                        <Setter Property="local:CustomButton.IconTemplateSelector" Value="{StaticResource SidePanelContentKindIconSelector}"/>
-                        <Setter Property="local:CustomButton.IconLocation" Value="Top"/>
+                    <Style BasedOn="{StaticResource CustomListBoxItem}" TargetType="ListBoxItem">
+                        <Setter Property="local:CustomButton.Icon" Value="{Binding}" />
+                        <Setter Property="local:CustomButton.IconTemplateSelector" Value="{StaticResource SidePanelContentKindIconSelector}" />
+                        <Setter Property="local:CustomButton.IconLocation" Value="Top" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <StackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-
-
-            <!--<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                --><!--  TODO: Trigger if buttons dont fit, make a dropdown with all buttons that dont fit anymore  --><!--
-                <Button local:CustomButton.Icon="{StaticResource ScreenshotImage}"
-                        local:CustomButton.IconLocation="Top" Content="Pencils" />
-                <Button local:CustomButton.Icon="{StaticResource ScreenshotImage}"
-                        local:CustomButton.IconLocation="Top" Content="Shapes" />
-                <Button local:CustomButton.Icon="{StaticResource ScreenshotImage}"
-                        local:CustomButton.IconLocation="Top" Content="Stickers" />
-                <Button local:CustomButton.Icon="{StaticResource ScreenshotImage}"
-                        local:CustomButton.IconLocation="Top" Content="Text" />
-            </StackPanel>-->
         </DockPanel>
 
         <Border x:Name="SidePanel" Width="250"
-            Background="{StaticResource AlternateBackgroundBrush}"
-            DockPanel.Dock="Right">
-            <ContentPresenter Content="{Binding SidePanelContent}"/>
+                Background="{StaticResource AlternateBackgroundBrush}"
+                DockPanel.Dock="Right">
+
+            <ContentControl Content="{Binding SidePanelContentKind}">
+                <ContentControl.ContentTemplateSelector>
+                    <local:SidePanelContentKindIconSelector />
+                </ContentControl.ContentTemplateSelector>
+            </ContentControl>
+
+
+            <!-- DockPanel option Pencils -->
+            <!-- DockPanel option Shapes -->
+            <!-- DockPanel option Stickers -->
+            <!-- DockPanel option Text -->
+
+            <!--<DockPanel>
+                <ContentPresenter Height="{Binding ElementName=SecondaryTopPanel, Path=ActualHeight}" DockPanel.Dock="Top">
+                    <ContentPresenter.Content>
+                        <TextBlock VerticalAlignment="Bottom" Text="{Binding SidePanelContent}" 
+                                   Margin="10,0,0,0"
+                                   FontSize="17"
+                                   FontWeight="SemiBold"/>
+                    </ContentPresenter.Content>
+                </ContentPresenter>
+                <TextBlock />
+            </DockPanel>-->
         </Border>
 
         <DockPanel x:Name="SecondaryTopPanel"
                    Background="{StaticResource AlternateBackgroundBrush}"
                    DockPanel.Dock="Top">
             <DockPanel.Resources>
-                <Style BasedOn="{StaticResource CustomButton}" TargetType="ButtonBase"/>
+                <Style BasedOn="{StaticResource CustomButton}" TargetType="Button" />
             </DockPanel.Resources>
             <Button Margin="0,0,8,0" Padding="6"
                     local:CustomButton.Icon="{StaticResource ScreenshotImage}"
@@ -102,7 +134,7 @@
                     Foreground="{StaticResource AlternateForegroundBrush}" />
             <TextBlock />
         </DockPanel>
-        
+
         <Grid>
             <Border x:Name="MenuBar" Width="250"
                     HorizontalAlignment="Left" VerticalAlignment="Stretch"
@@ -110,15 +142,14 @@
                     Visibility="{Binding ElementName=MenuButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
             <TextBlock Text="Testing, 1, 2, 3, 4 , 5." />
         </Grid>
-        
+
     </DockPanel>
 </Window>
 
 
 <!--<local:CustomToolbarTray DockPanel.Dock="Top" IsLocked="True">
 
-    <local:CustomToolbarTray.BandBackgroundBrushes>
--->
+    <local:CustomToolbarTray.BandBackgroundBrushes>-->
 <!--  TODO: set the background on *BOTH* our BandBackgroundBrushes property *AND* the ToolBar  -->
 <!--
         <SolidColorBrush Color="{StaticResource DarkGray}" />
