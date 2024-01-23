@@ -8,6 +8,9 @@ using System.Windows.Controls;
 
 namespace SnippingToolWPF
 {
+    /// <summary>
+    /// Converts the enum into DataTemplate
+    /// </summary>
     public sealed class SidePanelContentKindIconSelector : DataTemplateSelector
     {
         public DataTemplate? Pencils { get; set; }

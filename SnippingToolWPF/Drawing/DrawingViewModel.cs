@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using SnippingToolWPF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +14,31 @@ namespace SnippingToolWPF
         [NotifyPropertyChangedFor(nameof(SidePanelContent))]
         private SidePanelContentKind sidePanelContentKind;
 
-        public object? SidePanelContent => SidePanelContentKind switch
+        //List of the side panel enums
+        public IReadOnlyList<SidePanelContentKind> AllSidePanelContentKinds { get; } = Enum.GetValues<SidePanelContentKind>();
+
+        private readonly PencilsSidePanelViewModel pencilsPanel;
+        private readonly ShapesSidePanelViewModel shapesPanel;
+        private readonly StickersSidePanelViewModel stickersPanel;
+        private readonly TextSidePanelViewModel textPanel;
+
+        public DrawingViewModel()
         {
-            SidePanelContentKind.Pencils => "Pencils", // Headers of each button
-            SidePanelContentKind.Shapes => "Shapes",
-            SidePanelContentKind.Stickers => "Stickers",
-            SidePanelContentKind.Text => "Text",
+            this.pencilsPanel = new PencilsSidePanelViewModel(this);
+            this.shapesPanel = new ShapesSidePanelViewModel(this);
+            this.stickersPanel = new StickersSidePanelViewModel(this);
+            this.textPanel = new TextSidePanelViewModel(this);
+        }
+
+        public SidePanelViewModel? SidePanelContent => SidePanelContentKind switch
+        {
+            SidePanelContentKind.Pencils => pencilsPanel,
+            SidePanelContentKind.Shapes => shapesPanel,
+            SidePanelContentKind.Stickers => stickersPanel,
+            SidePanelContentKind.Text => textPanel,
             _ => null,
         };
 
-        public IReadOnlyList<SidePanelContentKind> AllSidePanelContentKinds { get; } = Enum.GetValues<SidePanelContentKind>();
+
     }
 }
