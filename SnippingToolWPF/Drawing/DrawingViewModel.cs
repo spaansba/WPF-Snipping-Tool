@@ -12,7 +12,7 @@ namespace SnippingToolWPF
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(SidePanelContent))]
-        private SidePanelContentKind sidePanelContentKind;
+        private SidePanelContentKind sidePanelContentKind = SidePanelContentKind.Text;
 
         //List of the side panel enums
         public IReadOnlyList<SidePanelContentKind> AllSidePanelContentKinds { get; } = Enum.GetValues<SidePanelContentKind>();

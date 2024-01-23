@@ -11,6 +11,7 @@
     </Window.DataContext>
 
     <Window.Resources>
+        
         <Canvas x:Key="ScreenshotImage" Width="30"
                 Height="30" x:Shared="False">
             <fa6:SvgAwesome Canvas.Left="0" Canvas.Top="8"

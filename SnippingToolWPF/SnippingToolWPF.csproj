@@ -9,6 +9,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+
+   <ItemGroup>
+	  <InternalsVisibleTo Include="SnippingWPFTests"/>
+   </ItemGroup>
+	
   <ItemGroup>
     <None Remove="Assets\UI Icons\NewScreenshot.png" />
   </ItemGroup>
