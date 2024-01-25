@@ -24,28 +24,12 @@ namespace SnippingToolWPF
 
         public static IReadOnlyList<FontInfo> AllFontFamilies { get; } =
            Fonts.SystemFontFamilies
+               .Where(font => !FontInfo.FontsToExclude.Contains(font.ToString()))
                .OrderBy(static font => font.ToString())
                .Select(FontInfo.CreateFontInfo)
                .ToList()
                .AsReadOnly();
-
+        
         private static readonly FontInfo? defaultFont = AllFontFamilies.FirstOrDefault(static x => x.ToString() == "Calibri");
-
-
-        public sealed record FontInfo(bool FontWithSymbol, FontFamily Family)
-        {
-            public static FontInfo CreateFontInfo(FontFamily font)
-            {
-                return new(IsSymbol(font), font);
-                
-            }
-
-            internal static bool IsSymbol(FontFamily font)
-            {
-                Typeface typeface = font.GetTypefaces().First();
-                typeface.TryGetGlyphTypeface(out GlyphTypeface glyph);
-                return (!font.Source.Contains("Global")) && (glyph == null || glyph.Symbol);
-            }
-        }  
     }
 }

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SnippingToolWPF" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+             xmlns:uc="SnippingToolWPF.Control.ColorSelector"
              d:DataContext="{d:DesignInstance Type=local:TextSidePanelViewModel,
                                               IsDesignTimeCreatable=False}"
              d:DesignHeight="600" d:DesignWidth="200"
@@ -39,7 +40,7 @@
                   Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
                   Padding="{StaticResource ButtonPadding}"
                   DockPanel.Dock="Top" FontSize="13"
-                  ItemsSource="{Binding SortedAllFontFamilies}"
+                  ItemsSource="{Binding AllFontFamilies}"
                   SelectedItem="{Binding FontFamily}">
 
                 <!-- Replace built-in combobox stackpanel with VirtualizingStackPanel for better performance -->
@@ -51,7 +52,13 @@
 
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock FontFamily="{Binding Source}" Text="{Binding Source}"/>
+                        <StackPanel Orientation="Horizontal" MaxWidth="200">
+                            <TextBlock Text="{Binding Family}"
+                                       Visibility="{Binding FontWithSymbol, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <TextBlock Text=" - "
+                                       Visibility="{Binding FontWithSymbol, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <TextBlock FontFamily="{Binding Family}" Text="{Binding Family}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -133,9 +140,10 @@
             </CheckBox>
 
             <!-- TODO: put color selector like we have at the top -->
-            <TextBlock Text="TempColorSelector" 
-                       Grid.Column="2" Grid.Row="5"
-                       Visibility="{Binding ElementName=BorderOption, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Button Content="TempColorSelector" 
+                    Grid.Column="2" Grid.Row="5"
+                    Visibility="{Binding ElementName=BorderOption, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Click="BorderColorSelectorButton_Click"/>
 
         </Grid>
         <TextBlock /> <!-- Temp value -->

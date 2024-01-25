@@ -11,8 +11,8 @@
     <SolidColorBrush x:Key="HorizontalNormalBrush" Color="#C8C8C8" />
     <SolidColorBrush x:Key="HorizontalNormalBorderBrush" Color="#888" />
 
-    <!-- https://stackoverflow.com/questions/37095415/wpf-scrollbar-styles-->
-    
+    <!--  https://stackoverflow.com/questions/37095415/wpf-scrollbar-styles  -->
+
     <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
         <Setter Property="Visibility" Value="Hidden" />
         <Setter Property="SnapsToDevicePixels" Value="True" />

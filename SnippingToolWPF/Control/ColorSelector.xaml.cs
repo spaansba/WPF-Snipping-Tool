@@ -22,7 +22,21 @@ namespace SnippingToolWPF.Control
     {
         public ColorSelector()
         {
+         //   this.CustomColorSwatches = new List<Color>();
             InitializeComponent();
         }
+
+        public IEnumerable<Color>? CustomColorSwatches
+        {
+            get => (IEnumerable<Color>?)this.GetValue(CustomColorSwatchesProperty) ?? new List<Color>();
+         //   set => this.SetValue(CustomColorSwatchesProperty, value);
+        }
+
+        public static readonly DependencyProperty CustomColorSwatchesProperty = DependencyProperty.Register(
+            nameof(CustomColorSwatches),
+            typeof(Color),
+            typeof(ColorSelector),
+            new FrameworkPropertyMetadata(Colors.Black) { BindsTwoWayByDefault = true });
+
     }
 }
