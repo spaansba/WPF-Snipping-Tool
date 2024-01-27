@@ -1,49 +1,67 @@
 ﻿<UserControl x:Class="SnippingToolWPF.Drawing.TextSidePanel" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
              xmlns:local="clr-namespace:SnippingToolWPF" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
              xmlns:uc="SnippingToolWPF.Control.ColorSelector"
              d:DataContext="{d:DesignInstance Type=local:TextSidePanelViewModel,
                                               IsDesignTimeCreatable=False}"
-             d:DesignHeight="600" d:DesignWidth="200"
+             d:DesignHeight="400" d:DesignWidth="200"
+             Background="{StaticResource AlternateBackgroundBrush}"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Thickness x:Key="ButtonPadding">8</Thickness>
-        <Thickness x:Key="ButtonMargin">0,15,0,0</Thickness>
 
         <Style x:Key="TextToggleButtonStyle" TargetType="ToggleButton">
             <Setter Property="Padding" Value="{StaticResource ButtonPadding}" />
             <Setter Property="FontSize" Value="20" />
+            <Setter Property="Background" Value="{StaticResource AlternateBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource LightBorderBrush}" />
+        </Style>
+
+        <Style x:Key="ColorSelectorStyle" TargetType="control:ColorSelector">
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="40" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
 
     </UserControl.Resources>
-<!-- big TODCreate overflow side panel for if width/height is to small -->
+    <!--  big TODCreate overflow side panel for if width/height is to small  -->
     <DockPanel>
 
-        <Grid Margin="22,10,22,0" DockPanel.Dock="Top">
+        <Grid MinHeight="300" Margin="12,10,12,0"
+              DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
 
-            <!-- https://stackoverflow.com/questions/2987122/how-to-determine-if-a-font-is-a-symbol-font-eg-wingdings -->
-            <ComboBox x:Name="FontFamilyComboBox" Margin="0,0,0,15"
-                  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
-                  Padding="{StaticResource ButtonPadding}"
-                  DockPanel.Dock="Top" FontSize="13"
-                  ItemsSource="{Binding AllFontFamilies}"
-                  SelectedItem="{Binding FontFamily}">
 
-                <!-- Replace built-in combobox stackpanel with VirtualizingStackPanel for better performance -->
+            <!--  TODO: Make it so the fonts are loaded asynch before clicking, now the first click laggs a bit  -->
+            <ComboBox x:Name="FontFamilyComboBox" Grid.Row="0"
+                      Grid.Column="0" Grid.ColumnSpan="3"
+                      MinHeight="40" MaxHeight="40"
+                      Margin="0,0,0,5"
+                      Padding="{StaticResource ButtonPadding}"
+                      Background="{StaticResource AlternateBackgroundBrush}"
+                      DockPanel.Dock="Top" FontSize="13"
+                      ItemsSource="{Binding AllFontFamilies}"
+                      SelectedItem="{Binding FontFamily}">
+
+                <ComboBox.Resources>
+                    <Style BasedOn="{StaticResource CustomComboBox}" TargetType="ComboBox" />
+                </ComboBox.Resources>
+
+                <!--  Replace built-in combobox stackpanel with VirtualizingStackPanel for better performance  -->
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel />
@@ -52,25 +70,28 @@
 
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" MaxWidth="200">
-                            <TextBlock Text="{Binding Family}"
-                                       Visibility="{Binding FontWithSymbol, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <TextBlock Text=" - "
-                                       Visibility="{Binding FontWithSymbol, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            <TextBlock FontFamily="{Binding Family}" Text="{Binding Family}"/>
+                        <StackPanel MaxWidth="200" Orientation="Horizontal">
+                            <TextBlock Text="{Binding Family}" Visibility="{Binding FontWithSymbol, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <TextBlock Text=" - " Visibility="{Binding FontWithSymbol, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <TextBlock FontFamily="{Binding Family}" Text="{Binding Family}" />
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
+            <!--  TODO Fix box, not showing up the info  -->
             <ComboBox x:Name="FontSizeComboBox" Grid.Row="1"
                       Grid.Column="0" Grid.ColumnSpan="2"
+                      MinHeight="40" MaxHeight="40"
                       Padding="{StaticResource ButtonPadding}"
-                      FontSize="15"
+                      IsEditable="True"
                       ItemsSource="{Binding FontSizeList}"
-                      SelectedItem="{Binding FontSize}"
                       MaxDropDownHeight="280"
-                      IsEditable="True"> <!--TODO: Accepted values should be a range from 1:130 -->
+                      SelectedItem="{Binding FontSize}">
+                <!--  TODO: Accepted values should be a range from 1:130  -->
+                <ComboBox.Resources>
+                    <Style BasedOn="{StaticResource CustomComboBox}" TargetType="ComboBox" />
+                </ComboBox.Resources>
 
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -79,74 +100,92 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <!-- TODO put color selector -->
-            <TextBlock Grid.Row="1" Grid.Column="2"
-                       Text="TempColorSelector" />
+            <control:ColorSelector Grid.Row="1" Grid.Column="2"
+                                   Style="{StaticResource ColorSelectorStyle}" />
 
-            <!-- TODO dont want the height to become smaller. minheight not working -->
-            <ToggleButton x:Name="BoldTextOption" Grid.Row="2"
-                          Grid.Column="0" Content="B"
-                          FontWeight="Bold"
+            <ToggleButton x:Name="BoldTextOption" Grid.Row="3"
+                          Grid.Column="0" Margin="0,10,3,0"
+                          Content="B" FontWeight="Bold"
+                          Style="{StaticResource TextToggleButtonStyle}" />
+            <ToggleButton x:Name="ItalicTextOption" Grid.Row="3"
+                          Grid.Column="1" Margin="3,10,3,0"
+                          Content="I"
                           Style="{StaticResource TextToggleButtonStyle}"
-                          Margin="0,15,2,0"/>
-            <ToggleButton x:Name="ItalicTextOption" Grid.Row="2"
-                          Grid.Column="1" Content="I"
-                          Style="{StaticResource TextToggleButtonStyle}"
-                          Margin="2,15,2,0"
                           TextBlock.FontStyle="Italic" />
-            <ToggleButton x:Name="UnderlineTextOption" Grid.Row="2"
-                          Grid.Column="2"
-                          Style="{StaticResource TextToggleButtonStyle}"
-                          Margin="2,15,0,0">
+            <ToggleButton x:Name="UnderlineTextOption" Grid.Row="3"
+                          Grid.Column="2" Margin="3,10,0,0"
+                          Style="{StaticResource TextToggleButtonStyle}">
                 <TextBlock Text="U">
                     <TextBlock.TextDecorations>
-                        <TextDecoration PenOffset="1.5" PenOffsetUnit="Pixel"/>
+                        <TextDecoration PenOffset="1.5" PenOffsetUnit="Pixel" />
                     </TextBlock.TextDecorations>
                 </TextBlock>
             </ToggleButton>
 
-            
-            
-            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <!--  TODO: want to have Icons instead of text  -->
-                <ComboBox x:Name="HorizontalAllignmentOption" Grid.Column="0"
-                          Margin="0,15,2,0" />
-                <ComboBox x:Name="VerticalAllignmentOption" Grid.Column="1"
-                          Margin="2,15,0,0" />
-            </Grid>
+            <Border Grid.Row="4" Grid.Column="0"
+                    Grid.ColumnSpan="3" Height="40"
+                    MinHeight="40" Margin="0,10,0,0"
+                    BorderBrush="{StaticResource LightBorderBrush}"
+                    BorderThickness="1">
+                <UniformGrid x:Name="TextAlignment" Height="40"
+                             MinHeight="40"
+                             Background="{Binding Background, ElementName=BoldTextOption}"
+                             Columns="3">
+                    <UniformGrid.Resources>
+                        <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="RadioButton">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Background" Value="{StaticResource AlternateBackgroundBrush}" />
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Padding" Value="9" />
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <fa6:SvgAwesome x:Name="icon" Icon="{Binding Path=Tag, 
+                                                            RelativeSource={RelativeSource AncestorType=RadioButton}}" 
+                                                            PrimaryColor="{StaticResource MainBackgroundBrush}"/>
+                                            <ContentPresenter Content="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </UniformGrid.Resources>
+                    <!--<Button Content="{local:SvgAwesome Icon=Solid_Flag, Size=64}"/>-->
+                    <RadioButton IsChecked="{local:EnumIsChecked alignment, Value={x:Static HorizontalAlignment.Left}}" Tag="Solid_AlignLeft" />
+                    <RadioButton IsChecked="{local:EnumIsChecked alignment, Value={x:Static HorizontalAlignment.Center}}" Tag="Solid_AlignCenter" />
+                    <RadioButton IsChecked="{local:EnumIsChecked alignment, Value={x:Static HorizontalAlignment.Right}}" Tag="Solid_AlignRight" />
+                </UniformGrid>
+            </Border>
 
-            <!-- TODO: Make the checkbox look nicer, maybe the size? idk yet-->
-            <CheckBox x:Name="FillTextBackgroundOption" Grid.Row="4"
-                      Grid.Column="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center"
-                      Margin="{StaticResource ButtonMargin}">
-                <TextBlock Text="Fill the background" TextWrapping="Wrap"
-                           Padding="5,0,0,0"/>
+            <CheckBox x:Name="FillTextBackgroundOption" Grid.Row="5"
+                      Grid.Column="0" Grid.ColumnSpan="3"
+                      VerticalContentAlignment="Center" Background="{StaticResource AlternateBackgroundBrush}">
+                <TextBlock Padding="1,0,0,0" Text="Background" />
             </CheckBox>
 
-            <!-- TODO: put color selector like we have at the top -->
-            <TextBlock Text="TempColorSelector" 
-                       Grid.Column="2" Grid.Row="4"
-                       Visibility="{Binding ElementName=FillTextBackgroundOption, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <control:ColorSelector Grid.Row="5" Grid.Column="2"
+                                   SelectedColor="{Binding BorderColor}"
+                                   Style="{StaticResource ColorSelectorStyle}"
+                                   Visibility="{Binding ElementName=FillTextBackgroundOption, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-            <CheckBox x:Name="BorderOption" Grid.Row="5"
-                      Grid.Column="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center"
-                      Margin="{StaticResource ButtonMargin}">
-                <TextBlock Text="Add border" TextWrapping="Wrap"
-                           Padding="5,0,0,0"/>
+
+            <!--  TODO: Make it allign center of the row  -->
+            <CheckBox x:Name="BorderOption" Grid.Row="6"
+                      Grid.Column="0" Grid.ColumnSpan="3"
+                      VerticalAlignment="Center" Background="{StaticResource AlternateBackgroundBrush}">
+                <TextBlock Padding="1,0,0,0" Text="Border"
+                           TextWrapping="Wrap" />
             </CheckBox>
 
-            <!-- TODO: put color selector like we have at the top -->
-            <Button Content="TempColorSelector" 
-                    Grid.Column="2" Grid.Row="5"
-                    Visibility="{Binding ElementName=BorderOption, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Click="BorderColorSelectorButton_Click"/>
-
+            <control:ColorSelector Grid.Row="6" Grid.Column="2"
+                                   SelectedColor="{Binding BorderColor}"
+                                   Style="{StaticResource ColorSelectorStyle}"
+                                   Visibility="{Binding ElementName=BorderOption, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Grid>
-        <TextBlock /> <!-- Temp value -->
+
+        <!--  Temp value  -->
+        <TextBlock />
     </DockPanel>
 
 </UserControl>

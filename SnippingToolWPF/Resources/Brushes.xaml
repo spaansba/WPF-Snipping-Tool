@@ -1,10 +1,20 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Color x:Key="SemiWhiteColor">#E1E1DE</Color>
     <Color x:Key="SemiDarkColor">#363941</Color>
-    <Color x:Key="DarkGray">#202020</Color>
-    <Color x:Key="LightGray">LightGray</Color>
+    <Color x:Key="DarkGray">#949493</Color>
+    <Color x:Key="LightGray">#F8F4E9</Color>
+    <Color x:Key="LighterGray">#d4d9e1</Color>
+    <Color x:Key="DarkBlue">#0f60ce</Color>
+    <Color x:Key="DarkerBlue">#0F60CE</Color>
+    
     <SolidColorBrush x:Key="MainForegroundBrush" Color="{StaticResource SemiWhiteColor}" />
     <SolidColorBrush x:Key="AlternateForegroundBrush" Color="{StaticResource SemiDarkColor}" />
-    <SolidColorBrush x:Key="MainBackgroundBrush" Color="{StaticResource DarkGray}" />
-    <SolidColorBrush x:Key="AlternateBackgroundBrush" Color="{StaticResource LightGray}" />
+
+    <SolidColorBrush x:Key="MainBackgroundBrush" Color="#202020" />
+    <SolidColorBrush x:Key="AlternateBackgroundBrush" Color="#B3B8B5" />
+    
+    <SolidColorBrush x:Key="LightBorderBrush" Color="{StaticResource LighterGray}"/>
+    <SolidColorBrush x:Key="HoveredBorderBrush" Color="{StaticResource DarkBlue}"/>
+    <SolidColorBrush x:Key="HoveredFill" Color="{StaticResource DarkBlue}"/>
+    <SolidColorBrush x:Key="SelectedFill" Color="{StaticResource DarkerBlue}"/>
 </ResourceDictionary>

@@ -1,17 +1,17 @@
 ﻿<Window x:Class="SnippingToolWPF.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:fa6="http://schemas.fontawesome.com/icons/svg" xmlns:local="clr-namespace:SnippingToolWPF"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:drawing="clr-namespace:SnippingToolWPF.Drawing" Title="Snipping Tool"
-        Width="800" Height="450"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="Snipping Tool"
+        Width="800" Height="550"
         Background="#FFF4F4F4" FontFamily="Segou UI Light"
         FontSize="13" mc:Ignorable="d" UseLayoutRounding="True">
-<!-- TODO Make custom title bar -->
+    <!-- TODO Make custom title bar -->
     <Window.DataContext>
         <local:DrawingViewModel/>
     </Window.DataContext>
 
     <Window.Resources>
-        
+
         <Canvas x:Key="ScreenshotImage" Width="30"
                 Height="30" x:Shared="False">
             <fa6:SvgAwesome Canvas.Left="0" Canvas.Top="8"
@@ -41,7 +41,7 @@
             <ToggleButton x:Name="MenuButton"
                           local:CustomButton.Icon="{StaticResource ScreenshotImage}"
                           local:CustomButton.IconLocation="Top" Content="Menu"
-                          DockPanel.Dock="Left" />
+                          DockPanel.Dock="Left"/>
             <Button local:CustomButton.Icon="{StaticResource ScreenshotImage}"
                     local:CustomButton.IconLocation="Top" Content="History"
                     DockPanel.Dock="Right" />
@@ -81,13 +81,14 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="200"/> <!-- sidepanel width -->
+                <ColumnDefinition Width="200"/>
+                <!-- sidepanel width -->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            
+
             <!-- Creating to rectangles to draw the background color -->
             <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                     Background="{StaticResource AlternateBackgroundBrush}"/>
@@ -125,69 +126,15 @@
                 <ContentPresenter Content="{Binding SidePanelContent}"/>
             </Border>
 
-
             <Border x:Name="MenuBar" Width="250"
                     Grid.Row="0" Grid.Column="0"
                     Grid.RowSpan="2"
                     HorizontalAlignment="Left" VerticalAlignment="Stretch"
                     Panel.ZIndex="1" Background="LightBlue"
                     Visibility="{Binding ElementName=MenuButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
             <TextBlock Text="Testing, 1, 2, 3, 4 , 5." 
                        Grid.Row="1" Grid.Column="0"/>
         </Grid>
     </DockPanel>
 </Window>
-
-
-<!--<local:CustomToolbarTray DockPanel.Dock="Top" IsLocked="True">
-
-    <local:CustomToolbarTray.BandBackgroundBrushes>-->
-<!--  TODO: set the background on *BOTH* our BandBackgroundBrushes property *AND* the ToolBar  -->
-<!--
-        <SolidColorBrush Color="{StaticResource DarkGray}" />
-        <SolidColorBrush Color="{StaticResource LightGray}" />
-    </local:CustomToolbarTray.BandBackgroundBrushes>
-    <ToolBar x:Name="PrimaryTopLeftToolBar" Background="#202020"
-             ToolBarTray.IsLocked="True">
-        <local:CustomButton Content="Menu"
-                            Icon="{StaticResource ScreenshotImage}"
-                            IconLocation="Top" ToolBar.OverflowMode="Never" />
-    </ToolBar>
-    <ToolBar x:Name="PrimaryTopMiddleToolBar"
-             Background="{StaticResource MainBackgroundBrush}"
-             Foreground="{StaticResource MainForegroundBrush}"
-             ToolBar.OverflowMode="AsNeeded" ToolBarTray.IsLocked="True">
-        <local:CustomButton Content="Pencils"
-                            Icon="{StaticResource ScreenshotImage}"
-                            IconLocation="Top" />
-        <local:CustomButton Content="Shapes"
-                            Icon="{StaticResource ScreenshotImage}"
-                            IconLocation="Top" />
-        <local:CustomButton Content="Stickers"
-                            Icon="{StaticResource ScreenshotImage}"
-                            IconLocation="Top" />
-        <local:CustomButton Content="Text"
-                            Icon="{StaticResource ScreenshotImage}"
-                            IconLocation="Top" />
-    </ToolBar>
-    <ToolBar x:Name="PrimaryTopRightToolBar"
-             Background="{StaticResource MainBackgroundBrush}"
-             ToolBarTray.IsLocked="True">
-        <local:CustomButton Content="History"
-                            Icon="{StaticResource ScreenshotImage}"
-                            IconLocation="Top" ToolBar.OverflowMode="Never" />
-    </ToolBar>
-    <ToolBar x:Name="SecondaryTopLeftToolBar"
-             Background="{StaticResource AlternateBackgroundBrush}"
-             Band="1" ToolBarTray.IsLocked="True">
-        <local:CustomButton Margin="0,0,8,0" Padding="6"
-                            Content="Screenshot"
-                            Foreground="{StaticResource AlternateForegroundBrush}"
-                            Icon="{StaticResource ScreenshotImage}"
-                            IconLocation="Left" />
-        <local:CustomButton Padding="6" Content="Empty Canvas"
-                            Foreground="{StaticResource AlternateForegroundBrush}"
-                            Icon="{StaticResource ScreenshotImage}"
-                            IconLocation="Left" />
-    </ToolBar>
-</local:CustomToolbarTray>-->

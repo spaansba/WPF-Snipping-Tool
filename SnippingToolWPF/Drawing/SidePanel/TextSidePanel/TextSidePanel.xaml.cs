@@ -1,5 +1,6 @@
-﻿using SnippingToolWPF.Control;
-
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using SnippingToolWPF.Control;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -15,19 +16,6 @@ namespace SnippingToolWPF.Drawing
         public TextSidePanel()
         {
             InitializeComponent();
-        }
-        private void BorderColorSelectorButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Create an instance of ColorSelector.xaml user control
-            ColorSelector colorSelector = new ColorSelector();
-
-            // Create a Popup control
-            Popup popup = new Popup
-            {
-                Child = colorSelector,
-                Placement = PlacementMode.Bottom,
-                IsOpen = true
-            };
         }
     }
 }

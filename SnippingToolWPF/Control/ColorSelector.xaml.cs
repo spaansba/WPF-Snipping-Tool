@@ -22,21 +22,35 @@ namespace SnippingToolWPF.Control
     {
         public ColorSelector()
         {
-         //   this.CustomColorSwatches = new List<Color>();
+            this.CustomColorSwatches = new List<Color>();
             InitializeComponent();
+        }
+
+        public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
+            nameof(SelectedColor),
+            typeof(Color),
+            typeof(ColorSelector),
+            new FrameworkPropertyMetadata(Colors.Black) { BindsTwoWayByDefault = true });
+
+
+        public static readonly DependencyProperty CustomColorSwatchesProperty = DependencyProperty.Register(
+      nameof(CustomColorSwatches),
+      typeof(IEnumerable<Color>),
+      typeof(ColorSelector),
+      new FrameworkPropertyMetadata(null) { BindsTwoWayByDefault = true }); //TODO: had to set to null or error
+
+
+        public Color SelectedColor
+        {
+            get => (Color)this.GetValue(SelectedColorProperty);
+            set => this.SetValue(SelectedColorProperty, value);
         }
 
         public IEnumerable<Color>? CustomColorSwatches
         {
             get => (IEnumerable<Color>?)this.GetValue(CustomColorSwatchesProperty) ?? new List<Color>();
-         //   set => this.SetValue(CustomColorSwatchesProperty, value);
+            set => this.SetValue(CustomColorSwatchesProperty, value);
         }
-
-        public static readonly DependencyProperty CustomColorSwatchesProperty = DependencyProperty.Register(
-            nameof(CustomColorSwatches),
-            typeof(Color),
-            typeof(ColorSelector),
-            new FrameworkPropertyMetadata(Colors.Black) { BindsTwoWayByDefault = true });
 
     }
 }

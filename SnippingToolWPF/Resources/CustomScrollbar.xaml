@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="StandardBorderBrush" Color="#888" />
     <SolidColorBrush x:Key="StandardBackgroundBrush" Color="Black" />
-    <SolidColorBrush x:Key="HoverBorderBrush" Color="#DDD" />
+    <SolidColorBrush x:Key="HoverBorderBrush" Color="Blue" />
     <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="Gray" />
     <SolidColorBrush x:Key="SelectedForegroundBrush" Color="White" />
     <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
@@ -12,7 +12,7 @@
     <SolidColorBrush x:Key="HorizontalNormalBorderBrush" Color="#888" />
 
     <!--  https://stackoverflow.com/questions/37095415/wpf-scrollbar-styles  -->
-
+    <!--  TODO: Fix that the hovered scrollbar thumb changes color  -->
     <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
         <Setter Property="Visibility" Value="Hidden" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -31,7 +31,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource PressedBrush}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource HoveredFill}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
@@ -68,6 +68,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="0" CornerRadius="4" />
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -154,6 +155,7 @@
                           Command="ScrollBar.LineRightCommand" Content="M 0 0 L 4 4 L 0 8 Z"
                           Style="{StaticResource ScrollBarLineButton}" />
         </Grid>
+
     </ControlTemplate>
 
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
@@ -201,6 +203,7 @@
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                                    Value="{TemplateBinding HorizontalOffset}" />
                     </Grid>
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
