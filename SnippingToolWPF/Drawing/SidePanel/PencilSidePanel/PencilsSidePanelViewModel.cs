@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SnippingToolWPF
 {
-    public sealed class PencilsSidePanelViewModel : SidePanelViewModel
+    public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
     {
         public override string Header => "Pencils";
+
+        [ObservableProperty]
+        private PencilOptions pencilOption = PencilOptions.Pen;
+
         public PencilsSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
         {
         }

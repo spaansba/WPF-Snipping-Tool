@@ -4,10 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnippingToolWPF.Drawing.SidePanel.TextSidePanel
+namespace SnippingToolWPF
 {
     public enum PencilOptions
     {
-
+        Pen,
+        Calligraphy,
+        RegularPencil,
+        Gum,
+        Chalk,
+        Graffiti,
+        Bucket,
+        Oil,
     }
 }

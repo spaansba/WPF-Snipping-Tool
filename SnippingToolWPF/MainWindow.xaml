@@ -11,7 +11,7 @@
     </Window.DataContext>
 
     <Window.Resources>
-
+<!-- TODO: if user pastes on the canvas (with text) select the text panel + paste the text in a textbox-->
         <Canvas x:Key="ScreenshotImage" Width="30"
                 Height="30" x:Shared="False">
             <fa6:SvgAwesome Canvas.Left="0" Canvas.Top="8"
@@ -23,6 +23,7 @@
                        Stroke="{StaticResource MainForegroundBrush}"
                        StrokeDashArray="3 3" StrokeThickness="1" />
         </Canvas>
+
 
     </Window.Resources>
     <!--  Maring/Padding is Left Top Right Bottom  -->

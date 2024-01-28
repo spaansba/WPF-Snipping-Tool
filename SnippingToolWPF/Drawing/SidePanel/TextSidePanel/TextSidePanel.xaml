@@ -23,6 +23,8 @@
             <Setter Property="Width" Value="40" />
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
+        
+        
 
     </UserControl.Resources>
     <!--  big TODCreate overflow side panel for if width/height is to small  -->
@@ -132,7 +134,7 @@
                              Background="{Binding Background, ElementName=BoldTextOption}"
                              Columns="3">
                     <UniformGrid.Resources>
-                        <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="RadioButton">
+                        <Style TargetType="RadioButton">
                             <Setter Property="BorderThickness" Value="0" />
                             <Setter Property="Background" Value="{StaticResource AlternateBackgroundBrush}" />
                             <Setter Property="Margin" Value="0" />
@@ -152,16 +154,15 @@
                         </Style>
                     </UniformGrid.Resources>
                     <!--<Button Content="{local:SvgAwesome Icon=Solid_Flag, Size=64}"/>-->
-                    <RadioButton IsChecked="{local:EnumIsChecked alignment, Value={x:Static HorizontalAlignment.Left}}" Tag="Solid_AlignLeft" />
-                    <RadioButton IsChecked="{local:EnumIsChecked alignment, Value={x:Static HorizontalAlignment.Center}}" Tag="Solid_AlignCenter" />
-                    <RadioButton IsChecked="{local:EnumIsChecked alignment, Value={x:Static HorizontalAlignment.Right}}" Tag="Solid_AlignRight" />
+                    <RadioButton IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Left}}" Tag="Solid_AlignLeft" />
+                    <RadioButton IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Center}}" Tag="Solid_AlignCenter" />
+                    <RadioButton IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}" Tag="Solid_AlignRight" />
                 </UniformGrid>
             </Border>
 
             <CheckBox x:Name="FillTextBackgroundOption" Grid.Row="5"
-                      Grid.Column="0" Grid.ColumnSpan="3"
-                      VerticalContentAlignment="Center" Background="{StaticResource AlternateBackgroundBrush}">
-                <TextBlock Padding="1,0,0,0" Text="Background" />
+                      Grid.Column="0" Grid.ColumnSpan="3">
+                <TextBlock Padding="5,0,0,0" Text="Background" />
             </CheckBox>
 
             <control:ColorSelector Grid.Row="5" Grid.Column="2"
@@ -172,9 +173,8 @@
 
             <!--  TODO: Make it allign center of the row  -->
             <CheckBox x:Name="BorderOption" Grid.Row="6"
-                      Grid.Column="0" Grid.ColumnSpan="3"
-                      VerticalAlignment="Center" Background="{StaticResource AlternateBackgroundBrush}">
-                <TextBlock Padding="1,0,0,0" Text="Border"
+                      Grid.Column="0" Grid.ColumnSpan="3">
+                <TextBlock Padding="5,0,0,0" Text="Border"
                            TextWrapping="Wrap" />
             </CheckBox>
 
