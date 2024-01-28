@@ -1,13 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" xmlns:snippingToolWPF="clr-namespace:SnippingToolWPF">
+                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
+                    xmlns:snippingToolWPF="clr-namespace:SnippingToolWPF">
 
     <Style x:Key="ButtonBaseStyle" TargetType="{x:Type ButtonBase}">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="border"
                             Background="{StaticResource AlternateBackgroundBrush}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderBrush="{StaticResource LightBorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             SnapsToDevicePixels="true">
                         <ContentPresenter x:Name="contentPresenter"
@@ -18,12 +20,16 @@
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                     <ControlTemplate.Triggers>
+
                         <Trigger Property="Button.IsDefaulted" Value="true">
                             <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="{Binding Path=(snippingToolWPF:ColorAssist.HoverBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding Path=(snippingToolWPF:ColorAssist.HoverBackgroundBorder), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{StaticResource HoverBorderBrush}" />
+                            <Setter TargetName="contentPresenter" Property="TextBlock.Foreground" Value="{StaticResource HoverBorderBrush}" /> 
+                            <!--  TODO make this work  -->
+                            <Setter TargetName="contentPresenter" Property="fa6:SvgAwesome.PrimaryColor" Value="Red" /> 
+                            <!--  TODO make this work  -->
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
                             <Setter TargetName="border" Property="Background" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsPressedBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
@@ -36,7 +42,6 @@
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="border" Property="Background" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsEnabledBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter TargetName="border" Property="BorderBrush" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsEnabledBackgroundBorder), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter Property="TextElement.Foreground" Value="{StaticResource Button.Disabled.Foreground}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -45,38 +50,6 @@
     </Style>
 
     <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="{x:Type RadioButton}" />
-    <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="{x:Type CheckBox}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type CheckBox}">
-                    <BulletDecorator Background="Transparent" VerticalAlignment="Center">
-                        <BulletDecorator.Bullet>
-                            <Grid Width="16" Height="16">
-                                <Border x:Name="CheckBoxBorder"
-                                        Background="Transparent"
-                                        BorderBrush="{StaticResource LightBorderBrush}"
-                                        BorderThickness="1" />
-                                <TextBlock x:Name="CheckMark" HorizontalAlignment="Center" FontSize="11"
-                                           VerticalAlignment="Center" Foreground="{StaticResource MainBackgroundBrush}"
-                                           Text="✔" Visibility="Collapsed"/>
-                            </Grid>
-                        </BulletDecorator.Bullet>
-                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"
-                                          RecognizesAccessKey="True"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                    </BulletDecorator>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="CheckBoxBorder" Property="Background" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsEnabledBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="{x:Type ToggleButton}" />
 
 </ResourceDictionary>

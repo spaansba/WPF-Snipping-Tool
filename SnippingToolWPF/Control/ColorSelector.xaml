@@ -1,10 +1,8 @@
 ﻿<UserControl x:Class="SnippingToolWPF.Control.ColorSelector" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DesignHeight="450" d:DesignWidth="800"
-             Background="Black"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="450"
+             d:DesignWidth="800" Background="Black"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              mc:Ignorable="d">
 
@@ -13,17 +11,16 @@
             <ToggleButton.Content>
                 <Border Width="{Binding Width}" Height="{Binding Height}">
                     <Border.Background>
-                        <SolidColorBrush Color="{Binding SelectedColor}"/>
+                        <SolidColorBrush Color="{Binding SelectedColor}" />
                     </Border.Background>
                 </Border>
             </ToggleButton.Content>
         </ToggleButton>
-        <Popup IsOpen="{Binding Path=IsChecked, ElementName=PopupToggle}"
-               StaysOpen="False">
+        <Popup IsOpen="{Binding Path=IsChecked, ElementName=PopupToggle}" StaysOpen="False">
             <ListBox SelectedItem="{Binding SelectedColor}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Padding" Value="0" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemsSource>
@@ -54,26 +51,28 @@
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="6" Width="180" Height="90"/>
+                        <UniformGrid Width="180" Height="90"
+                                     Columns="6" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="30" Height="30" Padding="0">
+                        <Border Width="30" Height="30"
+                                Padding="0">
                             <Border.Background>
-                                <SolidColorBrush Color="{Binding}"/>
+                                <SolidColorBrush Color="{Binding}" />
                             </Border.Background>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 
-                <!-- Trigger that closes control-->
+                <!--  Trigger that closes control  -->
                 <behaviors:Interaction.Triggers>
                     <behaviors:EventTrigger EventName="SelectionChanged">
-                        <behaviors:ChangePropertyAction
-                            TargetObject="{Binding ElementName=PopupToggle}"
-                            PropertyName="IsChecked" Value="False"/>
+                        <behaviors:ChangePropertyAction PropertyName="IsChecked"
+                                                        TargetObject="{Binding ElementName=PopupToggle}"
+                                                        Value="False" />
                     </behaviors:EventTrigger>
                 </behaviors:Interaction.Triggers>
             </ListBox>

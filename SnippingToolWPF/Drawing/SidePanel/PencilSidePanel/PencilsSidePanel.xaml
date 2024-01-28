@@ -23,6 +23,7 @@
             <Setter Property="Width" Value="40" />
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
+        <!--<local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />-->
     </UserControl.Resources>
 
     <DockPanel>
@@ -44,36 +45,22 @@
             <UniformGrid x:Name="PencilSelectorPane" Columns="8"
                         Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
                 <UniformGrid.Resources>
-                    <Style TargetType="RadioButton">
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="Background" Value="{StaticResource AlternateBackgroundBrush}" />
-                        <Setter Property="Margin" Value="0" />
+                        <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="RadioButton">
+                            <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="Padding" Value="9" />
-                        <Setter Property="ContentTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa6:SvgAwesome x:Name="icon" Icon="{Binding Path=Tag, 
-                                                         RelativeSource={RelativeSource AncestorType=RadioButton}}" 
-                                                         PrimaryColor="{StaticResource MainBackgroundBrush}"/>
-                                        <ContentPresenter Content="{Binding}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
                     </Style>
-                </UniformGrid.Resources>
-
-                <RadioButton IsChecked="{local:EnumIsChecked PencilOption, Value={x:Static PencilOptions.Pen}}" Tag="Solid_AlignLeft" />
-                <RadioButton IsChecked="{local:EnumIsChecked PencilOption, Value={x:Static PencilOptions.Pen}}" Tag="Solid_AlignCenter" />
-                <RadioButton IsChecked="{local:EnumIsChecked PencilOption, Value={x:Static PencilOptions.Pen}}" Tag="Solid_AlignRight" />
-                <RadioButton IsChecked="{local:EnumIsChecked PencilOption, Value={x:Static PencilOptions.Pen}}" Tag="Solid_AlignRight" />
-                <RadioButton IsChecked="{local:EnumIsChecked PencilOption, Value={x:Static PencilOptions.Pen}}" Tag="Solid_AlignRight" />
-                <RadioButton IsChecked="{local:EnumIsChecked PencilOption, Value={x:Static PencilOptions.Pen}}" Tag="Solid_AlignRight" />
-                <RadioButton IsChecked="{local:EnumIsChecked PencilOption, Value={x:Static PencilOptions.Pen}}" Tag="Solid_AlignRight" />
-                <RadioButton IsChecked="{local:EnumIsChecked PencilOption, Value={x:Static PencilOptions.Pen}}" Tag="Solid_AlignRight" />
-
-                <!-- 
+                    </UniformGrid.Resources>
+                
+                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Left}}"/>
+                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Center}}"/>
+                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
+                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
+                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
+                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
+                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
+                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
+            </UniformGrid>
+            <!-- 
                 Pen
                 Calligraphy pencil
                 Regular pencil
@@ -83,9 +70,6 @@
                 Bucket Tool (fill)
                 Oil pencil
                 -->
-                
-            </UniformGrid>
-
         </Grid>
 
     </DockPanel>

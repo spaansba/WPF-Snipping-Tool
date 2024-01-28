@@ -4,14 +4,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="Snipping Tool"
         Width="800" Height="550"
         Background="#FFF4F4F4" FontFamily="Segou UI Light"
-        FontSize="13" mc:Ignorable="d" UseLayoutRounding="True">
-    <!-- TODO Make custom title bar -->
+        FontSize="13" UseLayoutRounding="True"
+        mc:Ignorable="d">
+    <!--  TODO Make custom title bar  -->
     <Window.DataContext>
-        <local:DrawingViewModel/>
+        <local:DrawingViewModel />
     </Window.DataContext>
 
     <Window.Resources>
-<!-- TODO: if user pastes on the canvas (with text) select the text panel + paste the text in a textbox-->
+        <!--  TODO: Add slider control for zoom in  -->
+
+        <!--  TODO: if user pastes on the canvas (with text) select the text panel + paste the text in a textbox  -->
         <Canvas x:Key="ScreenshotImage" Width="30"
                 Height="30" x:Shared="False">
             <fa6:SvgAwesome Canvas.Left="0" Canvas.Top="8"
@@ -42,19 +45,20 @@
             <ToggleButton x:Name="MenuButton"
                           local:CustomButton.Icon="{StaticResource ScreenshotImage}"
                           local:CustomButton.IconLocation="Top" Content="Menu"
-                          DockPanel.Dock="Left"/>
+                          DockPanel.Dock="Left" />
             <Button local:CustomButton.Icon="{StaticResource ScreenshotImage}"
                     local:CustomButton.IconLocation="Top" Content="History"
                     DockPanel.Dock="Right" />
 
-            <ListBox x:Name="ToolBarTopMiddle" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-                     Background="Transparent" BorderThickness="0"
+            <ListBox x:Name="ToolBarTopMiddle" HorizontalAlignment="Center"
+                     HorizontalContentAlignment="Center" Background="Transparent"
+                     BorderThickness="0"
                      Foreground="{StaticResource MainForegroundBrush}"
                      ItemsSource="{Binding AllSidePanelContentKinds}"
-                     SelectedItem="{Binding SidePanelContentKind}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     SelectedItem="{Binding SidePanelContentKind}">
                 <ListBox.Resources>
-                    <!-- Selecting the correct sidepanel based on topbar button press -->
+                    <!--  Selecting the correct sidepanel based on topbar button press  -->
                     <DataTemplate x:Key="ScreenshotIconDataTemplate">
                         <ContentPresenter Content="{StaticResource ScreenshotImage}" />
                     </DataTemplate>
@@ -82,60 +86,59 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="200"/>
-                <!-- sidepanel width -->
+                <ColumnDefinition Width="200" />
+                <!--  sidepanel width  -->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <!-- Creating to rectangles to draw the background color -->
-            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                    Background="{StaticResource AlternateBackgroundBrush}"/>
-            <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
-                    Background="{StaticResource AlternateBackgroundBrush}"/>
+            <!--  Creating to rectangles to draw the background color  -->
+            <Border Grid.Row="0" Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Background="{StaticResource AlternateBackgroundBrush}" />
 
-            <DockPanel x:Name="SecondaryTopPanel" 
-                   Grid.Row="0" Grid.Column="0"
-                   DockPanel.Dock="Top">
+            <DockPanel x:Name="SecondaryTopPanel" Grid.Row="0"
+                       Grid.Column="0" DockPanel.Dock="Top">
                 <DockPanel.Resources>
                     <Style BasedOn="{StaticResource CustomButton}" TargetType="Button" />
                 </DockPanel.Resources>
                 <Button Margin="0,0,8,0" Padding="6"
-                    local:CustomButton.Icon="{StaticResource ScreenshotImage}"
-                    local:CustomButton.IconLocation="Left" Content="Screenshot"
-                    Foreground="{StaticResource AlternateForegroundBrush}" />
+                        local:CustomButton.Icon="{StaticResource ScreenshotImage}"
+                        local:CustomButton.IconLocation="Left" Content="Screenshot"
+                        Foreground="{StaticResource AlternateForegroundBrush}" />
                 <Button Padding="6"
-                    local:CustomButton.Icon="{StaticResource ScreenshotImage}"
-                    local:CustomButton.IconLocation="Left" Content="Empty Canvas"
-                    Foreground="{StaticResource AlternateForegroundBrush}" />
+                        local:CustomButton.Icon="{StaticResource ScreenshotImage}"
+                        local:CustomButton.IconLocation="Left" Content="Empty Canvas"
+                        Foreground="{StaticResource AlternateForegroundBrush}" />
                 <TextBlock />
             </DockPanel>
 
-            <Border x:Name="SidePanelHeader" 
-                Grid.Row="0" Grid.Column="1">
-                <TextBlock Text="{Binding SidePanelContent.Header, FallbackValue={x:Null}}"
-                           VerticalAlignment="Bottom" 
-                           Margin="10,0,5,0"
-                           FontSize="25"/>
-            </Border>
-
-            <Border x:Name="SidePanel"
-                    Grid.Row="1" Grid.Column="1"
-                    DockPanel.Dock="Right">
-                <ContentPresenter Content="{Binding SidePanelContent}"/>
-            </Border>
-
-            <Border x:Name="MenuBar" Width="250"
-                    Grid.Row="0" Grid.Column="0"
-                    Grid.RowSpan="2"
-                    HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                    Panel.ZIndex="1" Background="LightBlue"
+            <Border x:Name="MenuBar" Grid.Row="0"
+                    Grid.RowSpan="2" Grid.Column="0"
+                    Width="250" HorizontalAlignment="Left"
+                    VerticalAlignment="Stretch" Panel.ZIndex="1"
+                    Background="LightBlue"
                     Visibility="{Binding ElementName=MenuButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Border Grid.Row="0" Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Background="{StaticResource AlternateBackgroundBrush}" />
 
-            <TextBlock Text="Testing, 1, 2, 3, 4 , 5." 
-                       Grid.Row="1" Grid.Column="0"/>
+            <Border x:Name="SidePanelHeader" Grid.Row="0"
+                    Grid.Column="1">
+                <TextBlock Margin="10,0,5,0" VerticalAlignment="Bottom"
+                           FontSize="25"
+                           Text="{Binding SidePanelContent.Header, FallbackValue={x:Null}}" />
+            </Border>
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Text="Testing, 1, 2, 3, 4 , 5." />
+
+            <Border x:Name="SidePanel" Grid.Row="1"
+                    Grid.Column="1" DockPanel.Dock="Right">
+                <ContentPresenter Content="{Binding SidePanelContent}" />
+            </Border>
         </Grid>
     </DockPanel>
 </Window>

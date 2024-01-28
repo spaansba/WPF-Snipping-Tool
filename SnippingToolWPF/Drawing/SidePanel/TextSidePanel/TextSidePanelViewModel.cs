@@ -16,7 +16,7 @@ namespace SnippingToolWPF
         private Color borderColor;
 
         [ObservableProperty]
-        private HorizontalAlignment alignment = HorizontalAlignment.Center;
+        private HorizontalAlignment alignment = HorizontalAlignment.Left;
 
         public static List<double> FontSizeList { get; } = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72, 94, 130];
 
