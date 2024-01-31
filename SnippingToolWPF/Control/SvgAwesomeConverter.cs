@@ -59,7 +59,6 @@ public sealed class FontAwesomeExtension : MarkupExtension
     public Brush? SecondaryColor { get; set; }
 
     public object? SecondaryColorKey { get; set; }
-
     public bool Spin { get; set; }
     public double SpinDuration { get; set; } = 1.0;
     public bool Pulse { get; set; }
@@ -72,10 +71,6 @@ public sealed class FontAwesomeExtension : MarkupExtension
     public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Stretch;
     public VerticalAlignment VerticalAlignment { get; set; } = VerticalAlignment.Stretch;
     public Thickness Margin { get; set; }
-
-
-
-
     public StretchDirection StretchDirection { get; set; } = StretchDirection.Both;
 
 

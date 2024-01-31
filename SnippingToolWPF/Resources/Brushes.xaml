@@ -17,4 +17,6 @@
     <SolidColorBrush x:Key="HoveredBorderBrush" Color="{StaticResource DarkBlue}" />
     <SolidColorBrush x:Key="HoveredFill" Color="{StaticResource DarkBlue}" />
     <SolidColorBrush x:Key="SelectedFill" Color="{StaticResource DarkerBlue}" />
+
+    <SolidColorBrush x:Key="UserFillBoxBackground" Color="#fffffc"/>
 </ResourceDictionary>

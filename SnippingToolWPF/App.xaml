@@ -4,13 +4,17 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Resources/Brushes.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/CustomButton.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Resources/Templates.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Resources/CustomScrollbar.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/CustomComboBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/RadioButtonWithIcon.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/CustomCheckBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseButtonStyle.xaml" />
+                
+
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/CustomScrollbar.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseCheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseButtonStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseSlider.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ButtonWithIcon.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/RadioButtonWithIcon.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>

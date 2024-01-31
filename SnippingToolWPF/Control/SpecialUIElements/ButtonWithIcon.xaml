@@ -18,10 +18,10 @@
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <ContentPresenter x:Name="IconPresenter" Margin="0,5,0,2"
-                                              Content="{Binding Path=(local:CustomButton.Icon), RelativeSource={RelativeSource TemplatedParent}}"
-                                              ContentTemplate="{Binding Path=(local:CustomButton.IconTemplate), RelativeSource={RelativeSource TemplatedParent}}"
-                                              ContentTemplateSelector="{Binding Path=(local:CustomButton.IconTemplateSelector), RelativeSource={RelativeSource TemplatedParent}}"
-                                              DockPanel.Dock="{Binding Path=(local:CustomButton.IconLocation), RelativeSource={RelativeSource TemplatedParent}}"
+                                              Content="{Binding Path=(local:ButtonWithIcon.Icon), RelativeSource={RelativeSource TemplatedParent}}"
+                                              ContentTemplate="{Binding Path=(local:ButtonWithIcon.IconTemplate), RelativeSource={RelativeSource TemplatedParent}}"
+                                              ContentTemplateSelector="{Binding Path=(local:ButtonWithIcon.IconTemplateSelector), RelativeSource={RelativeSource TemplatedParent}}"
+                                              DockPanel.Dock="{Binding Path=(local:ButtonWithIcon.IconLocation), RelativeSource={RelativeSource TemplatedParent}}"
                                               Focusable="False"
                                               TextElement.Foreground="{TemplateBinding Foreground}" />
                             <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="Center"
@@ -31,7 +31,7 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="local:CustomButton.IconLocation" Value="Left">
+                        <Trigger Property="local:ButtonWithIcon.IconLocation" Value="Left">
                             <Setter TargetName="ContentPresenter" Property="VerticalAlignment" Value="Center" />
                             <Setter TargetName="ContentPresenter" Property="Margin" Value="0,0,5,0" />
                             <Setter TargetName="IconPresenter" Property="VerticalAlignment" Value="Center" />
@@ -63,7 +63,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="CustomButton" TargetType="{x:Type ButtonBase}">
+    <Style x:Key="ButtonWithIcon" TargetType="{x:Type ButtonBase}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="MinWidth" Value="70" />
@@ -80,10 +80,10 @@
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <ContentPresenter x:Name="IconPresenter" Margin="0,5,0,2"
-                                              Content="{Binding Path=(local:CustomButton.Icon), RelativeSource={RelativeSource TemplatedParent}}"
-                                              ContentTemplate="{Binding Path=(local:CustomButton.IconTemplate), RelativeSource={RelativeSource TemplatedParent}}"
-                                              ContentTemplateSelector="{Binding Path=(local:CustomButton.IconTemplateSelector), RelativeSource={RelativeSource TemplatedParent}}"
-                                              DockPanel.Dock="{Binding Path=(local:CustomButton.IconLocation), RelativeSource={RelativeSource TemplatedParent}}"
+                                              Content="{Binding Path=(local:ButtonWithIcon.Icon), RelativeSource={RelativeSource TemplatedParent}}"
+                                              ContentTemplate="{Binding Path=(local:ButtonWithIcon.IconTemplate), RelativeSource={RelativeSource TemplatedParent}}"
+                                              ContentTemplateSelector="{Binding Path=(local:ButtonWithIcon.IconTemplateSelector), RelativeSource={RelativeSource TemplatedParent}}"
+                                              DockPanel.Dock="{Binding Path=(local:ButtonWithIcon.IconLocation), RelativeSource={RelativeSource TemplatedParent}}"
                                               Focusable="False"
                                               TextElement.Foreground="{TemplateBinding Foreground}" />
 
@@ -94,7 +94,7 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="local:CustomButton.IconLocation" Value="Left">
+                        <Trigger Property="local:ButtonWithIcon.IconLocation" Value="Left">
                             <Setter TargetName="ContentPresenter" Property="VerticalAlignment" Value="Center" />
                             <Setter TargetName="ContentPresenter" Property="Margin" Value="0,0,5,0" />
                             <Setter TargetName="IconPresenter" Property="VerticalAlignment" Value="Center" />

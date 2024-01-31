@@ -8,12 +8,12 @@ using System.Windows;
 
 namespace SnippingToolWPF
 {
-    public static class CustomButton
+    public static class ButtonWithIcon
     {
         public static readonly DependencyProperty IconLocationProperty = DependencyProperty.RegisterAttached( 
         name: "IconLocation",
         propertyType: typeof(Dock), 
-        ownerType: typeof(CustomButton),
+        ownerType: typeof(ButtonWithIcon),
         defaultMetadata: new FrameworkPropertyMetadata(default(Dock)));
 
         public static Dock GetIconLocation(DependencyObject target) => (Dock)target.GetValue(IconLocationProperty);
@@ -22,7 +22,7 @@ namespace SnippingToolWPF
         public static readonly DependencyProperty IconProperty = DependencyProperty.RegisterAttached(
         name: "Icon",
         propertyType: typeof(object),
-        ownerType: typeof(CustomButton),
+        ownerType: typeof(ButtonWithIcon),
         defaultMetadata: new FrameworkPropertyMetadata());
 
         public static object? GetIcon(DependencyObject target) => target.GetValue(IconProperty);
@@ -31,7 +31,7 @@ namespace SnippingToolWPF
         public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.RegisterAttached(
         name: "IconTemplate",
         propertyType: typeof(DataTemplate),
-        ownerType: typeof(CustomButton),
+        ownerType: typeof(ButtonWithIcon),
         defaultMetadata: new FrameworkPropertyMetadata());
 
         public static DataTemplate? GetIconTemplate(DependencyObject target) => (DataTemplate?)target.GetValue(IconTemplateProperty);
@@ -40,7 +40,7 @@ namespace SnippingToolWPF
         public static readonly DependencyProperty IconTemplateSelectorProperty = DependencyProperty.RegisterAttached(
         name: "IconTemplateSelector",
         propertyType: typeof(DataTemplateSelector),
-        ownerType: typeof(CustomButton),
+        ownerType: typeof(ButtonWithIcon),
         defaultMetadata: new FrameworkPropertyMetadata());
 
         public static DataTemplateSelector? GetIconTemplateSelector(DependencyObject target) => (DataTemplateSelector?)target.GetValue(IconTemplateSelectorProperty);

@@ -24,5 +24,6 @@ namespace SnippingToolWPF.Drawing
         {
             InitializeComponent();
         }
+
     }
 }

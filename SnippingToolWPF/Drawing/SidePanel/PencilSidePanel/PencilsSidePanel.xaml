@@ -1,11 +1,10 @@
 ﻿<UserControl x:Class="SnippingToolWPF.Drawing.PencilsSidePanel" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
-             xmlns:local="clr-namespace:SnippingToolWPF" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:uc="SnippingToolWPF.Control.ColorSelector"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:SnippingToolWPF"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DataContext="{d:DesignInstance Type=local:PencilsSidePanelViewModel,
                                               IsDesignTimeCreatable=False}"
-             d:DesignHeight="400" d:DesignWidth="200"
+             d:DesignHeight="400" d:DesignWidth="240"
              Background="{StaticResource AlternateBackgroundBrush}"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -23,10 +22,17 @@
             <Setter Property="Width" Value="40" />
             <Setter Property="HorizontalAlignment" Value="Right" />
         </Style>
-        <!--<local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />-->
     </UserControl.Resources>
 
     <DockPanel>
+
+        <DockPanel.Resources>
+            <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="RadioButton">
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="9" />
+            </Style>
+        </DockPanel.Resources>
+
         <Grid MinHeight="300" Margin="12,10,12,0"
               DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -34,45 +40,91 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="50" />
+                <RowDefinition Height="105" />
+                <RowDefinition Height="70" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
 
-
-            <UniformGrid x:Name="PencilSelectorPane" Columns="8"
-                        Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-                <UniformGrid.Resources>
-                        <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="RadioButton">
-                            <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="Padding" Value="9" />
+            <!--  Tool Selector  -->
+            <WrapPanel Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <WrapPanel.Resources>
+                    <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="RadioButton">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Margin" Value="3"/>
+                        <Setter Property="Padding" Value="3"/>
+                        <Setter Property="Width" Value="45" />
+                        <Setter Property="Height" Value="45" />
                     </Style>
-                    </UniformGrid.Resources>
-                
-                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Left}}"/>
-                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Center}}"/>
-                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
-                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
-                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
-                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
-                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
-                <RadioButton Content="Test" IsChecked="{local:EnumIsChecked Alignment, Value={x:Static HorizontalAlignment.Right}}"/>
-            </UniformGrid>
-            <!-- 
-                Pen
-                Calligraphy pencil
-                Regular pencil
-                Gum
-                Chalk
-                Graffiti
-                Bucket Tool (fill)
-                Oil pencil
-                -->
-        </Grid>
+                </WrapPanel.Resources>
 
+                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Pen}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
+                </RadioButton>
+                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Calligraphy}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
+                </RadioButton>
+                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.RegularPencil}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
+                </RadioButton>
+                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Graffiti}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
+                </RadioButton>
+                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Gum}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
+                </RadioButton>
+                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Bucket}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
+                </RadioButton>
+                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Oil}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
+                </RadioButton>
+                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Chalk}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
+                </RadioButton>
+            </WrapPanel>
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Thickness" Margin="0,15,0,0"/>
+                <TextBox Grid.Column="2" HorizontalAlignment="Right"
+                         TextAlignment="Center" Width="60"
+                         Margin="0,10,0,0" 
+                         BorderBrush="{StaticResource LightBorderBrush}"
+                         Background="{StaticResource UserFillBoxBackground}"
+                         SelectionBrush="{StaticResource LightBorderBrush}"
+                         >
+                    <!-- TODO center the text vertically -->
+                    <TextBox.Text>
+                        <MultiBinding StringFormat="{}{0} px">
+                            <Binding ElementName="ThicknessSlider" Path="Value"/>
+                        </MultiBinding>
+                    </TextBox.Text>
+
+                </TextBox>
+
+                <Slider Style="{StaticResource BaseSlider}" x:Name="ThicknessSlider" Grid.Row="2" Grid.ColumnSpan="2">
+                    <Slider.Resources>
+                        <Style TargetType="Thumb">
+                            <Setter Property="Background" Value="Black" />
+                      
+                            <!-- Adjust the value for rounded corners -->
+                        </Style>
+                    </Slider.Resources>
+                </Slider>
+            </Grid>
+            
+        </Grid>
     </DockPanel>
-    
-    
 </UserControl>

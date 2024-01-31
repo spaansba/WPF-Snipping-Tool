@@ -5,7 +5,7 @@
              xmlns:uc="SnippingToolWPF.Control.ColorSelector"
              d:DataContext="{d:DesignInstance Type=local:TextSidePanelViewModel,
                                               IsDesignTimeCreatable=False}"
-             d:DesignHeight="400" d:DesignWidth="200"
+             d:DesignHeight="400" d:DesignWidth="240"
              Background="{StaticResource AlternateBackgroundBrush}"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -60,7 +60,7 @@
                       SelectedItem="{Binding FontFamily}">
 
                 <ComboBox.Resources>
-                    <Style BasedOn="{StaticResource CustomComboBox}" TargetType="ComboBox" />
+                    <Style BasedOn="{StaticResource BaseComboBox}" TargetType="ComboBox" />
                 </ComboBox.Resources>
 
                 <!--  Replace built-in combobox stackpanel with VirtualizingStackPanel for better performance  -->
@@ -92,7 +92,7 @@
                       SelectedItem="{Binding FontSize}">
                 <!--  TODO: Accepted values should be a range from 1:130  -->
                 <ComboBox.Resources>
-                    <Style BasedOn="{StaticResource CustomComboBox}" TargetType="ComboBox" />
+                    <Style BasedOn="{StaticResource BaseComboBox}" TargetType="ComboBox" />
                 </ComboBox.Resources>
 
                 <ComboBox.ItemTemplate>
@@ -154,7 +154,7 @@
 
             <CheckBox x:Name="FillTextBackgroundOption" Grid.Row="5"
                       Grid.Column="0" Grid.ColumnSpan="3"
-                      Style="{StaticResource CustomCheckBox}">
+                      Style="{StaticResource BaseCheckBox}">
                 <TextBlock Text="Background" />
             </CheckBox>
 
@@ -165,7 +165,7 @@
 
             <CheckBox x:Name="BorderOption" Grid.Row="6"
                       Grid.Column="0" Grid.ColumnSpan="3"
-                      Style="{StaticResource CustomCheckBox}">
+                      Style="{StaticResource BaseCheckBox}">
                 <TextBlock Text="Border" TextWrapping="Wrap" />
             </CheckBox>
 

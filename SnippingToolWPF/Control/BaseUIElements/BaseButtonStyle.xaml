@@ -26,9 +26,9 @@
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{StaticResource HoverBorderBrush}" />
-                            <Setter TargetName="contentPresenter" Property="TextBlock.Foreground" Value="{StaticResource HoverBorderBrush}" /> 
+                            <Setter TargetName="contentPresenter" Property="TextBlock.Foreground" Value="{StaticResource HoverBorderBrush}" />
                             <!--  TODO make this work  -->
-                            <Setter TargetName="contentPresenter" Property="fa6:SvgAwesome.PrimaryColor" Value="Red" /> 
+                            <Setter TargetName="contentPresenter" Property="fa6:SvgAwesome.PrimaryColor" Value="Red" />
                             <!--  TODO make this work  -->
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
