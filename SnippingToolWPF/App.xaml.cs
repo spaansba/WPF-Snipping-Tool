@@ -1,6 +1,8 @@
 ﻿using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace SnippingToolWPF
 {
@@ -9,5 +11,14 @@ namespace SnippingToolWPF
     /// </summary>
     public partial class App : Application
     {
+        static App()
+        {
+            // Set the language settings to the users PC
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+                typeof(FrameworkElement),
+                new FrameworkPropertyMetadata(
+                    XmlLanguage.GetLanguage(
+                        CultureInfo.CurrentCulture.IetfLanguageTag)));
+        }
     }
 }

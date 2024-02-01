@@ -24,7 +24,6 @@ namespace SnippingToolWPF
         public TextSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
         {
         }
-
         public static IReadOnlyList<FontInfo> AllFontFamilies { get; } =
            Fonts.SystemFontFamilies
                .Where(font => !FontInfo.FontsToExclude.Contains(font.ToString()))

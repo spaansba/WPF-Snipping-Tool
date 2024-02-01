@@ -41,16 +41,17 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="105" />
-                <RowDefinition Height="70" />
-                <RowDefinition Height="50" />
-                <RowDefinition Height="50" />
-                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <!--  Tool Selector  -->
-            <WrapPanel Grid.ColumnSpan="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+            <WrapPanel Grid.ColumnSpan="2" 
+                       Grid.Row="0" Grid.Column="0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
                 <WrapPanel.Resources>
                     <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="RadioButton">
                         <Setter Property="BorderThickness" Value="0" />
@@ -87,44 +88,59 @@
                 </RadioButton>
             </WrapPanel>
 
-            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <!--<Grid Grid.Row="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Thickness" Margin="0,15,0,0"/>
-                <TextBox Grid.Column="2" HorizontalAlignment="Right"
-                         TextAlignment="Center" Width="60"
-                         Margin="0,10,0,0" 
-                         BorderBrush="{StaticResource LightBorderBrush}"
-                         Background="{StaticResource UserFillBoxBackground}"
-                         SelectionBrush="{StaticResource LightBorderBrush}"
-                         >
-                    <!-- TODO center the text vertically -->
-                    <TextBox.Text>
-                        <MultiBinding StringFormat="{}{0} px">
-                            <Binding ElementName="ThicknessSlider" Path="Value"/>
-                        </MultiBinding>
-                    </TextBox.Text>
+                <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <TextBlock Text="Thickness" DockPanel.Dock="Left" VerticalAlignment="Bottom"/>
+                     --><!--TODO: Fix not being to handle doubles--><!-- 
+                    <TextBox HorizontalAlignment="Right" DockPanel.Dock="Right"
+                             VerticalAlignment="Bottom"
+                             Style="{StaticResource UnsignedDoubleTextBox}" 
+                             TextAlignment="Right" Width="80" 
+                             BorderBrush="{StaticResource LightBorderBrush}"
+                             Background="{StaticResource UserFillBoxBackground}"
+                             SelectionBrush="{StaticResource LightBorderBrush}" 
+                             Text="{Binding ThicknessString, UpdateSourceTrigger=PropertyChanged}"/>
+                     --><!--TODO center the text vertically--><!--
+                </DockPanel>
 
-                </TextBox>
-
-                <Slider Style="{StaticResource BaseSlider}" x:Name="ThicknessSlider" Grid.Row="2" Grid.ColumnSpan="2">
-                    <Slider.Resources>
-                        <Style TargetType="Thumb">
-                            <Setter Property="Background" Value="Black" />
-                      
-                            <!-- Adjust the value for rounded corners -->
-                        </Style>
-                    </Slider.Resources>
+                <Slider Style="{StaticResource BaseSlider}" Grid.Row="1" 
+                        Grid.ColumnSpan="2"
+                        Value="{Binding Thickness}"
+                        Minimum="{x:Static local:PencilsSidePanelViewModel.MinimumThickness}"
+                        Maximum="{x:Static local:PencilsSidePanelViewModel.MaximumThickness}">
                 </Slider>
-            </Grid>
-            
+            </Grid>-->
+
+            <Slider x:Name="ThicknessSlider"
+                    Style="{StaticResource SliderTitleAndTextBox}" 
+                    Grid.Column="0" Grid.Row="2" 
+                    Grid.ColumnSpan="2"
+                    Minimum="{x:Static local:PencilsSidePanelViewModel.MinimumThickness}"
+                    Maximum="{x:Static local:PencilsSidePanelViewModel.MaximumThickness}"
+                    Value="{Binding Thickness}"
+                    control:SliderTitleAndTextBox.SliderHeader="Thickness"
+                    control:SliderTitleAndTextBox.SliderValueInText="{Binding ThicknessString, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Slider x:Name="OpacitySlider"
+                    Style="{StaticResource SliderTitleAndTextBox}" 
+                    Grid.Column="0" Grid.Row="3" 
+                    Grid.ColumnSpan="2"
+                    Minimum="{x:Static local:PencilsSidePanelViewModel.MinimumOpacity}"
+                    Maximum="{x:Static local:PencilsSidePanelViewModel.MaximumOpacity}"
+                    Value="{Binding Opacity}"
+                    control:SliderTitleAndTextBox.SliderHeader="Opacity"
+                    control:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}"/>  
+
         </Grid>
+
     </DockPanel>
 </UserControl>

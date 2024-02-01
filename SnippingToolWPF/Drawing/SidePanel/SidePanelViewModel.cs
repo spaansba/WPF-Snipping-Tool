@@ -9,11 +9,10 @@ using System.Windows.Media;
 
 namespace SnippingToolWPF
 {
-    public abstract class SidePanelViewModel : ObservableObject
+    public abstract class SidePanelViewModel : ObservableValidator
     {
         public abstract string Header { get; }
         protected DrawingViewModel drawingViewModel { get; }
-
         protected SidePanelViewModel(DrawingViewModel drawingViewModel)
         {
             this.drawingViewModel = drawingViewModel;
