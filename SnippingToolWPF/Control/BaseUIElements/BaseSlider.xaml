@@ -250,7 +250,7 @@
                               Value="true">
                             <Setter TargetName="Background"
                                  Property="Fill"
-                                 Value="{StaticResource Horizontal}"/>
+                                 Value="{StaticResource HorizontalSliderThumbHoverBackgroundInverted}"/>
                         </Trigger>
                         <Trigger Property="Foreground"
                               Value="Blue">

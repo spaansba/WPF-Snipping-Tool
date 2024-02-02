@@ -131,8 +131,8 @@
                            Text="{Binding SidePanelContent.Header, FallbackValue={x:Null}}" />
             </Border>
 
-            <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="Testing, 1, 2, 3, 4 , 5." />
+            <local:DrawingCanvas Grid.Row="1" Grid.Column="0"
+                                 ItemsSource="{Binding DrawingObjects}"/>
 
             <Border x:Name="SidePanel" Grid.Row="1"
                     Grid.Column="1" DockPanel.Dock="Right">

@@ -7,6 +7,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
+
                     <Border x:Name="border"
                             Background="{StaticResource AlternateBackgroundBrush}"
                             BorderBrush="{StaticResource LightBorderBrush}"

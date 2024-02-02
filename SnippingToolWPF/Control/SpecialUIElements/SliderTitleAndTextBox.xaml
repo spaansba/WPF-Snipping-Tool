@@ -1,37 +1,49 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control">
 
-    <Style x:Key="SliderTitleAndTextBox" TargetType="{x:Type Slider}">
+    <Style x:Key="SliderTitleAndTextBox" TargetType="{x:Type Slider}"
+           BasedOn="{StaticResource BaseSlider}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Slider}">
+  
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="40"/>
                             <RowDefinition Height="1*"/>
                         </Grid.RowDefinitions>
 
-                        <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                            <TextBlock Text="{Binding Path=(control:SliderTitleAndTextBox.SliderHeader), RelativeSource={RelativeSource TemplatedParent}}"
-                                       DockPanel.Dock="Left" VerticalAlignment="Bottom"
+                        <TextBlock Text="{Binding Path=(control:SliderTitleAndTextBox.SliderHeader), RelativeSource={RelativeSource TemplatedParent}}"
+                                       Grid.Column="0" VerticalAlignment="Center" Padding="0,5,0,0"
                                        Foreground="{StaticResource AlternateForegroundBrush}"/>
-
+                        <Grid Grid.Column="1" HorizontalAlignment="Right">
                             <!-- TODO: Fix not being to handle doubles -->
-                            <TextBox HorizontalAlignment="Right" DockPanel.Dock="Right"
-                                     VerticalAlignment="Bottom"
-                                   
-                                     TextAlignment="Right"
-                                     Width="80"
-                                     BorderBrush="{StaticResource LightBorderBrush}"
-                                     Background="{StaticResource UserFillBoxBackground}"
-                                     SelectionBrush="{StaticResource LightBorderBrush}"
-                                     Text="{Binding Path=(control:SliderTitleAndTextBox.SliderValueInText), RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <TextBox x:Name="UserValue"
+                                 VerticalContentAlignment="Bottom"
+                                 HorizontalContentAlignment="Right"
+                                 Padding="0,0,16,2"
+                                 control:NumericTextBox.AllowNegative="False"
+                                 control:NumericTextBox.FloatingPoint="True"
+                                 HorizontalAlignment="Right" 
+                                 TextAlignment="Right" Width="80" Height="30"
+                                 BorderBrush="{StaticResource LightBorderBrush}"
+                                 Background="{StaticResource UserFillBoxBackground}"
+                                 SelectionBrush="{StaticResource LightBorderBrush}" 
+                                 Text="{Binding Path=Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 Foreground="{StaticResource AlternateForegroundBrush}"/>
 
-                        </DockPanel>
+                            <!-- TextBlock overlapped on top of TextBox -->
+                            <TextBlock Text="{Binding Path=(control:SliderTitleAndTextBox.StaticTextBoxText), RelativeSource={RelativeSource TemplatedParent}}" 
+                                   HorizontalAlignment="Right" 
+                                   VerticalAlignment="Center" 
+                                   Height="15"
+                                   Padding="0,3,0,0"
+                                   Foreground="#59595A"/>
+                        </Grid>
 
                         <Slider Grid.Row="1" Grid.ColumnSpan="2" 
                                 Value="{Binding Path=Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"

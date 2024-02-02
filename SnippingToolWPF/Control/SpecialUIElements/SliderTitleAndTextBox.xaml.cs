@@ -25,5 +25,14 @@ namespace SnippingToolWPF.Control
 
         public static string GetSliderValueInText(DependencyObject target) => (string)target.GetValue(SliderValueInTextProperty);
         public static void SetSliderValueInText(DependencyObject target, string value) => target.SetValue(SliderValueInTextProperty, value);
+
+        public static readonly DependencyProperty StaticTextBoxTextProperty = DependencyProperty.RegisterAttached(
+        name: "StaticTextBoxText",
+        propertyType: typeof(string),
+        ownerType: typeof(SliderTitleAndTextBox), new PropertyMetadata("px"));
+
+        public static string GetStaticTextBoxText(DependencyObject target) => (string)target.GetValue(StaticTextBoxTextProperty);
+        public static void SetStaticTextBoxText(DependencyObject target, string value) => target.SetValue(StaticTextBoxTextProperty, value);
+
     }
 }

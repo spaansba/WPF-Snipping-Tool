@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseCheckBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseButtonStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseSlider.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseTextBox.xaml" />
 
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ButtonWithIcon.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/SliderTitleAndTextBox.xaml" />
@@ -19,8 +20,8 @@
             </ResourceDictionary.MergedDictionaries>
             
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    
 
-            
             <!-- Default Error message template -->
             <!--<ControlTemplate x:Key="ErrorTemplate">
                 <StackPanel>
@@ -32,24 +33,6 @@
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                 <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
             </Style>-->
-
-            <!-- Numeric only Textbox -->
-            <Style x:Key="DoubleTextBox" TargetType="{x:Type TextBox}"
-                    BasedOn="{StaticResource {x:Type TextBox}}">
-                <Setter Property="control:NumericTextBoxBehavior.IsEnabledForStyle" Value="True" />
-            </Style>
-            <Style x:Key="UnsignedDoubleTextBox" TargetType="{x:Type TextBox}"
-                    BasedOn="{StaticResource DoubleTextBox}">
-                <Setter Property="control:NumericTextBox.AllowNegative" Value="False" />
-            </Style>
-            <Style x:Key="IntegerTextBox" TargetType="{x:Type TextBox}"
-                    BasedOn="{StaticResource DoubleTextBox}">
-                <Setter Property="control:NumericTextBox.FloatingPoint" Value="False" />
-            </Style>
-            <Style x:Key="UnsignedIntegerTextBox" TargetType="{x:Type TextBox}"
-                    BasedOn="{StaticResource IntegerTextBox}">
-                <Setter Property="control:NumericTextBox.AllowNegative" Value="False" />
-            </Style>
 
         </ResourceDictionary>
         
