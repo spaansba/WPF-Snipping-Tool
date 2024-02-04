@@ -20,19 +20,29 @@ namespace SnippingToolWPF.Drawing.Tools
         }
 
         public Polyline Visual { get; } = new Polyline();
+        private const int FreehandSensitivity = 4;
 
         public void Begin(Point position)
         {
             Visual.StrokeThickness = this.options.Thickness;
             Visual.Stroke = Brushes.Black; // TODO: Allow setting this in PencilsSidePanelViewModel
-            Visual.Opacity = this.options.RealOpacity; 
+            Visual.Opacity = this.options.RealOpacity;
+            Visual.UseLayoutRounding = true;
             Visual.Points.Clear();
             Visual.Points.Add(position);
         }
         public void Continue(Point position)
         {
+            if (Visual.Points.Count > 0)
+            {
+               Point lastPoint = Visual.Points[Visual.Points.Count - 1];
+               double distance = Point.Subtract(lastPoint, position).Length;
+                if (distance < FreehandSensitivity) 
+                    return;
+            }
             Visual.Points.Add(position);
         }
+
         public Polyline Finish()
         {
             return new Polyline()
