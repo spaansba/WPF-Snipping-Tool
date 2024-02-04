@@ -132,7 +132,8 @@
             </Border>
 
             <local:DrawingCanvas Grid.Row="1" Grid.Column="0"
-                                 ItemsSource="{Binding DrawingObjects}"/>
+                                 Shapes="{Binding DrawingObjects}"
+                                 local:Tool="{Binding SidePanelContent.Tool, FallbackValue={x:Null}}"/>
 
             <Border x:Name="SidePanel" Grid.Row="1"
                     Grid.Column="1" DockPanel.Dock="Right">

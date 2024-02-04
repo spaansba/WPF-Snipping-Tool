@@ -21,8 +21,8 @@ namespace SnippingToolWPF.Control
 
         public bool IsEnabledForStyle
         {
-            get => (bool)this.GetValue(IsEnabledForStyleProperty);
-            set => this.SetValue(IsEnabledForStyleProperty, value);
+            get => this.GetValue<bool>(IsEnabledForStyleProperty);
+            set => this.SetValue<bool>(IsEnabledForStyleProperty, value);
         }
 
         private static void OnIsEnabledForStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

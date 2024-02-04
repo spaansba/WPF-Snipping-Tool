@@ -29,6 +29,7 @@
                                  control:NumericTextBox.AllowNegative="False"
                                  control:NumericTextBox.FloatingPoint="True"
                                  HorizontalAlignment="Right" 
+                                 Panel.ZIndex="1"
                                  TextAlignment="Right" Width="80" Height="30"
                                  BorderBrush="{StaticResource LightBorderBrush}"
                                  Background="{StaticResource UserFillBoxBackground}"
@@ -40,8 +41,9 @@
                             <TextBlock Text="{Binding Path=(control:SliderTitleAndTextBox.StaticTextBoxText), RelativeSource={RelativeSource TemplatedParent}}" 
                                    HorizontalAlignment="Right" 
                                    VerticalAlignment="Center" 
-                                   Height="15"
-                                   Padding="0,3,0,0"
+                                   Panel.ZIndex="2"
+                                   Height="20"
+                                   Margin="0,9,0,0"
                                    Foreground="#59595A"/>
                         </Grid>
 

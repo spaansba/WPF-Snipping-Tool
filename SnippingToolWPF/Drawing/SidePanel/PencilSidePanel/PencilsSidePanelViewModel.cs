@@ -5,11 +5,19 @@ using System.Globalization;
 using System.Text;
 using System.Diagnostics;
 using System.ComponentModel;
+using SnippingToolWPF.Drawing.Tools;
 
 namespace SnippingToolWPF
 {
     public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
     {
+        public PencilsSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
+        {
+            LastValidThickness = DefaultThickness;
+            LastValidOpacity = DefaultOpacity;
+            this.Tool = new PencilTool(this);
+        }
+
         public override string Header => "Pencils";
 
         [ObservableProperty]
@@ -24,6 +32,9 @@ namespace SnippingToolWPF
         [Range(MinimumThickness, MaximumThickness)]
         private string thicknessString = DefaultThickness.ToString();
         public double LastValidThickness { get; set; }
+
+        public override IDrawingTool? Tool { get; }
+
 
         /// <summary>
         /// ThicknessString is bound to the textbox, on property change, clamp the value if needed and update the slider (Thickness)
@@ -115,8 +126,9 @@ namespace SnippingToolWPF
         }
 
         /// <summary>
-        /// Opacity is bound to the slider, on change change the textbox.
+        /// Opacity is bound to the slider, OpacityString to the textbox.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public double Opacity
         {
             get
@@ -130,12 +142,12 @@ namespace SnippingToolWPF
                 this.OpacityString = value.ToString();
             }
         }
-        #endregion
 
-        public PencilsSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
-        {
-            LastValidThickness = DefaultThickness;
-            LastValidOpacity = DefaultOpacity;
-        }
+        /// <summary>
+        /// Use This value for any opacity properties, as opacity is a value between 0 and 1.0
+        /// </summary>
+        public double RealOpacity => Opacity / 100;
+
+        #endregion
     }
 }

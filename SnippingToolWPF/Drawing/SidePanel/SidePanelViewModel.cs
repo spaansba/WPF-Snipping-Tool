@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using SnippingToolWPF.Drawing.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,8 @@ namespace SnippingToolWPF
         {
             this.drawingViewModel = drawingViewModel;
         }
+
+        public virtual IDrawingTool? Tool => null;
+
     }
 }

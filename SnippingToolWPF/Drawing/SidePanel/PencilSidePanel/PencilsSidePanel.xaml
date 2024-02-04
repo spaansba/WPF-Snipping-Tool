@@ -89,46 +89,6 @@
                 </RadioButton>
             </WrapPanel>
 
-            <!--<Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="{Binding Path=(control:SliderTitleAndTextBox.SliderHeader), RelativeSource={RelativeSource TemplatedParent}}"
-                      Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Padding="0,5,0,0"
-                      Foreground="{StaticResource AlternateForegroundBrush}"/>
-                <Grid Grid.Column="1" Grid.Row="0">
-                     --><!--TODO: Fix not being to handle doubles--><!-- 
-                    <TextBox x:Name="UserValue"
-                            VerticalContentAlignment="Bottom"
-                            HorizontalContentAlignment="Right"
-                            Padding="0,0,16,2"
-                            control:NumericTextBox.AllowNegative="False"
-                            control:NumericTextBox.FloatingPoint="True"
-                            HorizontalAlignment="Right" 
-                            TextAlignment="Right" Width="80" Height="30"
-                            BorderBrush="{StaticResource LightBorderBrush}"
-                            Background="{StaticResource UserFillBoxBackground}"
-                            SelectionBrush="{StaticResource LightBorderBrush}" 
-                            Foreground="{StaticResource AlternateForegroundBrush}"
-                            Text="10"/>
-
-                     --><!--TextBlock overlapped on top of TextBox--><!-- 
-                    <TextBlock Text="px" 
-                              Panel.ZIndex="1"
-                              HorizontalAlignment="Left" 
-                              VerticalAlignment="Center" 
-                              Padding="0,3,0,0"
-                              Height="20"
-                              Foreground="#59595A" Margin="95,0,0,0"/>
-                </Grid>
-            </Grid>-->
-
 
             <Slider x:Name="ThicknessSlider"
                     Style="{StaticResource SliderTitleAndTextBox}" 
