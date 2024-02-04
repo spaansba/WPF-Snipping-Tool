@@ -7,15 +7,12 @@ using System.Windows;
 
 namespace SnippingToolWPF.Drawing.Tools
 {
-
-
     public interface IDrawingTool
     {
         public UIElement? Visual { get; }
-        public void Begin(Point position);
-        public void Continue(Point position);
-        public UIElement? Finish();
-
+        public DrawingToolAction LeftButtonDown(Point position);
+        public DrawingToolAction MouseMove(Point position);
+        public DrawingToolAction LeftButtonUp();
     }
 
     /// <summary>
@@ -26,8 +23,6 @@ namespace SnippingToolWPF.Drawing.Tools
         where T : UIElement
     {
         public new T? Visual { get; }
-        public new T? Finish();
-        UIElement? IDrawingTool.Finish() => this.Finish();
         UIElement? IDrawingTool.Visual => this.Visual;
     }
 }

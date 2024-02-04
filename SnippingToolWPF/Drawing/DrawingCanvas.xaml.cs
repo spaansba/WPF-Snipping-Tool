@@ -79,38 +79,77 @@ namespace SnippingToolWPF
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
-            if (this.Tool is null)
-                return;
-            Point position = e.GetPosition(this);
-            this.Tool.Begin(position);
-            this.CaptureMouse(); // Get all mouse movements even outside of the canvas
-            isDrawing = true;
+            Perform(this.Tool?.LeftButtonDown(e.GetPosition(this)));
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            if (this.isDrawing && this.Tool is not null)
-            {
-                Point position = e.GetPosition(this);
-                this.Tool.Continue(position);
-            }
+
+            if (this.isDrawing)
+                Perform(this.Tool?.MouseMove(e.GetPosition(this)));
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
-            this.ReleaseMouseCapture();
-            if (this.isDrawing && this.Tool is not null)
+           if (this.isDrawing)
             {
-                Point position = e.GetPosition(this);
-                this.Tool.Continue(position);
-                UIElement? visual = this.Tool.Finish();
-                if (visual is not null)
-                    this.Shapes.Add(visual);
+                Perform(this.Tool?.MouseMove(e.GetPosition(this)));
+                Perform(this.Tool?.LeftButtonUp());
             }
-            isDrawing = false;
         }
+
+        private void Perform(DrawingToolAction? action)
+        {
+            if (action.HasValue)
+                Perform(action.Value);
+        }
+
+        private void Perform(DrawingToolAction action)
+        {
+            PerformStartAction(action.StartAction);
+            PerformStopAction(action.StopAction);
+        }
+
+        private void PerformStartAction(DrawingToolActionItem action)
+        {
+
+            if (action.IsMouseCapture)
+            {
+                this.CaptureMouse();
+                isDrawing = true;
+            }
+            if (action.IsKeyboardFocus)
+            {
+                Keyboard.Focus(this.Tool?.Visual);
+            }
+            if (action.IsShape)
+            {
+                this.Shapes.Add(action.Item);
+            }
+        }
+
+        private void PerformStopAction(DrawingToolActionItem action)
+        {
+            if (action.IsMouseCapture)
+            {
+                this.ReleaseMouseCapture();
+                isDrawing = false;
+            }
+            if (action.IsKeyboardFocus)
+            {
+                Keyboard.Focus(this);
+            }
+            if (action.IsShape)
+            {
+                this.Shapes.Remove(action.Item);
+            }
+        }
+
+
+
+
         #endregion
 
         #region Shapes

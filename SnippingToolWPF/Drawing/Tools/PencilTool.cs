@@ -22,36 +22,46 @@ namespace SnippingToolWPF.Drawing.Tools
         public Polyline Visual { get; } = new Polyline();
         private const int FreehandSensitivity = 4;
 
-        public void Begin(Point position)
+        public DrawingToolAction LeftButtonDown(Point position)
         {
             Visual.StrokeThickness = this.options.Thickness;
             Visual.Stroke = Brushes.Black; // TODO: Allow setting this in PencilsSidePanelViewModel
             Visual.Opacity = this.options.RealOpacity;
             Visual.UseLayoutRounding = true;
+            Visual.StrokeLineJoin = Visual.StrokeLineJoin;
             Visual.Points.Clear();
             Visual.Points.Add(position);
+            return DrawingToolAction.StartMouseCapture();
         }
-        public void Continue(Point position)
+        public DrawingToolAction MouseMove(Point position)
         {
             if (Visual.Points.Count > 0)
             {
                Point lastPoint = Visual.Points[Visual.Points.Count - 1];
                double distance = Point.Subtract(lastPoint, position).Length;
                 if (distance < FreehandSensitivity) 
-                    return;
+                    return DrawingToolAction.DoNothing;
             }
             Visual.Points.Add(position);
+            return DrawingToolAction.DoNothing;
         }
 
-        public Polyline Finish()
+        public DrawingToolAction LeftButtonUp()
         {
-            return new Polyline()
-            {
-                Stroke = Visual.Stroke,
-                StrokeThickness = Visual.StrokeThickness,
-                Opacity = Visual.Opacity,
-                Points = new PointCollection(Visual.Points),
-            };
+            return new DrawingToolAction
+                (StartAction: DrawingToolActionItem.Shape(
+                new Polyline()
+                {
+                    Stroke = Visual.Stroke,
+                    StrokeThickness = Visual.StrokeThickness,
+                    Opacity = Visual.Opacity,
+                    UseLayoutRounding = true,
+                    StrokeLineJoin = Visual.StrokeLineJoin,
+                    Points = new PointCollection(Visual.Points),
+                }
+                ),
+                StopAction: DrawingToolActionItem.MouseCapture()
+            );
         }
     }
 }
