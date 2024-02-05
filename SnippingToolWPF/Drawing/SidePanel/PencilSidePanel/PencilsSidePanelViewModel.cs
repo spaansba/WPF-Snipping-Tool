@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.ComponentModel;
 using SnippingToolWPF.Drawing.Tools;
+using System.Windows.Media;
+using System.Windows.Controls;
+using SnippingToolWPF.Drawing;
 
 namespace SnippingToolWPF
 {
@@ -12,6 +15,7 @@ namespace SnippingToolWPF
         {
             LastValidThickness = DefaultThickness;
             LastValidOpacity = DefaultOpacity;
+            SelectedBrush = new SolidColorBrush(DefaultPenColor);
             this.Tool = new PencilTool(this);
         }
 
@@ -51,7 +55,7 @@ namespace SnippingToolWPF
 
         public const double MinimumThickness = 1;
         public const double MaximumThickness = 100;
-        private const double DefaultThickness = 12;
+        private const double DefaultThickness = 6;
 
         [Range(MinimumThickness, MaximumThickness)]
         private string thicknessString = DefaultThickness.ToString();
@@ -170,5 +174,34 @@ namespace SnippingToolWPF
         public double RealOpacity => Opacity / 100;
 
         #endregion
+
+        #region Selected Color
+
+        private Color DefaultPenColor = Colors.Black;
+        private Color? selectedColor;
+        public Color? SelectedColor
+        {
+            get => selectedColor;
+            set
+            {
+                if (SetProperty(ref selectedColor, value))
+                {
+                    if (value.HasValue)
+                    {
+                        SelectedBrush = new SolidColorBrush(value.Value);
+                    }
+                    else
+                    {
+                        SelectedBrush = new SolidColorBrush(DefaultPenColor); 
+                    }
+                }
+            }
+        }
+        // Brush that is in connection with the SelectedColor
+        public Brush? SelectedBrush;
+
+        #endregion
+
+
     }
 }

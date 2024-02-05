@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ButtonWithIcon.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/SliderTitleAndTextBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/RadioButtonWithIcon.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ColorSelectorListBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

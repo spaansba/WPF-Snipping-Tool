@@ -1,0 +1,73 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="ColorSelectorListBox" TargetType="ListBox">
+        <Setter Property="SelectedItem" Value="{Binding SelectedColor}" />
+        <Setter Property="Background" Value="{StaticResource AlternateBackgroundBrush}"/>
+        <Setter Property="ItemsSource">
+            <Setter.Value>
+                <CompositeCollection>
+                    <Color>White</Color>
+                    <Color>LightGray</Color>
+                    <Color>DarkGray</Color>
+                    <Color>Black</Color>
+                    <Color>DarkRed</Color>
+                    <Color>Red</Color>
+
+                    <Color>Orange</Color>
+                    <Color>Gold</Color>
+                    <Color>Khaki</Color>
+                    <Color>Yellow</Color>
+                    <Color>LightGreen</Color>
+                    <Color>Green</Color>
+
+                    <Color>DeepSkyBlue</Color>
+                    <Color>Turquoise</Color>
+                    <Color>Indigo</Color>
+                    <Color>Purple</Color>
+                    <Color>MistyRose</Color>
+                    <Color>Peru</Color>
+                    <CollectionContainer Collection="{Binding ColorSwatches}" />
+                </CompositeCollection>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <UniformGrid Width="180" Height="90" Columns="6" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border Width="30" Height="30" Padding="0">
+                        <Border.Background>
+                            <SolidColorBrush Color="{Binding}" />
+                        </Border.Background>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <!-- Change if you want gaps between the colors -->
+
+                    <!-- New Trigger to highlight the selected item -->
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}"/>
+                            <Setter Property="BorderThickness" Value="2"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

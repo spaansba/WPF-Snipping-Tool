@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.Drawing;
 
 namespace SnippingToolWPF
 {
@@ -46,7 +45,7 @@ namespace SnippingToolWPF
         "IsPressedBackgroundFill",
         typeof(Brush),
         typeof(ColorAssist),
-        new FrameworkPropertyMetadata(defaultValue: new SolidColorBrush(Colors.Green)));
+        new FrameworkPropertyMetadata(defaultValue: new SolidColorBrush(Color.FromArgb(0xFF, 0xD4, 0xD9, 0xE1)))); //TODO: make this bind to a color in xaml
 
         public static Brush? GetIsPressedBackgroundFill(DependencyObject obj)
             => (Brush?)obj.GetValue(IsPressedBackgroundFillProperty);
@@ -73,7 +72,7 @@ namespace SnippingToolWPF
         "IsCheckedBackgroundFill",
         typeof(Brush),
         typeof(ColorAssist),
-        new FrameworkPropertyMetadata(defaultValue: new SolidColorBrush(Colors.Green)));
+        new FrameworkPropertyMetadata(defaultValue: new SolidColorBrush(Color.FromArgb(0xFF, 0x94, 0x94, 0x93))));
 
         public static Brush? GetIsCheckedBackgroundFill(DependencyObject obj)
             => (Brush?)obj.GetValue(IsCheckedBackgroundFillProperty);

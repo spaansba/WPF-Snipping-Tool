@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="SnippingToolWPF.Drawing.PencilsSidePanel" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:SnippingToolWPF"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:uc="SnippingToolWPF.Control.ColorSelector"
              d:DataContext="{d:DesignInstance Type=local:PencilsSidePanelViewModel,
                                               IsDesignTimeCreatable=False}"
              d:DesignHeight="400" d:DesignWidth="240"
@@ -45,7 +45,8 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="*" /> 
+                <RowDefinition Height="10" />
             </Grid.RowDefinitions>
 
             <!--  Tool Selector  -->
@@ -111,6 +112,13 @@
                     control:SliderTitleAndTextBox.StaticTextBoxText="% "
                     control:SliderTitleAndTextBox.SliderHeader="Opacity"
                     control:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ListBox Grid.Column="0" Grid.Row="3"
+                     Grid.RowSpan="2" Grid.ColumnSpan="2" 
+                     BorderBrush="Transparent"
+                     Margin="0,10,0,0"
+                     Style="{StaticResource ColorSelectorListBox}"
+                     SelectedItem="{Binding SelectedColor, Mode=TwoWay}"/>
 
         </Grid>
 

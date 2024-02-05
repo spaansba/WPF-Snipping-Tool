@@ -52,5 +52,11 @@ namespace SnippingToolWPF.Control
             set => this.SetValue(CustomColorSwatchesProperty, value);
         }
 
+        private void ColorListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle the SelectionChanged event here
+            PopupToggle.IsChecked = false; // Assuming you want to close the Popup
+        }
+
     }
 }

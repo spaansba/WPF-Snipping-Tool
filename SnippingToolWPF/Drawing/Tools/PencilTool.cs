@@ -25,7 +25,7 @@ namespace SnippingToolWPF.Drawing.Tools
         public DrawingToolAction LeftButtonDown(Point position)
         {
             Visual.StrokeThickness = this.options.Thickness;
-            Visual.Stroke = Brushes.Black; // TODO: Allow setting this in PencilsSidePanelViewModel
+            Visual.Stroke = this.options.SelectedBrush; // TODO: Allow setting this in PencilsSidePanelViewModel
             Visual.Opacity = this.options.RealOpacity;
             Visual.UseLayoutRounding = true;
             Visual.StrokeLineJoin = Visual.StrokeLineJoin;

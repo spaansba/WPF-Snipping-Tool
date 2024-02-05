@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
              xmlns:local="clr-namespace:SnippingToolWPF" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:uc="SnippingToolWPF.Control.ColorSelector"
+             xmlns:uc="SnippingToolWPF.Control.ColorSelector" 
              d:DataContext="{d:DesignInstance Type=local:TextSidePanelViewModel,
                                               IsDesignTimeCreatable=False}"
              d:DesignHeight="400" d:DesignWidth="240"

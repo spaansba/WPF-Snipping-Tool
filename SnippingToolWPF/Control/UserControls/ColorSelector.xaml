@@ -17,65 +17,7 @@
             </ToggleButton.Content>
         </ToggleButton>
         <Popup IsOpen="{Binding Path=IsChecked, ElementName=PopupToggle}" StaysOpen="False">
-            <ListBox SelectedItem="{Binding SelectedColor}">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Padding" Value="0" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemsSource>
-                    <CompositeCollection>
-                        <Color>White</Color>
-                        <Color>lightGray</Color>
-                        <Color>DarkGray</Color>
-                        <Color>Black</Color>
-                        <Color>DarkRed</Color>
-                        <Color>Red</Color>
-
-                        <Color>Orange</Color>
-                        <Color>Gold</Color>
-                        <Color>Khaki</Color>
-                        <Color>Yellow</Color>
-                        <Color>LightGreen</Color>
-                        <Color>Green</Color>
-
-                        <Color>DeepSkyBlue</Color>
-                        <Color>turquoise</Color>
-                        <Color>Indigo</Color>
-                        <Color>Purple</Color>
-                        <Color>MistyRose</Color>
-                        <Color>Peru</Color>
-                        <CollectionContainer Collection="{Binding ColorSwatches}" />
-                    </CompositeCollection>
-                </ListBox.ItemsSource>
-
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Width="180" Height="90"
-                                     Columns="6" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border Width="30" Height="30"
-                                Padding="0">
-                            <Border.Background>
-                                <SolidColorBrush Color="{Binding}" />
-                            </Border.Background>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-
-                <!--  Trigger that closes control  -->
-                <behaviors:Interaction.Triggers>
-                    <behaviors:EventTrigger EventName="SelectionChanged">
-                        <behaviors:ChangePropertyAction PropertyName="IsChecked"
-                                                        TargetObject="{Binding ElementName=PopupToggle}"
-                                                        Value="False" />
-                    </behaviors:EventTrigger>
-                </behaviors:Interaction.Triggers>
-            </ListBox>
+            <ListBox Style="{StaticResource ColorSelectorListBox}" SelectionChanged="ColorListBox_SelectionChanged"/>
         </Popup>
     </Grid>
 </UserControl>

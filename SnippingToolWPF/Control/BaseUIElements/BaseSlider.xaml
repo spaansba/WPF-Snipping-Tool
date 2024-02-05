@@ -650,10 +650,8 @@
         <Setter Property="Minimum" Value="1" />
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="true"/>
         <Setter Property="IsMoveToPointEnabled" Value="True"/>
-        <!--<Setter Property="my:SliderAllowDragOnClick.MoveToPointOnDrag" Value="True"/>-->
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="#FFC4C4C4"/>
-        
         <Setter Property="IsSelectionRangeEnabled" Value="True"/>
         <Setter Property="SelectionStart" Value="{Binding Minimum, RelativeSource={RelativeSource Self}}" /> <!-- TODO: remove left white pixel on slider somehow-->
         <Setter Property="SelectionEnd" Value="{Binding Value, RelativeSource={RelativeSource Self}}" />
@@ -893,7 +891,7 @@
                                         Property="Foreground"
                                         Value="Blue"/>
                                 </Trigger>
-                                
+
                                 <Trigger Property="IsFocused"
                                          Value="False">
                                     <Setter TargetName="Thumb"
@@ -907,7 +905,6 @@
                 </Setter>
             </Trigger>
         </Style.Triggers>
-        
     </Style>
     <!--#endregion-->
 </ResourceDictionary>
