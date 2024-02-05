@@ -48,20 +48,19 @@ namespace SnippingToolWPF.Drawing.Tools
 
         public DrawingToolAction LeftButtonUp()
         {
-            return new DrawingToolAction
-                (StartAction: DrawingToolActionItem.Shape(
-                new Polyline()
-                {
-                    Stroke = Visual.Stroke,
-                    StrokeThickness = Visual.StrokeThickness,
-                    Opacity = Visual.Opacity,
-                    UseLayoutRounding = true,
-                    StrokeLineJoin = Visual.StrokeLineJoin,
-                    Points = new PointCollection(Visual.Points),
-                }
-                ),
-                StopAction: DrawingToolActionItem.MouseCapture()
-            );
+            Polyline? result = new Polyline()
+            {
+                Stroke = Visual.Stroke,
+                StrokeThickness = Visual.StrokeThickness,
+                Opacity = Visual.Opacity,
+                UseLayoutRounding = true,
+                StrokeLineJoin = Visual.StrokeLineJoin,
+                Points = new PointCollection(Visual.Points),
+            };
+
+            this.Visual.Points.Clear();
+
+            return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(result), StopAction: DrawingToolActionItem.MouseCapture());
         }
     }
 }

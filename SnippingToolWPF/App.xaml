@@ -1,5 +1,5 @@
 ﻿<Application x:Class="SnippingToolWPF.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control" StartupUri="MainWindow.xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control" xmlns:snippingtoolwpf="clr-namespace:SnippingToolWPF" StartupUri="MainWindow.xaml">
     <Application.Resources>
         
         <ResourceDictionary>
@@ -20,6 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
             
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <snippingtoolwpf:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
     
 
             <!-- Default Error message template -->

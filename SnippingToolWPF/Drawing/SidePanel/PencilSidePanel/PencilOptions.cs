@@ -11,7 +11,7 @@ namespace SnippingToolWPF
         Pen,
         Calligraphy,
         RegularPencil,
-        Gum,
+        Eraser,
         Chalk,
         Graffiti,
         Bucket,

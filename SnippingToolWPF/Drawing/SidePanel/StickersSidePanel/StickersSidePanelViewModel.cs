@@ -12,6 +12,5 @@ namespace SnippingToolWPF
         public StickersSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
         {
         }
-
     }
 }

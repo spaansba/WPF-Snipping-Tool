@@ -38,6 +38,5 @@ namespace SnippingToolWPF.Drawing.Tools
             };
         }
         public DrawingToolActionItem Combine(DrawingToolActionItem other) => Combine(this, other);
-
     }
 }

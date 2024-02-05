@@ -15,10 +15,6 @@ namespace SnippingToolWPF.Drawing.Tools
         public DrawingToolAction LeftButtonUp();
     }
 
-    /// <summary>
-    /// Use Begin and Continue from IDrawingTool
-    /// Finish returns T UIElement so we override it
-    /// </summary>
     public interface IDrawingTool<out T> : IDrawingTool
         where T : UIElement
     {

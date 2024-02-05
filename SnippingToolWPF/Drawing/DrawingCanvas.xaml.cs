@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -40,7 +42,15 @@ namespace SnippingToolWPF
             base.OnApplyTemplate();
             this.CurrentCanvas = this.GetTemplateChild(PartCurrentCanvas) as Canvas;
             OnToolChanged(this.Tool);
+
+            this.Focus(); // To allow keydown
+            this.KeyDown += DrawingCanvasKeyDown;
         }
+        private void DrawingCanvasKeyDown(object sender, KeyEventArgs e)
+        {
+            isTyping = true;
+        }
+
         private Canvas? CurrentCanvas { get; set; }
 
         public static readonly DependencyProperty ToolProperty = DependencyProperty.Register(
@@ -76,11 +86,13 @@ namespace SnippingToolWPF
 
         #region Drawing on the canvas
         private bool isDrawing;
+        private bool isTyping;
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
             Perform(this.Tool?.LeftButtonDown(e.GetPosition(this)));
         }
+
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -114,7 +126,6 @@ namespace SnippingToolWPF
 
         private void PerformStartAction(DrawingToolActionItem action)
         {
-
             if (action.IsMouseCapture)
             {
                 this.CaptureMouse();
@@ -122,6 +133,7 @@ namespace SnippingToolWPF
             }
             if (action.IsKeyboardFocus)
             {
+                isTyping = true;
                 Keyboard.Focus(this.Tool?.Visual);
             }
             if (action.IsShape)
@@ -129,6 +141,20 @@ namespace SnippingToolWPF
                 this.Shapes.Add(action.Item);
             }
         }
+
+        #endregion
+
+        #region Undo / Redo
+        public void UndoLastAction(object sender, KeyEventArgs e)
+        {
+            if (Shapes.Count  > 0)
+            {
+            //    this.Shapes.Remove[Shapes.Count - 1];
+            }
+        }
+
+        #endregion
+
 
         private void PerformStopAction(DrawingToolActionItem action)
         {
@@ -139,6 +165,7 @@ namespace SnippingToolWPF
             }
             if (action.IsKeyboardFocus)
             {
+                isTyping = false;
                 Keyboard.Focus(this);
             }
             if (action.IsShape)
@@ -146,12 +173,6 @@ namespace SnippingToolWPF
                 this.Shapes.Remove(action.Item);
             }
         }
-
-
-
-
-        #endregion
-
         #region Shapes
         public static readonly DependencyProperty ShapesProperty = DependencyProperty.Register(
             nameof(Shapes),
@@ -167,6 +188,5 @@ namespace SnippingToolWPF
         }
 
         #endregion
-
     }
 }

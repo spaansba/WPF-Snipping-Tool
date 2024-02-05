@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Windows;
 using System.Globalization;
-using System.Text;
-using System.Diagnostics;
 using System.ComponentModel;
 using SnippingToolWPF.Drawing.Tools;
 
@@ -20,8 +17,35 @@ namespace SnippingToolWPF
 
         public override string Header => "Pencils";
 
-        [ObservableProperty]
+      //  private PencilOptions pencilOption = PencilOptions.Pen;
+
+        public PencilOptions PencilOption
+        {
+            get => pencilOption;
+            set
+            {
+                if (pencilOption != value)
+                {
+                    switch (value) 
+                    {
+                        case PencilOptions.Pen:
+                            Tool = new PencilTool(this);
+                            break;
+                        case PencilOptions.Eraser:
+                            Tool = new EraserTool(this, drawingViewModel);
+                            break;
+                        default:
+                            Tool = new PencilTool(this);
+                            break;
+                    }
+                    pencilOption = value;
+                    OnPropertyChanged(nameof(Tool)); // Make sure the Tool updates succesfully
+                }
+            }
+        }
         private PencilOptions pencilOption = PencilOptions.Pen;
+
+        public override IDrawingTool? Tool { get; set; }
 
         #region Thickness - Connecting the Slider / Textbox with eachother and data clamping
 
@@ -32,9 +56,6 @@ namespace SnippingToolWPF
         [Range(MinimumThickness, MaximumThickness)]
         private string thicknessString = DefaultThickness.ToString();
         public double LastValidThickness { get; set; }
-
-        public override IDrawingTool? Tool { get; }
-
 
         /// <summary>
         /// ThicknessString is bound to the textbox, on property change, clamp the value if needed and update the slider (Thickness)

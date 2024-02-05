@@ -26,7 +26,7 @@
                                 </ItemsControl.ItemsPanel>
 
                             </ItemsControl>
-                            <Canvas x:Name="PART_CurrentCanvas"/> <!-- For work in progress items (still drawing etc) its second so its always on top of the saved items -->
+                            <Canvas Focusable="True" x:Name="PART_CurrentCanvas"/> <!-- For work in progress items (still drawing etc) its second so its always on top of the saved items -->
                         </Grid>
                         
                     </Border>

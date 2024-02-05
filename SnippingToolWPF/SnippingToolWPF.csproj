@@ -11,10 +11,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0414</WarningsNotAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0414</WarningsNotAsErrors>
   </PropertyGroup>
 
 
@@ -23,6 +25,7 @@
    </ItemGroup>
 	
   <ItemGroup>
+    <None Remove="Assets\Images\eraserTemp.png" />
     <None Remove="Assets\Images\PencilTemp2.png" />
     <None Remove="Assets\Images\TempPencil.png" />
     <None Remove="Assets\UI Icons\NewScreenshot.png" />
@@ -35,6 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\eraserTemp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\PencilTemp2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

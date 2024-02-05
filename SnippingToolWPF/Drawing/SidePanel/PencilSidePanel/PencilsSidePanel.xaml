@@ -63,28 +63,28 @@
                     </Style>
                 </WrapPanel.Resources>
 
-                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Pen}}">
+                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PencilOptions.Pen}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Calligraphy}}">
+                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PencilOptions.Calligraphy}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.RegularPencil}}">
+                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PencilOptions.RegularPencil}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Graffiti}}">
+                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PencilOptions.Graffiti}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Gum}}">
+                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PencilOptions.Eraser}}">
+                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/eraserTemp.png" />
+                </RadioButton>
+                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PencilOptions.Bucket}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Bucket}}">
+                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PencilOptions.Oil}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Oil}}">
-                    <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
-                </RadioButton>
-                <RadioButton IsChecked="{local:EnumIsChecked pencilOption, Value={x:Static local:PencilOptions.Chalk}}">
+                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:PencilOptions.Chalk}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
             </WrapPanel>
