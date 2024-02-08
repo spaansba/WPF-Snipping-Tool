@@ -1,61 +1,72 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.ComponentModel;
 using SnippingToolWPF.Drawing.Tools;
 using System.Windows.Media;
-using System.Windows.Controls;
-using SnippingToolWPF.Drawing;
 
 namespace SnippingToolWPF
 {
     public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
     {
+        public override string Header => "Pencils";
+
         public PencilsSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
         {
             LastValidThickness = DefaultThickness;
             LastValidOpacity = DefaultOpacity;
             SelectedBrush = new SolidColorBrush(DefaultPenColor);
-            this.Tool = new PencilTool(this);
+            this.tool = new PencilTool(this);
         }
 
-        public override string Header => "Pencils";
+        #region Tool Selection
 
-      //  private PencilOptions pencilOption = PencilOptions.Pen;
+        private PencilTool? pencilTool;
+        private PencilTool PencilTool => this.pencilTool ??= new PencilTool(this);
 
+        private EraserTool? eraserTool;
+        private EraserTool EraserTool => this.eraserTool ??= new EraserTool(this, drawingViewModel);
+
+        private IDrawingTool? tool;
+        public override IDrawingTool? Tool => tool;
+
+        private PencilOptions pencilOption = PencilOptions.Pen;
         public PencilOptions PencilOption
         {
             get => pencilOption;
             set
             {
-                if (pencilOption != value)
+               if(SetProperty(ref this.pencilOption, value))
                 {
-                    switch (value) 
+                    IDrawingTool newTool = value switch
                     {
-                        case PencilOptions.Pen:
-                            Tool = new PencilTool(this);
-                            break;
-                        case PencilOptions.Eraser:
-                            Tool = new EraserTool(this, drawingViewModel);
-                            break;
-                        default:
-                            Tool = new PencilTool(this);
-                            break;
-                    }
-                    pencilOption = value;
-                    OnPropertyChanged(nameof(Tool)); // Make sure the Tool updates succesfully
+                        PencilOptions.Eraser => EraserTool,
+                        //PencilOptions.Pen => EllipsePenTool,
+                        //PencilOptions.Calligraphy => CalligraphyTool,
+                        //PencilOptions.RegularPencil => RegularPencilTool,
+                        //PencilOptions.Chalk => ChalkTool,
+                        //PencilOptions.Graffiti => GraffitiTool,
+                        //PencilOptions.Bucket => BucketTool,
+                        //PencilOptions.Oil => OilTool,
+                        _ => PencilTool,
+                    };
+                    this.SetProperty(ref this.tool, newTool,nameof(this.Tool));
                 }
             }
         }
-        private PencilOptions pencilOption = PencilOptions.Pen;
+        #endregion
 
-        public override IDrawingTool? Tool { get; set; }
+        #region Pen Tip Shape
+
+        public bool penTipArrow = true;
+
+        #endregion
 
         #region Thickness - Connecting the Slider / Textbox with eachother and data clamping
 
         public const double MinimumThickness = 1;
         public const double MaximumThickness = 100;
         private const double DefaultThickness = 6;
+
 
         [Range(MinimumThickness, MaximumThickness)]
         private string thicknessString = DefaultThickness.ToString();

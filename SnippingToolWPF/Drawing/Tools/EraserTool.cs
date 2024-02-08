@@ -19,11 +19,11 @@ namespace SnippingToolWPF.Drawing.Tools
         }
         public Polyline Visual { get; } = new Polyline();
 
-        public DrawingToolAction LeftButtonDown(Point position)
+        public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
         {
-            Visual.StrokeThickness = this.options.Thickness;
-            Visual.Stroke = null;
-            return DrawingToolAction.StartMouseCapture();
+            if (item is not null)
+                return DrawingToolAction.RemoveShape(item);
+            return DrawingToolAction.DoNothing;
         }
 
         public DrawingToolAction MouseMove(Point position)

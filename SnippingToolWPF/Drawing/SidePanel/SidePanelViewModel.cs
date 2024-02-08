@@ -11,6 +11,6 @@ namespace SnippingToolWPF
         {
             this.drawingViewModel = drawingViewModel;
         }
-        public virtual IDrawingTool? Tool {get; set;}
+        public virtual IDrawingTool? Tool {get; }
     }
 }

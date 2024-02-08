@@ -10,7 +10,7 @@ namespace SnippingToolWPF.Drawing.Tools
     public interface IDrawingTool
     {
         public UIElement? Visual { get; }
-        public DrawingToolAction LeftButtonDown(Point position);
+        public DrawingToolAction LeftButtonDown(Point position, UIElement? item);
         public DrawingToolAction MouseMove(Point position);
         public DrawingToolAction LeftButtonUp();
     }

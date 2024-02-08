@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SnippingToolWPF"
-             mc:Ignorable="d">
+             xmlns:local="clr-namespace:SnippingToolWPF" xmlns:control="clr-namespace:SnippingToolWPF.Control"
+                    mc:Ignorable="d">
 
 
     <Style TargetType="{x:Type local:DrawingCanvas}">
@@ -18,15 +18,17 @@
                         <Grid>
                             
                             <!-- Where saved items are place -->
-                            <ItemsControl ItemsSource="{TemplateBinding Shapes}">
-                                <ItemsControl.ItemsPanel>
+                            <control:DrawingCanvasListBox x:Name="PART_ItemsControl" ClipToBounds="True"
+                                                          ItemsSource="{TemplateBinding Shapes}">
+                                <control:DrawingCanvasListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <Canvas/>
                                     </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
+                                </control:DrawingCanvasListBox.ItemsPanel>
 
-                            </ItemsControl>
-                            <Canvas Focusable="True" x:Name="PART_CurrentCanvas"/> <!-- For work in progress items (still drawing etc) its second so its always on top of the saved items -->
+                            </control:DrawingCanvasListBox>
+                            <Canvas ClipToBounds="True" 
+                                    Focusable="True" x:Name="PART_CurrentCanvas"/> <!-- For work in progress items (still drawing etc) its second so its always on top of the saved items -->
                         </Grid>
                         
                     </Border>

@@ -34,7 +34,7 @@
             </Style>
         </DockPanel.Resources>
 
-        <Grid MinHeight="300" Margin="12,10,12,0"
+        <Grid MinHeight="250" Margin="12,10,12,0"
               DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -44,9 +44,6 @@
                 <RowDefinition Height="105" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" /> 
-                <RowDefinition Height="10" />
             </Grid.RowDefinitions>
 
             <!--  Tool Selector  -->
@@ -113,14 +110,12 @@
                     control:SliderTitleAndTextBox.SliderHeader="Opacity"
                     control:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <ListBox Grid.Column="0" Grid.Row="3"
-                     Grid.RowSpan="2" Grid.ColumnSpan="2" 
-                     BorderBrush="Transparent"
-                     Margin="0,10,0,0"
-                     Style="{StaticResource ColorSelectorListBox}"
-                     SelectedItem="{Binding SelectedColor, Mode=TwoWay}"/>
-
         </Grid>
+
+        <ListBox BorderBrush="Transparent"
+                Margin="0,0,0,30" DockPanel.Dock="Bottom"
+                Style="{StaticResource ColorSelectorListBox}"
+                SelectedItem="{Binding SelectedColor, Mode=TwoWay}"/>
 
     </DockPanel>
 </UserControl>

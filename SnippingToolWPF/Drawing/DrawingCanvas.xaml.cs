@@ -6,16 +6,19 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
+using SnippingToolWPF.Control;
 using SnippingToolWPF.Drawing.Tools;
 
 namespace SnippingToolWPF
 {
     [TemplatePart(Name = PartCurrentCanvas, Type = typeof(Canvas))]
+    [TemplatePart(Name = PartItemsControl, Type = typeof(DrawingCanvasListBox))]
     [ContentProperty(nameof(Shapes))]
     public class DrawingCanvas : System.Windows.Controls.Control
     {
 
         private const string PartCurrentCanvas = "PART_CurrentCanvas";
+        private const string PartItemsControl = "PART_ItemsControl";
 
         static DrawingCanvas()
         {
@@ -34,6 +37,7 @@ namespace SnippingToolWPF
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            this.Focus(); // To allow keydown
             OnToolChanged(this.Tool);
         }
 
@@ -41,17 +45,55 @@ namespace SnippingToolWPF
         {
             base.OnApplyTemplate();
             this.CurrentCanvas = this.GetTemplateChild(PartCurrentCanvas) as Canvas;
-            OnToolChanged(this.Tool);
-
-            this.Focus(); // To allow keydown
-            this.KeyDown += DrawingCanvasKeyDown;
+            this.ItemsControl = this.GetTemplateChild(PartItemsControl) as DrawingCanvasListBox;
         }
+
+        private DrawingCanvasListBox? ItemsControl;
+        private DrawingCanvasListBox? itemsControl
+        {
+            get => this.itemsControl;
+            set
+            {
+                if (this.itemsControl == value)
+                    return;
+                if(this.itemsControl is not null)
+                    this.itemsControl.DrawingCanvas = null;
+
+                this.itemsControl = value;
+
+                if (this.itemsControl is not null)
+                    this.itemsControl.DrawingCanvas = this;
+            }
+        }
+
         private void DrawingCanvasKeyDown(object sender, KeyEventArgs e)
         {
             isTyping = true;
         }
 
-        private Canvas? CurrentCanvas { get; set; }
+        // Basically on load
+        private Canvas? currentCanvas;
+        private Canvas? CurrentCanvas
+        {
+            get => this.currentCanvas;
+            set
+            {
+                if (this.currentCanvas == value) 
+                    return;
+
+                if (this.currentCanvas is not null) //Reset if previously set before somehow, pure for safety
+                {
+                    this.currentCanvas.Children.Clear();
+                }
+
+                this.currentCanvas = value;
+
+                if (this.currentCanvas is not null)
+                {
+                    OnToolChanged(this.Tool);
+                }
+            }
+        }
 
         public static readonly DependencyProperty ToolProperty = DependencyProperty.Register(
         nameof(Tool),
@@ -76,8 +118,10 @@ namespace SnippingToolWPF
         {
             if (this.CurrentCanvas is null)
                 return;
+
             this.CurrentCanvas.Children.Clear();
             UIElement? visual = newValue?.Visual;
+
             if (visual is not null)
                 this.CurrentCanvas.Children.Add(visual);
         }
@@ -90,9 +134,8 @@ namespace SnippingToolWPF
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
-            Perform(this.Tool?.LeftButtonDown(e.GetPosition(this)));
+            Perform(this.Tool?.LeftButtonDown(e.GetPosition(this),null));
         }
-
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -144,7 +187,40 @@ namespace SnippingToolWPF
 
         #endregion
 
-        #region Undo / Redo
+        #region Keyboard Handlers
+
+        public bool retainAspectRatio = false;
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z)
+            {
+                // TODO: Ctrl Z
+            }
+
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Y)
+            {
+                // TODO: Ctrl Y
+            }
+
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
+            {
+                retainAspectRatio = true;
+            }
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+            if (e.Key != Key.LeftShift && e.Key != Key.RightShift)
+            {
+                retainAspectRatio = false;
+            }
+        }
+
         public void UndoLastAction(object sender, KeyEventArgs e)
         {
             if (Shapes.Count  > 0)
@@ -188,5 +264,19 @@ namespace SnippingToolWPF
         }
 
         #endregion
+
+        #region On Item Mouse Events 
+
+        internal void OnItemMouseEvent(DrawingCanvasListBoxItem item, MouseEventArgs e)
+        {
+            if (item.Content is not UIElement element)
+                return;
+            if(e.RoutedEvent == MouseLeftButtonDownEvent)
+                Perform(this.Tool?.LeftButtonDown(e.GetPosition(element), element));
+        }
+
+
+        #endregion
+
     }
 }
