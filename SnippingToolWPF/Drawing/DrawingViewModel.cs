@@ -1,6 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows;
+using SnippingToolWPF.Interop;
+using System.Windows.Input;
+using SnippingToolWPF.Screenshot;
+
 
 namespace SnippingToolWPF
 {
@@ -17,6 +21,8 @@ namespace SnippingToolWPF
         private readonly ShapesSidePanelViewModel shapesPanel;
         private readonly StickersSidePanelViewModel stickersPanel;
         private readonly TextSidePanelViewModel textPanel;
+        public ICommand ClearCanvas { get; private set; }
+        public ICommand TakeScreenshot { get; private set; }
 
         public DrawingViewModel()
         {
@@ -24,6 +30,8 @@ namespace SnippingToolWPF
             this.shapesPanel = new ShapesSidePanelViewModel(this);
             this.stickersPanel = new StickersSidePanelViewModel(this);
             this.textPanel = new TextSidePanelViewModel(this);
+            this.ClearCanvas = new RelayCommand(ExecuteClearCanvasButton);
+            this.TakeScreenshot = new RelayCommand(ExecuteTakeScreenshot);
         }
 
         public SidePanelViewModel? SidePanelContent => SidePanelContentKind switch
@@ -35,7 +43,39 @@ namespace SnippingToolWPF
             _ => null,
         };
 
-        public ObservableCollection<UIElement> DrawingObjects { get; } = new ObservableCollection<UIElement>();
+        #region Drawing Objects creating / clearing
 
+        public ObservableCollection<UIElement> DrawingObjects { get; private set; } = new ObservableCollection<UIElement>();
+
+        /// <summary>
+        /// Button in Xaml is linked via the RelayCommand class so the button can be in the viewmodel instead of the code-behind
+        /// </summary>
+        private void ExecuteClearCanvasButton(object? parameter)
+        {
+            //TODO: Create custom messagebox so we center it in the middle of the app isntead of screen 
+
+            MessageBoxResult result = MessageBox.Show(Application.Current.MainWindow,
+                "Are you sure you want to clear the canvas?", "Clear Canvas", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+                this.ClearDrawingObjects();
+        }
+
+        private void ClearDrawingObjects()
+        {
+            DrawingObjects.Clear();
+            // TODO: Last drawing is not clearing
+        }
+
+        #endregion
+
+        #region Take Screenshot
+
+        private void ExecuteTakeScreenshot(object? parameter)
+        {
+            new ScreenshotWindow().Show();
+        }
+
+        #endregion
     }
 }

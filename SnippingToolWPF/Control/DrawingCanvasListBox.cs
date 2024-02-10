@@ -65,7 +65,7 @@ namespace SnippingToolWPF.Control
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
-            DrawingCanvas?.OnItemMouseEvent(this,e);
+            DrawingCanvas?.OnItemMouseEvent(this, e);
         }
     }
 }

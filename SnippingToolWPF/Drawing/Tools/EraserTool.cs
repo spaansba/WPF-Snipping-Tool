@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace SnippingToolWPF.Drawing.Tools
 {
-    public sealed class EraserTool : IDrawingTool<Polyline>
+    public sealed class EraserTool : IDrawingTool
     {
         private readonly PencilsSidePanelViewModel options;
         private DrawingViewModel DrawingViewModel;
@@ -17,7 +17,8 @@ namespace SnippingToolWPF.Drawing.Tools
             this.DrawingViewModel = drawingView;
             this.options = options;
         }
-        public Polyline Visual { get; } = new Polyline();
+
+        public UIElement? Visual => null;
 
         public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
         {
@@ -28,16 +29,6 @@ namespace SnippingToolWPF.Drawing.Tools
 
         public DrawingToolAction MouseMove(Point position)
         {
-            foreach (UIElement element in DrawingViewModel.DrawingObjects)
-            {
-                if (element is Polyline polyline)
-                {
-                    if (polyline.Points.Contains(position))
-                    {
-                        polyline.Points.Remove(position);
-                    }
-                }
-            }
             return DrawingToolAction.DoNothing;
         }
         public DrawingToolAction LeftButtonUp()

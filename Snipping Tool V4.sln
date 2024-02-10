@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippingToolWPF", "Snipping
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippingWPFTests", "SnippingWPFTests\SnippingWPFTests.csproj", "{12F8F731-6118-4939-9FF8-978541D2B30F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippingTool.Interop", "TakingScreenshot\SnippingTool.Interop.csproj", "{71885FBB-F0A4-4E8E-B4F8-40D5FFAD76EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{12F8F731-6118-4939-9FF8-978541D2B30F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F8F731-6118-4939-9FF8-978541D2B30F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12F8F731-6118-4939-9FF8-978541D2B30F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71885FBB-F0A4-4E8E-B4F8-40D5FFAD76EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71885FBB-F0A4-4E8E-B4F8-40D5FFAD76EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71885FBB-F0A4-4E8E-B4F8-40D5FFAD76EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71885FBB-F0A4-4E8E-B4F8-40D5FFAD76EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

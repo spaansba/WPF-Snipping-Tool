@@ -80,7 +80,7 @@ namespace SnippingToolWPF.Drawing.Tools
         {
             if (Visual.Points.Count < 2)
             {
-                return DrawingToolAction.DoNothing;
+                return DrawingToolAction.StopMouseCapture();
             }
 
             // Get the last two points from Visual.Points
@@ -116,16 +116,28 @@ namespace SnippingToolWPF.Drawing.Tools
         {
             // Calculate the vector representing the direction of the line segment
             Vector lineDirection = position2 - position1;
-
-            // Define the length of the arrowhead
-            double arrowheadLength = 6; // You can adjust this value as needed
+           
+            double arrowheadLength = Visual.StrokeThickness switch
+            {
+                <= 5 => 3,
+                <= 15 => 5,
+                <= 25 => 8,
+                <= 35 => 10,
+                <= 45 => 12,
+                <= 55 => 16,
+                <= 65 => 20,
+                <= 75 => 24,
+                <= 85 => 26,
+                <= 100 => 30,
+                _ => 5 // Default case
+            };
 
             // Calculate the position of the arrowhead
             Point arrowheadPoint = position2;
 
             // Calculate the points of the arrowhead
-            Vector rotatedDirection1 = Rotate(lineDirection, Math.PI - Math.PI / 6); // Rotate clockwise 
-            Vector rotatedDirection2 = Rotate(lineDirection, Math.PI + Math.PI / 6); // Rotate counterclockwise 
+            Vector rotatedDirection1 = Rotate(lineDirection, Math.PI - Math.PI / 5); // Rotate clockwise 
+            Vector rotatedDirection2 = Rotate(lineDirection, Math.PI + Math.PI / 5); // Rotate counterclockwise 
 
             Point arrowheadEnd1 = arrowheadPoint + arrowheadLength * rotatedDirection1;
             Point arrowheadEnd2 = arrowheadPoint + arrowheadLength * rotatedDirection2;
