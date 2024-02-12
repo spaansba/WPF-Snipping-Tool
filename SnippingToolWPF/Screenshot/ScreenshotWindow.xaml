@@ -6,7 +6,7 @@
         xmlns:screenshot="clr-namespace:SnippingToolWPF.Screenshot"
         mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="SingleBorderWindow"
         Title="ScreenshotWindow" Height="450" Width="800"
-        MouseDown="OnMouseLeftButtonDown">
+        MouseDown="OnMouseLeftButtonDown" MouseMove="OnMouseMove" MouseUp="OnMouseLeftButtonUp">
 
     <Window.DataContext>
         <screenshot:ScreenshotWindowViewModel/>
