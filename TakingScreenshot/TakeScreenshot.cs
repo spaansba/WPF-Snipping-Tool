@@ -23,9 +23,9 @@ public static class TakeScreenshots
         return CaptureScreen(x, y, width, height);
     }
 
-    public static BitmapSource FromWpfRect(Double x, Double y, Double width, Double height)
+    public static BitmapSource FromWpfRect(WpfRect rect)
     {
-        return CaptureScreen(Convert.ToInt32(x), Convert.ToInt32(y), Convert.ToInt32(width), Convert.ToInt32(height));
+        return CaptureScreen(Convert.ToInt32(rect.X), Convert.ToInt32(rect.Y), Convert.ToInt32(rect.Width), Convert.ToInt32(rect.Height));
     }
 
     public static BitmapSource FromPointAndSize(WinFormsPoint topLeftPoint, WinFormsSize screenshotSize)

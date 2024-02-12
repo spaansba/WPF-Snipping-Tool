@@ -1,5 +1,5 @@
-﻿using SnippingToolWPF.Interop;
-using SnippingToolWPF.Screenshot.Preview;
+﻿using SnippingToolWPF.ExtensionMethods;
+using SnippingToolWPF.Interop;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,39 +15,36 @@ namespace SnippingToolWPF.Screenshot;
 /// </summary>
 public partial class ScreenshotWindow : Window
 {
-    private Rect UserFullScreenRect = MonitorInfo.GetTotalMonitorRect();
+    private Point begin;
+    private bool isCreatingScreenshot;
+    private Rect userFullScreenRect = MonitorInfo.GetTotalMonitorRect();
     private readonly BitmapSource userBackground;
+    private const double PreviewEllipseSize = 126;
+    private RectangleGeometry selectionGeometry = new RectangleGeometry();
+    private Path semiTransparency;
 
-    private PreviewEllipse PreviewEllipse;
-    private PreviewRectangle PreviewRectangle;
+    private PreviewEllipse PreviewEllipse = new PreviewEllipse()
+    {
+        Width = PreviewEllipseSize,
+        Height = PreviewEllipseSize,
+    };
 
     public ScreenshotWindow()
     {
-        userBackground = TakeScreenshots.FromWpfRect(UserFullScreenRect.X,
-                                                              UserFullScreenRect.Y,
-                                                              UserFullScreenRect.Width,
-                                                              UserFullScreenRect.Height);
-
-        SetWindowProperties();
-        PreviewEllipse = new PreviewEllipse(userBackground);
-        PreviewRectangle = new PreviewRectangle(userBackground);
-    }
-
-    private RectangleGeometry selectionGeometry = new RectangleGeometry();
-    private Path? semiTransparency;
-
-    public void SetWindowProperties()
-    {
-        this.Width = UserFullScreenRect.Width;
-        this.Height = UserFullScreenRect.Height;
-        this.Left = UserFullScreenRect.Left;
-        this.Top = UserFullScreenRect.Top;
-        this.MouseDown += OnMouseLeftButtonDown;
-        this.MouseMove += OnMouseMove;
-        this.MouseUp += OnMouseLeftButtonUp;
+        (this.Left, this.Top, this.Width, this.Height) = userFullScreenRect; // use deconstruct extension to set values all at ones
+        userBackground = TakeScreenshots.FromWpfRect(userFullScreenRect);
 
         this.Background = new ImageBrush(this.userBackground);
-        this.semiTransparency = new Path()
+        this.semiTransparency = CreateSemiTransparency(selectionGeometry, userFullScreenRect);
+        this.Content = new Canvas().AddChildren(this.semiTransparency, this.PreviewEllipse);
+
+        this.ResizeMode = ResizeMode.NoResize;
+        // this.WindowStyle = WindowStyle.None;
+    }
+
+    private static Path CreateSemiTransparency(RectangleGeometry selectionGeometry, Rect userFullScreenRect)
+    {
+        return new Path()
         {
             Fill = new SolidColorBrush()
             {
@@ -56,37 +53,34 @@ public partial class ScreenshotWindow : Window
             Data = new CombinedGeometry()
             {
                 GeometryCombineMode = GeometryCombineMode.Xor,
-                Geometry1 = this.selectionGeometry,
+                Geometry1 = selectionGeometry,
                 Geometry2 = new RectangleGeometry
                 {
-                    Rect = this.UserFullScreenRect
+                    Rect = userFullScreenRect
                 }
             }
         };
-        this.Content = this.semiTransparency;
-        this.ResizeMode = ResizeMode.NoResize;
     }
 
-    private Point begin;
-    private bool IsCreatingScreenshot;
-
-    private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    #region Mouse events
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
         {
-            IsCreatingScreenshot = true;
+            isCreatingScreenshot = true;
             begin = e.GetPosition(this);
         }
+        base.OnMouseLeftButtonDown(e);
     }
 
-    private void OnMouseMove(object sender, MouseEventArgs e)
+    protected override void OnMouseMove(MouseEventArgs e)
     {
         //backgroundCanvas.Children.Clear();
         Point mousePosition = e.GetPosition(this);
 
         //Preview Rectangle
 
-        if (IsCreatingScreenshot)
+        if (isCreatingScreenshot)
         {
             //backgroundCanvas.Children.Add(this.PreviewRectangle.CreatePreviewRectangle(begin, mousePosition));
             this.selectionGeometry.Rect = new Rect(begin, mousePosition);
@@ -104,13 +98,15 @@ public partial class ScreenshotWindow : Window
         
         
         //backgroundCanvas.Children.Add(FullPreviewEllipse);
+        base.OnMouseMove(e);
     }
 
-    private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
-            IsCreatingScreenshot = false;
+            isCreatingScreenshot = false;
+        base.OnMouseLeftButtonUp(e);
     }
-
+    #endregion
 }
 // https://learn.microsoft.com/en-us/dotnet/api/system.windows.media.imaging.bitmapsource.copypixels?view=windowsdesktop-8.0#system-windows-media-imaging-bitmapsource-copypixels(system-windows-int32rect-system-intptr-system-int32-system-int32)
