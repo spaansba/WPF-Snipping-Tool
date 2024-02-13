@@ -73,6 +73,7 @@ namespace SnippingToolWPF
 
         private void ExecuteTakeScreenshot(object? parameter)
         {
+
             new ScreenshotWindow().Show();
         }
 

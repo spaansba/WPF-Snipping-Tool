@@ -15,10 +15,15 @@ namespace SnippingToolWPF.Screenshot;
 /// </summary>
 public partial class ScreenshotWindow : Window
 {
+    
     private Point begin;
     private bool isCreatingScreenshot;
-    private Rect userFullScreenRect = MonitorInfo.GetTotalMonitorRect();
-    private readonly BitmapSource userBackground;
+    private Rect userFullScreenRect = new Rect(
+                  SystemParameters.VirtualScreenLeft,
+                  SystemParameters.VirtualScreenTop,
+                  SystemParameters.VirtualScreenWidth,
+                  SystemParameters.VirtualScreenHeight);
+    private readonly BitmapSource? userBackground;
     private const double PreviewEllipseSize = 126;
     private RectangleGeometry selectionGeometry = new RectangleGeometry();
     private Path semiTransparency;
@@ -32,7 +37,8 @@ public partial class ScreenshotWindow : Window
     public ScreenshotWindow()
     {
         (this.Left, this.Top, this.Width, this.Height) = userFullScreenRect; // use deconstruct extension to set values all at ones
-        userBackground = TakeScreenshots.FromWpfRect(userFullScreenRect);
+
+        userBackground = ScreenCapture.CaptureFullScreen(addToClipboard: false);
 
         this.Background = new ImageBrush(this.userBackground);
         this.semiTransparency = CreateSemiTransparency(selectionGeometry, userFullScreenRect);
@@ -75,36 +81,30 @@ public partial class ScreenshotWindow : Window
 
     protected override void OnMouseMove(MouseEventArgs e)
     {
-        //backgroundCanvas.Children.Clear();
         Point mousePosition = e.GetPosition(this);
-
-        //Preview Rectangle
 
         if (isCreatingScreenshot)
         {
-            //backgroundCanvas.Children.Add(this.PreviewRectangle.CreatePreviewRectangle(begin, mousePosition));
             this.selectionGeometry.Rect = new Rect(begin, mousePosition);
         }
 
-        // Preview ellipse
+        Canvas.SetLeft(PreviewEllipse, mousePosition.X + 30);
+        Canvas.SetTop(PreviewEllipse, mousePosition.Y + 30);
 
-        // TODO: on hover over dark pixel make stroke white, on hover over light pixel make stroke black
-        //PreviewEllipse.BaseEllipse.Stroke = Brushes.Black;
- 
-        //Canvas FullPreviewEllipse = PreviewEllipse.FullPreviewEllipse;
-        //Canvas.SetLeft(FullPreviewEllipse, mousePosition.X + 30);
-        //Canvas.SetTop(FullPreviewEllipse, mousePosition.Y + 30);
-
-        
-        
-        //backgroundCanvas.Children.Add(FullPreviewEllipse);
         base.OnMouseMove(e);
     }
 
     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
-            isCreatingScreenshot = false;
+        {
+            Point end = e.GetPosition(this);
+            Rect screenshotRect = new Rect(begin.X, begin.Y, end.X - begin.X, end.Y - begin.Y);
+            isCreatingScreenshot = false; // not nececairy but usefull for testing
+            
+        }
+            
+            
         base.OnMouseLeftButtonUp(e);
     }
     #endregion
