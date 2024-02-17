@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 using SnippingToolWPF.Control;
 using SnippingToolWPF.Drawing.Tools;
 
@@ -19,6 +21,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     private const string PartCurrentCanvas = "PART_CurrentCanvas";
     private const string PartItemsControl = "PART_ItemsControl";
+    private CompositeCollection allItems; // Collection of the screenshot + shapes
 
     static DrawingCanvas()
     {
@@ -31,9 +34,30 @@ public class DrawingCanvas : System.Windows.Controls.Control
     {
         this.Loaded += OnLoaded;
         this.Shapes = new ObservableCollection<UIElement>(); // set it because the property getter is not used in all circumstances
+        this.allItems = CreateAllItemCollection(); 
     }
 
     #region set-up / tool change etc
+
+    /// <summary>
+    /// List of all items in the Composite, including screenshot and all shapes drawn
+    /// </summary>
+    private CompositeCollection CreateAllItemCollection()
+    {
+        return new CompositeCollection()
+        {
+            new SingleItemCollectionContainer
+                {
+                    Item = new Image()
+                        .WithBinding(
+                            Image.SourceProperty,
+                            new(ScreenshotProperty),
+                            this
+                        ),
+                },
+            new CollectionContainer().WithBinding(CollectionContainer.CollectionProperty,new(ShapesProperty),this)
+        };
+    }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
@@ -48,21 +72,28 @@ public class DrawingCanvas : System.Windows.Controls.Control
         this.ItemsControl = this.GetTemplateChild(PartItemsControl) as DrawingCanvasListBox;
     }
 
-    private DrawingCanvasListBox? ItemsControl;
-    private DrawingCanvasListBox? itemsControl
+    private DrawingCanvasListBox? itemsControl;
+    private DrawingCanvasListBox? ItemsControl
     {
         get => this.itemsControl;
         set
         {
             if (this.itemsControl == value)
                 return;
-            if(this.itemsControl is not null)
+            if (this.itemsControl is not null)
+            {
                 this.itemsControl.DrawingCanvas = null;
-
+                this.itemsControl.ItemsSource = null;
+            }
+                
             this.itemsControl = value;
 
             if (this.itemsControl is not null)
+            {
                 this.itemsControl.DrawingCanvas = this;
+                this.itemsControl.ItemsSource = this.allItems;
+            }
+                
         }
     }
 
@@ -195,12 +226,12 @@ public class DrawingCanvas : System.Windows.Controls.Control
     {
         base.OnPreviewKeyDown(e);
 
-        if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z)
+        if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z) // Undo last action
         {
             // TODO: Ctrl Z
         }
 
-        if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Y)
+        if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Y) // Redo the Undo
         {
             // TODO: Ctrl Y
         }
@@ -225,7 +256,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     {
         if (Shapes.Count  > 0)
         {
-        //    this.Shapes.Remove[Shapes.Count - 1];
+    //        this.Shapes.Remove[Shapes.Count - 1];
         }
     }
 
@@ -260,8 +291,31 @@ public class DrawingCanvas : System.Windows.Controls.Control
     {
         get => this.GetValue<ObservableCollection<UIElement>>(ShapesProperty)
             ?? this.SetValue<ObservableCollection<UIElement>>(ShapesProperty, new()); // < dont return a null value
-        set => this.SetValue<ObservableCollection<UIElement>>(ShapesProperty, value);
+        set
+        {
+            this.SetValue<ObservableCollection<UIElement>>(ShapesProperty, value);
+            VisibleShapes = Shapes;
+        }
     }
+
+    private Collection<UIElement>? VisibleShapes;
+
+
+    #endregion
+
+    #region Screenshot Property
+
+    public static readonly DependencyProperty ScreenshotProperty = DependencyProperty.Register(
+        nameof(Screenshot),
+        typeof(ImageSource),
+        typeof(DrawingCanvas));
+
+    public ImageSource? Screenshot
+    {
+        get => this.GetValue<ImageSource>(ScreenshotProperty);
+        set => this.SetValue(ScreenshotProperty, value);    
+    }
+
 
     #endregion
 

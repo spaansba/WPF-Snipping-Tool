@@ -1,21 +1,20 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
-namespace SnippingToolWPF
+namespace SnippingToolWPF;
+
+public static class FreezableExtensions
 {
-    public static class FreezableExtensions
+    [return: NotNullIfNotNull("freezable")]
+    public static T? CloneIfNotFrozen<T>(
+    this T? freezable
+    ) where T : Freezable
     {
-        [return: NotNullIfNotNull("freezable")]
-        public static T? CloneIfNotFrozen<T>(
-        this T? freezable
-        ) where T : Freezable
+        return freezable?.IsFrozen switch
         {
-            return freezable?.IsFrozen switch
-            {
-                null => null,
-                true => freezable,
-                false => (T)freezable.Clone(),
-            };
-        }
+            null => null,
+            true => freezable,
+            false => (T)freezable.Clone(),
+        };
     }
 }

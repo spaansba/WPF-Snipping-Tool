@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnippingToolWPF
+namespace SnippingToolWPF;
+
+public enum PencilOptions
 {
-    public enum PencilOptions
-    {
-        Pen,
-        Calligraphy,
-        RegularPencil,
-        Eraser,
-        Chalk,
-        Graffiti,
-        Bucket,
-        Oil,
-    }
+    Pen,
+    Calligraphy,
+    RegularPencil,
+    Eraser,
+    Chalk,
+    Graffiti,
+    Bucket,
+    Oil,
 }

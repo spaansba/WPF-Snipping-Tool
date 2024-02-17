@@ -17,6 +17,7 @@ public partial class ScreenshotWindow : Window
 {
     
     private Point begin;
+    private Int32Rect selectedRect;
     private bool isCreatingScreenshot;
     private Rect userFullScreenRect = new Rect(
                   SystemParameters.VirtualScreenLeft,
@@ -99,14 +100,30 @@ public partial class ScreenshotWindow : Window
         if (e.ChangedButton == MouseButton.Left)
         {
             Point end = e.GetPosition(this);
-            Rect screenshotRect = new Rect(begin.X, begin.Y, end.X - begin.X, end.Y - begin.Y);
+            this.selectedRect = new Int32Rect((int)begin.X, (int)begin.Y, (int)(end.X - begin.X), (int)(end.Y - begin.Y));
+            this.DialogResult = true;
+            this.Close();
             isCreatingScreenshot = false; // not nececairy but usefull for testing
             
         }
-            
-            
+  
         base.OnMouseLeftButtonUp(e);
     }
     #endregion
+
+    public static ImageSource? GetScreenshot()
+    {
+        var window = new ScreenshotWindow()
+        {
+            Topmost = true,
+        };
+        if (window.ShowDialog() is not true)
+        {
+            return null;
+        }
+
+        return new CroppedBitmap(window.userBackground, window.selectedRect);
+    }
+
 }
 // https://learn.microsoft.com/en-us/dotnet/api/system.windows.media.imaging.bitmapsource.copypixels?view=windowsdesktop-8.0#system-windows-media-imaging-bitmapsource-copypixels(system-windows-int32rect-system-intptr-system-int32-system-int32)

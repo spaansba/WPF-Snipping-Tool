@@ -137,7 +137,8 @@
 
             <local:DrawingCanvas Grid.Row="1" Grid.Column="0"
                                  Shapes="{Binding DrawingObjects}"
-                                 local:Tool="{Binding SidePanelContent.Tool, FallbackValue={x:Null}}"/>
+                                 local:Tool="{Binding SidePanelContent.Tool, FallbackValue={x:Null}}"
+                                 Screenshot="{Binding Screenshot}"/>
 
             <Border x:Name="SidePanel" Grid.Row="1"
                     Grid.Column="1" DockPanel.Dock="Right">

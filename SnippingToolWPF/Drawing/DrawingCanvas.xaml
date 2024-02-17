@@ -18,8 +18,7 @@
                         <Grid>
                             
                             <!-- Where saved items are place -->
-                            <control:DrawingCanvasListBox x:Name="PART_ItemsControl" ClipToBounds="True"
-                                                          ItemsSource="{TemplateBinding Shapes}">
+                            <control:DrawingCanvasListBox x:Name="PART_ItemsControl" ClipToBounds="True">
                                 <control:DrawingCanvasListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <Canvas/>

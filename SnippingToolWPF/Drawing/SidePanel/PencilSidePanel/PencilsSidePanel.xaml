@@ -44,6 +44,7 @@
                 <RowDefinition Height="105" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <!--  Tool Selector  -->
@@ -87,7 +88,6 @@
                 </RadioButton>
             </WrapPanel>
 
-
             <Slider x:Name="ThicknessSlider"
                     Style="{StaticResource SliderTitleAndTextBox}" 
                     Grid.Column="0" Grid.Row="1" 
@@ -109,6 +109,13 @@
                     control:SliderTitleAndTextBox.StaticTextBoxText="% "
                     control:SliderTitleAndTextBox.SliderHeader="Opacity"
                     control:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <CheckBox Grid.Row="3" Style="{StaticResource BaseCheckBox}" 
+                      Grid.ColumnSpan="2" Grid.Column="0"
+                      Margin="0,15,0,15"
+                      IsChecked="{Binding PenTipArrow}">
+                <TextBlock Text="Add Arrowhead" />
+            </CheckBox>
 
         </Grid>
 

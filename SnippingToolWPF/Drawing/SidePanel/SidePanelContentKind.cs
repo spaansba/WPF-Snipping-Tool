@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnippingToolWPF
+namespace SnippingToolWPF;
+public enum SidePanelContentKind
 {
-    public enum SidePanelContentKind
-    {
-        Pencils,
-        Shapes,
-        Stickers,
-        Text,
-    }
+    Pencils,
+    Shapes,
+    Stickers,
+    Text,
 }
+

@@ -9,43 +9,42 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-namespace SnippingToolWPF.Control
+namespace SnippingToolWPF.Control;
+
+public class SliderAllowDragOnClick : Behavior<Slider>
 {
-    public class SliderAllowDragOnClick : Behavior<Slider>
+    private Thumb? thumb;
+    private Thumb Thumb
     {
-        private Thumb? thumb;
-        private Thumb Thumb
+        get
         {
-            get
+            if (thumb == null)
             {
-                if (thumb == null)
-                {
-                    thumb = ((Track)AssociatedObject.Template.FindName("PART_Track", AssociatedObject)).Thumb;
-                }
-                return thumb;
+                thumb = ((Track)AssociatedObject.Template.FindName("PART_Track", AssociatedObject)).Thumb;
             }
+            return thumb;
         }
+    }
 
-        protected override void OnAttached()
+    protected override void OnAttached()
+    {
+        AssociatedObject.MouseMove += OnMouseMove;
+    }
+
+    protected override void OnDetaching()
+    {
+        AssociatedObject.MouseMove -= OnMouseMove;
+    }
+
+    private void OnMouseMove(object sender, MouseEventArgs args)
+    {
+        if (args.LeftButton == MouseButtonState.Released) return;
+        if (Thumb.IsDragging) return;
+        if (!Thumb.IsMouseOver) return;
+
+        Thumb.RaiseEvent(new MouseButtonEventArgs(args.MouseDevice, args.Timestamp, MouseButton.Left)
         {
-            AssociatedObject.MouseMove += OnMouseMove;
-        }
-
-        protected override void OnDetaching()
-        {
-            AssociatedObject.MouseMove -= OnMouseMove;
-        }
-
-        private void OnMouseMove(object sender, MouseEventArgs args)
-        {
-            if (args.LeftButton == MouseButtonState.Released) return;
-            if (Thumb.IsDragging) return;
-            if (!Thumb.IsMouseOver) return;
-
-            Thumb.RaiseEvent(new MouseButtonEventArgs(args.MouseDevice, args.Timestamp, MouseButton.Left)
-            {
-                RoutedEvent = UIElement.MouseLeftButtonDownEvent
-            });
-        }
+            RoutedEvent = UIElement.MouseLeftButtonDownEvent
+        });
     }
 }

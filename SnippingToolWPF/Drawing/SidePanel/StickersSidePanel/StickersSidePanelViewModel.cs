@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnippingToolWPF
+namespace SnippingToolWPF;
+
+public sealed class StickersSidePanelViewModel : SidePanelViewModel
 {
-    public sealed class StickersSidePanelViewModel : SidePanelViewModel
+    public override string Header => "Stickers";
+    public StickersSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
     {
-        public override string Header => "Stickers";
-        public StickersSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
-        {
-        }
     }
 }
