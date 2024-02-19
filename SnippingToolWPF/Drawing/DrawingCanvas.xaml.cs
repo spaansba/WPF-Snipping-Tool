@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using SnippingToolWPF.Common;
 using SnippingToolWPF.Control;
 using SnippingToolWPF.Drawing.Tools;
 
@@ -33,6 +34,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     public DrawingCanvas()
     {
         this.Loaded += OnLoaded;
+        this.visibleShapes = new Stack<UIElement>();
         this.Shapes = new ObservableCollection<UIElement>(); // set it because the property getter is not used in all circumstances
         this.allItems = CreateAllItemCollection(); 
     }
@@ -198,6 +200,25 @@ public class DrawingCanvas : System.Windows.Controls.Control
         PerformStartAction(action.StartAction);
     }
 
+    private void PerformStopAction(DrawingToolActionItem action)
+    {
+        if (action.IsMouseCapture)
+        {
+            this.ReleaseMouseCapture();
+            isDrawing = false;
+        }
+        if (action.IsKeyboardFocus)
+        {
+            isTyping = false;
+            Keyboard.Focus(this);
+        }
+        if (action.IsShape)
+        {
+            this.VisibleShapes.Pop();
+            this.Shapes.Remove(action.Item);
+        }
+    }
+
     private void PerformStartAction(DrawingToolActionItem action)
     {
         if (action.IsMouseCapture)
@@ -212,6 +233,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
         if (action.IsShape)
         {
+            this.VisibleShapes.Push(action.Item);
             this.Shapes.Add(action.Item);
         }
     }
@@ -228,6 +250,13 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
         if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z) // Undo last action
         {
+            if (VisibleShapes.Count > 0)
+                this.VisibleShapes.Pop();
+
+
+            // https://pradeep1210.wordpress.com/2011/04/09/add-undoredo-or-backforward-functionality-to-your-application/
+            // https://en.wikipedia.org/wiki/Memento_pattern
+            // 
             // TODO: Ctrl Z
         }
 
@@ -262,24 +291,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     #endregion
 
-
-    private void PerformStopAction(DrawingToolActionItem action)
-    {
-        if (action.IsMouseCapture)
-        {
-            this.ReleaseMouseCapture();
-            isDrawing = false;
-        }
-        if (action.IsKeyboardFocus)
-        {
-            isTyping = false;
-            Keyboard.Focus(this);
-        }
-        if (action.IsShape)
-        {
-            this.Shapes.Remove(action.Item);
-        }
-    }
     #region Shapes
     public static readonly DependencyProperty ShapesProperty = DependencyProperty.Register(
         nameof(Shapes),
@@ -294,11 +305,20 @@ public class DrawingCanvas : System.Windows.Controls.Control
         set
         {
             this.SetValue<ObservableCollection<UIElement>>(ShapesProperty, value);
-            VisibleShapes = Shapes;
         }
     }
 
-    private Collection<UIElement>? VisibleShapes;
+    private Stack<UIElement> visibleShapes;
+    public Stack<UIElement> VisibleShapes
+    {
+        get { return visibleShapes; }
+        set 
+        { 
+            visibleShapes = value;
+            Shapes = new ObservableCollection<UIElement>(visibleShapes);
+        }
+    }
+
 
 
     #endregion
