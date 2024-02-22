@@ -64,7 +64,6 @@ public partial class DrawingViewModel : ObservableObject
     private void ClearDrawingObjects()
     {
         DrawingObjects.Clear();
-        // TODO: Last drawing is not clearing
     }
 
     #endregion
@@ -86,6 +85,8 @@ public partial class DrawingViewModel : ObservableObject
             this.Screenshot = result;
         }
     }
+
+    
 
     #endregion
 }

@@ -27,8 +27,10 @@ public sealed class EraserTool : IDrawingTool
         return DrawingToolAction.DoNothing;
     }
 
-    public DrawingToolAction MouseMove(Point position)
+    public DrawingToolAction MouseMove(Point position, UIElement? item)
     {
+        if (item is not null)
+            return DrawingToolAction.RemoveShape(item);
         return DrawingToolAction.DoNothing;
     }
     public DrawingToolAction LeftButtonUp()

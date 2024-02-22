@@ -8,7 +8,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
-using SnippingToolWPF.Common;
 using SnippingToolWPF.Control;
 using SnippingToolWPF.Drawing.Tools;
 
@@ -24,6 +23,8 @@ public class DrawingCanvas : System.Windows.Controls.Control
     private const string PartItemsControl = "PART_ItemsControl";
     private CompositeCollection allItems; // Collection of the screenshot + shapes
 
+    public UndoRedo<UIElement> UndoRedoStacks = new UndoRedo<UIElement>(); // To make Undo Redo work 
+
     static DrawingCanvas()
     {
         DefaultStyleKeyProperty.OverrideMetadata(
@@ -34,7 +35,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
     public DrawingCanvas()
     {
         this.Loaded += OnLoaded;
-        this.visibleShapes = new Stack<UIElement>();
         this.Shapes = new ObservableCollection<UIElement>(); // set it because the property getter is not used in all circumstances
         this.allItems = CreateAllItemCollection(); 
     }
@@ -115,16 +115,12 @@ public class DrawingCanvas : System.Windows.Controls.Control
                 return;
 
             if (this.currentCanvas is not null) //Reset if previously set before somehow, pure for safety
-            {
                 this.currentCanvas.Children.Clear();
-            }
 
             this.currentCanvas = value;
 
             if (this.currentCanvas is not null)
-            {
                 OnToolChanged(this.Tool);
-            }
         }
     }
 
@@ -175,7 +171,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         base.OnMouseMove(e);
 
         if (this.isDrawing)
-            Perform(this.Tool?.MouseMove(e.GetPosition(this)));
+            Perform(this.Tool?.MouseMove(e.GetPosition(this),null));
     }
 
     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -183,7 +179,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         base.OnMouseLeftButtonUp(e);
        if (this.isDrawing)
         {
-            Perform(this.Tool?.MouseMove(e.GetPosition(this)));
+            Perform(this.Tool?.MouseMove(e.GetPosition(this), null));
             Perform(this.Tool?.LeftButtonUp());
         }
     }
@@ -212,10 +208,10 @@ public class DrawingCanvas : System.Windows.Controls.Control
             isTyping = false;
             Keyboard.Focus(this);
         }
-        if (action.IsShape)
+        if (action.IsShape) // For eraser tool
         {
-            this.VisibleShapes.Pop();
             this.Shapes.Remove(action.Item);
+            // TODO: Make it work with undo/redo
         }
     }
 
@@ -233,8 +229,8 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
         if (action.IsShape)
         {
-            this.VisibleShapes.Push(action.Item);
             this.Shapes.Add(action.Item);
+            this.UndoRedoStacks.AddItem(action.Item);
         }
     }
 
@@ -250,19 +246,14 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
         if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z) // Undo last action
         {
-            if (VisibleShapes.Count > 0)
-                this.VisibleShapes.Pop();
-
-
-            // https://pradeep1210.wordpress.com/2011/04/09/add-undoredo-or-backforward-functionality-to-your-application/
+            
+            UndoRedoStacks.Undo();
             // https://en.wikipedia.org/wiki/Memento_pattern
-            // 
-            // TODO: Ctrl Z
         }
 
         if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Y) // Redo the Undo
         {
-            // TODO: Ctrl Y
+            UndoRedoStacks.Redo();
         }
 
         if (Keyboard.Modifiers == ModifierKeys.Shift)
@@ -271,27 +262,10 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
     }
 
-    protected override void OnKeyUp(KeyEventArgs e)
-    {
-        base.OnKeyUp(e);
-
-        if (e.Key != Key.LeftShift && e.Key != Key.RightShift)
-        {
-            retainAspectRatio = false;
-        }
-    }
-
-    public void UndoLastAction(object sender, KeyEventArgs e)
-    {
-        if (Shapes.Count  > 0)
-        {
-    //        this.Shapes.Remove[Shapes.Count - 1];
-        }
-    }
-
     #endregion
 
     #region Shapes
+
     public static readonly DependencyProperty ShapesProperty = DependencyProperty.Register(
         nameof(Shapes),
         typeof(ObservableCollection<UIElement>),
@@ -307,19 +281,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
             this.SetValue<ObservableCollection<UIElement>>(ShapesProperty, value);
         }
     }
-
-    private Stack<UIElement> visibleShapes;
-    public Stack<UIElement> VisibleShapes
-    {
-        get { return visibleShapes; }
-        set 
-        { 
-            visibleShapes = value;
-            Shapes = new ObservableCollection<UIElement>(visibleShapes);
-        }
-    }
-
-
 
     #endregion
 
@@ -347,6 +308,8 @@ public class DrawingCanvas : System.Windows.Controls.Control
             return;
         if(e.RoutedEvent == MouseLeftButtonDownEvent)
             Perform(this.Tool?.LeftButtonDown(e.GetPosition(element), element));
+        if (e.RoutedEvent == MouseMoveEvent && e.LeftButton == MouseButtonState.Pressed)
+            Perform(this.Tool?.MouseMove(e.GetPosition(element), element));
     }
 
     #endregion

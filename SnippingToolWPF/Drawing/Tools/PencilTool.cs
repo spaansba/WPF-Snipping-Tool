@@ -22,12 +22,14 @@ public sealed class PencilTool : IDrawingTool<Polyline>
     }
 
     public Polyline Visual { get; } = new Polyline();
+
+    //The amount of points between every line within the polyline drawn
     private const int FreehandSensitivity = 4;
 
     public DrawingToolAction LeftButtonDown(Point position, UIElement? element)
     {
         Visual.StrokeThickness = this.options.Thickness;
-        Visual.Stroke = this.options.SelectedBrush; // TODO: Allow setting this in PencilsSidePanelViewModel
+        Visual.Stroke = this.options.SelectedBrush;
         Visual.Opacity = this.options.RealOpacity;
         Visual.UseLayoutRounding = true;
         Visual.StrokeDashCap = PenLineCap.Round;
@@ -40,7 +42,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         return DrawingToolAction.StartMouseCapture();
     }
 
-    public DrawingToolAction MouseMove(Point position)
+    public DrawingToolAction MouseMove(Point position, UIElement? element)
     {
         if (Visual.Points.Count > 0)
         {
@@ -77,6 +79,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
             Points = new PointCollection(Visual.Points),
         };
 
+        Visual.Points.Clear();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture());
     }
 

@@ -67,4 +67,13 @@ public class DrawingCanvasListBoxItem : ContentPresenter
         base.OnMouseLeftButtonDown(e);
         DrawingCanvas?.OnItemMouseEvent(this, e);
     }
+    /// <summary>
+    /// when item/shape on the canvas gets hovered over while mouse is down, notify drawing canvas
+    /// </summary>
+    /// <param name="e"></param>
+    protected override void OnMouseMove(MouseEventArgs e)
+    {
+        base.OnMouseMove(e);
+        DrawingCanvas?.OnItemMouseEvent(this, e);
+    }
 }

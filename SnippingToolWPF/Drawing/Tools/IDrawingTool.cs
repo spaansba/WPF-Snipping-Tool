@@ -11,7 +11,7 @@ public interface IDrawingTool
 {
     public UIElement? Visual { get; }
     public DrawingToolAction LeftButtonDown(Point position, UIElement? item);
-    public DrawingToolAction MouseMove(Point position);
+    public DrawingToolAction MouseMove(Point position, UIElement? item);
     public DrawingToolAction LeftButtonUp();
 }
 
