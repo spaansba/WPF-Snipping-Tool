@@ -3,44 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace SnippingToolWPF.Drawing.Tools;
 
-public sealed class UndoRedo<T>
+public sealed class UndoRedo
 {
-    public Stack<T> VisibleStack = new Stack<T>();
-    private Stack<T> RedoStack = new Stack<T>();
-    private T? currentItem;
+    public Stack<DrawingToolAction> VisibleActions = new Stack<DrawingToolAction>();
+    private Stack<DrawingToolAction> RedoActions = new Stack<DrawingToolAction>();
 
-    public void Undo()
+    public bool TryUndo(out DrawingToolAction item)
     {
-        hif (VisibleStack.Count > 0)
-        {
-            currentItem = VisibleStack.Pop();
-            RedoStack.Push(currentItem);
-        }
+        // If there is an item on top of the stack, pop it and return true
+        if (!this.VisibleActions.TryPop(out item))
+            return false;
+
+        this.RedoActions.Push(item);
+        return true;
+    }
+    public bool TryRedo(out DrawingToolAction item)
+    {
+        // If there is an item on top of the stack, pop it and return true
+        if (!this.RedoActions.TryPop(out item))
+            return false;
+
+        this.VisibleActions.Push(item);
+        return true;
     }
 
-    public void Redo()
+    public void AddAction(DrawingToolAction action)
     {
-        if (RedoStack.Count > 0)
-        {
-            currentItem = RedoStack.Pop();
-            VisibleStack.Push(currentItem);
-        }
+        VisibleActions.Push(action);
+        RedoActions.Clear(); //Everytime we add an action we clear the redo stack
     }
-
-    public void AddItem(T item)
-    {
-        RedoStack.Clear();
-        VisibleStack.Push(item);
-    }
-
-    // TODO: Add this to the clear canvas
-    public void Reset()
-    {
-        VisibleStack.Clear();
-        RedoStack.Clear();
-    }
-
 }

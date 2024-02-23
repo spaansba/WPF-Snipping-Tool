@@ -23,7 +23,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     private const string PartItemsControl = "PART_ItemsControl";
     private CompositeCollection allItems; // Collection of the screenshot + shapes
 
-    public UndoRedo<UIElement> UndoRedoStacks = new UndoRedo<UIElement>(); // To make Undo Redo work 
+    public UndoRedo UndoRedoStacks = new UndoRedo(); // To make Undo Redo work 
 
     static DrawingCanvas()
     {
@@ -99,11 +99,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
     }
 
-    private void DrawingCanvasKeyDown(object sender, KeyEventArgs e)
-    {
-        isTyping = true;
-    }
-
     // Basically on load
     private Canvas? currentCanvas;
     private Canvas? CurrentCanvas
@@ -145,6 +140,8 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     private void OnToolChanged(IDrawingTool? newValue)
     {
+        Keyboard.Focus(this); // We lose keyboardfocus on tool change
+
         if (this.CurrentCanvas is null)
             return;
 
@@ -159,7 +156,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     #region Drawing on the canvas
     private bool isDrawing;
-    private bool isTyping;
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonDown(e);
@@ -188,6 +184,12 @@ public class DrawingCanvas : System.Windows.Controls.Control
     {
         if (action.HasValue)
             Perform(action.Value);
+
+        // Only add the Undoable flags from DrawingTool to the undoredostack
+        if (action?.OnlyPerformUndoable() is { IncludeInUndoStack: true } undoableAction)
+        {
+            this.UndoRedoStacks.AddAction(undoableAction);
+        }
     }
 
     private void Perform(DrawingToolAction action)
@@ -205,13 +207,11 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
         if (action.IsKeyboardFocus)
         {
-            isTyping = false;
             Keyboard.Focus(this);
         }
         if (action.IsShape) // For eraser tool
         {
             this.Shapes.Remove(action.Item);
-            // TODO: Make it work with undo/redo
         }
     }
 
@@ -224,13 +224,11 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
         if (action.IsKeyboardFocus)
         {
-            isTyping = true;
             Keyboard.Focus(this.Tool?.Visual);
         }
         if (action.IsShape)
         {
             this.Shapes.Add(action.Item);
-            this.UndoRedoStacks.AddItem(action.Item);
         }
     }
 
@@ -246,14 +244,21 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
         if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z) // Undo last action
         {
-            
-            UndoRedoStacks.Undo();
+            // If undo is possible do the action
+            if (this.UndoRedoStacks.TryUndo(out var action))
+            { 
+                Perform(action.Reverse());
+            }
             // https://en.wikipedia.org/wiki/Memento_pattern
         }
 
         if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Y) // Redo the Undo
         {
-            UndoRedoStacks.Redo();
+            // If redo is possible to the action
+            if (this.UndoRedoStacks.TryRedo(out var action))
+            {
+                Perform(action);
+            }
         }
 
         if (Keyboard.Modifiers == ModifierKeys.Shift)
@@ -281,6 +286,12 @@ public class DrawingCanvas : System.Windows.Controls.Control
             this.SetValue<ObservableCollection<UIElement>>(ShapesProperty, value);
         }
     }
+
+    public void UpdateShapesFromUndoRedo()
+    {
+   //     Shapes = new ObservableCollection<UIElement>(UndoRedoStacks.VisibleStack);
+    }
+
 
     #endregion
 

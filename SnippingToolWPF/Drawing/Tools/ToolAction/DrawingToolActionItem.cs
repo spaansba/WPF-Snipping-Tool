@@ -9,8 +9,23 @@ using System.Windows;
 
 namespace SnippingToolWPF.Drawing.Tools;
 
+/// <summary>
+/// Each action we take, most of the time we have a start and stop DrawingToolActionItem
+/// </summary>
 public readonly record struct DrawingToolActionItem
 {
+    // Const with kinds that are undoable in Undo / Redo, all other kinds will be ignored
+    private const DrawingToolActionKind UndoableKinds = DrawingToolActionKind.Shape;
+
+    /// <summary>
+    /// If withUndo remove all other flags from kind except UndoableKinds
+    /// </summary>
+    /// <returns>DrawingToolActionItem with only undoablekinds as flags</returns>
+    public DrawingToolActionItem OnlyUndoableActions()
+    {
+        return this with { Kind = this.Kind & UndoableKinds };
+    }
+
     public DrawingToolActionKind Kind { get; private init; }
 
     [MemberNotNullWhen(true, nameof(Item))]
@@ -38,4 +53,5 @@ public readonly record struct DrawingToolActionItem
         };
     }
     public DrawingToolActionItem Combine(DrawingToolActionItem other) => Combine(this, other);
+
 }

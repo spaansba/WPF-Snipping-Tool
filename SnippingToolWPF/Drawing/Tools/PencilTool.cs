@@ -8,6 +8,11 @@ using System.Windows;
 using System.Windows.Media;
 using System.Diagnostics;
 using System.IO.Pipes;
+using System.Windows.Media.Effects;
+using System.Drawing.Imaging;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Reflection;
 
 namespace SnippingToolWPF.Drawing.Tools;
 
@@ -22,7 +27,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
     }
 
     public Polyline Visual { get; } = new Polyline();
-
+    private int counter = 0;
     //The amount of points between every line within the polyline drawn
     private const int FreehandSensitivity = 4;
 
@@ -36,11 +41,15 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         Visual.StrokeStartLineCap = PenLineCap.Round;
         Visual.StrokeEndLineCap = PenLineCap.Round;
         Visual.StrokeLineJoin = PenLineJoin.Round;
-        Visual.StrokeMiterLimit = 1d; //no clue what this does tbh
         Visual.Points.Clear();
+   //     Visual.Effect = customEffect;
         Visual.Points.Add(position);
+        counter = 0;
         return DrawingToolAction.StartMouseCapture();
+       
     }
+
+    
 
     public DrawingToolAction MouseMove(Point position, UIElement? element)
     {
@@ -53,6 +62,14 @@ public sealed class PencilTool : IDrawingTool<Polyline>
                 return DrawingToolAction.DoNothing;
         }
 
+        counter++;
+
+        if (counter >= 20)
+        {
+            Visual.Stroke = new SolidColorBrush(Color.FromRgb(20, 20, 30));
+        }
+
+       
         Visual.Points.Add(position);
 
         // TODO: Make it working so the arrow is getting added while drawing
@@ -75,12 +92,12 @@ public sealed class PencilTool : IDrawingTool<Polyline>
             StrokeStartLineCap = Visual.StrokeStartLineCap,
             StrokeEndLineCap = Visual.StrokeEndLineCap,
             StrokeLineJoin = Visual.StrokeLineJoin,
-            StrokeMiterLimit = Visual.StrokeMiterLimit,
+            Effect = Visual.Effect,
             Points = new PointCollection(Visual.Points),
         };
 
         Visual.Points.Clear();
-        return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture());
+        return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 
     #region Calculate / add arrow head
