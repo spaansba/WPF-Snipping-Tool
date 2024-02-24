@@ -33,6 +33,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
 
     public DrawingToolAction LeftButtonDown(Point position, UIElement? element)
     {
+
         Visual.StrokeThickness = this.options.Thickness;
         Visual.Stroke = this.options.SelectedBrush;
         Visual.Opacity = this.options.RealOpacity;
@@ -42,14 +43,11 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         Visual.StrokeEndLineCap = PenLineCap.Round;
         Visual.StrokeLineJoin = PenLineJoin.Round;
         Visual.Points.Clear();
-   //     Visual.Effect = customEffect;
+        //     Visual.Effect = customEffect;
         Visual.Points.Add(position);
-        counter = 0;
         return DrawingToolAction.StartMouseCapture();
        
     }
-
-    
 
     public DrawingToolAction MouseMove(Point position, UIElement? element)
     {
@@ -62,14 +60,6 @@ public sealed class PencilTool : IDrawingTool<Polyline>
                 return DrawingToolAction.DoNothing;
         }
 
-        counter++;
-
-        if (counter >= 20)
-        {
-            Visual.Stroke = new SolidColorBrush(Color.FromRgb(20, 20, 30));
-        }
-
-       
         Visual.Points.Add(position);
 
         // TODO: Make it working so the arrow is getting added while drawing
@@ -93,12 +83,15 @@ public sealed class PencilTool : IDrawingTool<Polyline>
             StrokeEndLineCap = Visual.StrokeEndLineCap,
             StrokeLineJoin = Visual.StrokeLineJoin,
             Effect = Visual.Effect,
+            Fill = Visual.Fill,
             Points = new PointCollection(Visual.Points),
         };
 
         Visual.Points.Clear();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
+
+
 
     #region Calculate / add arrow head
 
@@ -139,4 +132,27 @@ public sealed class PencilTool : IDrawingTool<Polyline>
     }
 
     #endregion
+
+
+    //TODO: make the XAML colorPicker have an option for Rainbow Gradient
+    public static LinearGradientBrush GetRainbowGradientBrush()
+    {
+        LinearGradientBrush rainbowBrush = new LinearGradientBrush();
+        rainbowBrush.StartPoint = new Point(0, 0);
+        rainbowBrush.EndPoint = new Point(1, 0);
+
+        GradientStopCollection gradientStops = new GradientStopCollection();
+        gradientStops.Add(new GradientStop(Colors.Red, 0));
+        gradientStops.Add(new GradientStop(Colors.Orange, 0.17));
+        gradientStops.Add(new GradientStop(Colors.Yellow, 0.33));
+        gradientStops.Add(new GradientStop(Colors.Green, 0.5));
+        gradientStops.Add(new GradientStop(Colors.Blue, 0.67));
+        gradientStops.Add(new GradientStop(Colors.Indigo, 0.83));
+        gradientStops.Add(new GradientStop(Colors.Violet, 1.0));
+
+        rainbowBrush.GradientStops = gradientStops;
+
+        return rainbowBrush;
+    }
+
 }

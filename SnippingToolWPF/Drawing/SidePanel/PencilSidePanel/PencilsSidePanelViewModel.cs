@@ -214,5 +214,4 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
 
     #endregion
 
-
 }

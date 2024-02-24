@@ -12,7 +12,7 @@ public partial class DrawingViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SidePanelContent))]
-    private SidePanelContentKind sidePanelContentKind = SidePanelContentKind.Pencils;
+    private SidePanelContentKind sidePanelContentKind = SidePanelContentKind.Shapes; //Change for startup sidepanel
 
     //List of the side panel enums
     public IReadOnlyList<SidePanelContentKind> AllSidePanelContentKinds { get; } = Enum.GetValues<SidePanelContentKind>();

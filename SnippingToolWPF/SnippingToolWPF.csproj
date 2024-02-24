@@ -11,7 +11,7 @@
   </PropertyGroup>
 	
     <Target Name="EffectCompile" Condition="'@(Effect)' != '' ">
-	    <Exec Command="&quot;$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe&quot; /T ps_3_0 /Fo %(Effect.RelativeDir)%(Effect.FileName).ps %(Effect.Identity)"/>
+	    <Exec Command="&quot;$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe&quot; /T ps_3_0 /Fo %(Effect.RelativeDir)%(Effect.FileName).ps %(Effect.Identity)" />
     </Target>
 	
 	
