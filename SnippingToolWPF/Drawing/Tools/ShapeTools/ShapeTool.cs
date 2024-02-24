@@ -6,23 +6,24 @@ using System.Windows.Shapes;
 namespace SnippingToolWPF.Drawing.Tools.ToolAction;
 
 //TODO: Make this class generic for all Shapes
-public sealed class ShapeTool : IDrawingTool<TriangleShape>
+public sealed class ShapeTool : IDrawingTool<ShapeCreator>
 {
     private readonly ShapesSidePanelViewModel options;
 
-    public TriangleShape Visual { get; set; }
-    public IShapeCreator? ShapeCreator { get; set; }
+    public ShapeCreator Visual { get; set; }
 
     public ShapeTool(ShapesSidePanelViewModel options)
     {
         this.options = options;
-        this.Visual = new TriangleShape();
+        this.Visual = options.ChosenShape; //TODO: I dont think this will update between tool/shape switches
     }
 
     public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
     {
-        this.Visual.StrokeThickness = 2;
-        this.Visual.Stroke = new SolidColorBrush(Colors.Black);
+        this.Visual.Stroke = options.shapeStroke;
+        this.Visual.StrokeThickness = options.shapeStrokeThickness;
+        this.Visual.Opacity = options.shapeOpacity;
+        this.Visual.Fill = options.shapeFill;
         this.Visual.SetStartingPoint(position);
         return DrawingToolAction.StartMouseCapture();
     }
@@ -35,8 +36,8 @@ public sealed class ShapeTool : IDrawingTool<TriangleShape>
 
     public DrawingToolAction LeftButtonUp()
     {
-        TriangleShape triangleShape = Visual;
-        this.Visual.Reset();
-        return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(triangleShape), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
+        ShapeCreator createdShape = Visual;
+ //       this.Visual.Reset();
+        return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(createdShape), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 }

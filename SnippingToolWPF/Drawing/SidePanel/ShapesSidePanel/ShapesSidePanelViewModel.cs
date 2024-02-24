@@ -16,12 +16,12 @@ namespace SnippingToolWPF;
 public sealed class ShapesSidePanelViewModel : SidePanelViewModel
 {
     private const int shapeSize = 20;
-    private static readonly Brush shapeBorderStroke = Brushes.Black;
+    private static readonly Brush shapeMenuBorderStroke = Brushes.Black;
     public override string Header => "Shapes";
 
     #region Shape/Tool Selection 
     public List<Shape> Shapes { get; set; }
-    public readonly Shape ChosenShape = new Rectangle();
+    public ShapeCreator ChosenShape = new RectangleShape(); // Default Shape
     private ShapeTool? shapeTool;
     private ShapeTool ShapeTool => this.shapeTool ??= new ShapeTool(this);
 
@@ -46,12 +46,28 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         }
     }
     #endregion
+
+    #region Shape Stroke / Thickness
+    //TODO: Shape Thickness / Stroke
+    public int shapeStrokeThickness = 1;
+    public Brush shapeStroke = Brushes.Black;
+    #endregion
+
+    #region Shape Opacity
+    public double shapeOpacity = 1;
+    //TODO: Shape Opacity
+    #endregion
+
+    #region Shape Fill
+    public Brush shapeFill = Brushes.Transparent;
+    //TODO: Shape Fill
+    #endregion
     public ShapesSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
     {
         this.tool = new ShapeTool(this);
 
         Shapes = new List<Shape>();
-        Shapes.Add(new Rectangle { Width = shapeSize, Height = shapeSize, Stroke = shapeBorderStroke });
-        Shapes.Add(new Ellipse { Width = shapeSize, Height = shapeSize, Stroke = shapeBorderStroke });
+        Shapes.Add(new Rectangle { Width = shapeSize, Height = shapeSize, Stroke = shapeMenuBorderStroke });
+        Shapes.Add(new Ellipse { Width = shapeSize, Height = shapeSize, Stroke = shapeMenuBorderStroke });
     }
 }
