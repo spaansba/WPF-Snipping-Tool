@@ -125,7 +125,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     typeof(DrawingCanvas),
     new FrameworkPropertyMetadata(
         default,
-        OnToolChanged));
+        OnToolChanged)); //Notify when a tool is changed
 
     public IDrawingTool? Tool
     {
@@ -149,7 +149,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         UIElement? visual = newValue?.Visual;
 
         if (visual is not null)
-            this.CurrentCanvas.Children.Add(visual);
+            this.CurrentCanvas.Children.Add(visual); // Not drawing canvas but the top canvas 
     }
 
     #endregion

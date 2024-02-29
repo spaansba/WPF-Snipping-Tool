@@ -7,15 +7,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 	
     <Target Name="EffectCompile" Condition="'@(Effect)' != '' ">
 	    <Exec Command="&quot;$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe&quot; /T ps_3_0 /Fo %(Effect.RelativeDir)%(Effect.FileName).ps %(Effect.Identity)" />
     </Target>
-	
-	
-
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>

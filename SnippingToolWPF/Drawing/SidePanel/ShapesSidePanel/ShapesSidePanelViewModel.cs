@@ -21,14 +21,13 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
 
     #region Shape/Tool Selection 
     public List<Shape> Shapes { get; set; }
-    public ShapeCreator ChosenShape = new RectangleShape(); // Default Shape
     private ShapeTool? shapeTool;
     private ShapeTool ShapeTool => this.shapeTool ??= new ShapeTool(this);
 
     private IDrawingTool? tool;
     public override IDrawingTool? Tool => tool;
 
-    private ShapeOptions shapeOption = ShapeOptions.Rectangle;
+    private ShapeOptions shapeOption = ShapeOptions.Triangle;
     public ShapeOptions ShapeOption
     {
         get => shapeOption;

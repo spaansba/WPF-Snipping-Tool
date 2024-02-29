@@ -9,4 +9,6 @@ public enum ShapeOptions
 {
     Rectangle,
     Triangle,
+    Ellipse,
+    Pentagon,
 }

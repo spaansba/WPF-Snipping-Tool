@@ -13,6 +13,8 @@ using System.Drawing.Imaging;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Reflection;
+using SnippingToolWPF.ExtensionMethods;
+using System.Windows.Controls;
 
 namespace SnippingToolWPF.Drawing.Tools;
 
@@ -46,7 +48,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         //     Visual.Effect = customEffect;
         Visual.Points.Add(position);
         return DrawingToolAction.StartMouseCapture();
-       
+
     }
 
     public DrawingToolAction MouseMove(Point position, UIElement? element)
@@ -63,7 +65,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         Visual.Points.Add(position);
 
         // TODO: Make it working so the arrow is getting added while drawing
- 
+
         return DrawingToolAction.DoNothing;
     }
 
@@ -72,21 +74,8 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         if (options.PenTipArrow)
             AddArrowHead(Visual);
 
-        Polyline finalLine = new Polyline()
-        {
-            Stroke = Visual.Stroke,
-            StrokeThickness = Visual.StrokeThickness,
-            Opacity = Visual.Opacity,
-            UseLayoutRounding = true,
-            StrokeDashCap = Visual.StrokeDashCap,
-            StrokeStartLineCap = Visual.StrokeStartLineCap,
-            StrokeEndLineCap = Visual.StrokeEndLineCap,
-            StrokeLineJoin = Visual.StrokeLineJoin,
-            Effect = Visual.Effect,
-            Fill = Visual.Fill,
-            Points = new PointCollection(Visual.Points),
-        };
-
+        // Clone the Polyline so we remove the parent and put it on the canvas, als now we can clear the current Visual
+        Polyline finalLine = this.Visual.Clone(false);
         Visual.Points.Clear();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
@@ -154,5 +143,4 @@ public sealed class PencilTool : IDrawingTool<Polyline>
 
         return rainbowBrush;
     }
-
 }

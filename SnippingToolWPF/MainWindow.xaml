@@ -134,7 +134,8 @@
                            FontSize="25"
                            Text="{Binding SidePanelContent.Header, FallbackValue={x:Null}}" />
             </Border>
-
+            
+            <!-- Drawing canvas gets updated whenever a user opens a new sidepanel or the user selects a new tool-->
             <local:DrawingCanvas Grid.Row="1" Grid.Column="0"
                                  Shapes="{Binding DrawingObjects}"
                                  local:Tool="{Binding SidePanelContent.Tool, FallbackValue={x:Null}}"
