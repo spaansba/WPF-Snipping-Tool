@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Dynamic;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,67 +18,57 @@ public static class ShapeExtensions
     /// <exception cref="ArgumentException">If shape is not defined in the Clone method</exception>
     public static Shape Clone(this Shape shape) => shape switch
     {
-        Ellipse s => s.Clone<Ellipse>(true),
-        Line s => s.Clone<Line>(true),
-        Path s => s.Clone<Path>(true),
-        Polygon s => s.Clone<Polygon>(true),
-        Polyline s => s.Clone<Polyline>(true),
-        Rectangle s => s.Clone<Rectangle>(true),
+        Ellipse s => s.Clone(),
+        Line s => s.Clone(),
+        Path s => s.Clone(),
+        Polygon s => s.Clone(),
+        Polyline s => s.Clone(),
+        Rectangle s => s.Clone(),
         // 👆 those are the shapes that are built-in.
         _ => throw new ArgumentException($"Unknown shape type {shape.GetType()}", nameof(shape)),
     };
 
-    public static T Clone<T>(this T obj) where T : DependencyObject => CloneUnsafe(obj, true);
+    public static Shape Clone(this Ellipse shape) => CloneCore(shape);
 
-    public static T Clone<T>(this T obj, bool cloneBindings)
-    where T : DependencyObject, new()
-    => Clone<T>(obj, static () => new T(), cloneBindings);
+    public static Shape Clone(this Line shape)
+        => CloneCore(shape, new() { X1 = shape.X1, X2 = shape.X2, Y1 = shape.Y1, Y2 = shape.Y2 });
+    public static Shape Clone(this Path shape)
+        => CloneCore(shape, new() { Data = shape.Data });
 
-    public static T Clone<T>(T source, Func<T> createInstance, bool cloneBindings)
-    where T : DependencyObject
+    public static Shape Clone(this Polygon shape)
+        => CloneCore(shape, new() { Points = new(shape.Points), FillRule = shape.FillRule });
+
+    public static Shape Clone(this Polyline shape)
+        => CloneCore(shape, new() { Points = new(shape.Points), FillRule = shape.FillRule });
+
+    public static Shape Clone(this Rectangle shape)
+        => CloneCore(shape, new() { RadiusX = shape.RadiusX, RadiusY = shape.RadiusY });
+
+    private static T CloneCore<T>(T shape)
+        where T : Shape, new()
+        => CloneCore(shape, new());
+
+    private static T CloneCore<T>(T shape, T destination)
+        where T : Shape
     {
-        var destination = createInstance(); // Create an instance of T
-        var localValueEnumerator = source.GetLocalValueEnumerator();
-        while (localValueEnumerator.MoveNext())
-        {
-            var entry = localValueEnumerator.Current;
-            Debug.WriteLine($"Property: {entry.Property.Name}, Value: {entry.Value}");
-            if (entry.Property.ReadOnly is false)
-            {
-                SetProperty(source, destination, entry.Property, entry.Value, cloneBindings);
-            }
-        }
+        destination.Stroke = shape.Stroke;
+        destination.StrokeThickness = shape.StrokeThickness;
+        destination.Opacity = shape.Opacity;
+        destination.UseLayoutRounding = shape.UseLayoutRounding;
+        destination.StrokeDashCap = shape.StrokeDashCap;
+        destination.StrokeStartLineCap = shape.StrokeStartLineCap;
+        destination.StrokeEndLineCap = shape.StrokeEndLineCap;
+        destination.StrokeLineJoin = shape.StrokeLineJoin;
+        destination.Effect = shape.Effect;
+        destination.Fill = shape.Fill;
+        destination.Width = shape.Width;
+        destination.Height = shape.Height;
+        Canvas.SetLeft(destination, Canvas.GetLeft(shape));
+        Canvas.SetTop(destination, Canvas.GetTop(shape));
         return destination;
     }
-
-    /// <summary>
-    /// Performs a shallow clone of an object, cloning any bindings that are used
-    /// </summary>
-    /// <typeparam name="T">type of object to clone</typeparam>
-    /// <param name="obj"> obj to clone</param>
-    /// <param name="cloneBindings"></param>
-    /// <returns></returns>
-    /// <remarks>
-    /// <b>IMPORTANT</b> Ensure the type has a public parameterless constructor
-    /// </remarks>
-    internal static T CloneUnsafe<T>(this T obj, bool cloneBindings)
-    where T : DependencyObject
-    => Clone<T>(obj, Activator.CreateInstance<T>, cloneBindings);
-
-
-    private static void SetProperty(DependencyObject source, DependencyObject desination, DependencyProperty property, object? value, bool cloneBindings)
-    {
-        var binding = BindingOperations.GetBindingBase(source, property);
-        if (cloneBindings is false || binding is null)
-            desination.SetValue(property, value); // Set the property if its not a binding
-        else
-            BindingOperations.SetBinding(desination, property, Clone(binding));
-    }
-
-
-
+    
     #region Binding Cloning
-
     public static BindingBase Clone(this BindingBase binding) => binding switch
     {
         Binding b => b.Clone(),

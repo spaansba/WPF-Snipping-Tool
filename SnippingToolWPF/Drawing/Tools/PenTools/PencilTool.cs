@@ -75,7 +75,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
             AddArrowHead(Visual);
 
         // Clone the Polyline so we remove the parent and put it on the canvas, als now we can clear the current Visual
-        Polyline finalLine = this.Visual.Clone(false);
+        Shape finalLine = this.Visual.Clone();
         Visual.Points.Clear();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
@@ -86,32 +86,30 @@ public sealed class PencilTool : IDrawingTool<Polyline>
 
     private void AddArrowHead(Polyline visual)
     {
-        if (visual.Points.Count > 3)
-        {
-            Point point1 = visual.Points[visual.Points.Count - 2];
-            Point point2 = visual.Points[visual.Points.Count - 1];
+        if (visual.Points is [.., _, var point1, var point2])
+        { 
+            var(arrowPoint1, arrowPoint2) = GetArrowHeadPoints(point1, point2);
 
-            Point[] arrowheadPoints = GetArrowHeadPoints(point1, point2);
-            visual.Points.Add(arrowheadPoints[0]);
+            visual.Points.Add(arrowPoint1);
             visual.Points.Add(point2); // make sure it doesn't become a triangle
-            visual.Points.Add(arrowheadPoints[1]);
+            visual.Points.Add(arrowPoint2);
         }
     }
 
-    private Point[] GetArrowHeadPoints(Point position1, Point position2)
+    private (Point A, Point B) GetArrowHeadPoints(Point position1, Point position2)
     {
         Vector lineDirection = position2 - position1;
         double arrowheadLength = Math.Min(Visual.StrokeThickness / 1.2, 30); // change the first value to make the line smaller/bigger
-        double angleInRadians = 140 * (Math.PI / 180);
 
-        Vector rotatedDirection1 = Rotate(lineDirection, -angleInRadians); // Rotate clockwise 
-        Vector rotatedDirection2 = Rotate(lineDirection, angleInRadians); // Rotate counterclockwise 
+        Vector rotatedDirection1 = lineDirection.RotateDegrees(140);
+        Vector rotatedDirection2 = lineDirection.RotateDegrees(-140);
 
         Point arrowheadEnd1 = position2 + arrowheadLength * rotatedDirection1;
         Point arrowheadEnd2 = position2 + arrowheadLength * rotatedDirection2;
 
-        return [arrowheadEnd1, arrowheadEnd2];
+        return (arrowheadEnd1, arrowheadEnd2);
     }
+
 
     public static Vector Rotate(Vector vector, double angle)
     {

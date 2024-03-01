@@ -41,24 +41,17 @@ public class DrawingCanvasListBox : ItemsControl
     {
         base.PrepareContainerForItemOverride(element, item);
 
-        // If element is a DrawingCanvasListBoxItem and item is a UIElement
         if (element is DrawingCanvasListBoxItem listBoxItem && item is UIElement uiElement)
         {
-            // Check if Canvas.Left attached property is set on the item
             if (uiElement.ReadLocalValue(Canvas.LeftProperty) != DependencyProperty.UnsetValue)
             {
-                // Set the Canvas.Left property on the listBoxItem
                 Canvas.SetLeft(listBoxItem, Canvas.GetLeft(uiElement));
             }
 
-            // Check if Canvas.Top attached property is set on the item
             if (uiElement.ReadLocalValue(Canvas.TopProperty) != DependencyProperty.UnsetValue)
             {
-                // Set the Canvas.Top property on the listBoxItem
                 Canvas.SetTop(listBoxItem, Canvas.GetTop(uiElement));
             }
-
-            // Set the DrawingCanvas property on the listBoxItem
             listBoxItem.DrawingCanvas = this.DrawingCanvas;
         }
     }

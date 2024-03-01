@@ -15,7 +15,7 @@
     <DockPanel Background="{StaticResource AlternateBackgroundBrush}">
         <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Shapes}"
                  Background="{StaticResource AlternateBackgroundBrush}" 
-                 BorderThickness="0"
+                 BorderThickness="0" SelectedItem="{Binding ShapeSelected}"
                  Margin="0,10,0,0">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>

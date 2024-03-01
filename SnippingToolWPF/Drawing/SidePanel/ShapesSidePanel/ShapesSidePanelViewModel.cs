@@ -15,35 +15,62 @@ namespace SnippingToolWPF;
 
 public sealed class ShapesSidePanelViewModel : SidePanelViewModel
 {
-    private const int shapeSize = 20;
-    private static readonly Brush shapeMenuBorderStroke = Brushes.Black;
     public override string Header => "Shapes";
 
     #region Shape/Tool Selection 
-    public List<Shape> Shapes { get; set; }
-    private ShapeTool? shapeTool;
-    private ShapeTool ShapeTool => this.shapeTool ??= new ShapeTool(this);
-
+   
     private IDrawingTool? tool;
     public override IDrawingTool? Tool => tool;
 
-    private ShapeOptions shapeOption = ShapeOptions.Triangle;
-    public ShapeOptions ShapeOption
+    public ShapeOptions shapeOption = ShapeOptions.Rectangle;
+
+    private Shape? shapeSelected;
+    public Shape? ShapeSelected
     {
-        get => shapeOption;
+        get => shapeSelected;
         set
         {
-            if (SetProperty(ref this.shapeOption, value))
+            if (value is not null)
             {
-                IDrawingTool newTool = value switch
+                shapeSelected = value;
+                shapeOption = value.Tag switch
                 {
-                    ShapeOptions.Rectangle => ShapeTool,
-                    _ => ShapeTool,
+                    ShapeOptions.Rectangle => ShapeOptions.Rectangle,
+                    ShapeOptions.Triangle => ShapeOptions.Triangle,
+                    ShapeOptions.Ellipse => ShapeOptions.Ellipse,
+                    ShapeOptions.Pentagon => ShapeOptions.Pentagon,
+                    _ => ShapeOptions.Rectangle,
                 };
-                this.SetProperty(ref this.tool, newTool, nameof(this.Tool));
+                this.tool = new ShapeTool(this);
             }
         }
     }
+
+    #endregion
+
+    #region ctor
+    public List<Shape> Shapes { get; set; }
+
+    public ShapesSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
+    {
+        this.tool = new ShapeTool(this);
+        Shapes = CreateButtonShapes();
+    }
+
+    /// <summary>
+    /// Create the shapes presented on the buttons in the sidepanel using Linq
+    /// </summary>
+    public static List<Shape> CreateButtonShapes() =>
+    Enum.GetValues(typeof(ShapeOptions))
+        .Cast<ShapeOptions>()
+        .Select(option =>
+        {
+            var shape = CreateInitialShape.Create(option, 1.0, Brushes.Black);
+            shape.Tag = option;
+            return shape;
+        })
+        .ToList();
+
     #endregion
 
     #region Shape Stroke / Thickness
@@ -61,12 +88,4 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     public Brush shapeFill = Brushes.Transparent;
     //TODO: Shape Fill
     #endregion
-    public ShapesSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
-    {
-        this.tool = new ShapeTool(this);
-
-        Shapes = new List<Shape>();
-        Shapes.Add(new Rectangle { Width = shapeSize, Height = shapeSize, Stroke = shapeMenuBorderStroke });
-        Shapes.Add(new Ellipse { Width = shapeSize, Height = shapeSize, Stroke = shapeMenuBorderStroke });
-    }
 }

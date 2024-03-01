@@ -3,6 +3,8 @@ using System.Globalization;
 using System.ComponentModel;
 using SnippingToolWPF.Drawing.Tools;
 using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace SnippingToolWPF;
 
