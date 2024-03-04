@@ -20,6 +20,8 @@ public sealed class EraserTool : IDrawingTool
 
     public UIElement? Visual => null;
 
+    public bool LockedAspectRatio => throw new NotImplementedException();
+
     public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
     {
         if (item is not null)

@@ -236,7 +236,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     #region Keyboard Handlers
 
-    public bool retainAspectRatio = false;
+    //Retaining aspect ratio (holding shift etc) is done in the Tool
 
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
@@ -259,11 +259,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
             {
                 Perform(action);
             }
-        }
-
-        if (Keyboard.Modifiers == ModifierKeys.Shift)
-        {
-            retainAspectRatio = true;
         }
     }
 

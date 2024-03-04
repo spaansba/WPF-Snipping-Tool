@@ -11,6 +11,9 @@ namespace SnippingToolWPF.Drawing.Tools.ToolAction
     public abstract class DraggingTool<TVisual> : IDrawingTool<TVisual> where TVisual : UIElement
     {
         public TVisual? Visual { get; }
+
+        public bool LockedAspectRatio => throw new NotImplementedException();
+
         protected abstract void Start(Point position);
         protected abstract void Continue(Point position);
         protected abstract DrawingToolAction Finish();

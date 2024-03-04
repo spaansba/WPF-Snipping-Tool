@@ -10,11 +10,21 @@ namespace SnippingToolWPF.Drawing.Tools.ShapeTools;
 /// </summary>
 public static class CreateInitialShape
 {
-    private static readonly Point[] trianglePoints
-    = [new(0.5, 0), new(0, 1), new(1, 1)];
+    private static readonly Point[] trianglePoints = 
+    [   
+      new(0.5, 0), // Top Center
+      new(1, 1), //Bottom Right
+      new(0, 1), // Bottom Left
+    ];
 
-    private static readonly Point[] pentagonPoints
-        = [new Point(0.5, 0), new Point(0, 1), new Point(1, 1), new Point(0.809016994, 0.587785252), new Point(0.309016994, 0.951056516)];
+    private static readonly Point[] pentagonPoints =
+    [
+        new(0.5, 0), // Top Center
+        new(0, 0.4), // Mid Right
+        new(0.2, 1), // Bottom Right
+        new(0.8, 1), // Bottom Left
+        new(1, 0.4),  // Mid Left
+    ];
     public static Shape Create(ShapeOptions shapeToCreate) => Create(shapeToCreate, null, null);
 
     public static Shape Create(ShapeOptions shapeToCreate, double? thickness, Brush? stroke) => shapeToCreate switch

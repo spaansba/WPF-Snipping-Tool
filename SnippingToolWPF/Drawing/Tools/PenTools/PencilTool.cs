@@ -29,6 +29,10 @@ public sealed class PencilTool : IDrawingTool<Polyline>
     }
 
     public Polyline Visual { get; } = new Polyline();
+
+    // TODO: If user holds shift draw a perfect straight line
+    public bool LockedAspectRatio { get; set; } = false;
+
     private int counter = 0;
     //The amount of points between every line within the polyline drawn
     private const int FreehandSensitivity = 4;

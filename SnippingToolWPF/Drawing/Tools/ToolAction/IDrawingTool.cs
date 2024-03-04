@@ -10,6 +10,7 @@ namespace SnippingToolWPF.Drawing.Tools;
 public interface IDrawingTool
 {
     public UIElement? Visual { get; }
+    public bool LockedAspectRatio { get; } // Implement that if user holds shift while moving the mouse that aspect ratio stays perfect
     public DrawingToolAction LeftButtonDown(Point position, UIElement? item);
     public DrawingToolAction MouseMove(Point position, UIElement? item);
     public DrawingToolAction LeftButtonUp();

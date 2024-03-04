@@ -4,6 +4,7 @@ using SnippingToolWPF.Drawing.Tools.ToolAction;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,9 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
 
     public ShapeOptions shapeOption = ShapeOptions.Rectangle;
 
+    /// <summary>
+    /// Get the Shape selected by the user in the sidepanel, the enum is stored in the shapes Tag
+    /// </summary>
     private Shape? shapeSelected;
     public Shape? ShapeSelected
     {
@@ -41,9 +45,17 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
                     ShapeOptions.Pentagon => ShapeOptions.Pentagon,
                     _ => ShapeOptions.Rectangle,
                 };
-                this.tool = new ShapeTool(this);
+                UpdateTool(); // Update the Tool to give it the new shape
             }
         }
+    }
+    /// <summary>
+    /// Used to update the Tool Property and notify the change
+    /// </summary>
+    private void UpdateTool()
+    {
+        tool = new ShapeTool(this);
+        OnPropertyChanged(nameof(Tool)); // Notify the change 
     }
 
     #endregion
@@ -53,7 +65,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
 
     public ShapesSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
     {
-        this.tool = new ShapeTool(this);
+        UpdateTool();
         Shapes = CreateButtonShapes();
     }
 
