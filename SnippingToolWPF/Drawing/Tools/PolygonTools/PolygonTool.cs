@@ -1,4 +1,4 @@
-﻿using SnippingToolWPF.Drawing.Tools.ShapeTools;
+﻿using SnippingToolWPF.Drawing.Tools.PolygonTools;
 using SnippingToolWPF.ExtensionMethods;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 namespace SnippingToolWPF.Drawing.Tools.ToolAction;
 
 //TODO: Make this class generic for all Shapes
-public sealed class ShapeTool : IDrawingTool<Shape>
+public sealed class PolygonTool : IDrawingTool<Shape>
 {
     private readonly ShapesSidePanelViewModel options;
     public bool IsDrawing { get; set; } = false;
@@ -17,12 +17,11 @@ public sealed class ShapeTool : IDrawingTool<Shape>
 
     private Point startPoint;
 
-    public ShapeTool(ShapesSidePanelViewModel options)
+    public PolygonTool(ShapesSidePanelViewModel options)
     {
         this.options = options;
-        this.Visual = CreateInitialShape.Create(this.options.shapeOption);
+        this.Visual = CreateInitialPolygon.Create(this.options.polygonOption);
     }
-
     public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
     {
         IsDrawing = true;
@@ -58,13 +57,10 @@ public sealed class ShapeTool : IDrawingTool<Shape>
     {
         IsDrawing = false;
         var finalShape = this.Visual.Clone(); 
-        Canvas.SetLeft(finalShape, Canvas.GetLeft(finalShape) -1); 
-        Canvas.SetTop(finalShape, Canvas.GetTop(finalShape) -1); //-1 to fit in the DrawingListBox
+        Canvas.SetLeft(finalShape, Canvas.GetLeft(finalShape)); 
+        Canvas.SetTop(finalShape, Canvas.GetTop(finalShape)); 
         this.Visual.Width = 0;
         this.Visual.Height = 0;
-        this.Visual.StrokeThickness = 0;
-        SolidColorBrush transparentBrush = new SolidColorBrush(Colors.Transparent);
-        this.Visual.Stroke = transparentBrush;
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalShape), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 

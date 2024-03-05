@@ -6,6 +6,8 @@ using System.Windows.Input;
 using SnippingToolWPF.Screenshot;
 using System.Windows.Media;
 using SnippingToolWPF.Control;
+using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace SnippingToolWPF;
 
@@ -47,10 +49,9 @@ public partial class DrawingViewModel : ObservableObject
         _ => null,
     };
 
-    internal void OnItemMouseEvent(DrawingCanvasListBoxItem item, MouseEventArgs e)
+    internal void OnSelected(RoutedEventArgs e)
     {
-        if (item.Content is not UIElement element)
-            return;
+
     }
 
     #region Drawing Objects creating / clearing
@@ -90,13 +91,28 @@ public partial class DrawingViewModel : ObservableObject
     private void ExecuteTakeScreenshot(object? parameter)
     {
         var result = ScreenshotWindow.GetScreenshot();
-        if ( result is not null)
+        if (result is not null)
         {
             this.Screenshot = result;
         }
     }
 
-    
 
+
+    #endregion
+
+    #region Shape Selection
+    private object? selectedShape;
+    public object? SelectedShape
+    {
+        get => this.selectedShape;
+
+        // Define which code should activate ones a Shape is Selected
+        set
+        {
+            this.SetProperty(ref this.selectedShape, value);
+            Debug.Write("object selected");
+        }
+    }
     #endregion
 }

@@ -97,8 +97,8 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         Polyline finalLine = (Polyline)this.Visual.Clone();
         finalLine.Points = newPoints;
 
-        Canvas.SetLeft(finalLine, minX-1); //-1 to fit in the DrawingListBox
-        Canvas.SetTop(finalLine, minY-1);
+        Canvas.SetLeft(finalLine, minX);
+        Canvas.SetTop(finalLine, minY);
 
         Visual.Points.Clear();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();

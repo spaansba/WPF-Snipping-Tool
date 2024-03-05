@@ -1,14 +1,6 @@
 ﻿using SnippingToolWPF.Drawing.Tools;
-using SnippingToolWPF.Drawing.Tools.ShapeTools;
+using SnippingToolWPF.Drawing.Tools.PolygonTools;
 using SnippingToolWPF.Drawing.Tools.ToolAction;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -23,21 +15,21 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     private IDrawingTool? tool;
     public override IDrawingTool? Tool => tool;
 
-    public ShapeOptions shapeOption = ShapeOptions.Rectangle;
+    public PolygonOptions polygonOption = PolygonOptions.Rectangle;
 
     /// <summary>
     /// Get the Shape selected by the user in the sidepanel, the enum is stored in the shapes Tag
     /// </summary>
-    private Shape? shapeSelected;
-    public Shape? ShapeSelected
+    private Shape? polygonSelected;
+    public Shape? PolygonSelected
     {
-        get => shapeSelected;
+        get => polygonSelected;
         set
         {
             if (value is not null)
             {
-                shapeSelected = value;
-                shapeOption = value.Tag as ShapeOptions? ?? ShapeOptions.Rectangle;
+                polygonSelected = value;
+                polygonOption = value.Tag as PolygonOptions? ?? PolygonOptions.Rectangle;
                 UpdateTool(); // Update the Tool to give it the new shape
             }
         }
@@ -47,32 +39,32 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     /// </summary>
     private void UpdateTool()
     {
-        tool = new ShapeTool(this);
+        tool = new PolygonTool(this);
         OnPropertyChanged(nameof(Tool)); // Notify the change 
     }
 
     #endregion
 
     #region ctor
-    public List<Shape> Shapes { get; set; }
+    public List<Shape> Polygons { get; set; }
 
     public ShapesSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
     {
         UpdateTool();
-        Shapes = CreateButtonShapes();
+        Polygons = CreateButtonShapes();
     }
 
     /// <summary>
     /// Create the shapes presented on the buttons in the sidepanel using Linq
     /// </summary>
     public static List<Shape> CreateButtonShapes() =>
-    Enum.GetValues(typeof(ShapeOptions))
-        .Cast<ShapeOptions>()
+    Enum.GetValues(typeof(PolygonOptions))
+        .Cast<PolygonOptions>()
         .Select(option =>
         {
-            var shape = CreateInitialShape.Create(option, 1.0, Brushes.Black);
-            shape.Tag = option;
-            return shape;
+            var polygon = CreateInitialPolygon.Create(option, 1.0, Brushes.Black);
+            polygon.Tag = option;
+            return polygon;
         })
         .ToList();
 

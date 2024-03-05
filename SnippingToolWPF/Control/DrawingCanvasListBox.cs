@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -54,10 +48,10 @@ public class DrawingCanvasListBox : ListBox
             // Reason we only check for Left and Top
             // https://source.dot.net/#PresentationFramework/System/Windows/Controls/Canvas.cs,286
             if (uiElement.ReadLocalValue(Canvas.LeftProperty) != DependencyProperty.UnsetValue)
-                Canvas.SetLeft(listBoxItem, Canvas.GetLeft(uiElement));
+                Canvas.SetLeft(listBoxItem, Canvas.GetLeft(uiElement) -1); // - 1 to adjust for the ListBox 
 
             if (uiElement.ReadLocalValue(Canvas.TopProperty) != DependencyProperty.UnsetValue)
-                Canvas.SetTop(listBoxItem, Canvas.GetTop(uiElement));
+                Canvas.SetTop(listBoxItem, Canvas.GetTop(uiElement) -1); // - 1 to adjust for the ListBox 
 
             listBoxItem.DrawingCanvas = DrawingCanvas;
         }
@@ -75,7 +69,6 @@ public class DrawingCanvasListBox : ListBox
 public class DrawingCanvasListBoxItem : ListBoxItem
 {
     internal DrawingCanvas? DrawingCanvas { get; set; }
-    internal DrawingViewModel? DrawingViewModel { get; set; }
     public DrawingCanvasListBoxItem()
     {
         // Set up visual appearance
@@ -87,27 +80,35 @@ public class DrawingCanvasListBoxItem : ListBoxItem
     }
 
     /// <summary>
-    /// when a shape on the convas gets clicked, notify the drawing canvas
+    /// when a shape on the convas gets clicked, notify the drawing canvas so that it can do the Mouse events over there
     /// </summary>
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonDown(e);
-        DrawingCanvas?.OnItemMouseEvent(this, e);
-        DrawingViewModel?.OnItemMouseEvent(this, e);
+
+        // Get the Position of the mouse on the Drawing Canvas not on the DrawingCanvasListBoxItem
+        Point drawingCanvasPoint = e.GetPosition(DrawingCanvas);
+
+        DrawingCanvas?.OnItemMouseEvent(this, e, drawingCanvasPoint);
     }
     /// <summary>
-    /// when item/shape on the canvas gets hovered over while mouse is down, notify drawing canvas
+    /// when item/shape on the canvas gets hovered over while mouse is down, notify drawing canvas so that it can do the Mouse events over there
     /// </summary>
     /// <param name="e"></param>
     protected override void OnMouseMove(MouseEventArgs e)
     {
         base.OnMouseMove(e);
-        DrawingCanvas?.OnItemMouseEvent(this, e);
+
+        // Get the Position of the mouse on the Drawing Canvas not on the DrawingCanvasListBoxItem
+        Point drawingCanvasPoint = e.GetPosition(DrawingCanvas);
+
+        DrawingCanvas?.OnItemMouseEvent(this, e, drawingCanvasPoint);
     }
 
     protected override void OnSelected(RoutedEventArgs e)
     {
         base.OnSelected(e);
+
     }
 
 }

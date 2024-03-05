@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -303,17 +304,30 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     #region On Item Mouse Events 
 
-    internal void OnItemMouseEvent(DrawingCanvasListBoxItem item, MouseEventArgs e)
+    /// <summary>
+    /// Gets Mouse Events from the DrawingCanvasListBoxItem so that the DrawingCanvas can handle them
+    /// </summary>
+    /// <param name="drawingCanvasPoint">Point Relative to the Drawing Canvas not Relative to the DrawingCanvasListBoxItem</param>
+    internal void OnItemMouseEvent(DrawingCanvasListBoxItem item, MouseEventArgs e, Point drawingCanvasPoint)
     {
         if (item.Content is not UIElement element)
             return;
+
         if(e.RoutedEvent == MouseLeftButtonDownEvent)
-            Perform(this.Tool?.LeftButtonDown(e.GetPosition(element), element));
+            Perform(this.Tool?.LeftButtonDown(drawingCanvasPoint, element));
             
         if (e.RoutedEvent == MouseMoveEvent && e.LeftButton == MouseButtonState.Pressed)
-            Perform(this.Tool?.MouseMove(e.GetPosition(element), element));
+            Perform(this.Tool?.MouseMove(drawingCanvasPoint, element));
     }
 
     #endregion
 
+    #region Shape Selection
+    public static readonly DependencyProperty SelectedItemProperty = Selector.SelectedItemProperty.AddOwner(typeof(DrawingCanvas));
+    public object? SelectedItem
+    {
+        get => this.GetValue(SelectedItemProperty);
+        set => this.SetValue(SelectedItemProperty, value);
+    }
+    #endregion
 }
