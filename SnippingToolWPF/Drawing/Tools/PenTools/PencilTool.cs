@@ -32,6 +32,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
 
     // TODO: If user holds shift draw a perfect straight line
     public bool LockedAspectRatio { get; set; } = false;
+    public bool IsDrawing { get; set; } = false;
 
     private int counter = 0;
     //The amount of points between every line within the polyline drawn
@@ -39,7 +40,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
 
     public DrawingToolAction LeftButtonDown(Point position, UIElement? element)
     {
-
+        IsDrawing = true;
         Visual.StrokeThickness = this.options.Thickness;
         Visual.Stroke = this.options.SelectedBrush;
         Visual.Opacity = this.options.RealOpacity;
@@ -57,6 +58,9 @@ public sealed class PencilTool : IDrawingTool<Polyline>
 
     public DrawingToolAction MouseMove(Point position, UIElement? element)
     {
+        if (!IsDrawing)
+            return DrawingToolAction.DoNothing;
+
         if (Visual.Points.Count > 0)
         {
             Point lastPoint = Visual.Points[Visual.Points.Count - 1];
@@ -75,11 +79,27 @@ public sealed class PencilTool : IDrawingTool<Polyline>
 
     public DrawingToolAction LeftButtonUp()
     {
+        IsDrawing = false;
         if (options.PenTipArrow)
             AddArrowHead(Visual);
 
+        // Get the smallest X and Y and create a new point list based on the Visual.Points
+        // In this list we substract the minY and minX from each point so we can set the canvas of the Shape correctly to match the DrawingCanvas
+        var minX = this.Visual.Points.Min(static p => p.X);
+        var minY = this.Visual.Points.Min(static p => p.Y);
+        var newPoints = new PointCollection(this.Visual.Points.Count);
+        foreach (var point in this.Visual.Points)
+        {
+            newPoints.Add(new Point(point.X - minX, point.Y - minY));
+        }
+
         // Clone the Polyline so we remove the parent and put it on the canvas, als now we can clear the current Visual
-        Shape finalLine = this.Visual.Clone();
+        Polyline finalLine = (Polyline)this.Visual.Clone();
+        finalLine.Points = newPoints;
+
+        Canvas.SetLeft(finalLine, minX-1); //-1 to fit in the DrawingListBox
+        Canvas.SetTop(finalLine, minY-1);
+
         Visual.Points.Clear();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }

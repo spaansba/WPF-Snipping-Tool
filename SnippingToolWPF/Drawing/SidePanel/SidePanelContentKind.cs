@@ -11,5 +11,6 @@ public enum SidePanelContentKind
     Shapes,
     Stickers,
     Text,
+    Edit,
 }
 

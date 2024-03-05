@@ -5,6 +5,7 @@ using SnippingToolWPF.Interop;
 using System.Windows.Input;
 using SnippingToolWPF.Screenshot;
 using System.Windows.Media;
+using SnippingToolWPF.Control;
 
 namespace SnippingToolWPF;
 
@@ -21,6 +22,7 @@ public partial class DrawingViewModel : ObservableObject
     private readonly ShapesSidePanelViewModel shapesPanel;
     private readonly StickersSidePanelViewModel stickersPanel;
     private readonly TextSidePanelViewModel textPanel;
+    private readonly EditSidePanelViewModel editPanel;
     public ICommand ClearCanvas { get; private set; }
     public ICommand TakeScreenshot { get; private set; }
 
@@ -30,6 +32,7 @@ public partial class DrawingViewModel : ObservableObject
         this.shapesPanel = new ShapesSidePanelViewModel(this);
         this.stickersPanel = new StickersSidePanelViewModel(this);
         this.textPanel = new TextSidePanelViewModel(this);
+        this.editPanel = new EditSidePanelViewModel(this);
         this.ClearCanvas = new RelayCommand(ExecuteClearCanvasButton);
         this.TakeScreenshot = new RelayCommand(ExecuteTakeScreenshot);
     }
@@ -40,8 +43,15 @@ public partial class DrawingViewModel : ObservableObject
         SidePanelContentKind.Shapes => shapesPanel,
         SidePanelContentKind.Stickers => stickersPanel,
         SidePanelContentKind.Text => textPanel,
+        SidePanelContentKind.Edit => editPanel,
         _ => null,
     };
+
+    internal void OnItemMouseEvent(DrawingCanvasListBoxItem item, MouseEventArgs e)
+    {
+        if (item.Content is not UIElement element)
+            return;
+    }
 
     #region Drawing Objects creating / clearing
 

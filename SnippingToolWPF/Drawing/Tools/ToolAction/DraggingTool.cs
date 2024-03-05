@@ -14,6 +14,8 @@ namespace SnippingToolWPF.Drawing.Tools.ToolAction
 
         public bool LockedAspectRatio => throw new NotImplementedException();
 
+        public bool IsDrawing => throw new NotImplementedException();
+
         protected abstract void Start(Point position);
         protected abstract void Continue(Point position);
         protected abstract DrawingToolAction Finish();

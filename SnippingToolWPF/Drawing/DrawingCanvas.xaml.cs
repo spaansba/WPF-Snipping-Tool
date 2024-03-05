@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using SnippingToolWPF.Control;
 using SnippingToolWPF.Drawing.Tools;
 
@@ -282,12 +283,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
     }
 
-    public void UpdateShapesFromUndoRedo()
-    {
-   //     Shapes = new ObservableCollection<UIElement>(UndoRedoStacks.VisibleStack);
-    }
-
-
     #endregion
 
     #region Screenshot Property
@@ -314,6 +309,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
             return;
         if(e.RoutedEvent == MouseLeftButtonDownEvent)
             Perform(this.Tool?.LeftButtonDown(e.GetPosition(element), element));
+            
         if (e.RoutedEvent == MouseMoveEvent && e.LeftButton == MouseButtonState.Pressed)
             Perform(this.Tool?.MouseMove(e.GetPosition(element), element));
     }

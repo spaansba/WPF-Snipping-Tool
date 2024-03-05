@@ -17,6 +17,7 @@ public sealed class SidePanelContentKindIconSelector : DataTemplateSelector
     public DataTemplate? Shapes { get; set; }
     public DataTemplate? Stickers { get; set; }
     public DataTemplate? Text { get; set; }
+    public DataTemplate? Edit { get; set; }
 
     public override DataTemplate? SelectTemplate(object? item, DependencyObject container)
     {
@@ -28,6 +29,7 @@ public sealed class SidePanelContentKindIconSelector : DataTemplateSelector
             SidePanelContentKind.Shapes => Shapes,
             SidePanelContentKind.Stickers => Stickers,
             SidePanelContentKind.Text => Text,
+            SidePanelContentKind.Edit => Edit,
             _ => throw new ArgumentOutOfRangeException(),
         };
     }

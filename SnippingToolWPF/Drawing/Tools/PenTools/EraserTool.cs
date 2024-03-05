@@ -22,8 +22,11 @@ public sealed class EraserTool : IDrawingTool
 
     public bool LockedAspectRatio => throw new NotImplementedException();
 
+    public bool IsDrawing {get; set; } = false;
+
     public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
     {
+        IsDrawing = true;
         if (item is not null)
             return DrawingToolAction.RemoveShape(item).WithUndo();
         
@@ -32,6 +35,8 @@ public sealed class EraserTool : IDrawingTool
 
     public DrawingToolAction MouseMove(Point position, UIElement? item)
     {
+        if (!IsDrawing)
+            return DrawingToolAction.DoNothing;
         if (item is not null)
             return DrawingToolAction.RemoveShape(item).WithUndo();
         return DrawingToolAction.DoNothing;
@@ -39,6 +44,7 @@ public sealed class EraserTool : IDrawingTool
 
     public DrawingToolAction LeftButtonUp()
     {
+        IsDrawing = false;
         return DrawingToolAction.StopMouseCapture();
     }
 }

@@ -37,14 +37,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
             if (value is not null)
             {
                 shapeSelected = value;
-                shapeOption = value.Tag switch
-                {
-                    ShapeOptions.Rectangle => ShapeOptions.Rectangle,
-                    ShapeOptions.Triangle => ShapeOptions.Triangle,
-                    ShapeOptions.Ellipse => ShapeOptions.Ellipse,
-                    ShapeOptions.Pentagon => ShapeOptions.Pentagon,
-                    _ => ShapeOptions.Rectangle,
-                };
+                shapeOption = value.Tag as ShapeOptions? ?? ShapeOptions.Rectangle;
                 UpdateTool(); // Update the Tool to give it the new shape
             }
         }

@@ -12,7 +12,7 @@ namespace SnippingToolWPF.Drawing.Tools.ToolAction;
 public sealed class ShapeTool : IDrawingTool<Shape>
 {
     private readonly ShapesSidePanelViewModel options;
-
+    public bool IsDrawing { get; set; } = false;
     public Shape Visual { get; set; }
 
     private Point startPoint;
@@ -25,18 +25,22 @@ public sealed class ShapeTool : IDrawingTool<Shape>
 
     public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
     {
+        IsDrawing = true;
         startPoint = position;
+        Canvas.SetLeft(this.Visual, position.X);
+        Canvas.SetTop(this.Visual, position.Y);
         this.Visual.Stroke = options.shapeStroke;
         this.Visual.StrokeThickness = options.shapeStrokeThickness;
         this.Visual.Opacity = options.shapeOpacity;
         this.Visual.Fill = options.shapeFill;
-        Canvas.SetLeft(this.Visual, position.X);
-        Canvas.SetTop(this.Visual, position.Y);
         return DrawingToolAction.StartMouseCapture();
     }
 
     public DrawingToolAction MouseMove(Point position, UIElement? item)
     {
+        if (!IsDrawing)
+            return DrawingToolAction.DoNothing;
+
         CheckIfLockedAspectRatio();
         if (LockedAspectRatio)
             position = GetLockedAspectRatioEndPoint(position);
@@ -46,15 +50,21 @@ public sealed class ShapeTool : IDrawingTool<Shape>
         this.Visual.Height = Math.Abs(position.Y - startPoint.Y);
 
         // Set the new position of the shape (we do this because otherwise a shape can only be drawn to bottom right and not in any direction)
-        Canvas.SetLeft(this.Visual, Math.Min(startPoint.X, position.X));
+        Canvas.SetLeft(this.Visual, Math.Min(startPoint.X, position.X)); 
         Canvas.SetTop(this.Visual, Math.Min(startPoint.Y, position.Y));
         return DrawingToolAction.DoNothing;  
     }
     public DrawingToolAction LeftButtonUp()
     {
-        var finalShape = this.Visual.Clone();
+        IsDrawing = false;
+        var finalShape = this.Visual.Clone(); 
+        Canvas.SetLeft(finalShape, Canvas.GetLeft(finalShape) -1); 
+        Canvas.SetTop(finalShape, Canvas.GetTop(finalShape) -1); //-1 to fit in the DrawingListBox
         this.Visual.Width = 0;
         this.Visual.Height = 0;
+        this.Visual.StrokeThickness = 0;
+        SolidColorBrush transparentBrush = new SolidColorBrush(Colors.Transparent);
+        this.Visual.Stroke = transparentBrush;
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalShape), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 
@@ -65,6 +75,7 @@ public sealed class ShapeTool : IDrawingTool<Shape>
     /// </summary>
     private void CheckIfLockedAspectRatio() => LockedAspectRatio = Keyboard.Modifiers == ModifierKeys.Shift;
     public bool LockedAspectRatio { get; set; } = false;
+
     public Point GetLockedAspectRatioEndPoint(Point location)
     {
         double dx = location.X - startPoint.X;
