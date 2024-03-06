@@ -61,6 +61,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Drawing\Editing\" />
     <Folder Include="Drawing\Effects\" />
   </ItemGroup>
 

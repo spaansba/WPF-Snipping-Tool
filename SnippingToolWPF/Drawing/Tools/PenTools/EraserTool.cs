@@ -24,6 +24,7 @@ public sealed class EraserTool : IDrawingTool
 
     public bool IsDrawing {get; set; } = false;
 
+    #region Mouse Events
     public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
     {
         IsDrawing = true;
@@ -47,4 +48,9 @@ public sealed class EraserTool : IDrawingTool
         IsDrawing = false;
         return DrawingToolAction.StopMouseCapture();
     }
+
+    public void RightButtonDown()
+    {
+    }
+    #endregion
 }

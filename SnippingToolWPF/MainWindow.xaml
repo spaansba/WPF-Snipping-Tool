@@ -140,7 +140,7 @@
                                  Shapes="{Binding DrawingObjects}"
                                  local:Tool="{Binding SidePanelContent.Tool, FallbackValue={x:Null}}"
                                  Screenshot="{Binding Screenshot}"
-                                 local:SelectedItem="{Binding SelectedShape}"/>
+                                 SelectedItem="{Binding SelectedShape}"/>
 
             <Border x:Name="SidePanel" Grid.Row="1"
                     Grid.Column="1" DockPanel.Dock="Right">

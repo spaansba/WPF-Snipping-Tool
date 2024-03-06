@@ -96,9 +96,6 @@ public partial class DrawingViewModel : ObservableObject
             this.Screenshot = result;
         }
     }
-
-
-
     #endregion
 
     #region Shape Selection
@@ -111,7 +108,7 @@ public partial class DrawingViewModel : ObservableObject
         set
         {
             this.SetProperty(ref this.selectedShape, value);
-            Debug.Write("object selected");
+            Debug.WriteLine("object selected - DrawingViewModel");
         }
     }
     #endregion

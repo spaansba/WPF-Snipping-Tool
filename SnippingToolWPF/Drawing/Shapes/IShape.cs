@@ -17,5 +17,5 @@ public interface IShape : INotifyPropertyChanged
     public double Y { get; }
     public double Width { get; }
     public double Height { get; }
-
+    public double DegreesRotated { get; }
 }

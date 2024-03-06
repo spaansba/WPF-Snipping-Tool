@@ -182,6 +182,17 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
     }
 
+    protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnMouseLeftButtonUp(e);
+        if (this.isDrawing)
+        {
+            this.Tool?.RightButtonDown();
+            isDrawing = false;
+        }
+    }
+
+
     private void Perform(DrawingToolAction? action)
     {
         if (action.HasValue)
@@ -323,11 +334,16 @@ public class DrawingCanvas : System.Windows.Controls.Control
     #endregion
 
     #region Shape Selection
+
     public static readonly DependencyProperty SelectedItemProperty = Selector.SelectedItemProperty.AddOwner(typeof(DrawingCanvas));
     public object? SelectedItem
     {
         get => this.GetValue(SelectedItemProperty);
-        set => this.SetValue(SelectedItemProperty, value);
+        set
+        {
+            this.SetValue(SelectedItemProperty, value);
+            Debug.WriteLine("object selected - DrawingCanvas");
+        }
     }
     #endregion
 }

@@ -15,12 +15,12 @@ using System.IO;
 using System.Reflection;
 using SnippingToolWPF.ExtensionMethods;
 using System.Windows.Controls;
+using SnippingToolWPF.Drawing.Tools.ToolAction;
 
 namespace SnippingToolWPF.Drawing.Tools;
 
-
 //TODO : hold ctrl to snap the end to the beginning of the line 
-public sealed class PencilTool : IDrawingTool<Polyline>
+public sealed class PencilTool : DraggingTool<Polyline>
 {
     private readonly PencilsSidePanelViewModel options;
     public PencilTool(PencilsSidePanelViewModel options)
@@ -28,17 +28,16 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         this.options = options;
     }
 
-    public Polyline Visual { get; } = new Polyline();
+    public override Polyline Visual { get; } = new Polyline();
 
     // TODO: If user holds shift draw a perfect straight line
-    public bool LockedAspectRatio { get; set; } = false;
-    public bool IsDrawing { get; set; } = false;
+    public override bool LockedAspectRatio { get; set; } = false;
+    public override bool IsDrawing { get; set; } = false;
 
-    private int counter = 0;
-    //The amount of points between every line within the polyline drawn
-    private const int FreehandSensitivity = 4;
+    public override void ResetVisual() => Visual.Points.Clear();
 
-    public DrawingToolAction LeftButtonDown(Point position, UIElement? element)
+    #region Mouse Events
+    public override DrawingToolAction LeftButtonDown(Point position, UIElement? element)
     {
         IsDrawing = true;
         Visual.StrokeThickness = this.options.Thickness;
@@ -56,7 +55,9 @@ public sealed class PencilTool : IDrawingTool<Polyline>
 
     }
 
-    public DrawingToolAction MouseMove(Point position, UIElement? element)
+    //The amount of points between every line within the polyline drawn
+    private const int FreehandSensitivity = 4;
+    public override DrawingToolAction MouseMove(Point position, UIElement? element)
     {
         if (!IsDrawing)
             return DrawingToolAction.DoNothing;
@@ -77,7 +78,7 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         return DrawingToolAction.DoNothing;
     }
 
-    public DrawingToolAction LeftButtonUp()
+    public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
         if (options.PenTipArrow)
@@ -100,11 +101,24 @@ public sealed class PencilTool : IDrawingTool<Polyline>
         Canvas.SetLeft(finalLine, minX);
         Canvas.SetTop(finalLine, minY);
 
-        Visual.Points.Clear();
+        ResetVisual();
+        
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 
+    /// <summary>
+    /// Resets the visual if drawing and right clicking
+    /// </summary>
+    public override void RightButtonDown()
+    {
+        if (IsDrawing)
+        {
+            ResetVisual();
+            IsDrawing = false;
+        }
+    }
 
+    #endregion
 
     #region Calculate / add arrow head
 

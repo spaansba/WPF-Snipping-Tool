@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Ink;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace SnippingToolWPF.Drawing.Tools.PolygonTools;
@@ -11,35 +12,32 @@ namespace SnippingToolWPF.Drawing.Tools.PolygonTools;
 public static class CreateInitialPolygon
 {
     #region Create Polygon Shape
-    public static Shape Create(PolygonOptions shapeToCreate) => Create(shapeToCreate, null, null);
-
-    public static Shape Create(PolygonOptions shapeToCreate, double? thickness, Brush? stroke) => shapeToCreate switch
+    /// <summary>
+    /// Returns a Polygon with N vertices in a 1x1 plane
+    /// </summary>
+    /// <param name="vertices">amount of vertices of the polygon</param>
+    /// <param name="rotationDegrees">degrees the polygon should rotate in</param>
+    /// <param name="innerCircleSize">the size of the circumscribed circle of the inner circle, must be a value from 0.1 to 1. When this is set the Polygon will be shaped like a star figure</param>
+    /// <param name="thickness">thickness of the polygon line</param>
+    /// <returns></returns>
+    public static Shape Create(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0, double thickness = 2)
     {
-        PolygonOptions.Ellipse => new Ellipse() { StrokeThickness = thickness ?? default, Stroke = stroke ?? default }, // Only non-polygon
-        PolygonOptions.Triangle => CreatePolygon(GeneratePolygonPoints(3, 30), thickness, stroke),
-        PolygonOptions.Rectangle => CreatePolygon(GeneratePolygonPoints(4, 45), thickness, stroke),
-        PolygonOptions.Diamond => CreatePolygon(GeneratePolygonPoints(4), thickness, stroke),
-        PolygonOptions.Pentagon => CreatePolygon(GeneratePolygonPoints(5, 270), thickness, stroke),
-        PolygonOptions.Hexagon => CreatePolygon(GeneratePolygonPoints(6), thickness, stroke),
-        PolygonOptions.Heptagon => CreatePolygon(GeneratePolygonPoints(7), thickness, stroke),
-        PolygonOptions.Hectagon => CreatePolygon(GeneratePolygonPoints(8), thickness, stroke),
-        PolygonOptions.Star => CreatePolygon(GenerateStarPoints(5, 0.6), thickness, stroke),
-        _ => throw new ArgumentOutOfRangeException(nameof(shapeToCreate), shapeToCreate, default)
-    };
+        if (innerCircleSize == 1.0)
+        {
+            return CreatePolygon(GeneratePolygonPoints(vertices, rotationDegrees, innerCircleSize), thickness, Brushes.Black);
+        }
+        else
+        {
+            return CreatePolygon(GenerateStarPoints(vertices, rotationDegrees, innerCircleSize), thickness, Brushes.Black);
+        }
+    }
 
-    static Polygon CreatePolygon(IEnumerable<Point> points, double? thickness, Brush? stroke) =>
-        new() { Stretch = Stretch.Fill, Points = new PointCollection(points), StrokeThickness = thickness ?? 1.0, Stroke = stroke ?? default };
+    private static Polygon CreatePolygon(IEnumerable<Point> points, double thickness, Brush stroke) =>
+        new() { Stretch = Stretch.Fill, Points = new PointCollection(points), StrokeThickness = thickness, Stroke = stroke };
     #endregion
 
     #region Polygon Points Creating
-    /// <summary>
-    /// Generates polygon points in a 1x1 pane
-    /// </summary>
-    /// <param name="vertices">amount of vertices the polygon should have</param>
-    /// <param name="rotationDegrees">degrees the polygon should rotate in</param>
-    /// <param name="circleSize">the size of the circumscribed circle of the inner circle, must be a value from 0.1 to 1</param>
-    /// <returns></returns>
-    public static Point[] GeneratePolygonPoints(int vertices, double rotationDegrees = 0, double circleSize = 1.0)
+    private static Point[] GeneratePolygonPoints(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0)
     {
         Point[] points = new Point[vertices];
         var rotation = double.DegreesToRadians(rotationDegrees);
@@ -48,8 +46,8 @@ public static class CreateInitialPolygon
         for (int i = 0; i < vertices; i++)
         {
             double angle = (angleIncrement * i) + rotation; // Start from the bottom and move clockwise
-            double x = (circleSize / 2) * Math.Cos(angle) + (circleSize / 2);
-            double y = (circleSize / 2) * Math.Sin(angle) + (circleSize / 2);
+            double x = (innerCircleSize / 2) * Math.Cos(angle) + (innerCircleSize / 2);
+            double y = (innerCircleSize / 2) * Math.Sin(angle) + (innerCircleSize / 2);
             points[i] = new Point(x, y);
         }
 
@@ -61,15 +59,15 @@ public static class CreateInitialPolygon
     /// The inner points are
     /// </summary>
     /// <param name="outerVertices">Total vertices of the star (amount of starpoints) </param>
-    /// <param name="innerSize">the size of the circumscribed circle of the inner circle, must be a value from 0.1 to 1</param>
-    /// <param name="rotation">degrees the star will be rotated in</param>
+    /// <param name="innerCircleSize">the size of the circumscribed circle of the inner circle, must be a value from 0.1 to 1</param>
+    /// <param name="rotationDegrees">degrees the star will be rotated in</param>
     /// <returns></returns>
-    public static Point[] GenerateStarPoints(int outerVertices, double innerSize, double rotationDegrees = 0)
+    private static Point[] GenerateStarPoints(int outerVertices, double rotationDegrees = 0, double innerCircleSize = 0.5)
     {
         var offset = 360d / outerVertices / 2;
 
         var outer = GeneratePolygonPoints(outerVertices, rotationDegrees, 1.0);
-        var inner = GeneratePolygonPoints(outerVertices, rotationDegrees + offset, innerSize);
+        var inner = GeneratePolygonPoints(outerVertices, rotationDegrees + offset, innerCircleSize);
 
         var result = new Point[outerVertices * 2];
         for (var i = 0; i < outerVertices; ++i)

@@ -1,5 +1,6 @@
 ﻿using SnippingToolWPF.Interop;
 using SnippingToolWPF.Screenshot;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media.Imaging;
 

@@ -5,41 +5,31 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SnippingToolWPF.Drawing.Tools.ToolAction
+namespace SnippingToolWPF.Drawing.Tools.ToolAction;
+
+/// <summary>
+/// Abstract class that implements IDrawingTool for classes that need draaging
+/// if we want classes to have abstraction (reset) And have the implementation of IDrawingTool
+/// </summary>
+/// <typeparam name="T">An UIElement</typeparam>
+public abstract class DraggingTool<T> : IDrawingTool where T : UIElement
 {
-    //TODO: Implement this in PencilTool
-    public abstract class DraggingTool<TVisual> : IDrawingTool<TVisual> where TVisual : UIElement
-    {
-        public TVisual? Visual { get; }
+    public abstract T? Visual { get; }
 
-        public bool LockedAspectRatio => throw new NotImplementedException();
+    public abstract bool LockedAspectRatio {  get; set; }
 
-        public bool IsDrawing => throw new NotImplementedException();
+    public abstract bool IsDrawing {  get; set; }
 
-        protected abstract void Start(Point position);
-        protected abstract void Continue(Point position);
-        protected abstract DrawingToolAction Finish();
-        protected abstract void Reset();
+    UIElement? IDrawingTool.Visual => Visual;
 
-        public virtual DrawingToolAction LeftButtonDown(Point position, UIElement? item)
-        {
-            this.Start(position);
-            return DrawingToolAction.StartMouseCapture();
-        }
+    public abstract DrawingToolAction LeftButtonDown(Point position, UIElement? item);
+    public abstract void RightButtonDown();
+    public abstract DrawingToolAction LeftButtonUp();
 
-        public virtual DrawingToolAction LeftButtonUp()
-        {
-            var result = this.Finish();
-            result = result with { StopAction = result.StopAction.Combine(DrawingToolActionItem.MouseCapture()) };
-            this.Reset();
-            return result;
-        }
+    public abstract DrawingToolAction MouseMove(Point position, UIElement? item);
 
-        public virtual DrawingToolAction MouseMove(Point position, UIElement? item)
-        {
-            this.Continue(position);
-            return DrawingToolAction.DoNothing;
-        }
-
-    }
+    /// <summary>
+    /// Reset the visual of the DrawingTool, this is the reason we needed this abstract class.
+    /// </summary>
+    public abstract void ResetVisual();
 }

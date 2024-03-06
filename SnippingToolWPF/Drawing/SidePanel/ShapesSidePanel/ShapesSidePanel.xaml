@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="SnippingToolWPF.Drawing.ShapesSidePanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:control="clr-namespace:SnippingToolWPF.Control"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:uc="SnippingToolWPF.Control.ColorSelector"
              xmlns:local="clr-namespace:SnippingToolWPF" xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:ShapesSidePanelViewModel, IsDesignTimeCreatable=False}"
@@ -11,43 +11,83 @@
     <UserControl.Resources>
         <system:Double x:Key="GridCellSize">30</system:Double>
     </UserControl.Resources>
-
+    
     <DockPanel Background="{StaticResource AlternateBackgroundBrush}">
-        <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Polygons}"
-                 Background="{StaticResource AlternateBackgroundBrush}" 
-                 BorderThickness="0" SelectedItem="{Binding PolygonSelected}"
-                 Margin="0,10,0,0">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="6"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Width="{StaticResource GridCellSize}" 
-                            Height="{StaticResource GridCellSize}" 
-                            Padding="1" BorderThickness="0">
-                        <ContentControl Content="{Binding}" />
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
 
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Padding" Value="0" />
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Width" Value="{StaticResource GridCellSize}"/>
-                    <Setter Property="Height" Value="{StaticResource GridCellSize}"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
-        <TextBlock/>
-        <!-- placeholder -->
+
+        <Grid MinHeight="250" Margin="12,10,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+        
+            <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                     DockPanel.Dock="Top" ItemsSource="{Binding Polygons}"
+                     Background="{StaticResource AlternateBackgroundBrush}" 
+                     BorderThickness="0" SelectedItem="{Binding PolygonSelected}"
+                     Margin="0,10,0,0">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="6"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="{StaticResource GridCellSize}" 
+                                Height="{StaticResource GridCellSize}" 
+                                Padding="1" BorderThickness="0">
+                            <ContentControl Content="{Binding Shape}" />
+                            <!-- Bind to the Shape of the ShapeViewModel-->
+
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Width" Value="{StaticResource GridCellSize}"/>
+                        <Setter Property="Height" Value="{StaticResource GridCellSize}"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        
+            <Slider x:Name="ThicknessSlider"
+             Style="{StaticResource SliderTitleAndTextBox}" 
+             Grid.Column="0" Grid.Row="1" 
+             Grid.ColumnSpan="2"
+             Minimum="{x:Static local:ShapesSidePanelViewModel.MinimumThickness}"
+             Maximum="{x:Static local:ShapesSidePanelViewModel.MaximumThickness}"
+             Value="{Binding Thickness}"
+             control:SliderTitleAndTextBox.StaticTextBoxText="px"
+             control:SliderTitleAndTextBox.SliderHeader="Thickness"
+             control:SliderTitleAndTextBox.SliderValueInText="{Binding ThicknessString, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Slider x:Name="OpacitySlider"
+             Style="{StaticResource SliderTitleAndTextBox}" 
+             Grid.Column="0" Grid.Row="2" 
+             Grid.ColumnSpan="2"
+             Minimum="{x:Static local:ShapesSidePanelViewModel.MinimumOpacity}"
+             Maximum="{x:Static local:ShapesSidePanelViewModel.MaximumOpacity}"
+             Value="{Binding Opacity}"
+             control:SliderTitleAndTextBox.StaticTextBoxText="% "
+             control:SliderTitleAndTextBox.SliderHeader="Opacity"
+             control:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}"/>
+            <!-- placeholder -->
+        </Grid>
     </DockPanel>
 </UserControl>

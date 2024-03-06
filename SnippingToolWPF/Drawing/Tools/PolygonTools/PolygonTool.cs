@@ -7,34 +7,41 @@ using System.Windows.Shapes;
 
 namespace SnippingToolWPF.Drawing.Tools.ToolAction;
 
-//TODO: Make this class generic for all polygons
-public sealed class PolygonTool : IDrawingTool<Shape>
+public sealed class PolygonTool : DraggingTool<Shape>
 {
     private readonly ShapesSidePanelViewModel options;
-    public bool IsDrawing { get; set; } = false;
-    public Shape Visual { get; set; }
+    public override bool IsDrawing { get; set; } = false;
+    public override Shape Visual { get; }
 
     private Point startPoint;
 
     public PolygonTool(ShapesSidePanelViewModel options)
     {
         this.options = options;
-        this.Visual = CreateInitialPolygon.Create(this.options.polygonOption);
+        this.Visual = options.polygonOption.Shape;
+        ResetVisual();
     }
-    public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
+    public override void ResetVisual()
+    {
+        this.Visual.Width = 0;
+        this.Visual.Height = 0;
+    }
+
+    #region Mouse Events
+    public override DrawingToolAction LeftButtonDown(Point position, UIElement? item)
     {
         IsDrawing = true;
         startPoint = position;
         Canvas.SetLeft(this.Visual, position.X);
         Canvas.SetTop(this.Visual, position.Y);
         this.Visual.Stroke = options.shapeStroke;
-        this.Visual.StrokeThickness = options.shapeStrokeThickness;
-        this.Visual.Opacity = options.shapeOpacity;
+        this.Visual.StrokeThickness = options.Thickness;
+        this.Visual.Opacity = options.RealOpacity;
         this.Visual.Fill = options.shapeFill;
         return DrawingToolAction.StartMouseCapture();
     }
 
-    public DrawingToolAction MouseMove(Point position, UIElement? item)
+    public override DrawingToolAction MouseMove(Point position, UIElement? item)
     {
         if (!IsDrawing)
             return DrawingToolAction.DoNothing;
@@ -52,16 +59,26 @@ public sealed class PolygonTool : IDrawingTool<Shape>
         Canvas.SetTop(this.Visual, Math.Min(startPoint.Y, position.Y));
         return DrawingToolAction.DoNothing;  
     }
-    public DrawingToolAction LeftButtonUp()
+    public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
         Shape? finalPolygon = this.Visual.Clone(new Size(this.Visual.Width, this.Visual.Height));
-        finalPolygon.RenderSize = this.Visual.RenderSize;
-        this.Visual.Width = 0;
-        this.Visual.Height = 0;
-
+        ResetVisual();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalPolygon), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
+
+    /// <summary>
+    /// Resets the visual if drawing and pressing right mouse button
+    /// </summary>
+    public override void RightButtonDown()
+    {
+        if (IsDrawing)
+        {
+            ResetVisual();
+            IsDrawing = false;
+        }
+    }
+    #endregion
 
     #region Locked Aspect Ratio
     /// <summary>
@@ -69,7 +86,7 @@ public sealed class PolygonTool : IDrawingTool<Shape>
     /// When locked Aspect Ratio is activated, the polygon drawn on the canvas will have perfect perportions. e.g. perfect Rectangle / triangle
     /// </summary>
     private void CheckIfLockedAspectRatio() => LockedAspectRatio = Keyboard.Modifiers == ModifierKeys.Shift;
-    public bool LockedAspectRatio { get; set; } = false;
+    public override bool LockedAspectRatio { get; set; } = false;
 
     public Point GetLockedAspectRatioEndPoint(Point location)
     {
