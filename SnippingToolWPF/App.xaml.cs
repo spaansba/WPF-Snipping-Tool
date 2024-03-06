@@ -13,7 +13,9 @@ namespace SnippingToolWPF
     {
         static App()
         {
-          //  BindingErrorListener.WriteToConsole();
+            //  BindingErrorListener.WriteToConsole();
+
+
 
             // Set the language settings to the users PC
             FrameworkElement.LanguageProperty.OverrideMetadata(
@@ -24,3 +26,4 @@ namespace SnippingToolWPF
         }
     }
 }
+

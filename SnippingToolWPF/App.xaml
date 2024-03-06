@@ -1,5 +1,6 @@
 ﻿<Application x:Class="SnippingToolWPF.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control" xmlns:snippingtoolwpf="clr-namespace:SnippingToolWPF" StartupUri="MainWindow.xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control"
+             xmlns:snippingtoolwpf="clr-namespace:SnippingToolWPF" StartupUri="ShapeTesting.xaml">
     <Application.Resources>
         
         <ResourceDictionary>
