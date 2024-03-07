@@ -6,90 +6,75 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace SnippingToolWPF.Drawing.Shapes;
 
-public abstract class DrawingShape : FrameworkElement
+public abstract class DrawingShape : Decorator
 {
     private readonly TextBlock textBlock;
-    private readonly Shape shape;
+    private readonly Canvas canvas;
     public DrawingShape()
     {
-        this.textBlock = SetUpTextBlock(this);
-        this.shape = SetUpShape(this);
+        this.textBlock = SetupTextBlock(this);
+        this.canvas = new Canvas() { Children = { textBlock } };
+        this.Child = this.canvas;
     }
-    #region Shape / Textblock setup
-    private static TextBlock SetUpTextBlock(DrawingShape parent)
+
+    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
-        throw new NotImplementedException();
+        base.OnPropertyChanged(e);
+        if (e.Property == VisualProperty)
+            this.OnVisualChanged(e.OldValue as UIElement, e.NewValue as UIElement);
     }
 
-    private static Shape SetUpShape(DrawingShape parnet)
+    protected virtual void OnVisualChanged(UIElement? oldValue, UIElement? newValue)
     {
-        throw new NotImplementedException();
+        this.canvas.Children.Clear();
+        if (newValue is not null)
+            this.canvas.Children.Add(newValue);
+        this.canvas.Children.Add(this.textBlock);
     }
-    #endregion
 
-    #region Add Dependency Properties
+    public static readonly DependencyProperty VisualProperty = DependencyProperty.Register(
+        nameof(Visual),
+        typeof(UIElement),
+        typeof(DrawingShape),
+        new FrameworkPropertyMetadata(
+            default(Visual),
+            FrameworkPropertyMetadataOptions.AffectsMeasure
+        )
+    );
 
+    public UIElement? Visual
+    {
+        get => this.GetValue<UIElement?>(VisualProperty);
+        set => this.SetValue<UIElement?>(VisualProperty, value);
+    }
+
+    private static TextBlock SetupTextBlock(DrawingShape parent)
+    {
+        var textBlock = new TextBlock();
+        textBlock.SetBinding(TextBlock.TextProperty, new Binding() { Source = parent, Path = new PropertyPath(DrawingShape.TextProperty) });
+        return textBlock;
+    }
+
+    #region Dependency properties
     public static readonly DependencyProperty TextProperty = TextBlock.TextProperty.AddOwner(typeof(DrawingShape));
     public string? Text
     {
         get => this.GetValue<string?>(TextProperty);
-        set => this.SetValue(TextProperty, value);
+        set => this.SetValue<string?>(TextProperty, value);
     }
-
     public static readonly DependencyProperty StrokeProperty = Shape.StrokeProperty.AddOwner(typeof(DrawingShape));
+
+
     public Brush? Stroke
     {
         get => this.GetValue<Brush?>(StrokeProperty);
-        set => this.SetValue(StrokeProperty, value);
+        set => this.SetValue<Brush?>(StrokeProperty, value);
     }
-
-    #endregion
-
-    #region Measureing
-
-    protected override Size MeasureOverride(Size availableSize)
-    {
-        this.shape.Measure(availableSize);
-        this.textBlock.Measure(availableSize);
-        return new Size(
-            Math.Max(this.shape.DesiredSize.Width, this.textBlock.DesiredSize.Width),
-            Math.Max(this.shape.DesiredSize.Height, this.textBlock.DesiredSize.Height));
-    }
-
-    protected override int VisualChildrenCount => 2;
-
-    protected override Size ArrangeOverride(Size finalSize)
-    {
-        this.shape.Arrange(new Rect(finalSize));
-        this.textBlock.Arrange(new Rect(finalSize));
-        return new Size(
-            Math.Max(this.shape.DesiredSize.Width, this.textBlock.DesiredSize.Width),
-            Math.Max(this.shape.DesiredSize.Height, this.textBlock.DesiredSize.Height));
-    }
-
-    #endregion
-
-    #region Children
-
-    protected override Visual GetVisualChild(int index) => index switch
-    {
-        0 => this.shape,
-        1 => this.textBlock,
-        _ => throw new ArgumentOutOfRangeException(nameof(index), index, default),
-    };
-
-    protected override IEnumerator? LogicalChildren
-    {
-        get
-        {
-            yield return this.shape;
-            yield return this.textBlock;
-        }
-    }
-    #endregion
+    #endregion Dependency properties
 }
