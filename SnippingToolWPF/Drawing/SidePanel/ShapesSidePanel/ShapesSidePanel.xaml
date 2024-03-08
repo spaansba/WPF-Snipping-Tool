@@ -44,8 +44,8 @@
                         <Border Width="{StaticResource GridCellSize}" 
                                 Height="{StaticResource GridCellSize}" 
                                 Padding="1" BorderThickness="0">
-                            <ContentControl Content="{Binding Shape}" />
-                            <!-- Bind to the Shape of the ShapeViewModel-->
+                            <ContentControl Content="{Binding Visual}" />
+                            <!-- Bind to the Visual of the Polygons-->
 
                         </Border>
                     </DataTemplate>

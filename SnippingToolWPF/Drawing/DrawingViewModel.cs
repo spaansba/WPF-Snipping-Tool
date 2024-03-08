@@ -8,6 +8,7 @@ using System.Windows.Media;
 using SnippingToolWPF.Control;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using SnippingToolWPF.Drawing.Shapes;
 
 namespace SnippingToolWPF;
 
@@ -56,7 +57,7 @@ public partial class DrawingViewModel : ObservableObject
 
     #region Drawing Objects creating / clearing
 
-    public ObservableCollection<UIElement> DrawingObjects { get; private set; } = new ObservableCollection<UIElement>();
+    public ObservableCollection<DrawingShape> DrawingObjects { get; private set; } = new ObservableCollection<DrawingShape>();
 
     /// <summary>
     /// Button in Xaml is linked via the RelayCommand class so the button can be in the viewmodel instead of the code-behind

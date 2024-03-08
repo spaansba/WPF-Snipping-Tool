@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using SnippingToolWPF.Drawing.Shapes;
+using System.Windows;
 using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -20,7 +21,7 @@ public static class CreateInitialPolygon
     /// <param name="innerCircleSize">the size of the circumscribed circle of the inner circle, must be a value from 0.1 to 1. When this is set the Polygon will be shaped like a star figure</param>
     /// <param name="thickness">thickness of the polygon line</param>
     /// <returns></returns>
-    public static Shape Create(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0, double thickness = 2)
+    public static Polygon Create(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0, double thickness = 2)
     {
         if (innerCircleSize == 1.0)
         {
@@ -37,7 +38,7 @@ public static class CreateInitialPolygon
     #endregion
 
     #region Polygon Points Creating
-    private static Point[] GeneratePolygonPoints(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0)
+    public static Point[] GeneratePolygonPoints(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0)
     {
         Point[] points = new Point[vertices];
         var rotation = double.DegreesToRadians(rotationDegrees);
@@ -62,7 +63,7 @@ public static class CreateInitialPolygon
     /// <param name="innerCircleSize">the size of the circumscribed circle of the inner circle, must be a value from 0.1 to 1</param>
     /// <param name="rotationDegrees">degrees the star will be rotated in</param>
     /// <returns></returns>
-    private static Point[] GenerateStarPoints(int outerVertices, double rotationDegrees = 0, double innerCircleSize = 0.5)
+    public static Point[] GenerateStarPoints(int outerVertices, double rotationDegrees = 0, double innerCircleSize = 0.5)
     {
         var offset = 360d / outerVertices / 2;
 
@@ -79,5 +80,4 @@ public static class CreateInitialPolygon
     }
 
     #endregion
-
 }

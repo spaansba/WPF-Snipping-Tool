@@ -1,24 +1,32 @@
-﻿using SnippingToolWPF.Drawing.Tools.PolygonTools;
+﻿using SnippingToolWPF.Drawing.Shapes;
 using SnippingToolWPF.ExtensionMethods;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace SnippingToolWPF.Drawing.Tools.ToolAction;
 
-public sealed class PolygonTool : DraggingTool<Shape>
+public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
 {
     private readonly ShapesSidePanelViewModel options;
     public override bool IsDrawing { get; set; } = false;
-    public override Shape Visual { get; }
+    public override RegularPolygonDrawingShape Visual { get; }
 
     private Point startPoint;
 
     public PolygonTool(ShapesSidePanelViewModel options)
     {
         this.options = options;
-        this.Visual = options.polygonOption.Shape;
+        if (options.PolygonSelected is not null)
+        {
+            this.Visual = options.PolygonSelected;
+        }
+        else
+        {
+            this.Visual = new RegularPolygonDrawingShape(3);
+        }
+        
         ResetVisual();
     }
     public override void ResetVisual()
@@ -28,20 +36,24 @@ public sealed class PolygonTool : DraggingTool<Shape>
     }
 
     #region Mouse Events
-    public override DrawingToolAction LeftButtonDown(Point position, UIElement? item)
+    public override DrawingToolAction LeftButtonDown(Point position, DrawingShape? item)
     {
         IsDrawing = true;
         startPoint = position;
         Canvas.SetLeft(this.Visual, position.X);
         Canvas.SetTop(this.Visual, position.Y);
         this.Visual.Stroke = options.shapeStroke;
+        Visual.StrokeDashCap = PenLineCap.Round;
+        Visual.StrokeStartLineCap = PenLineCap.Round;
+        Visual.StrokeEndLineCap = PenLineCap.Round;
+        Visual.StrokeLineJoin = PenLineJoin.Round;
         this.Visual.StrokeThickness = options.Thickness;
         this.Visual.Opacity = options.RealOpacity;
         this.Visual.Fill = options.shapeFill;
         return DrawingToolAction.StartMouseCapture();
     }
 
-    public override DrawingToolAction MouseMove(Point position, UIElement? item)
+    public override DrawingToolAction MouseMove(Point position, DrawingShape? item)
     {
         if (!IsDrawing)
             return DrawingToolAction.DoNothing;
@@ -62,7 +74,7 @@ public sealed class PolygonTool : DraggingTool<Shape>
     public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
-        Shape? finalPolygon = this.Visual.Clone(new Size(this.Visual.Width, this.Visual.Height));
+        var finalPolygon = this.Visual.Clone(new Size(this.Visual.Width, this.Visual.Height));
         ResetVisual();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalPolygon), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }

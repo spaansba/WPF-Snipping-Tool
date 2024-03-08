@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SnippingToolWPF.Drawing.Editing;
+using SnippingToolWPF.Drawing.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,14 +20,14 @@ public sealed class EraserTool : IDrawingTool
         this.options = options;
     }
 
-    public UIElement? Visual => null;
+    public DrawingShape? Visual => null;
 
     public bool LockedAspectRatio => throw new NotImplementedException();
 
     public bool IsDrawing {get; set; } = false;
 
     #region Mouse Events
-    public DrawingToolAction LeftButtonDown(Point position, UIElement? item)
+    public DrawingToolAction LeftButtonDown(Point position, DrawingShape? item)
     {
         IsDrawing = true;
         if (item is not null)
@@ -34,7 +36,7 @@ public sealed class EraserTool : IDrawingTool
         return DrawingToolAction.DoNothing;
     }
 
-    public DrawingToolAction MouseMove(Point position, UIElement? item)
+    public DrawingToolAction MouseMove(Point position, DrawingShape? item)
     {
         if (!IsDrawing)
             return DrawingToolAction.DoNothing;

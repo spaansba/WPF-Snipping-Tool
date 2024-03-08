@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using SnippingToolWPF.Drawing.Shapes;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -17,57 +18,48 @@ public static class ShapeExtensions
     /// <param name="shape">input shape</param>
     /// <returns>Cloned Shape</returns>
     /// <exception cref="ArgumentException">If shape is not defined in the Clone method</exception>
-    public static Shape Clone(this Shape shape, Size size) => shape switch
+    public static DrawingShape Clone(this DrawingShape shape, Size size) => shape switch
     {
-        Ellipse s => s.Clone(),
-        Line s => s.Clone(size),
-        Path s => s.Clone(size),
-        Polygon s => s.Clone(size),
-        Polyline s => s.Clone(),
+        RegularPolygonDrawingShape s => s.Clone(size),
+    //    RegularPolylineDrawingShape s => s.Clone(size),
         // 👆 those are the shapes that are built-in.
         _ => throw new ArgumentException($"Unknown shape type {shape.GetType()}", nameof(shape)),
     };
 
-    public static Shape Clone(this Ellipse shape) => CloneCore(shape);
+//    public static Shape Clone(this Ellipse shape) => CloneCore(shape);
 
-    public static Shape Clone(this Line shape, Size size)
-        => CloneCore(shape, new() { X1 = shape.X1, X2 = shape.X2, Y1 = shape.Y1, Y2 = shape.Y2 });
-    public static Shape Clone(this Path shape, Size size)
-        => CloneCore(shape, new() { Data = shape.Data });
-
-    public static Shape Clone(this Polygon shape, Size scaleSize)
+    public static DrawingShape Clone(this RegularPolygonDrawingShape polygon, Size scaleSize)
     {
-        ArgumentNullException.ThrowIfNull(shape);
+        ArgumentNullException.ThrowIfNull(polygon);
 
         var scaledPoints = new PointCollection();
 
-        foreach (var point in shape.Points)
+        if (polygon.Points is not null)
         {
-            scaledPoints.Add(new Point(point.X * scaleSize.Width, point.Y * scaleSize.Height));
+            foreach (var point in polygon.Points)
+            {
+                scaledPoints.Add(new Point(point.X * scaleSize.Width, point.Y * scaleSize.Height));
+            }
         }
 
-        var clonedShape = new Polygon
+        var clonedPolygon = new RegularPolygonDrawingShape(polygon.NumberOfSides)
         {
             Points = scaledPoints,
-            FillRule = shape.FillRule
+            FillRule = polygon.FillRule,
         };
 
-        clonedShape = CloneCore(shape, clonedShape);
-        return clonedShape;
+        clonedPolygon = CloneCore(polygon, clonedPolygon);
+        return clonedPolygon;
     }
 
-    public static Shape Clone(this Polyline shape)
-        => CloneCore(shape, new() { Points = new(shape.Points), FillRule = shape.FillRule });
-
-    public static Shape Clone(this Rectangle shape, Size size)
-        => CloneCore(shape, new() { RadiusX = shape.RadiusX, RadiusY = shape.RadiusY });
-
-    private static T CloneCore<T>(T shape)
-        where T : Shape, new()
-        => CloneCore(shape, new());
+   // public static DrawingShape Clone(this RegularPolylineDrawingShape shape)
+  //      => CloneCore(shape, new() { Points = new(shape.Points), FillRule = shape.FillRule });
+    //private static T CloneCore<T>(T shape)
+    //    where T : DrawingShape, new()
+    //    => CloneCore(shape, new());
 
     private static T CloneCore<T>(T shape, T destination)
-        where T : Shape
+        where T : DrawingShape
     {
         destination.Stroke = shape.Stroke;
         destination.StrokeThickness = shape.StrokeThickness;

@@ -16,7 +16,7 @@ public abstract class DrawingShape<TVisual> : DrawingShape
     {
         this.Visual = CreateVisual();
     }
-    protected virtual TVisual CreateVisual() => new(); // Can override this if you want to customize /how/ the visual is created.
+    protected virtual TVisual CreateVisual() => new TVisual(); // Can override this if you want to customize /how/ the visual is created.
     [AllowNull]
     public new TVisual Visual
     {

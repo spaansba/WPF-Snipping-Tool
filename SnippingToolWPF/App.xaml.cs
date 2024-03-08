@@ -14,7 +14,7 @@ namespace SnippingToolWPF
     {
         static App()
         {
-            //  BindingErrorListener.WriteToConsole();
+              BindingErrorListener.WriteToConsole();
 
             //Task.Run(() =>
             //{

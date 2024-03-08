@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SnippingToolWPF.Drawing.Editing;
+using SnippingToolWPF.Drawing.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -36,8 +38,8 @@ public readonly record struct DrawingToolActionItem
     public static DrawingToolActionItem MouseCapture() => new DrawingToolActionItem { Kind = DrawingToolActionKind.MouseCapture };
     public static DrawingToolActionItem KeyboardFocus() => new DrawingToolActionItem { Kind = DrawingToolActionKind.KeyboardFocus };
 
-    public UIElement? Item { get; private init; }
-    public static DrawingToolActionItem Shape(UIElement item)
+    public DrawingShape? Item { get; private init; }
+    public static DrawingToolActionItem Shape(DrawingShape item)
     {
         ArgumentNullException.ThrowIfNull(item); // Make sure Shape is initiated with an item
         return new() { Kind = DrawingToolActionKind.Shape, Item = item };

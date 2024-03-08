@@ -16,11 +16,13 @@ using System.Reflection;
 using SnippingToolWPF.ExtensionMethods;
 using System.Windows.Controls;
 using SnippingToolWPF.Drawing.Tools.ToolAction;
+using SnippingToolWPF.Drawing.Editing;
+using SnippingToolWPF.Drawing.Shapes;
 
 namespace SnippingToolWPF.Drawing.Tools;
 
 //TODO : hold ctrl to snap the end to the beginning of the line 
-public sealed class PencilTool : DraggingTool<Polyline>
+public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
 {
     private readonly PencilsSidePanelViewModel options;
     public PencilTool(PencilsSidePanelViewModel options)
@@ -28,16 +30,16 @@ public sealed class PencilTool : DraggingTool<Polyline>
         this.options = options;
     }
 
-    public override Polyline Visual { get; } = new Polyline();
+    public override RegularPolylineDrawingShape Visual { get; } = new RegularPolylineDrawingShape();
 
     // TODO: If user holds shift draw a perfect straight line
     public override bool LockedAspectRatio { get; set; } = false;
     public override bool IsDrawing { get; set; } = false;
 
-    public override void ResetVisual() => Visual.Points.Clear();
-
+  //  public override void ResetVisual() => Visual.Points.Clear();
+    public override void ResetVisual() => Visual.StrokeThickness = 10;
     #region Mouse Events
-    public override DrawingToolAction LeftButtonDown(Point position, UIElement? element)
+    public override DrawingToolAction LeftButtonDown(Point position, DrawingShape? element)
     {
         IsDrawing = true;
         Visual.StrokeThickness = this.options.Thickness;
@@ -48,62 +50,62 @@ public sealed class PencilTool : DraggingTool<Polyline>
         Visual.StrokeStartLineCap = PenLineCap.Round;
         Visual.StrokeEndLineCap = PenLineCap.Round;
         Visual.StrokeLineJoin = PenLineJoin.Round;
-        Visual.Points.Clear();
-        //     Visual.Effect = customEffect;
-        Visual.Points.Add(position);
+        //Visual.Points.Clear();
+        ////     Visual.Effect = customEffect;
+        //Visual.Points.Add(position);
         return DrawingToolAction.StartMouseCapture();
 
     }
 
     //The amount of points between every line within the polyline drawn
     private const int FreehandSensitivity = 4;
-    public override DrawingToolAction MouseMove(Point position, UIElement? element)
+    public override DrawingToolAction MouseMove(Point position, DrawingShape? element)
     {
-        if (!IsDrawing)
-            return DrawingToolAction.DoNothing;
+        //if (!IsDrawing)
+        //    return DrawingToolAction.DoNothing;
 
-        if (Visual.Points.Count > 0)
-        {
-            Point lastPoint = Visual.Points[Visual.Points.Count - 1];
-            double distance = Point.Subtract(lastPoint, position).Length;
+        //if (Visual.Points.Count > 0)
+        //{
+        //    Point lastPoint = Visual.Points[Visual.Points.Count - 1];
+        //    double distance = Point.Subtract(lastPoint, position).Length;
 
-            if (distance < FreehandSensitivity)
-                return DrawingToolAction.DoNothing;
-        }
+        //    if (distance < FreehandSensitivity)
+        //        return DrawingToolAction.DoNothing;
+        //}
 
-        Visual.Points.Add(position);
+        //Visual.Points.Add(position);
 
-        // TODO: Make it working so the arrow is getting added while drawing
+        //// TODO: Make it working so the arrow is getting added while drawing
 
         return DrawingToolAction.DoNothing;
     }
 
     public override DrawingToolAction LeftButtonUp()
     {
-        IsDrawing = false;
-        if (options.PenTipArrow)
-            AddArrowHead(Visual);
+        //IsDrawing = false;
+        //if (options.PenTipArrow)
+        //    AddArrowHead(Visual);
 
-        // Get the smallest X and Y and create a new point list based on the Visual.Points
-        // In this list we substract the minY and minX from each point so we can set the canvas of the Shape correctly to match the DrawingCanvas
-        var minX = this.Visual.Points.Min(static p => p.X);
-        var minY = this.Visual.Points.Min(static p => p.Y);
-        var newPoints = new PointCollection(this.Visual.Points.Count);
-        foreach (var point in this.Visual.Points)
-        {
-            newPoints.Add(new Point(point.X - minX, point.Y - minY));
-        }
+        //// Get the smallest X and Y and create a new point list based on the Visual.Points
+        //// In this list we substract the minY and minX from each point so we can set the canvas of the Shape correctly to match the DrawingCanvas
+        //var minX = this.Visual.Points.Min(static p => p.X);
+        //var minY = this.Visual.Points.Min(static p => p.Y);
+        //var newPoints = new PointCollection(this.Visual.Points.Count);
+        //foreach (var point in this.Visual.Points)
+        //{
+        //    newPoints.Add(new Point(point.X - minX, point.Y - minY));
+        //}
 
-        // Clone the Polyline so we remove the parent and put it on the canvas, als now we can clear the current Visual
-        Polyline finalLine = (Polyline)this.Visual.Clone();
-        finalLine.Points = newPoints;
+        //// Clone the Polyline so we remove the parent and put it on the canvas, als now we can clear the current Visual
+        //Polyline finalLine = (Polyline)this.Visual.Clone();
+        //finalLine.Points = newPoints;
 
-        Canvas.SetLeft(finalLine, minX);
-        Canvas.SetTop(finalLine, minY);
+        //Canvas.SetLeft(finalLine, minX);
+        //Canvas.SetTop(finalLine, minY);
 
-        ResetVisual();
-        
-        return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
+        //ResetVisual();
+        return DrawingToolAction.DoNothing;
+   //     return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 
     /// <summary>

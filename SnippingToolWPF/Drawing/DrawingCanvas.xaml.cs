@@ -11,6 +11,8 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using SnippingToolWPF.Control;
+using SnippingToolWPF.Drawing.Editing;
+using SnippingToolWPF.Drawing.Shapes;
 using SnippingToolWPF.Drawing.Tools;
 
 namespace SnippingToolWPF;
@@ -37,7 +39,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     public DrawingCanvas()
     {
         this.Loaded += OnLoaded;
-        this.Shapes = new ObservableCollection<UIElement>(); // set it because the property getter is not used in all circumstances
+        this.Shapes = new ObservableCollection<DrawingShape>(); // set it because the property getter is not used in all circumstances
         this.allItems = CreateAllItemCollection(); 
     }
 
@@ -148,7 +150,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
             return;
 
         this.CurrentCanvas.Children.Clear();
-        UIElement? visual = newValue?.Visual;
+        var visual = newValue?.Visual;
 
         if (visual is not null)
             this.CurrentCanvas.Children.Add(visual); // Not drawing canvas but the top canvas 
@@ -237,7 +239,8 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
         if (action.IsKeyboardFocus)
         {
-            Keyboard.Focus(this.Tool?.Visual);
+            //TODO: Fix keyboard focus
+       //     Keyboard.Focus(this.Tool?.Visual);
         }
         if (action.IsShape)
         {
@@ -281,17 +284,17 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     public static readonly DependencyProperty ShapesProperty = DependencyProperty.Register(
         nameof(Shapes),
-        typeof(ObservableCollection<UIElement>),
+        typeof(ObservableCollection<DrawingShape>),
         typeof(DrawingCanvas),
         new FrameworkPropertyMetadata());
 
-    public ObservableCollection<UIElement> Shapes
+    public ObservableCollection<DrawingShape> Shapes
     {
-        get => this.GetValue<ObservableCollection<UIElement>>(ShapesProperty)
-            ?? this.SetValue<ObservableCollection<UIElement>>(ShapesProperty, new()); // < dont return a null value
+        get => this.GetValue<ObservableCollection<DrawingShape>>(ShapesProperty)
+            ?? this.SetValue<ObservableCollection<DrawingShape>>(ShapesProperty, new()); // < dont return a null value
         set
         {
-            this.SetValue<ObservableCollection<UIElement>>(ShapesProperty, value);
+            this.SetValue<ObservableCollection<DrawingShape>>(ShapesProperty, value);
         }
     }
 
@@ -321,7 +324,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     /// <param name="drawingCanvasPoint">Point Relative to the Drawing Canvas not Relative to the DrawingCanvasListBoxItem</param>
     internal void OnItemMouseEvent(DrawingCanvasListBoxItem item, MouseEventArgs e, Point drawingCanvasPoint)
     {
-        if (item.Content is not UIElement element)
+        if (item.Content is not DrawingShape element)
             return;
 
         if(e.RoutedEvent == MouseLeftButtonDownEvent)

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SnippingToolWPF.Drawing.Shapes;
 
 namespace SnippingToolWPF;
 
@@ -19,13 +20,13 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     private IDrawingTool? tool;
     public override IDrawingTool? Tool => tool;
 
-    public PolygonShape polygonOption = new PolygonShape(4, 1.0); // Pre selected polygon
+    public RegularPolygonDrawingShape polygonOption = new RegularPolygonDrawingShape(3); // Pre selected polygon
 
     /// <summary>
     /// Get the Shape selected by the user in the sidepanel, the enum is stored in the shapes Tag
     /// </summary>
-    private PolygonShape? polygonSelected;
-    public PolygonShape? PolygonSelected
+    private RegularPolygonDrawingShape? polygonSelected;
+    public RegularPolygonDrawingShape? PolygonSelected
     {
         get => polygonSelected;
         set
@@ -33,7 +34,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
             if (value is not null)
             {
                 polygonSelected = value;
-                polygonOption = new PolygonShape(value.Vertices,value.DegreesRotated, value.InnerCircle);
+                polygonOption = new RegularPolygonDrawingShape(value.NumberOfSides,value.PointGenerationRotationAngle); //TODO: Add innercicrle
                 UpdateTool(); // Update the Tool to give it the new shape
             }
         }
@@ -50,7 +51,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     #endregion
 
     #region ctor
-    public List<ShapeViewModel> Polygons { get; set; }
+    public List<DrawingShape> Polygons { get; set; }
 
     public ShapesSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
     {
@@ -61,17 +62,17 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     /// <summary>
     /// Create the shapes presented on the buttons in the sidepanel
     /// </summary>
-    public static List<ShapeViewModel> CreateButtonShapes() =>
+    public static List<DrawingShape> CreateButtonShapes() =>
     [
-        new PolygonShape(4, 45), // Tetragon (rectangle)
-        new PolygonShape(1000, 0), // Ellipse
-        new PolygonShape(3,30), // Triangle
-        new PolygonShape(4, 0), // Diamond
-        new PolygonShape(5, 126), // Pentagon
-        new PolygonShape(6, 30), // Hexagon
-        new PolygonShape(7, 13), // Septagon
-        new PolygonShape(8, 0), // Octagon
-        new PolygonShape(10, 0, 0.4), // 5 pointed Star
+        new RegularPolygonDrawingShape(4, 45), // Tetragon (rectangle)
+        new RegularPolygonDrawingShape(1000, 0), // Ellipse
+        new RegularPolygonDrawingShape(3,30), // Triangle
+        new RegularPolygonDrawingShape(4, 0), // Diamond
+        new RegularPolygonDrawingShape(5, 126), // Pentagon
+        new RegularPolygonDrawingShape(6, 30), // Hexagon
+        new RegularPolygonDrawingShape(7, 13), // Septagon
+        new RegularPolygonDrawingShape(8, 0), // Octagon
+        new RegularPolygonDrawingShape(10, 0, 0.4), // 5 pointed Star
     ];
     #endregion
 
