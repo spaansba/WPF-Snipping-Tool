@@ -10,25 +10,27 @@ using System.Windows;
 
 namespace SnippingToolWPF.Drawing.Shapes;
 
-public sealed class RegularPolygonDrawingShape : DrawingShape<Polygon>
+public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<Polygon>
 {
-    public RegularPolygonDrawingShape(int polygonSides, double degreesRotated = 0d, double pointGenerationRotationAngle = 0d)
+    public RegularPolygonDrawingShape()
+    {
+        this.VisualInternal = CreateVisual();
+    }
+    public RegularPolygonDrawingShape(int polygonSides, double degreesRotated = 0d, double innerCircle = 0d)
     {
         this.NumberOfSides = polygonSides;
       //  this.degreesRotated = degreesRotated;
-        this.PointGenerationRotationAngle = pointGenerationRotationAngle;
-        CreateVisual();
+        this.PointGenerationRotationAngle = degreesRotated;
+        this.VisualInternal = CreateVisual();
     }
 
     protected override Polygon CreateVisual()
     {
-        return new Polygon
+        return new Polygon()
         {
-            Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, 0, PointGenerationRotationAngle)),
-            Stretch = System.Windows.Media.Stretch.Fill,
+            Points = GetPolygonPoints(),
             Stroke = Brushes.Black,
         };
-            
     }
 
     public const int DefaultNumberOfSides = 3;
@@ -61,8 +63,10 @@ public sealed class RegularPolygonDrawingShape : DrawingShape<Polygon>
 
     private void RegeneratePoints()
     {
-        this.Visual.Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(this.NumberOfSides, PointGenerationRotationAngle));
-    }
+        this.VisualInternal.Points = GetPolygonPoints();
+    } 
+
+    private PointCollection GetPolygonPoints() => new(CreateInitialPolygon.GeneratePolygonPoints(this.NumberOfSides, PointGenerationRotationAngle));
 
     private static readonly DependencyPropertyKey PointGenerationRotationAnglePropertyKey = DependencyProperty.RegisterReadOnly(
         name: nameof(PointGenerationRotationAngle),

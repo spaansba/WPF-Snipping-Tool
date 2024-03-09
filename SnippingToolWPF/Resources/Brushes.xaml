@@ -6,6 +6,7 @@
     <Color x:Key="LighterGray">#d4d9e1</Color>
     <Color x:Key="DarkBlue">#0f60ce</Color>
     <Color x:Key="DarkerBlue">#0F60CE</Color>
+    <Color x:Key="DarkerGray">#444444</Color>
 
     <SolidColorBrush x:Key="MainForegroundBrush" Color="{StaticResource SemiWhiteColor}" />
     <SolidColorBrush x:Key="AlternateForegroundBrush" Color="{StaticResource SemiDarkColor}" />
@@ -13,7 +14,8 @@
     <SolidColorBrush x:Key="MainBackgroundBrush" Color="#202020" />
     <SolidColorBrush x:Key="AlternateBackgroundBrush" Color="#B3B8B5" />
 
-    <SolidColorBrush x:Key="LightBorderBrush" Color="{StaticResource LighterGray}" />
+    <SolidColorBrush x:Key="LightBorderBrush" Color="{StaticResource LightGray}" />
+    <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource DarkerGray}" />
     <SolidColorBrush x:Key="HoveredBorderBrush" Color="{StaticResource DarkBlue}" />
     <SolidColorBrush x:Key="HoveredFill" Color="{StaticResource DarkBlue}" />
     <SolidColorBrush x:Key="SelectedFill" Color="{StaticResource DarkerBlue}" />

@@ -1,12 +1,9 @@
-﻿using SnippingToolWPF.Drawing.Editing;
-using SnippingToolWPF.Drawing.Tools;
-using SnippingToolWPF.Drawing.Tools.PolygonTools;
+﻿using SnippingToolWPF.Drawing.Tools;
 using SnippingToolWPF.Drawing.Tools.ToolAction;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using SnippingToolWPF.Drawing.Shapes;
 
 namespace SnippingToolWPF;
@@ -20,7 +17,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     private IDrawingTool? tool;
     public override IDrawingTool? Tool => tool;
 
-    public RegularPolygonDrawingShape polygonOption = new RegularPolygonDrawingShape(3); // Pre selected polygon
+    public RegularPolygonDrawingShape polygonOption = new(); // Pre selected polygon
 
     /// <summary>
     /// Get the Shape selected by the user in the sidepanel, the enum is stored in the shapes Tag
@@ -57,6 +54,11 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     {
         UpdateTool();
         Polygons = CreateButtonShapes();
+        foreach (DrawingShape sidepanelPolygon in Polygons)
+        {
+            sidepanelPolygon.Stroke = Brushes.Black;
+            sidepanelPolygon.Stretch = Stretch.Fill;
+        }
     }
 
     /// <summary>
@@ -66,11 +68,11 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     [
         new RegularPolygonDrawingShape(4, 45), // Tetragon (rectangle)
         new RegularPolygonDrawingShape(1000, 0), // Ellipse
-        new RegularPolygonDrawingShape(3,30), // Triangle
+        new RegularPolygonDrawingShape(3, 30), // Triangle
         new RegularPolygonDrawingShape(4, 0), // Diamond
         new RegularPolygonDrawingShape(5, 126), // Pentagon
-        new RegularPolygonDrawingShape(6, 30), // Hexagon
-        new RegularPolygonDrawingShape(7, 13), // Septagon
+        new RegularPolygonDrawingShape( 6, 30), // Hexagon
+        new RegularPolygonDrawingShape( 7, 13), // Septagon
         new RegularPolygonDrawingShape(8, 0), // Octagon
         new RegularPolygonDrawingShape(10, 0, 0.4), // 5 pointed Star
     ];

@@ -150,7 +150,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
             return;
 
         this.CurrentCanvas.Children.Clear();
-        var visual = newValue?.Visual;
+        var visual = newValue?.DrawingShape;
 
         if (visual is not null)
             this.CurrentCanvas.Children.Add(visual); // Not drawing canvas but the top canvas 

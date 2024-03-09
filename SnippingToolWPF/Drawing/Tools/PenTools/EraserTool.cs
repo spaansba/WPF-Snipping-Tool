@@ -20,7 +20,7 @@ public sealed class EraserTool : IDrawingTool
         this.options = options;
     }
 
-    public DrawingShape? Visual => null;
+    public DrawingShape? DrawingShape => null;
 
     public bool LockedAspectRatio => throw new NotImplementedException();
 

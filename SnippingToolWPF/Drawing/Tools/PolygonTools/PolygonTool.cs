@@ -4,35 +4,28 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace SnippingToolWPF.Drawing.Tools.ToolAction;
 
-public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
+public sealed class PolygonTool : DraggingTool<DrawingShape>
 {
     private readonly ShapesSidePanelViewModel options;
     public override bool IsDrawing { get; set; } = false;
-    public override RegularPolygonDrawingShape Visual { get; }
+    public override DrawingShape DrawingShape { get; }
 
     private Point startPoint;
 
     public PolygonTool(ShapesSidePanelViewModel options)
     {
         this.options = options;
-        if (options.PolygonSelected is not null)
-        {
-            this.Visual = options.PolygonSelected;
-        }
-        else
-        {
-            this.Visual = new RegularPolygonDrawingShape(3);
-        }
-        
+        this.DrawingShape = options.polygonOption;
         ResetVisual();
     }
     public override void ResetVisual()
     {
-        this.Visual.Width = 0;
-        this.Visual.Height = 0;
+        this.DrawingShape.Width = 0;
+        this.DrawingShape.Height = 0;
     }
 
     #region Mouse Events
@@ -40,16 +33,16 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
     {
         IsDrawing = true;
         startPoint = position;
-        Canvas.SetLeft(this.Visual, position.X);
-        Canvas.SetTop(this.Visual, position.Y);
-        this.Visual.Stroke = options.shapeStroke;
-        Visual.StrokeDashCap = PenLineCap.Round;
-        Visual.StrokeStartLineCap = PenLineCap.Round;
-        Visual.StrokeEndLineCap = PenLineCap.Round;
-        Visual.StrokeLineJoin = PenLineJoin.Round;
-        this.Visual.StrokeThickness = options.Thickness;
-        this.Visual.Opacity = options.RealOpacity;
-        this.Visual.Fill = options.shapeFill;
+        Canvas.SetLeft(this.DrawingShape, position.X);
+        Canvas.SetTop(this.DrawingShape, position.Y);
+        this.DrawingShape.Stroke = options.shapeStroke;
+        this.DrawingShape.StrokeDashCap = PenLineCap.Round;
+        this.DrawingShape.StrokeStartLineCap = PenLineCap.Round;
+        this.DrawingShape.StrokeEndLineCap = PenLineCap.Round;
+        this.DrawingShape.StrokeLineJoin = PenLineJoin.Round;
+        this.DrawingShape.StrokeThickness = options.Thickness;
+        this.DrawingShape.Opacity = options.RealOpacity;
+        this.DrawingShape.Fill = options.shapeFill;
         return DrawingToolAction.StartMouseCapture();
     }
 
@@ -63,18 +56,18 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
             position = GetLockedAspectRatioEndPoint(position);
 
         // Set current size of the polygon (like a rectangle)
-        this.Visual.Width = Math.Abs(position.X - startPoint.X);
-        this.Visual.Height = Math.Abs(position.Y - startPoint.Y);
+        this.DrawingShape.Width = Math.Abs(position.X - startPoint.X);
+        this.DrawingShape.Height = Math.Abs(position.Y - startPoint.Y);
 
         // Set the new position of the polygon (we do this because otherwise a polygon can only be drawn to bottom right and not in any direction)
-        Canvas.SetLeft(this.Visual, Math.Min(startPoint.X, position.X)); 
-        Canvas.SetTop(this.Visual, Math.Min(startPoint.Y, position.Y));
+        Canvas.SetLeft(this.DrawingShape, Math.Min(startPoint.X, position.X)); 
+        Canvas.SetTop(this.DrawingShape, Math.Min(startPoint.Y, position.Y));
         return DrawingToolAction.DoNothing;  
     }
     public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
-        var finalPolygon = this.Visual.Clone(new Size(this.Visual.Width, this.Visual.Height));
+        var finalPolygon = this.DrawingShape.Clone(new Size(this.DrawingShape.Width, this.DrawingShape.Height));
         ResetVisual();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalPolygon), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }

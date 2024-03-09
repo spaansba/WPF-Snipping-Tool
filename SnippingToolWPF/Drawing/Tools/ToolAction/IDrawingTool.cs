@@ -9,9 +9,12 @@ using System.Windows;
 
 namespace SnippingToolWPF.Drawing.Tools;
 
+/// <summary>
+/// Handles input events for drawing DrawingShapes on the canvas
+/// </summary>
 public interface IDrawingTool
 {
-    public DrawingShape? Visual { get; }
+    public DrawingShape? DrawingShape { get; }
     public bool LockedAspectRatio { get; } // Implement that if user holds shift while moving the mouse that aspect ratio stays perfect
     public bool IsDrawing {  get; }
     public DrawingToolAction LeftButtonDown(Point position, DrawingShape? item);
@@ -23,6 +26,6 @@ public interface IDrawingTool
 public interface IDrawingTool<out T> : IDrawingTool
     where T : DrawingShape
 {
-    public new T? Visual { get; }
-    DrawingShape? IDrawingTool.Visual => this.Visual;
+    public new T? DrawingShape { get; }
+    DrawingShape? IDrawingTool.DrawingShape => this.DrawingShape;
 }

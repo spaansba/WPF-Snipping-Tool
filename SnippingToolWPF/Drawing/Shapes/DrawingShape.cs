@@ -1,10 +1,4 @@
 ﻿using SnippingToolWPF.Drawing.Editing;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -66,6 +60,7 @@ public abstract class DrawingShape : Decorator, IShape
         textBlock.SetBinding(TextBlock.TextProperty, new Binding() { Source = parent, Path = new PropertyPath(DrawingShape.TextProperty) });
         return textBlock;
     }
+
 
     #region Dependency properties
     public static readonly DependencyProperty TextProperty = TextBlock.TextProperty.AddOwner(typeof(DrawingShape));

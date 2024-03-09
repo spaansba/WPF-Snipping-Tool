@@ -30,26 +30,26 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
         this.options = options;
     }
 
-    public override RegularPolylineDrawingShape Visual { get; } = new RegularPolylineDrawingShape();
+    public override RegularPolylineDrawingShape DrawingShape { get; } = new RegularPolylineDrawingShape();
 
     // TODO: If user holds shift draw a perfect straight line
     public override bool LockedAspectRatio { get; set; } = false;
     public override bool IsDrawing { get; set; } = false;
 
-  //  public override void ResetVisual() => Visual.Points.Clear();
-    public override void ResetVisual() => Visual.StrokeThickness = 10;
+    //public override void ResetVisual() => this.DrawingShape.Points.Clear();
+    public override void ResetVisual() => this.DrawingShape.StrokeThickness = 10;
     #region Mouse Events
     public override DrawingToolAction LeftButtonDown(Point position, DrawingShape? element)
     {
         IsDrawing = true;
-        Visual.StrokeThickness = this.options.Thickness;
-        Visual.Stroke = this.options.SelectedBrush;
-        Visual.Opacity = this.options.RealOpacity;
-        Visual.UseLayoutRounding = true;
-        Visual.StrokeDashCap = PenLineCap.Round;
-        Visual.StrokeStartLineCap = PenLineCap.Round;
-        Visual.StrokeEndLineCap = PenLineCap.Round;
-        Visual.StrokeLineJoin = PenLineJoin.Round;
+        this.DrawingShape.StrokeThickness = this.options.Thickness;
+        this.DrawingShape.Stroke = this.options.SelectedBrush;
+        this.DrawingShape.Opacity = this.options.RealOpacity;
+        this.DrawingShape.UseLayoutRounding = true;
+        this.DrawingShape.StrokeDashCap = PenLineCap.Round;
+        this.DrawingShape.StrokeStartLineCap = PenLineCap.Round;
+        this.DrawingShape.StrokeEndLineCap = PenLineCap.Round;
+        this.DrawingShape.StrokeLineJoin = PenLineJoin.Round;
         //Visual.Points.Clear();
         ////     Visual.Effect = customEffect;
         //Visual.Points.Add(position);
@@ -139,7 +139,7 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     private (Point A, Point B) GetArrowHeadPoints(Point position1, Point position2)
     {
         Vector lineDirection = position2 - position1;
-        double arrowheadLength = Math.Min(Visual.StrokeThickness / 1.2, 30); // change the first value to make the line smaller/bigger
+        double arrowheadLength = Math.Min(this.DrawingShape.StrokeThickness / 1.2, 30); // change the first value to make the line smaller/bigger
 
         Vector rotatedDirection1 = lineDirection.RotateDegrees(140);
         Vector rotatedDirection2 = lineDirection.RotateDegrees(-140);

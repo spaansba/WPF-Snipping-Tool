@@ -1,5 +1,5 @@
 ﻿<Application x:Class="SnippingToolWPF.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:control="clr-namespace:SnippingToolWPF.Control"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:snippingtoolwpf="clr-namespace:SnippingToolWPF" StartupUri="MainWindow.xaml">
     <Application.Resources>
         
@@ -19,7 +19,8 @@
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/SliderTitleAndTextBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/RadioButtonWithIcon.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ColorSelectorListBox.xaml" />
-                
+                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/TitleBarButton.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
             
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

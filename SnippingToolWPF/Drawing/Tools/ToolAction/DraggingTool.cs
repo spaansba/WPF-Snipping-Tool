@@ -10,13 +10,13 @@ namespace SnippingToolWPF.Drawing.Tools.ToolAction;
 /// <typeparam name="T">An UIElement</typeparam>
 public abstract class DraggingTool<T> : IDrawingTool where T : DrawingShape
 {
-    public abstract T? Visual { get; }
+    public abstract T? DrawingShape { get; }
 
     public abstract bool LockedAspectRatio {  get; set; }
 
     public abstract bool IsDrawing {  get; set; }
 
-    DrawingShape? IDrawingTool.Visual => Visual;
+    DrawingShape? IDrawingTool.DrawingShape => DrawingShape;
 
     public abstract DrawingToolAction LeftButtonDown(Point position, DrawingShape? item);
     public abstract void RightButtonDown();

@@ -7,6 +7,6 @@ using System.Windows.Shapes;
 
 namespace SnippingToolWPF.Drawing.Shapes;
 
-public sealed class RegularPolylineDrawingShape : DrawingShape<Polyline>
+public sealed class RegularPolylineDrawingShape : ShapeDrawingShape<Polyline>
 {
 }

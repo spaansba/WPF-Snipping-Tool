@@ -28,6 +28,10 @@ public partial class DrawingViewModel : ObservableObject
     private readonly EditSidePanelViewModel editPanel;
     public ICommand ClearCanvas { get; private set; }
     public ICommand TakeScreenshot { get; private set; }
+    public ICommand MoveWindowCommand { get; private set; }
+    public ICommand ShutDownWindowCommand { get; private set; }
+    public ICommand MaximizeWindowCommand { get; private set; }
+    public ICommand MinimizeWindowCommand { get; private set; }
 
     public DrawingViewModel()
     {
@@ -38,8 +42,13 @@ public partial class DrawingViewModel : ObservableObject
         this.editPanel = new EditSidePanelViewModel(this);
         this.ClearCanvas = new RelayCommand(ExecuteClearCanvasButton);
         this.TakeScreenshot = new RelayCommand(ExecuteTakeScreenshot);
+        // Top bar Relay Commands
+        Application.Current.MainWindow.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; // Make full screen not overlap task bar
+        MoveWindowCommand = new RelayCommand(o => { Application.Current.MainWindow.DragMove(); });
+        ShutDownWindowCommand = new RelayCommand(o => { Application.Current.Shutdown(); });
+        MaximizeWindowCommand = new RelayCommand(o => { Application.Current.MainWindow.WindowState ^= WindowState.Maximized; });
+        MinimizeWindowCommand = new RelayCommand(o => { Application.Current.MainWindow.WindowState = WindowState.Minimized; });
     }
-
     public SidePanelViewModel? SidePanelContent => SidePanelContentKind switch
     {
         SidePanelContentKind.Pencils => pencilsPanel,
@@ -49,11 +58,6 @@ public partial class DrawingViewModel : ObservableObject
         SidePanelContentKind.Edit => editPanel,
         _ => null,
     };
-
-    internal void OnSelected(RoutedEventArgs e)
-    {
-
-    }
 
     #region Drawing Objects creating / clearing
 

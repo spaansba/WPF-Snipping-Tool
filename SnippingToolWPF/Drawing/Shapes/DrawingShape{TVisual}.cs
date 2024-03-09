@@ -14,16 +14,19 @@ public abstract class DrawingShape<TVisual> : DrawingShape
 {
     public DrawingShape()
     {
-        this.Visual = CreateVisual();
+        this.VisualInternal = CreateVisual();
     }
-    protected virtual TVisual CreateVisual() => new TVisual(); // Can override this if you want to customize /how/ the visual is created.
+    /// <summary>
+    /// The Shape Portion of the DrawingShape
+    /// </summary>
     [AllowNull]
-    public new TVisual Visual
+    protected TVisual VisualInternal
     {
         get => this.GetValue<TVisual?>(VisualProperty)
                ?? this.SetValue<TVisual>(VisualProperty, CreateVisual()); // Visual will never be null
         set => this.SetValue<TVisual?>(VisualProperty, value);
     }
+    protected virtual TVisual CreateVisual() => new TVisual(); // Can override this if you want to customize /how/ the visual is created.
     protected virtual void OnVisualChanged(TVisual? oldValue, TVisual? newValue)
     {
         if (oldValue is not null)

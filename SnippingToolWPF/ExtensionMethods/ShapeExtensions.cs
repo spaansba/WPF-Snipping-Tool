@@ -21,14 +21,14 @@ public static class ShapeExtensions
     public static DrawingShape Clone(this DrawingShape shape, Size size) => shape switch
     {
         RegularPolygonDrawingShape s => s.Clone(size),
-    //    RegularPolylineDrawingShape s => s.Clone(size),
+        //    RegularPolylineDrawingShape s => s.Clone(size),
         // 👆 those are the shapes that are built-in.
         _ => throw new ArgumentException($"Unknown shape type {shape.GetType()}", nameof(shape)),
     };
 
-//    public static Shape Clone(this Ellipse shape) => CloneCore(shape);
+ //   public static Shape Clone(this Ellipse shape) => CloneCore(shape);
 
-    public static DrawingShape Clone(this RegularPolygonDrawingShape polygon, Size scaleSize)
+    public static RegularPolygonDrawingShape Clone(this RegularPolygonDrawingShape polygon, Size scaleSize)
     {
         ArgumentNullException.ThrowIfNull(polygon);
 
@@ -42,7 +42,7 @@ public static class ShapeExtensions
             }
         }
 
-        var clonedPolygon = new RegularPolygonDrawingShape(polygon.NumberOfSides)
+        var clonedPolygon = new RegularPolygonDrawingShape
         {
             Points = scaledPoints,
             FillRule = polygon.FillRule,
