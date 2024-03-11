@@ -1,26 +1,26 @@
 ﻿using System.Windows.Input;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.WPFExtensions;
 
 public class RelayCommand : ICommand
 {
-    private readonly Action<object?> _execute;
-    private readonly Func<object?, bool>? _canExecute;
+    private readonly Action<object?> execute;
+    private readonly Func<object?, bool>? canExecute;
 
     public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null)
     {
-        _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        _canExecute = canExecute;
+        this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        this.canExecute = canExecute;
     }
 
     public bool CanExecute(object? parameter)
     {
-        return _canExecute?.Invoke(parameter) ?? true;
+        return canExecute?.Invoke(parameter) ?? true;
     }
 
     public void Execute(object? parameter)
     {
-        _execute(parameter);
+        execute(parameter);
     }
 
     public event EventHandler? CanExecuteChanged

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.Properties;
 
 //https://learn.microsoft.com/en-us/dotnet/api/system.windows.frameworkpropertymetadataoptions?view=windowsdesktop-8.0&viewFallbackFrom=net-8.0
 //https://learn.microsoft.com/en-us/dotnet/api/system.windows.frameworkpropertymetadataoptions?view=windowsdesktop-8.0&viewFallbackFrom=net-8.0

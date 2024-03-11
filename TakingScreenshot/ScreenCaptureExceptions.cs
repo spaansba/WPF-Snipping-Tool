@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SnippingToolWPF.Interop;
+﻿namespace SnippingTool.Interop;
 
 public class ScreenCaptureException : Exception
 {

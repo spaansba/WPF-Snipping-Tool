@@ -1,7 +1,6 @@
-﻿using System.ComponentModel;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
-namespace SnippingToolWPF.Drawing.Editing;
+namespace SnippingToolWPF;
 
 /// <summary>
 /// Interface for our DrawingShape, if a class does not want to abstract from DrawingShape it can still implement this interface 

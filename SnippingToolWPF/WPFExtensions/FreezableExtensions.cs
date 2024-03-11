@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.WPFExtensions;
 
 public static class FreezableExtensions
 {

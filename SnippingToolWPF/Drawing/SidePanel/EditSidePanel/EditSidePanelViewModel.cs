@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SnippingToolWPF.SidePanel.EditSidePanel;
 
-namespace SnippingToolWPF;
-
-public sealed partial class EditSidePanelViewModel : SidePanelViewModel
+public sealed class EditSidePanelViewModel : SidePanelViewModel
 {
     public EditSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
     {
+        Console.WriteLine("Filler");
     }
 
     public override string Header => "Edit";

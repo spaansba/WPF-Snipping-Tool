@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
-                    xmlns:snippingToolWPF="clr-namespace:SnippingToolWPF">
+                    xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
+                    xmlns:properties="clr-namespace:SnippingToolWPF.Properties">
 
     <Style x:Key="ButtonBaseStyle" TargetType="{x:Type ButtonBase}">
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -33,16 +33,16 @@
                             <!--  TODO make this work  -->
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsPressedBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsPressedBackgroundBorder), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="border" Property="Background" Value="{Binding Path=(properties:ColorAssist.IsPressedBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding Path=(properties:ColorAssist.IsPressedBackgroundBorder), RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="ToggleButton.IsChecked" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsCheckedBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsCheckedBackgroundBorder), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="border" Property="Background" Value="{Binding Path=(properties:ColorAssist.IsCheckedBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding Path=(properties:ColorAssist.IsCheckedBackgroundBorder), RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="border" Property="Background" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsEnabledBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding Path=(snippingToolWPF:ColorAssist.IsEnabledBackgroundBorder), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="border" Property="Background" Value="{Binding Path=(properties:ColorAssist.IsEnabledBackgroundFill), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding Path=(properties:ColorAssist.IsEnabledBackgroundBorder), RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

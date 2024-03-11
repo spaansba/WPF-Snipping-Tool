@@ -1,4 +1,4 @@
-﻿namespace SnippingToolWPF;
+﻿namespace SnippingToolWPF.WPFExtensions;
 
 public static class ServiceProviderExtensions
 {

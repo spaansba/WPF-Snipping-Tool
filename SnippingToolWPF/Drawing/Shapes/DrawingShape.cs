@@ -1,31 +1,40 @@
-﻿using SnippingToolWPF.Drawing.Editing;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SnippingToolWPF.WPFExtensions;
 
-namespace SnippingToolWPF.Drawing.Shapes;
+namespace SnippingToolWPF;
 
 public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
 {
     private readonly TextBlock textBlock;
     private readonly Canvas canvas;
     public abstract DrawingShape Clone();
-    public DrawingShape()
+
+    protected DrawingShape()
     {
         this.textBlock = SetupTextBlock(this);
         var rotateTransform = new RotateTransform();
-        BindingOperations.SetBinding(rotateTransform,RotateTransform.AngleProperty,new Binding() { Source = this, Path = new PropertyPath(DrawingShape.AngleProperty) });
-
-        this.canvas = new Canvas()
-        {
-            Children = { textBlock },
-            LayoutTransform = rotateTransform, // TODO: Is RenderTransform enough?  We should use that, if we can.
-        };
+        BindingOperations.SetBinding(rotateTransform,RotateTransform.AngleProperty,new Binding() { Source = this, Path = new(AngleProperty) });
+        this.canvas = new Canvas
+            {
+                Children = { textBlock},
+                LayoutTransform = rotateTransform, // TODO: Is RenderTransform enough?  We should use that, if we can.
+            };
         this.Child = this.canvas;
     }
 
+    /// <summary>
+    /// We purely override child so we can seal it and set it in the constructor
+    /// </summary>
+    public sealed override UIElement Child
+    {
+        get => base.Child; 
+        set => base.Child = value; // Set to base child
+    }
     protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
@@ -58,7 +67,7 @@ public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
     private static TextBlock SetupTextBlock(DrawingShape parent)
     {
         var textBlock = new TextBlock();
-        textBlock.SetBinding(TextBlock.TextProperty, new Binding() { Source = parent, Path = new PropertyPath(DrawingShape.TextProperty) });
+        textBlock.SetBinding(TextBlock.TextProperty, new Binding() { Source = parent, Path = new(TextProperty) });
         return textBlock;
     }
     #region Dependency properties
@@ -176,7 +185,7 @@ public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
     }
 
     public static readonly DependencyProperty AngleProperty = RotateTransform.AngleProperty.AddOwner(typeof(DrawingShape)
-        , new PropertyMetadata(1.0));
+        , new(1.0));
     public double Angle
     {
         get => this.GetValue<double>(AngleProperty);

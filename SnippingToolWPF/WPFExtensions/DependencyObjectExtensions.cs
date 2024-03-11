@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using SnippingToolWPF.Common;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.WPFExtensions;
 
 /// <summary>
 /// Create generic GetValue and SetValue for DependencyObjects

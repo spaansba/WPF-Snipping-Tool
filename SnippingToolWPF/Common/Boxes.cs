@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.Common;
 
 /// <summary>
 /// Boxes allow us to cache values, for example if we cache TRUE / FALSE there will be only 2 boxes instead of N * 2 boxes

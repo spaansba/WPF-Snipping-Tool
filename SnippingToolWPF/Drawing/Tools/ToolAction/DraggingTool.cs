@@ -1,7 +1,6 @@
-﻿using SnippingToolWPF.Drawing.Shapes;
-using System.Windows;
+﻿using System.Windows;
 
-namespace SnippingToolWPF.Drawing.Tools.ToolAction;
+namespace SnippingToolWPF.Tools.ToolAction;
 
 /// <summary>
 /// Abstract class that implements IDrawingTool for classes that need draaging

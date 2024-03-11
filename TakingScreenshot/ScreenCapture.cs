@@ -1,22 +1,16 @@
-﻿using System;
-using System.Windows.Media.Imaging;
+﻿using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Media;
-using System.Runtime.Versioning;
+using System.Windows.Media.Imaging;
+using SnippingTool.Interop.Win32Api;
 
-namespace SnippingToolWPF.Interop;
+namespace SnippingTool.Interop;
 public class ScreenCapture
 {
     public static BitmapSource CaptureFullScreen(bool addToClipboard)
     {
-        if (OperatingSystem.IsWindowsVersionAtLeast(6, 0)) // API calls require windows 7.0 >
-        {
-            return CaptureFullScreenWindows_Version6(addToClipboard);
-        }
-        else
-        {
-            return CaptureFullScreenWindows_Legacy(addToClipboard);
-        }
+        return OperatingSystem.IsWindowsVersionAtLeast(6) ? // API calls require windows 7.0 >
+            CaptureFullScreenWindows_Version6(addToClipboard) : CaptureFullScreenWindows_Legacy(addToClipboard);
     }
 
     [SupportedOSPlatform("windows6.0")]
@@ -32,6 +26,7 @@ public class ScreenCapture
         );
     }
 
+    // ReSharper disable once UnusedParameter.Local
     private static BitmapSource CaptureFullScreenWindows_Legacy(bool addToClipboard)
     {
         // TODO: implement old version
@@ -43,22 +38,24 @@ public class ScreenCapture
     // it to keep the screen shot clean
     public static BitmapSource CaptureWindow(IntPtr hWnd, bool recolorBackground, Color substituteBackgroundColor, bool addToClipboard)
     {
-        Int32Rect rect = GetWindowActualRect(hWnd);
+        var rect = GetWindowActualRect(hWnd);
 
-        Window blankingWindow = null;
+        Window? blankingWindow = null;
 
         if (recolorBackground)
         {
-            blankingWindow = new Window();
+            blankingWindow = new()
+            {
+                WindowStyle = WindowStyle.None,
+                Title = string.Empty,
+                ShowInTaskbar = false,
+                AllowsTransparency = true,
+                Background = new SolidColorBrush(substituteBackgroundColor)
+            };
 
-            blankingWindow.WindowStyle = WindowStyle.None;
-            blankingWindow.Title = string.Empty;
-            blankingWindow.ShowInTaskbar = false;
-            blankingWindow.AllowsTransparency = true;
-            blankingWindow.Background = new SolidColorBrush(substituteBackgroundColor);
             blankingWindow.Show();
 
-            int fudge = 20;
+            const double fudge = 20;
 
             blankingWindow.Left = rect.X - fudge / 2;
             blankingWindow.Top = rect.Y - fudge / 2;
@@ -75,7 +72,7 @@ public class ScreenCapture
 
         User32.SetForegroundWindow(hWnd);
 
-        BitmapSource captured = CaptureRegion(
+        var captured = CaptureRegion(
             hWnd,
             rect.X,
             rect.Y,
@@ -99,26 +96,25 @@ public class ScreenCapture
     public static BitmapSource CaptureRegion(
         IntPtr hWnd, int x, int y, int width, int height, bool addToClipboard)
     {
-        IntPtr sourceDC = IntPtr.Zero;
-        IntPtr targetDC = IntPtr.Zero;
-        IntPtr compatibleBitmapHandle = IntPtr.Zero;
-        BitmapSource bitmap = null;
+        var sourceDc = IntPtr.Zero;
+        var compatibleBitmapHandle = IntPtr.Zero;
+        BitmapSource bitmap;
 
         try
         {
             // gets the main desktop and all open windows
-            sourceDC = User32.GetDC(User32.GetDesktopWindow());
+            sourceDc = User32.GetDC(User32.GetDesktopWindow());
             //sourceDC = User32.GetDC(hWnd);
-            targetDC = Gdi32.CreateCompatibleDC(sourceDC);
+            var targetDc = Gdi32.CreateCompatibleDC(sourceDc);
 
             // create a bitmap compatible with our target DC
-            compatibleBitmapHandle = Gdi32.CreateCompatibleBitmap(sourceDC, width, height);
+            compatibleBitmapHandle = Gdi32.CreateCompatibleBitmap(sourceDc, width, height);
 
             // gets the bitmap into the target device context
-            Gdi32.SelectObject(targetDC, compatibleBitmapHandle);
+            Gdi32.SelectObject(targetDc, compatibleBitmapHandle);
 
             // copy from source to destination
-            Gdi32.BitBlt(targetDC, 0, 0, width, height, sourceDC, x, y, Gdi32.SRCCOPY);
+            Gdi32.BitBlt(targetDc, 0, 0, width, height, sourceDc, x, y, Gdi32.SRCCOPY);
 
             // Here's the WPF glue to make it all work. It converts from an 
             // hBitmap to a BitmapSource. Love the WPF interop functions
@@ -143,8 +139,8 @@ public class ScreenCapture
         {
             Gdi32.DeleteObject(compatibleBitmapHandle);
 
-            User32.ReleaseDC(IntPtr.Zero, sourceDC);
-            User32.ReleaseDC(IntPtr.Zero, targetDC);
+            User32.ReleaseDC(IntPtr.Zero, sourceDc);
+            User32.ReleaseDC(IntPtr.Zero, sourceDc);
         }
 
         return bitmap;
@@ -153,22 +149,19 @@ public class ScreenCapture
     // this accounts for the border and shadow. Serious fudgery here.
     private static Int32Rect GetWindowActualRect(IntPtr hWnd)
     {
-        Win32Rect windowRect = new Win32Rect();
-        Win32Rect clientRect = new Win32Rect();
+        User32.GetWindowRect(hWnd, out var windowRect);
+        User32.GetClientRect(hWnd, out var clientRect);
 
-        User32.GetWindowRect(hWnd, out windowRect);
-        User32.GetClientRect(hWnd, out clientRect);
-
-        int sideBorder = (windowRect.Width - clientRect.Width) / 2 + 1;
+        var sideBorder = (windowRect.Width - clientRect.Width) / 2 + 1;
 
         // sooo, yeah.
         const int hackToAccountForShadow = 4;
 
-        Win32Point topLeftPoint = new Win32Point(windowRect.Left - sideBorder, windowRect.Top - sideBorder);
+        var topLeftPoint = new Win32Point(windowRect.Left - sideBorder, windowRect.Top - sideBorder);
 
         //User32.ClientToScreen(hWnd, ref topLeftPoint);
 
-        Int32Rect actualRect = new Int32Rect(
+        var actualRect = new Int32Rect(
             topLeftPoint.X,
             topLeftPoint.Y,
             windowRect.Width + sideBorder * 2 + hackToAccountForShadow,

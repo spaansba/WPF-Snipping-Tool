@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -9,11 +7,11 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using SnippingToolWPF.Control;
-using SnippingToolWPF.Drawing.Editing;
-using SnippingToolWPF.Drawing.Shapes;
-using SnippingToolWPF.Drawing.Tools;
+using SnippingToolWPF.ExtensionMethods;
+using SnippingToolWPF.Tools;
+using SnippingToolWPF.Tools.ToolAction;
+using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF;
 
@@ -25,9 +23,9 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     private const string PartCurrentCanvas = "PART_CurrentCanvas";
     private const string PartItemsControl = "PART_ItemsControl";
-    private CompositeCollection allItems; // Collection of the screenshot + shapes
+    private readonly CompositeCollection allItems; // Collection of the screenshot + shapes
 
-    public UndoRedo UndoRedoStacks = new UndoRedo(); // To make Undo Redo work 
+    private readonly UndoRedo undoRedoStacks = new(); // To make Undo Redo work 
 
     static DrawingCanvas()
     {
@@ -39,7 +37,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     public DrawingCanvas()
     {
         this.Loaded += OnLoaded;
-        this.Shapes = new ObservableCollection<DrawingShape>(); // set it because the property getter is not used in all circumstances
+        this.Shapes = new(); // set it because the property getter is not used in all circumstances
         this.allItems = CreateAllItemCollection(); 
     }
 
@@ -50,7 +48,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     /// </summary>
     private CompositeCollection CreateAllItemCollection()
     {
-        return new CompositeCollection()
+        return new()
         {
             new SingleItemCollectionContainer
                 {
@@ -81,7 +79,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
     private DrawingCanvasListBox? itemsControl;
     private DrawingCanvasListBox? ItemsControl
     {
-        get => this.itemsControl;
         set
         {
             if (this.itemsControl == value)
@@ -203,7 +200,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         // Only add the Undoable flags from DrawingTool to the undoredostack
         if (action?.OnlyPerformUndoable() is { IncludeInUndoStack: true } undoableAction)
         {
-            this.UndoRedoStacks.AddAction(undoableAction);
+            this.undoRedoStacks.AddAction(undoableAction);
         }
     }
 
@@ -261,17 +258,17 @@ public class DrawingCanvas : System.Windows.Controls.Control
         if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Z) // Undo last action
         {
             // If undo is possible do the action
-            if (this.UndoRedoStacks.TryUndo(out var action))
+            if (this.undoRedoStacks.TryUndo(out var action))
             { 
                 Perform(action.Reverse());
             }
             // https://en.wikipedia.org/wiki/Memento_pattern
         }
 
-        if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Y) // Redo the Undo
+        if (Keyboard.Modifiers != ModifierKeys.Control || e.Key != Key.Y) return; // Redo the Undo
         {
             // If redo is possible to the action
-            if (this.UndoRedoStacks.TryRedo(out var action))
+            if (this.undoRedoStacks.TryRedo(out var action))
             {
                 Perform(action);
             }
@@ -316,12 +313,13 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     #endregion
 
-    #region On Item Mouse Events 
+    #region On Item Mouse Events
 
     /// <summary>
     /// Gets Mouse Events from the DrawingCanvasListBoxItem so that the DrawingCanvas can handle them
     /// </summary>
     /// <param name="drawingCanvasPoint">Point Relative to the Drawing Canvas not Relative to the DrawingCanvasListBoxItem</param>
+    /// <param name="item"></param>
     internal void OnItemMouseEvent(DrawingCanvasListBoxItem item, MouseEventArgs e, Point drawingCanvasPoint)
     {
         if (item.Content is not DrawingShape element)

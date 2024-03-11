@@ -1,15 +1,10 @@
-﻿using Microsoft.Xaml.Behaviors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace SnippingToolWPF.Control;
+namespace SnippingToolWPF.Control.Behaviors;
 
 public partial class NumericTextBoxBehavior : AttachableForStyleBehavior<NumericTextBoxBehavior, TextBox>
 {
@@ -52,9 +47,9 @@ public partial class NumericTextBoxBehavior : AttachableForStyleBehavior<Numeric
     private int SelectionEnd => this.AssociatedObject.SelectionStart + this.AssociatedObject.SelectionLength;
     private bool IsValidInput(string newInput)
     {
-        string? beforeSelection = this.AssociatedObject.Text.Substring(0, this.AssociatedObject.SelectionStart);
-        string? afterSelection = this.AssociatedObject.Text.Substring(this.SelectionEnd);
-        string? newText = $"{beforeSelection}{newInput}{afterSelection}";
+        var beforeSelection = this.AssociatedObject.Text[..this.AssociatedObject.SelectionStart];
+        var afterSelection = this.AssociatedObject.Text[this.SelectionEnd..];
+        var newText = new StringBuilder().Append(beforeSelection).Append(newInput).Append(afterSelection).ToString();
         return this.Regex.IsMatch(newText);
     }
 

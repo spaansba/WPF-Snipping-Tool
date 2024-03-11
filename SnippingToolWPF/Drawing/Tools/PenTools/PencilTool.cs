@@ -1,25 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Shapes;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Diagnostics;
-using System.IO.Pipes;
-using System.Windows.Media.Effects;
-using System.Drawing.Imaging;
-using System.Windows.Media.Imaging;
-using System.IO;
-using System.Reflection;
+using System.Windows.Shapes;
 using SnippingToolWPF.ExtensionMethods;
-using System.Windows.Controls;
-using SnippingToolWPF.Drawing.Tools.ToolAction;
-using SnippingToolWPF.Drawing.Editing;
-using SnippingToolWPF.Drawing.Shapes;
+using SnippingToolWPF.SidePanel.PencilSidePanel;
+using SnippingToolWPF.Tools.ToolAction;
 
-namespace SnippingToolWPF.Drawing.Tools;
+namespace SnippingToolWPF.Tools.PenTools;
 
 //TODO : hold ctrl to snap the end to the beginning of the line 
 public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
@@ -30,11 +16,11 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
         this.options = options;
     }
 
-    public override RegularPolylineDrawingShape DrawingShape { get; } = new RegularPolylineDrawingShape();
+    public override RegularPolylineDrawingShape DrawingShape { get; } = new();
 
     // TODO: If user holds shift draw a perfect straight line
     public override bool LockedAspectRatio { get; set; } = false;
-    public override bool IsDrawing { get; set; } = false;
+    public override bool IsDrawing { get; set; }
 
     //public override void ResetVisual() => this.DrawingShape.Points.Clear();
     public override void ResetVisual() => this.DrawingShape.StrokeThickness = 10;
@@ -58,11 +44,12 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     }
 
     //The amount of points between every line within the polyline drawn
+    // ReSharper disable once UnusedMember.Local
     private const int FreehandSensitivity = 4;
     public override DrawingToolAction MouseMove(Point position, DrawingShape? element)
     {
         //if (!IsDrawing)
-        //    return DrawingToolAction.DoNothing;
+        // return DrawingToolAction.DoNothing;
 
         //if (Visual.Points.Count > 0)
         //{
@@ -113,39 +100,37 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     /// </summary>
     public override void RightButtonDown()
     {
-        if (IsDrawing)
-        {
-            ResetVisual();
-            IsDrawing = false;
-        }
+        if (!IsDrawing) return;
+        
+        ResetVisual();
+        IsDrawing = false;
     }
 
     #endregion
 
     #region Calculate / add arrow head
 
+    // ReSharper disable once UnusedMember.Local
     private void AddArrowHead(Polyline visual)
     {
-        if (visual.Points is [.., _, var point1, var point2])
-        { 
-            var(arrowPoint1, arrowPoint2) = GetArrowHeadPoints(point1, point2);
+        if (visual.Points is not [.., _, var point1, var point2]) return;
+        var(arrowPoint1, arrowPoint2) = GetArrowHeadPoints(point1, point2);
 
-            visual.Points.Add(arrowPoint1);
-            visual.Points.Add(point2); // make sure it doesn't become a triangle
-            visual.Points.Add(arrowPoint2);
-        }
+        visual.Points.Add(arrowPoint1);
+        visual.Points.Add(point2); // make sure it doesn't become a triangle
+        visual.Points.Add(arrowPoint2);
     }
 
     private (Point A, Point B) GetArrowHeadPoints(Point position1, Point position2)
     {
-        Vector lineDirection = position2 - position1;
-        double arrowheadLength = Math.Min(this.DrawingShape.StrokeThickness / 1.2, 30); // change the first value to make the line smaller/bigger
+        var lineDirection = position2 - position1;
+        var arrowheadLength = Math.Min(this.DrawingShape.StrokeThickness / 1.2, 30); // change the first value to make the line smaller/bigger
 
-        Vector rotatedDirection1 = lineDirection.RotateDegrees(140);
-        Vector rotatedDirection2 = lineDirection.RotateDegrees(-140);
+        var rotatedDirection1 = lineDirection.RotateDegrees(140);
+        var rotatedDirection2 = lineDirection.RotateDegrees(-140);
 
-        Point arrowheadEnd1 = position2 + arrowheadLength * rotatedDirection1;
-        Point arrowheadEnd2 = position2 + arrowheadLength * rotatedDirection2;
+        var arrowheadEnd1 = position2 + arrowheadLength * rotatedDirection1;
+        var arrowheadEnd2 = position2 + arrowheadLength * rotatedDirection2;
 
         return (arrowheadEnd1, arrowheadEnd2);
     }
@@ -153,9 +138,9 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
 
     public static Vector Rotate(Vector vector, double angle)
     {
-        double newX = vector.X * Math.Cos(angle) - vector.Y * Math.Sin(angle);
-        double newY = vector.X * Math.Sin(angle) + vector.Y * Math.Cos(angle);
-        return new Vector(newX, newY);
+        var newX = vector.X * Math.Cos(angle) - vector.Y * Math.Sin(angle);
+        var newY = vector.X * Math.Sin(angle) + vector.Y * Math.Cos(angle);
+        return new(newX, newY);
     }
 
     #endregion
@@ -164,18 +149,18 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     //TODO: make the XAML colorPicker have an option for Rainbow Gradient
     public static LinearGradientBrush GetRainbowGradientBrush()
     {
-        LinearGradientBrush rainbowBrush = new LinearGradientBrush();
-        rainbowBrush.StartPoint = new Point(0, 0);
-        rainbowBrush.EndPoint = new Point(1, 0);
+        var rainbowBrush = new LinearGradientBrush();
+        rainbowBrush.StartPoint = new(0, 0);
+        rainbowBrush.EndPoint = new(1, 0);
 
-        GradientStopCollection gradientStops = new GradientStopCollection();
-        gradientStops.Add(new GradientStop(Colors.Red, 0));
-        gradientStops.Add(new GradientStop(Colors.Orange, 0.17));
-        gradientStops.Add(new GradientStop(Colors.Yellow, 0.33));
-        gradientStops.Add(new GradientStop(Colors.Green, 0.5));
-        gradientStops.Add(new GradientStop(Colors.Blue, 0.67));
-        gradientStops.Add(new GradientStop(Colors.Indigo, 0.83));
-        gradientStops.Add(new GradientStop(Colors.Violet, 1.0));
+        var gradientStops = new GradientStopCollection();
+        gradientStops.Add(new(Colors.Red, 0));
+        gradientStops.Add(new(Colors.Orange, 0.17));
+        gradientStops.Add(new(Colors.Yellow, 0.33));
+        gradientStops.Add(new(Colors.Green, 0.5));
+        gradientStops.Add(new(Colors.Blue, 0.67));
+        gradientStops.Add(new(Colors.Indigo, 0.83));
+        gradientStops.Add(new(Colors.Violet, 1.0));
 
         rainbowBrush.GradientStops = gradientStops;
 

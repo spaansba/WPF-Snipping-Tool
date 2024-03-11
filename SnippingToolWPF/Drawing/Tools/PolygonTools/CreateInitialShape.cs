@@ -1,11 +1,9 @@
-﻿using SnippingToolWPF.Drawing.Shapes;
-using System.Windows;
-using System.Windows.Ink;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SnippingToolWPF.Common;
 
-namespace SnippingToolWPF.Drawing.Tools.PolygonTools;
+namespace SnippingToolWPF.Tools.PolygonTools;
 
 /// <summary>
 /// Creates initial shapes on a 1x1 plane based on the polygonOptions
@@ -23,35 +21,33 @@ public static class CreateInitialPolygon
     /// <returns></returns>
     public static Polygon Create(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0, double thickness = 2)
     {
-        if (innerCircleSize == 1.0)
+        //Check if innerCircleSize = 1.0
+        if (DoubleUtil.IsOne(innerCircleSize))
         {
             return CreatePolygon(GeneratePolygonPoints(vertices, rotationDegrees, innerCircleSize), thickness, Brushes.Black);
         }
-        else
-        {
-            return CreatePolygon(GenerateStarPoints(vertices, rotationDegrees, innerCircleSize), thickness, Brushes.Black);
-        }
+        return CreatePolygon(GenerateStarPoints(vertices, rotationDegrees, innerCircleSize), thickness, Brushes.Black);
     }
 
     public static Polygon CreatePolygon(PremadePolygonInfo polygonInfo) =>
-        new Polygon() { Stretch = Stretch.Fill, Points = new PointCollection(GeneratePolygonPoints(polygonInfo.NumberOfSides, polygonInfo.RotationAngle) )};
+        new() { Stretch = Stretch.Fill, Points = new(GeneratePolygonPoints(polygonInfo.NumberOfSides, polygonInfo.RotationAngle) )};
     private static Polygon CreatePolygon(IEnumerable<Point> points, double thickness, Brush stroke) =>
-        new() { Stretch = Stretch.Fill, Points = new PointCollection(points), StrokeThickness = thickness, Stroke = stroke };
+        new() { Stretch = Stretch.Fill, Points = new(points), StrokeThickness = thickness, Stroke = stroke };
     #endregion
 
     #region Polygon Points Creating
     public static Point[] GeneratePolygonPoints(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0)
     {
-        Point[] points = new Point[vertices];
+        var points = new Point[vertices];
         var rotation = double.DegreesToRadians(rotationDegrees);
         var angleIncrement = -double.DegreesToRadians(360d / vertices);
 
-        for (int i = 0; i < vertices; i++)
+        for (var i = 0; i < vertices; i++)
         {
-            double angle = (angleIncrement * i) + rotation; // Start from the bottom and move clockwise
-            double x = (innerCircleSize / 2) * Math.Cos(angle) + (innerCircleSize / 2);
-            double y = (innerCircleSize / 2) * Math.Sin(angle) + (innerCircleSize / 2);
-            points[i] = new Point(x, y);
+            var angle = (angleIncrement * i) + rotation; // Start from the bottom and move clockwise
+            var x = (innerCircleSize / 2) * Math.Cos(angle) + (innerCircleSize / 2);
+            var y = (innerCircleSize / 2) * Math.Sin(angle) + (innerCircleSize / 2);
+            points[i] = new(x, y);
         }
 
         return points;
@@ -69,7 +65,7 @@ public static class CreateInitialPolygon
     {
         var offset = 360d / outerVertices / 2;
 
-        var outer = GeneratePolygonPoints(outerVertices, rotationDegrees, 1.0);
+        var outer = GeneratePolygonPoints(outerVertices, rotationDegrees);
         var inner = GeneratePolygonPoints(outerVertices, rotationDegrees + offset, innerCircleSize);
 
         var result = new Point[outerVertices * 2];

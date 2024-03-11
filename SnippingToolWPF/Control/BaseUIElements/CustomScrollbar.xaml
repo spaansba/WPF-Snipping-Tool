@@ -97,6 +97,7 @@
                 <RowDefinition MaxHeight="0" />
                 <RowDefinition Height="0.00001*" />
                 <RowDefinition MaxHeight="0" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Border Grid.RowSpan="3" Background="Transparent"
                     CornerRadius="2" />
@@ -130,6 +131,7 @@
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="0.00001*" />
                 <ColumnDefinition Width="0" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Border Grid.ColumnSpan="3" Background="Transparent"
                     CornerRadius="3" />
@@ -194,7 +196,7 @@
                                    ViewportSize="{TemplateBinding ViewportHeight}"
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                                    Value="{TemplateBinding VerticalOffset}" />
-                        <ScrollContentPresenter Grid.Column="1" />
+                        <ScrollContentPresenter Grid.Row="0" Grid.Column="1" />
                         <ScrollBar Name="PART_HorizontalScrollBar" Grid.Row="1"
                                    Grid.Column="1"
                                    Maximum="{TemplateBinding ScrollableWidth}"

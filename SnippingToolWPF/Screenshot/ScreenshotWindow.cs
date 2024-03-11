@@ -1,11 +1,11 @@
 ﻿using SnippingToolWPF.ExtensionMethods;
-using SnippingToolWPF.Interop;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SnippingTool.Interop;
 using Color = System.Windows.Media.Color;
 
 namespace SnippingToolWPF.Screenshot;
@@ -13,37 +13,37 @@ namespace SnippingToolWPF.Screenshot;
 /// <summary>
 /// Creates a new window that allows users to create screenshots
 /// </summary>
-public partial class ScreenshotWindow : Window
+public class ScreenshotWindow : Window
 {
     
     private Point begin;
     private Int32Rect selectedRect;
     private bool isCreatingScreenshot;
-    private Rect userFullScreenRect = new Rect(
+    private readonly Rect userFullScreenRect = new(
                   SystemParameters.VirtualScreenLeft,
                   SystemParameters.VirtualScreenTop,
                   SystemParameters.VirtualScreenWidth,
                   SystemParameters.VirtualScreenHeight);
     private readonly BitmapSource? userBackground;
     private const double PreviewEllipseSize = 126;
-    private RectangleGeometry selectionGeometry = new RectangleGeometry();
-    private Path semiTransparency;
+    private readonly RectangleGeometry selectionGeometry = new();
 
-    private PreviewEllipse PreviewEllipse = new PreviewEllipse()
+    private readonly PreviewEllipse previewEllipse = new()
     {
         Width = PreviewEllipseSize,
         Height = PreviewEllipseSize,
     };
 
-    public ScreenshotWindow()
+    private ScreenshotWindow()
     {
+
         (this.Left, this.Top, this.Width, this.Height) = userFullScreenRect; // use deconstruct extension to set values all at ones
 
         userBackground = ScreenCapture.CaptureFullScreen(addToClipboard: false);
 
         this.Background = new ImageBrush(this.userBackground);
-        this.semiTransparency = CreateSemiTransparency(selectionGeometry, userFullScreenRect);
-        this.Content = new Canvas().AddChildren(this.semiTransparency, this.PreviewEllipse);
+        var semiTransparency = CreateSemiTransparency(selectionGeometry, userFullScreenRect);
+        this.Content = new Canvas().AddChildren(semiTransparency, this.previewEllipse);
 
         this.ResizeMode = ResizeMode.NoResize;
         // this.WindowStyle = WindowStyle.None;
@@ -51,7 +51,7 @@ public partial class ScreenshotWindow : Window
 
     private static Path CreateSemiTransparency(RectangleGeometry selectionGeometry, Rect userFullScreenRect)
     {
-        return new Path()
+        return new()
         {
             Fill = new SolidColorBrush()
             {
@@ -82,15 +82,15 @@ public partial class ScreenshotWindow : Window
 
     protected override void OnMouseMove(MouseEventArgs e)
     {
-        Point mousePosition = e.GetPosition(this);
+        var mousePosition = e.GetPosition(this);
 
         if (isCreatingScreenshot)
         {
-            this.selectionGeometry.Rect = new Rect(begin, mousePosition);
+            this.selectionGeometry.Rect = new(begin, mousePosition);
         }
 
-        Canvas.SetLeft(PreviewEllipse, mousePosition.X + 30);
-        Canvas.SetTop(PreviewEllipse, mousePosition.Y + 30);
+        Canvas.SetLeft(previewEllipse, mousePosition.X + 30);
+        Canvas.SetTop(previewEllipse, mousePosition.Y + 30);
 
         base.OnMouseMove(e);
     }
@@ -99,8 +99,8 @@ public partial class ScreenshotWindow : Window
     {
         if (e.ChangedButton == MouseButton.Left)
         {
-            Point end = e.GetPosition(this);
-            this.selectedRect = new Int32Rect((int)begin.X, (int)begin.Y, (int)(end.X - begin.X), (int)(end.Y - begin.Y));
+            var end = e.GetPosition(this);
+            this.selectedRect = new((int)begin.X, (int)begin.Y, (int)(end.X - begin.X), (int)(end.Y - begin.Y));
             this.DialogResult = true;
             this.Close();
             isCreatingScreenshot = false; // not nececairy but usefull for testing
@@ -117,11 +117,9 @@ public partial class ScreenshotWindow : Window
         {
             Topmost = true,
         };
-        if (window.ShowDialog() is not true)
-        {
+        if (window.ShowDialog() is not true || window.userBackground is null)
             return null;
-        }
-
+        
         return new CroppedBitmap(window.userBackground, window.selectedRect);
     }
 

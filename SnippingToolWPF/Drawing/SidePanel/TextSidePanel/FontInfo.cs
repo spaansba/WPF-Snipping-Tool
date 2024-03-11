@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.SidePanel.TextSidePanel;
 
 public sealed record FontInfo(bool FontWithSymbol, FontFamily Family)
 {
@@ -16,12 +11,12 @@ public sealed record FontInfo(bool FontWithSymbol, FontFamily Family)
 
     internal static bool IsSymbol(FontFamily font)
     {
-        Typeface typeface = font.GetTypefaces().First();
-        typeface.TryGetGlyphTypeface(out GlyphTypeface glyph);
+        var typeface = font.GetTypefaces().First();
+        typeface.TryGetGlyphTypeface(out var glyph);
         return (!font.Source.Contains("Global")) && (glyph == null || glyph.Symbol);
     }
 
-    public static List<string> FontsToExclude = new List<string>
+    public static List<string> FontsToExclude = new()
     {
         "MS Reference Specialty",
         "HoloLens MDL2 Assets",

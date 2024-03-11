@@ -1,15 +1,6 @@
-﻿using SnippingToolWPF.Drawing.Editing;
-using SnippingToolWPF.Drawing.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
 
-namespace SnippingToolWPF.Drawing.Tools;
+namespace SnippingToolWPF.Tools.ToolAction;
 
 /// <summary>
 /// Each action we take, most of the time we have a start and stop DrawingToolActionItem
@@ -35,8 +26,8 @@ public readonly record struct DrawingToolActionItem
     public bool IsMouseCapture => Kind.HasFlag(DrawingToolActionKind.MouseCapture);
     public bool IsKeyboardFocus => Kind.HasFlag(DrawingToolActionKind.KeyboardFocus);
 
-    public static DrawingToolActionItem MouseCapture() => new DrawingToolActionItem { Kind = DrawingToolActionKind.MouseCapture };
-    public static DrawingToolActionItem KeyboardFocus() => new DrawingToolActionItem { Kind = DrawingToolActionKind.KeyboardFocus };
+    public static DrawingToolActionItem MouseCapture() => new() { Kind = DrawingToolActionKind.MouseCapture };
+    public static DrawingToolActionItem KeyboardFocus() => new() { Kind = DrawingToolActionKind.KeyboardFocus };
 
     public DrawingShape? Item { get; private init; }
     public static DrawingToolActionItem Shape(DrawingShape item)
@@ -48,7 +39,7 @@ public readonly record struct DrawingToolActionItem
     /// Combine methodes are the same but for difference contexts
     public static DrawingToolActionItem Combine(DrawingToolActionItem a, DrawingToolActionItem b)
     {
-        return new DrawingToolActionItem()
+        return new()
         {
             Kind = a.Kind | b.Kind,
             Item = a.Item ?? b.Item,
