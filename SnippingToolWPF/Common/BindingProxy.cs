@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using SnippingToolWPF.WPFExtensions;
 
-namespace SnippingToolWPF;
-
-///public sealed class DrawingCanvasBindingProxy : BindingProxy<DrawingCanvasBindingProxy, DrawingCanvas>;
-
+namespace SnippingToolWPF.Common;
 public abstract class BindingProxy<TSelf, T> : Freezable
     where TSelf : BindingProxy<TSelf, T>, new()
 {
-    protected sealed override TSelf CreateInstanceCore() => new TSelf();
+    protected sealed override TSelf CreateInstanceCore() => new();
 
     public T? Data
     {

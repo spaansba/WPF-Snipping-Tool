@@ -1,13 +1,6 @@
-﻿using SnippingToolWPF.Drawing.Editing;
-using SnippingToolWPF.Drawing.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
-namespace SnippingToolWPF.Drawing.Tools;
+namespace SnippingToolWPF.Tools.ToolAction;
 
 /// <summary>
 /// Handles input events for drawing DrawingShapes on the canvas

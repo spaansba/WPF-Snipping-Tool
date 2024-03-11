@@ -12,7 +12,7 @@
     <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="#FFBCBCBC" />
     <SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF707070" />
 
-    <Style x:Name="RadioButtonWithIcon" TargetType="{x:Type RadioButton}">
+    <Style TargetType="{x:Type RadioButton}">
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}" />
         <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}" />
         <Setter Property="BorderBrush" Value="{StaticResource RadioButton.Static.Border}" />

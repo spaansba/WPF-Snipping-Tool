@@ -1,15 +1,9 @@
-﻿using SnippingToolWPF.Interop;
-using SnippingToolWPF.Screenshot;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Media.Imaging;
-
-namespace SnippingToolWPF;
+﻿namespace SnippingToolWPF;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow
 {
     public MainWindow()
     {

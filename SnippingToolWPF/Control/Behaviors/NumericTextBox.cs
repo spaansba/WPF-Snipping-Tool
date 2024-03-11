@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
+﻿using System.Windows;
 
-namespace SnippingToolWPF.Control;
+namespace SnippingToolWPF.Control.Behaviors;
 
 /// <summary>
 /// Creates a custom textbox that only allows numeric characters, with the option of signed (negatives) or unsigned integers / floats

@@ -1,15 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SnippingToolWPF.Drawing.Tools;
+using SnippingToolWPF.Tools.ToolAction;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.SidePanel;
 
 public abstract class SidePanelViewModel : ObservableValidator
 {
     public abstract string Header { get; }
-    protected DrawingViewModel drawingViewModel { get; }
+    protected DrawingViewModel DrawingViewModel { get; }
     protected SidePanelViewModel(DrawingViewModel drawingViewModel)
     {
-        this.drawingViewModel = drawingViewModel;
+        this.DrawingViewModel = drawingViewModel;
     }
-    public virtual IDrawingTool? Tool {get; }
+    public virtual IDrawingTool? Tool => null;
 }

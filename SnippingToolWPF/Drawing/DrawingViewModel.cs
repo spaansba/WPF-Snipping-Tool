@@ -1,14 +1,17 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Windows;
-using SnippingToolWPF.Interop;
-using System.Windows.Input;
-using SnippingToolWPF.Screenshot;
-using System.Windows.Media;
-using SnippingToolWPF.Control;
-using System.Windows.Shapes;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using SnippingToolWPF.Drawing.Shapes;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SnippingToolWPF.Screenshot;
+using SnippingToolWPF.SidePanel;
+using SnippingToolWPF.SidePanel.EditSidePanel;
+using SnippingToolWPF.SidePanel.PencilSidePanel;
+using SnippingToolWPF.SidePanel.ShapesSidePanel;
+using SnippingToolWPF.SidePanel.StickersSidePanel;
+using SnippingToolWPF.SidePanel.TextSidePanel;
+using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF;
 
@@ -35,19 +38,20 @@ public partial class DrawingViewModel : ObservableObject
 
     public DrawingViewModel()
     {
-        this.pencilsPanel = new PencilsSidePanelViewModel(this);
-        this.shapesPanel = new ShapesSidePanelViewModel(this);
-        this.stickersPanel = new StickersSidePanelViewModel(this);
-        this.textPanel = new TextSidePanelViewModel(this);
-        this.editPanel = new EditSidePanelViewModel(this);
+        this.pencilsPanel = new(this);
+        this.shapesPanel = new(this);
+        this.stickersPanel = new(this);
+        this.textPanel = new(this);
+        this.editPanel = new(this);
         this.ClearCanvas = new RelayCommand(ExecuteClearCanvasButton);
         this.TakeScreenshot = new RelayCommand(ExecuteTakeScreenshot);
         // Top bar Relay Commands
-        Application.Current.MainWindow.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; // Make full screen not overlap task bar
-        MoveWindowCommand = new RelayCommand(o => { Application.Current.MainWindow.DragMove(); });
-        ShutDownWindowCommand = new RelayCommand(o => { Application.Current.Shutdown(); });
-        MaximizeWindowCommand = new RelayCommand(o => { Application.Current.MainWindow.WindowState ^= WindowState.Maximized; });
-        MinimizeWindowCommand = new RelayCommand(o => { Application.Current.MainWindow.WindowState = WindowState.Minimized; });
+        Application.Current.MainWindow!.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; // Make full screen not overlap task bar
+        MoveWindowCommand = new RelayCommand(_ => { Application.Current.MainWindow.DragMove(); });
+        ShutDownWindowCommand = new RelayCommand(_ => { Application.Current.Shutdown(); });
+        // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
+        MaximizeWindowCommand = new RelayCommand(_ => { Application.Current.MainWindow.WindowState ^= WindowState.Maximized; });
+        MinimizeWindowCommand = new RelayCommand(_ => { Application.Current.MainWindow.WindowState = WindowState.Minimized; });
     }
     public SidePanelViewModel? SidePanelContent => SidePanelContentKind switch
     {
@@ -61,7 +65,7 @@ public partial class DrawingViewModel : ObservableObject
 
     #region Drawing Objects creating / clearing
 
-    public ObservableCollection<DrawingShape> DrawingObjects { get; private set; } = new ObservableCollection<DrawingShape>();
+    public ObservableCollection<DrawingShape> DrawingObjects { get; private set; } = new();
 
     /// <summary>
     /// Button in Xaml is linked via the RelayCommand class so the button can be in the viewmodel instead of the code-behind
@@ -70,7 +74,9 @@ public partial class DrawingViewModel : ObservableObject
     {
         //TODO: Create custom messagebox so we center it in the middle of the app isntead of screen 
 
-        MessageBoxResult result = MessageBox.Show(Application.Current.MainWindow,
+        if (Application.Current.MainWindow == null) return;
+        
+        var result = MessageBox.Show(Application.Current.MainWindow,
             "Are you sure you want to clear the canvas?", "Clear Canvas", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
         if (result == MessageBoxResult.Yes)

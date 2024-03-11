@@ -91,6 +91,10 @@
     <Resource Include="Assets\Images\menuTopBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <None Remove="Assets\Images\emptyCanvas.png" />
+    <Resource Include="Assets\Images\emptyCanvas.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

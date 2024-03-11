@@ -1,14 +1,11 @@
-﻿using SnippingToolWPF.Drawing.Tools;
-using SnippingToolWPF.Drawing.Tools.ToolAction;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Media;
-using SnippingToolWPF.Drawing.Shapes;
-using SnippingToolWPF.Drawing.Tools.PolygonTools;
-using System.Windows.Shapes;
+using SnippingToolWPF.Tools.PolygonTools;
+using SnippingToolWPF.Tools.ToolAction;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.SidePanel.ShapesSidePanel;
 
 public sealed class ShapesSidePanelViewModel : SidePanelViewModel
 {
@@ -54,23 +51,23 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         UpdateTool();
         Polygons = CreateButtonPolygons();
 
-        PolygonSelected = new PremadePolygonInfo(4,0,false);
+        PolygonSelected = new(4);
     }
 
     /// <summary>
     /// Create the shapes presented on the buttons in the sidepanel
     /// </summary>
-    public static IReadOnlyList<PremadePolygonInfo> CreateButtonPolygons() =>
+    private static IReadOnlyList<PremadePolygonInfo> CreateButtonPolygons() =>
     [
-        new PremadePolygonInfo(4, 45), // Tetragon (rectangle)
-        new PremadePolygonInfo(1000, 0), // Ellipse
-        new PremadePolygonInfo(3, 30), // Triangle
-        new PremadePolygonInfo(4, 0), // Diamond
-        new PremadePolygonInfo(5, 126), // Pentagon
-        new PremadePolygonInfo( 6, 30), // Hexagon
-        new PremadePolygonInfo( 7, 13), // Septagon
-        new PremadePolygonInfo(8, 0), // Octagon
-        new PremadePolygonInfo(10, 0, true), // 5 pointed Star
+        new(4, 45), // Tetragon (rectangle)
+        new(1000), // Ellipse
+        new(3, 30), // Triangle
+        new(4), // Diamond
+        new(5, 126), // Pentagon
+        new( 6, 30), // Hexagon
+        new( 7, 13), // Septagon
+        new(8), // Octagon
+        new(10, 0, true), // 5 pointed Star
     ];
 
     #endregion
@@ -81,8 +78,8 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     public const double MaximumThickness = 100;
     private const double DefaultThickness = 6;
 
-    private string thicknessString = DefaultThickness.ToString();
-    public double LastValidThickness { get; set; }
+    private string thicknessString = DefaultThickness.ToString(CultureInfo.InvariantCulture);
+    private double LastValidThickness { get; set; }
 
     /// <summary>
     /// ThicknessString is bound to the textbox, on property change, clamp the value if needed and update the slider (Thickness)
@@ -94,18 +91,18 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         {
             if (this.SetProperty(ref thicknessString, value, validate: true))
             {
-                OnPropertyChangedThickness(nameof(this.Thickness), value);
+                OnPropertyChangedThickness(value);
             }
         }
     }
-    private void OnPropertyChangedThickness(string propertyName, string value)
+    private void OnPropertyChangedThickness(string value)
     {
         if (string.IsNullOrEmpty(value))
             return;
 
-        if (double.TryParse(value, CultureInfo.CurrentCulture, out double doubleValue))
+        if (double.TryParse(value, CultureInfo.CurrentCulture, out var doubleValue))
         {
-            double clampedValue = Math.Clamp(doubleValue, MinimumThickness, MaximumThickness);
+            var clampedValue = Math.Clamp(doubleValue, MinimumThickness, MaximumThickness);
             this.Thickness = clampedValue;
             this.LastValidThickness = clampedValue;
         }
@@ -119,13 +116,13 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     {
         get
         {
-            return double.TryParse(this.ThicknessString, CultureInfo.CurrentCulture, out double value)
+            return double.TryParse(this.ThicknessString, CultureInfo.CurrentCulture, out var value)
             ? value : DefaultThickness;
         }
         set
         {
-            OnPropertyChanged(nameof(Thickness));
-            this.ThicknessString = value.ToString();
+            OnPropertyChanged();
+            this.ThicknessString = value.ToString(CultureInfo.InvariantCulture);
         }
     }
 
@@ -134,11 +131,12 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     #region Shape Opacity
     public const double MinimumOpacity = 1;
     public const double MaximumOpacity = 100;
-    public const double DefaultOpacity = 100;
+    private const double DefaultOpacity = 100;
 
     [Range(MinimumOpacity, MaximumOpacity)]
-    private string opacityString = DefaultOpacity.ToString();
-    public double LastValidOpacity { get; set; }
+    private string opacityString = DefaultOpacity.ToString(CultureInfo.InvariantCulture);
+
+    private double LastValidOpacity { get; set; }
 
     /// <summary>
     /// OpacityString is bound to the textbox, on property change, clamp the value if needed and update the slider (Opacity)
@@ -150,18 +148,18 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         {
             if (this.SetProperty(ref opacityString, value, validate: true))
             {
-                OnPropertyChangedOpacity(nameof(this.Opacity), value);
+                OnPropertyChangedOpacity(value);
             }
         }
     }
-    private void OnPropertyChangedOpacity(string propertyName, string value)
+    private void OnPropertyChangedOpacity(string value)
     {
         if (string.IsNullOrEmpty(value))
             return;
 
-        if (double.TryParse(value, CultureInfo.CurrentCulture, out double doubleValue))
+        if (double.TryParse(value, CultureInfo.CurrentCulture, out var doubleValue))
         {
-            double clampedValue = Math.Clamp(doubleValue, MinimumOpacity, MaximumOpacity);
+            var clampedValue = Math.Clamp(doubleValue, MinimumOpacity, MaximumOpacity);
             this.Opacity = clampedValue;
             this.LastValidOpacity = clampedValue;
         }
@@ -177,15 +175,12 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     [EditorBrowsable(EditorBrowsableState.Never)]
     public double Opacity
     {
-        get
-        {
-            return double.TryParse(this.OpacityString, CultureInfo.CurrentCulture, out double value)
-            ? value : DefaultOpacity;
-        }
+        get => double.TryParse(this.OpacityString, CultureInfo.CurrentCulture, out var value)
+                ? value : DefaultOpacity;
         set
         {
-            OnPropertyChanged(nameof(Opacity));
-            this.OpacityString = value.ToString();
+            OnPropertyChanged();
+            this.OpacityString = value.ToString(CultureInfo.InvariantCulture);
         }
     }
 
@@ -196,8 +191,8 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     #endregion
 
     #region Shape Fill
-    public Brush shapeStroke = Brushes.Black;
-    public Brush shapeFill = Brushes.Transparent;
+    public readonly Brush ShapeStroke = Brushes.Black;
+    public readonly Brush ShapeFill = Brushes.Transparent;
     //TODO: Shape Fill
     #endregion
 }

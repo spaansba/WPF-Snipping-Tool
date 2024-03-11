@@ -1,14 +1,4 @@
-﻿using SnippingToolWPF.Drawing.Editing;
-using SnippingToolWPF.Drawing.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Navigation;
-
-namespace SnippingToolWPF.Drawing.Tools;
+﻿namespace SnippingToolWPF.Tools.ToolAction;
 
 public readonly record struct DrawingToolAction(DrawingToolActionItem StartAction, DrawingToolActionItem StopAction, bool IncludeInUndoStack = false)
 {
@@ -37,11 +27,11 @@ public readonly record struct DrawingToolAction(DrawingToolActionItem StartActio
     #endregion
 
     #region Actions
-    public static DrawingToolAction Start(DrawingToolActionItem item) => new DrawingToolAction(
+    public static DrawingToolAction Start(DrawingToolActionItem item) => new(
         StartAction: item,
         StopAction: default);
 
-    public static DrawingToolAction Stop(DrawingToolActionItem item) => new DrawingToolAction(
+    public static DrawingToolAction Stop(DrawingToolActionItem item) => new(
         StartAction: default,
         StopAction: item);
 

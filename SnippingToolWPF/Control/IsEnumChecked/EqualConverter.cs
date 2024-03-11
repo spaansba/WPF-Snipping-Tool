@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.Control.IsEnumChecked;
 
 public class EqualConverter : MarkupExtension, IValueConverter
 {

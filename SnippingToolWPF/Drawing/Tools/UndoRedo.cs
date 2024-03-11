@@ -1,39 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using SnippingToolWPF.Tools.ToolAction;
 
-namespace SnippingToolWPF.Drawing.Tools;
+namespace SnippingToolWPF.Tools;
 
 public sealed class UndoRedo
 {
-    public Stack<DrawingToolAction> VisibleActions = new Stack<DrawingToolAction>();
-    private Stack<DrawingToolAction> RedoActions = new Stack<DrawingToolAction>();
+    private readonly Stack<DrawingToolAction> visibleActions = new();
+    private readonly Stack<DrawingToolAction> redoActions = new();
 
     public bool TryUndo(out DrawingToolAction item)
     {
         // If there is an item on top of the stack, pop it and return true
-        if (!this.VisibleActions.TryPop(out item))
+        if (!this.visibleActions.TryPop(out item))
             return false;
 
-        this.RedoActions.Push(item);
+        this.redoActions.Push(item);
         return true;
     }
     public bool TryRedo(out DrawingToolAction item)
     {
         // If there is an item on top of the stack, pop it and return true
-        if (!this.RedoActions.TryPop(out item))
+        if (!this.redoActions.TryPop(out item))
             return false;
 
-        this.VisibleActions.Push(item);
+        this.visibleActions.Push(item);
         return true;
     }
 
     public void AddAction(DrawingToolAction action)
     {
-        VisibleActions.Push(action);
-        RedoActions.Clear(); //Everytime we add an action we clear the redo stack
+        visibleActions.Push(action);
+        redoActions.Clear(); //Everytime we add an action we clear the redo stack
     }
 }

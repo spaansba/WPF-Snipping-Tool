@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.ComponentModel;
-using SnippingToolWPF.Drawing.Tools;
 using System.Windows.Media;
-using System.Windows.Controls;
-using System.Windows.Shapes;
+using SnippingToolWPF.Tools.PenTools;
+using SnippingToolWPF.Tools.ToolAction;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.SidePanel.PencilSidePanel;
 
-public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
+public sealed class PencilsSidePanelViewModel : SidePanelViewModel
 {
     public override string Header => "Pencils";
 
@@ -16,17 +15,17 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
     {
         LastValidThickness = DefaultThickness;
         LastValidOpacity = DefaultOpacity;
-        SelectedBrush = new SolidColorBrush(DefaultPenColor);
+        SelectedBrush = new SolidColorBrush(defaultPenColor);
         this.tool = new PencilTool(this);
     }
 
     #region Tool Selection
 
     private PencilTool? pencilTool;
-    private PencilTool PencilTool => this.pencilTool ??= new PencilTool(this);
+    private PencilTool PencilTool => this.pencilTool ??= new(this);
 
     private EraserTool? eraserTool;
-    private EraserTool EraserTool => this.eraserTool ??= new EraserTool(this, drawingViewModel);
+    private EraserTool EraserTool => this.eraserTool ??= new();
 
     private IDrawingTool? tool;
     public override IDrawingTool? Tool => tool;
@@ -37,22 +36,20 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
         get => pencilOption;
         set
         {
-           if(SetProperty(ref this.pencilOption, value))
+            if (!SetProperty(ref this.pencilOption, value)) return;
+            IDrawingTool newTool = value switch
             {
-                IDrawingTool newTool = value switch
-                {
-                    PencilOptions.Eraser => EraserTool,
-                    //PencilOptions.Pen => EllipsePenTool,
-                    //PencilOptions.Calligraphy => CalligraphyTool,
-                    //PencilOptions.RegularPencil => RegularPencilTool,
-                    //PencilOptions.Chalk => ChalkTool,
-                    //PencilOptions.Graffiti => GraffitiTool,
-                    //PencilOptions.Bucket => BucketTool,
-                    //PencilOptions.Oil => OilTool,
-                    _ => PencilTool,
-                };
-                this.SetProperty(ref this.tool, newTool,nameof(this.Tool));
-            }
+                PencilOptions.Eraser => EraserTool,
+                //PencilOptions.Pen => EllipsePenTool,
+                //PencilOptions.Calligraphy => CalligraphyTool,
+                //PencilOptions.RegularPencil => RegularPencilTool,
+                //PencilOptions.Chalk => ChalkTool,
+                //PencilOptions.Graffiti => GraffitiTool,
+                //PencilOptions.Bucket => BucketTool,
+                //PencilOptions.Oil => OilTool,
+                _ => PencilTool,
+            };
+            this.SetProperty(ref this.tool, newTool,nameof(this.Tool));
         }
     }
     #endregion
@@ -72,8 +69,9 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
 
 
     [Range(MinimumThickness, MaximumThickness)]
-    private string thicknessString = DefaultThickness.ToString();
-    public double LastValidThickness { get; set; }
+    private string thicknessString = DefaultThickness.ToString(CultureInfo.InvariantCulture);
+
+    private double LastValidThickness { get; set; }
 
     /// <summary>
     /// ThicknessString is bound to the textbox, on property change, clamp the value if needed and update the slider (Thickness)
@@ -85,18 +83,18 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
         {
             if(this.SetProperty(ref thicknessString, value, validate: true))
             {
-                OnPropertyChangedThickness(nameof(this.Thickness), value);
+                OnPropertyChangedThickness(value);
             }
         }
     }
-    private void OnPropertyChangedThickness(string propertyName, string value)
+    private void OnPropertyChangedThickness(string value)
     {
         if (string.IsNullOrEmpty(value))
             return;
 
-        if (double.TryParse(value, CultureInfo.CurrentCulture, out double doubleValue))
+        if (double.TryParse(value, CultureInfo.CurrentCulture, out var doubleValue))
         {
-            double clampedValue = Math.Clamp(doubleValue, MinimumThickness, MaximumThickness);
+            var clampedValue = Math.Clamp(doubleValue, MinimumThickness, MaximumThickness);
             this.Thickness = clampedValue;
             this.LastValidThickness = clampedValue;
         }
@@ -111,15 +109,12 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
     /// </summary>
     public double Thickness
     {
-        get
-        {
-            return double.TryParse(this.ThicknessString, CultureInfo.CurrentCulture, out double value)
-            ? value : DefaultThickness;
-        }
+        get => double.TryParse(this.ThicknessString, CultureInfo.CurrentCulture, out var value)
+                ? value : DefaultThickness;
         set
         {
-            OnPropertyChanged(nameof(Thickness));
-            this.ThicknessString = value.ToString();
+            OnPropertyChanged();
+            this.ThicknessString = value.ToString(CultureInfo.InvariantCulture);
         }
     }
     #endregion
@@ -127,10 +122,10 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
     #region Opacity - Connecting the Slider / Textbox with eachother and data clamping
     public const double MinimumOpacity = 1;
     public const double MaximumOpacity = 100;
-    public const double DefaultOpacity = 100;
+    private const double DefaultOpacity = 100;
 
     [Range(MinimumOpacity, MaximumOpacity)]
-    private string opacityString = DefaultOpacity.ToString();
+    private string opacityString = DefaultOpacity.ToString(CultureInfo.InvariantCulture);
     public double LastValidOpacity { get; set; }
 
     /// <summary>
@@ -143,18 +138,18 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
         {
             if (this.SetProperty(ref opacityString, value, validate: true))
             {
-                OnPropertyChangedOpacity(nameof(this.Opacity), value);
+                OnPropertyChangedOpacity(value);
             }
         }
     }
-    private void OnPropertyChangedOpacity(string propertyName, string value)
+    private void OnPropertyChangedOpacity(string value)
     {
         if (string.IsNullOrEmpty(value))
             return;
 
-        if (double.TryParse(value, CultureInfo.CurrentCulture, out double doubleValue))
+        if (double.TryParse(value, CultureInfo.CurrentCulture, out var doubleValue))
         {
-            double clampedValue = Math.Clamp(doubleValue, MinimumOpacity, MaximumOpacity);
+            var clampedValue = Math.Clamp(doubleValue, MinimumOpacity, MaximumOpacity);
             this.Opacity = clampedValue;
             this.LastValidOpacity = clampedValue;
         }
@@ -170,15 +165,12 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
     [EditorBrowsable(EditorBrowsableState.Never)]
     public double Opacity
     {
-        get
-        {
-            return double.TryParse(this.OpacityString, CultureInfo.CurrentCulture, out double value)
-            ? value : DefaultOpacity;
-        }
+        get => double.TryParse(this.OpacityString, CultureInfo.CurrentCulture, out var value)
+                ? value : DefaultOpacity;
         set
         {
-            OnPropertyChanged(nameof(Opacity));
-            this.OpacityString = value.ToString();
+            OnPropertyChanged();
+            this.OpacityString = value.ToString(CultureInfo.InvariantCulture);
         }
     }
 
@@ -191,23 +183,21 @@ public sealed partial class PencilsSidePanelViewModel : SidePanelViewModel
 
     #region Selected Color
 
-    private Color DefaultPenColor = Colors.Black;
+    private readonly Color defaultPenColor = Colors.Black;
     private Color? selectedColor;
     public Color? SelectedColor
     {
         get => selectedColor;
         set
         {
-            if (SetProperty(ref selectedColor, value))
+            if (!SetProperty(ref selectedColor, value)) return;
+            if (value.HasValue)
             {
-                if (value.HasValue)
-                {
-                    SelectedBrush = new SolidColorBrush(value.Value);
-                }
-                else
-                {
-                    SelectedBrush = new SolidColorBrush(DefaultPenColor); 
-                }
+                SelectedBrush = new SolidColorBrush(value.Value);
+            }
+            else
+            {
+                SelectedBrush = new SolidColorBrush(defaultPenColor); 
             }
         }
     }

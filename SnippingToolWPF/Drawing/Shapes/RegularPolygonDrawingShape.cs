@@ -1,39 +1,28 @@
-﻿using SnippingToolWPF.Drawing.Tools.PolygonTools;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows;
+using SnippingToolWPF.Tools.PolygonTools;
+using SnippingToolWPF.WPFExtensions;
 
-namespace SnippingToolWPF.Drawing.Shapes;
+namespace SnippingToolWPF;
 
 public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygonDrawingShape, Polygon>
 {
     public RegularPolygonDrawingShape()
     {
-        this.VisualInternal = CreateVisual();
-    }
-    public RegularPolygonDrawingShape(int polygonSides, double degreesRotated = 0d, double innerCircle = 0d)
-    {
-        this.NumberOfSides = polygonSides;
-      //  this.degreesRotated = degreesRotated;
-        this.PointGenerationRotationAngle = degreesRotated;
-        this.VisualInternal = CreateVisual();
+        this.Visual = CreateVisual();
     }
 
-    protected override Polygon CreateVisual()
+    private Polygon CreateVisual()
     {
-        return new Polygon()
+        return new()
         {
             Points = GetPolygonPoints(),
             Stroke = Brushes.Black,
         };
     }
 
-    public const int DefaultNumberOfSides = 3;
+    private const int DefaultNumberOfSides = 3;
 
     public static readonly DependencyProperty NumberOfSidesProperty = DependencyProperty.Register(
         nameof(NumberOfSides),
@@ -43,7 +32,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
             DefaultNumberOfSides,
             FrameworkPropertyMetadataOptions.AffectsRender
         ),
-        validateValueCallback: static proposedValue => proposedValue is int value && value >= 3
+        validateValueCallback: static proposedValue => proposedValue is >= 3
     );
 
     public int NumberOfSides
@@ -63,7 +52,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
 
     private void RegeneratePoints()
     {
-        this.VisualInternal.Points = GetPolygonPoints();
+    //    this.VisualInternal.Points = GetPolygonPoints();
     } 
 
     private PointCollection GetPolygonPoints() => new(CreateInitialPolygon.GeneratePolygonPoints(this.NumberOfSides, PointGenerationRotationAngle));
@@ -73,7 +62,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         propertyType: typeof(double),
         ownerType: typeof(RegularPolygonDrawingShape),
         typeMetadata: new FrameworkPropertyMetadata(
-            0d,
+            defaultValue: 0d,
             FrameworkPropertyMetadataOptions.AffectsMeasure
         )
     );
@@ -88,5 +77,6 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
     protected override void PopulateClone(RegularPolygonDrawingShape clone)
     {
         base.PopulateClone(clone);
+        Console.WriteLine();
     }
 }

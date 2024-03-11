@@ -1,19 +1,16 @@
-﻿using SnippingToolWPF.Drawing.Shapes;
-using SnippingToolWPF.Drawing.Tools.PolygonTools;
-using SnippingToolWPF.ExtensionMethods;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
+using SnippingToolWPF.ExtensionMethods;
+using SnippingToolWPF.SidePanel.ShapesSidePanel;
+using SnippingToolWPF.Tools.ToolAction;
 
-namespace SnippingToolWPF.Drawing.Tools.ToolAction;
+namespace SnippingToolWPF.Tools.PolygonTools;
 
 public sealed class PolygonTool : DraggingTool<DrawingShape>
 {
     private readonly ShapesSidePanelViewModel options;
-    public override bool IsDrawing { get; set; } = false;
+    public override bool IsDrawing { get; set; }
     public override DrawingShape DrawingShape { get; }
 
     private Point startPoint;
@@ -29,11 +26,11 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         new($"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.NumberOfSides)}"),
         options)
         .WithBinding(
-            RegularPolygonDrawingShape.AngleProperty,
+            DrawingShape.AngleProperty,
         new($"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.RotationAngle)}"),
         options)
         .WithBinding(
-            RegularPolygonDrawingShape.StrokeThicknessProperty,
+            DrawingShape.StrokeThicknessProperty,
         new($"{nameof(ShapesSidePanelViewModel.Thickness)}"),
         options);
     }
@@ -51,14 +48,14 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         startPoint = position;
         this.DrawingShape.Left = position.X;
         this.DrawingShape.Top = position.Y;
-        this.DrawingShape.Stroke = options.shapeStroke;
+        this.DrawingShape.Stroke = options.ShapeStroke;
         this.DrawingShape.StrokeDashCap = PenLineCap.Round;
         this.DrawingShape.StrokeStartLineCap = PenLineCap.Round;
         this.DrawingShape.StrokeEndLineCap = PenLineCap.Round;
         this.DrawingShape.StrokeLineJoin = PenLineJoin.Round;
         this.DrawingShape.StrokeThickness = options.Thickness;
         this.DrawingShape.Opacity = options.RealOpacity;
-        this.DrawingShape.Fill = options.shapeFill;
+        this.DrawingShape.Fill = options.ShapeFill;
         return DrawingToolAction.StartMouseCapture();
     }
 
@@ -83,7 +80,7 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
     public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
-        var finalPolygon = this.DrawingShape.Clone(new Size(this.DrawingShape.Width, this.DrawingShape.Height));
+        var finalPolygon = this.DrawingShape.Clone(new(this.DrawingShape.Width, this.DrawingShape.Height));
         ResetVisual();
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalPolygon), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
@@ -107,16 +104,16 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
     /// When locked Aspect Ratio is activated, the polygon drawn on the canvas will have perfect perportions. e.g. perfect Rectangle / triangle
     /// </summary>
     private void CheckIfLockedAspectRatio() => LockedAspectRatio = Keyboard.Modifiers == ModifierKeys.Shift;
-    public override bool LockedAspectRatio { get; set; } = false;
+    public override bool LockedAspectRatio { get; set; }
 
     public Point GetLockedAspectRatioEndPoint(Point location)
     {
-        double dx = location.X - startPoint.X;
-        double dy = location.Y - startPoint.Y;
-        double max = Math.Max(Math.Abs(dx), Math.Abs(dy));
-        double x = startPoint.X + Math.Sign(dx) * max;
-        double y = startPoint.Y + Math.Sign(dy) * max;
-        return new Point(x, y);
+        var dx = location.X - startPoint.X;
+        var dy = location.Y - startPoint.Y;
+        var max = Math.Max(Math.Abs(dx), Math.Abs(dy));
+        var x = startPoint.X + Math.Sign(dx) * max;
+        var y = startPoint.Y + Math.Sign(dy) * max;
+        return new(x, y);
     }
     #endregion
 }

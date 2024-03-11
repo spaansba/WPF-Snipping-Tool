@@ -1,8 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-                    xmlns:control="clr-namespace:SnippingToolWPF.Control" xmlns:beh="http://schemas.microsoft.com/xaml/behaviors">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
     <!--#region Geomtetry and colors -->
     <!-- Pointed Thumb-->

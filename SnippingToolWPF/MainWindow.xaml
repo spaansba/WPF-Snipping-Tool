@@ -1,7 +1,10 @@
 ﻿<Window x:Class="SnippingToolWPF.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:fa6="http://schemas.fontawesome.com/icons/svg" xmlns:local="clr-namespace:SnippingToolWPF"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="Snipping Tool"
+        xmlns:local="clr-namespace:SnippingToolWPF"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:specialUiElements="clr-namespace:SnippingToolWPF.Control.SpecialUIElements"
+        xmlns:sidePanel1="clr-namespace:SnippingToolWPF.SidePanel"
+        Title="Snipping Tool"
         Width="800" Height="550"
         Background="#FFF4F4F4" FontFamily="Segou UI Light" AllowsTransparency="True"
         FontSize="13" UseLayoutRounding="True" mc:Ignorable="d" WindowStyle="None">
@@ -20,39 +23,45 @@
                    Width="32" Height="32"/>
         </Canvas>
 
-        <Canvas x:Key="ScreenshotIconDataTemplate" Width="32"
-                Height="32" x:Shared="False">
-            <Image x:Name="iconImage" Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/pencilsTopBar.png" 
-                   Width="32" Height="32"/>
-        </Canvas>
-
         <!-- Images for the Top Bar Icons-->
         <DataTemplate x:Key="PencilsTemplate">
-            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/pencilsTopBar.png"  Width="32" Height="32"/>
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/pencilsTopBar.png"
+                   Width="32" Height="32"/>
         </DataTemplate>
 
         <DataTemplate x:Key="ShapesTemplate">
-            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/shapesTopBar.png"  Width="32" Height="32"/>
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/shapesTopBar.png"
+                   Width="32" Height="32"/>
         </DataTemplate>
 
         <DataTemplate x:Key="StickersTemplate">
-            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/stickerTopBar.png"  Width="32" Height="32"/>
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/stickerTopBar.png"
+                   Width="32" Height="32"/>
         </DataTemplate>
 
         <DataTemplate x:Key="TextTemplate">
-            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/textTopBar.png"  Width="32" Height="32"/>
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/textTopBar.png"
+                   Width="32" Height="32"/>
         </DataTemplate>
 
         <DataTemplate x:Key="EditTemplate">
-            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/editTopBar.png"  Width="32" Height="32"/>
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/editTopBar.png"
+                   Width="32" Height="32"/>
         </DataTemplate>
         
         <Canvas x:Key="HistoryTemplate" Width="32" Height="32">
-            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/historyTopBar.png"  Width="32" Height="32"/>
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/historyTopBar.png"
+                   Width="32" Height="32"/>
         </Canvas>
 
         <Canvas x:Key="MenuTemplate" Width="32" Height="32">
-            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/menuTopBar.png"  Width="32" Height="32"/>
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/menuTopBar.png" 
+                   Width="32" Height="32"/>
+        </Canvas>
+        
+        <Canvas x:Key="EmptyCanvasTemplate" Width="32" Height="32">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/emptyCanvas.png" 
+                   Width="28" Height="28"/>
         </Canvas>
 
 
@@ -80,7 +89,8 @@
 
                 <!-- TODO: Add Project name property-->
                 <TextBlock Text="project name - Snipping Tool" Foreground="{StaticResource MainForegroundBrush}"
-                           FontFamily="Segou UI Light" VerticalAlignment="Center" HorizontalAlignment="Left"
+                           FontFamily="Segue UI Light" 
+                           VerticalAlignment="Center" HorizontalAlignment="Left"
                            Grid.Column="0" Grid.ColumnSpan="2" Padding="15,0,0,0"/>
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right"
@@ -99,22 +109,22 @@
         </Border>
         <!--#endregion -->
         
-        <DockPanel x:Name="PrimaryTopPanel"
-                   Background="{StaticResource MainBackgroundBrush}"
+        <DockPanel Background="{StaticResource MainBackgroundBrush}"
                    DockPanel.Dock="Top"
                    TextElement.Foreground="{StaticResource MainForegroundBrush}">
 
             <DockPanel.Resources>
                 <Style BasedOn="{StaticResource ButtonWithIcon}" TargetType="ToggleButton" />
                 <Style BasedOn="{StaticResource ButtonWithIcon}" TargetType="Button" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="{StaticResource SemiWhiteColor}" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" 
+                                 Color="{StaticResource SemiWhiteColor}" />
             </DockPanel.Resources>
 
             <ToggleButton x:Name="MenuButton"
-                          local:ButtonWithIcon.Icon="{StaticResource MenuTemplate}"
+                          specialUiElements:ButtonWithIcon.Icon="{StaticResource MenuTemplate}"
                           DockPanel.Dock="Left" />
-            <Button local:ButtonWithIcon.Icon="{StaticResource HistoryTemplate}"
-                    local:ButtonWithIcon.IconLocation="Top" Content="History"
+            <Button specialUiElements:ButtonWithIcon.Icon="{StaticResource HistoryTemplate}"
+                    specialUiElements:ButtonWithIcon.IconLocation="Top" Content="History"
                     DockPanel.Dock="Right" />
 
             <ListBox x:Name="ToolBarTopMiddle" HorizontalAlignment="Center"
@@ -126,7 +136,7 @@
                      SelectedItem="{Binding SidePanelContentKind}">
                 <ListBox.Resources>
                     <!--  Selecting the correct sidepanel based on topbar button press  -->
-                    <local:SidePanelContentKindIconSelector x:Key="SidePanelContentKindIconSelector"
+                    <sidePanel1:SidePanelContentKindIconSelector x:Key="SidePanelContentKindIconSelector"
                                                             Pencils="{StaticResource PencilsTemplate}"
                                                             Shapes="{StaticResource ShapesTemplate}"
                                                             Stickers="{StaticResource StickersTemplate}"
@@ -135,9 +145,12 @@
                 </ListBox.Resources>
                 <ListBox.ItemContainerStyle>
                     <Style BasedOn="{StaticResource CustomListBoxItem}" TargetType="ListBoxItem">
-                        <Setter Property="local:ButtonWithIcon.Icon" Value="{Binding}" />
-                        <Setter Property="local:ButtonWithIcon.IconTemplateSelector" Value="{StaticResource SidePanelContentKindIconSelector}" />
-                        <Setter Property="local:ButtonWithIcon.IconLocation" Value="Top" />
+                        <Setter Property="specialUiElements:ButtonWithIcon.Icon" 
+                                Value="{Binding}" />
+                        <Setter Property="specialUiElements:ButtonWithIcon.IconTemplateSelector" 
+                                Value="{StaticResource SidePanelContentKindIconSelector}" />
+                        <Setter Property="specialUiElements:ButtonWithIcon.IconLocation"
+                                Value="Top" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
@@ -171,14 +184,14 @@
                 <Button x:Name="TakeScreenshot"
                         Margin="0,0,8,0" Padding="6"
                         Command="{Binding TakeScreenshot}"
-                        local:ButtonWithIcon.Icon="{StaticResource ScreenshotImage}"
-                        local:ButtonWithIcon.IconLocation="Left" Content="Screenshot"
+                        specialUiElements:ButtonWithIcon.Icon="{StaticResource ScreenshotImage}"
+                        specialUiElements:ButtonWithIcon.IconLocation="Left" Content="Screenshot"
                         Foreground="{StaticResource AlternateForegroundBrush}" />
                 <Button x:Name="EmptyCanvas"
                         Command="{Binding ClearCanvas}"
                         Padding="6"
-                        local:ButtonWithIcon.Icon="{StaticResource ScreenshotImage}"
-                        local:ButtonWithIcon.IconLocation="Left" Content="Empty Canvas"
+                        specialUiElements:ButtonWithIcon.Icon="{StaticResource EmptyCanvasTemplate}"
+                        specialUiElements:ButtonWithIcon.IconLocation="Left" Content="Empty Canvas"
                         Foreground="{StaticResource AlternateForegroundBrush}" />
                 <TextBlock />
             </DockPanel>
@@ -188,7 +201,8 @@
                     Width="250" HorizontalAlignment="Left"
                     VerticalAlignment="Stretch" Panel.ZIndex="1"
                     Background="LightBlue"
-                    Visibility="{Binding ElementName=MenuButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    Visibility="{Binding ElementName=MenuButton, Path=IsChecked, 
+                    Converter={StaticResource BooleanToVisibilityConverter}}" />
             <Border Grid.Row="0" Grid.RowSpan="2"
                     Grid.Column="1"
                     Background="{StaticResource AlternateBackgroundBrush}" />
@@ -203,7 +217,7 @@
             <!-- Drawing canvas gets updated whenever a user opens a new sidepanel or the user selects a new tool-->
             <local:DrawingCanvas Grid.Row="1" Grid.Column="0"
                                  Shapes="{Binding DrawingObjects}"
-                                 local:Tool="{Binding SidePanelContent.Tool, FallbackValue={x:Null}}"
+                                 Tool="{Binding SidePanelContent.Tool, FallbackValue={x:Null}}"
                                  Screenshot="{Binding Screenshot}"
                                  SelectedItem="{Binding SelectedShape}"/>
 

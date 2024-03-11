@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace SnippingToolWPF.Interop;
+namespace SnippingTool.Interop.Win32Api;
 
 class User32
 {
@@ -29,7 +25,7 @@ class User32
     [DllImport("user32.dll")]
     public static extern bool ClientToScreen(IntPtr hWnd, ref Win32Point lpPoint);
 
-    [DllImportAttribute("user32.dll")]
+    [DllImport("user32.dll")]
     public static extern IntPtr SetForegroundWindow(IntPtr hWnd);
 
     [DllImport("user32.dll")]

@@ -1,10 +1,4 @@
 ﻿using SnippingToolWPF.ExtensionMethods;
-using System;
-using System.Collections.Generic;
-using System.DirectoryServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -18,13 +12,13 @@ public sealed class PreviewEllipse : Decorator
     private const int NonHighLightedCells = 4;
     private const int HighlightedIndex = NonHighLightedCells; // Alias for readability
     private const int ColumnCount = NonHighLightedCells * 2 + 1; // make sure this is devidable by PreviewEllipseWidth
-    private SolidColorBrush lightBlueBrush = new SolidColorBrush(Color.FromArgb(40, 0, 100, 255));
-    private SolidColorBrush lightGrayBrush = new SolidColorBrush(Color.FromArgb(50, 169, 169, 169));
+    private readonly SolidColorBrush lightBlueBrush = new(Color.FromArgb(40, 0, 100, 255));
+    private readonly SolidColorBrush lightGrayBrush = new(Color.FromArgb(50, 169, 169, 169));
 
     private readonly Ellipse mainEllipse;
     public PreviewEllipse()
     {
-        mainEllipse = new Ellipse()
+        mainEllipse = new()
         {
             Stroke = Brushes.Black,
             StrokeThickness = 2

@@ -4,6 +4,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using FontAwesome6;
 using FontAwesome6.Svg;
+using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF.Control;
 

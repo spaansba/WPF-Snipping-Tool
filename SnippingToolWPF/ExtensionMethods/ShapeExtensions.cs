@@ -1,12 +1,7 @@
-﻿using SnippingToolWPF.Drawing.Shapes;
-using System.Diagnostics;
-using System.Dynamic;
-using System.Runtime.CompilerServices;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace SnippingToolWPF.ExtensionMethods;
 
@@ -16,6 +11,7 @@ public static class ShapeExtensions
     /// This extension method clones the shape, the reason we mostly do this is so the shape has no parent and we can put it in a canvas easier
     /// </summary>
     /// <param name="shape">input shape</param>
+    /// <param name="size"></param>
     /// <returns>Cloned Shape</returns>
     /// <exception cref="ArgumentException">If shape is not defined in the Clone method</exception>
     public static DrawingShape Clone(this DrawingShape shape, Size size) => shape switch
@@ -38,7 +34,7 @@ public static class ShapeExtensions
         {
             foreach (var point in polygon.Points)
             {
-                scaledPoints.Add(new Point(point.X * scaleSize.Width, point.Y * scaleSize.Height));
+                scaledPoints.Add(new(point.X * scaleSize.Width, point.Y * scaleSize.Height));
             }
         }
 

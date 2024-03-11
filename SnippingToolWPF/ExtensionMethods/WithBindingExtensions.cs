@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Data;
 
-namespace SnippingToolWPF;
+namespace SnippingToolWPF.ExtensionMethods;
 
 public static class WithBindingExtensions
 {
@@ -40,7 +34,7 @@ public static class WithBindingExtensions
     this T target,
     DependencyProperty targetProperty,
     object source,
-    params string[] pathParts) where T : DependencyObject
+    params object[] pathParts) where T : DependencyObject
     {
         if (pathParts.Length is 0)
             throw new ArgumentException("Must provide at least one path part", nameof(pathParts));
@@ -48,7 +42,7 @@ public static class WithBindingExtensions
         BindingOperations.SetBinding(target, targetProperty, new Binding()
         {
             Source = source,
-            Path = new PropertyPath(
+            Path = new(
                 GetPath(pathParts.Length),
                 pathParts
             ),
@@ -90,7 +84,7 @@ public static class WithBindingExtensions
                     }
                     span[0] = '(';
                     span = span[1..];
-                    _ = i.TryFormat(span, out var written, default, default);
+                    _ = i.TryFormat(span, out var written);
                     span = span[written..];
                     span[0] = ')';
                     span = span[1..];

@@ -1,16 +1,14 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
+using SnippingToolWPF.Common;
 
 namespace SnippingToolWPF
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         static App()
         {
