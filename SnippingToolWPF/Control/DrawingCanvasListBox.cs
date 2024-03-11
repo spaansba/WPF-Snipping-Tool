@@ -44,18 +44,21 @@ namespace SnippingToolWPF.Control
         {
             base.PrepareContainerForItemOverride(element, item);
 
-            if (element is DrawingCanvasListBoxItem listBoxItem && item is UIElement uiElement)
-            {
-                // Reason we only check for Left and Top
-                // https://source.dot.net/#PresentationFramework/System/Windows/Controls/Canvas.cs,286
-                if (uiElement.ReadLocalValue(Canvas.LeftProperty) != DependencyProperty.UnsetValue)
-                    Canvas.SetLeft(listBoxItem, Canvas.GetLeft(uiElement) - 1); // - 1 to adjust for the ListBox 
+            if (element is not DrawingCanvasListBoxItem listBoxItem || item is not UIElement uiElement) return;
 
-                if (uiElement.ReadLocalValue(Canvas.TopProperty) != DependencyProperty.UnsetValue)
-                    Canvas.SetTop(listBoxItem, Canvas.GetTop(uiElement) - 1); // - 1 to adjust for the ListBox 
+            
+            // Reason we only check for Left and Top
+            // https://source.dot.net/#PresentationFramework/System/Windows/Controls/Canvas.cs,286
+            if (uiElement.ReadLocalValue(Canvas.LeftProperty) != DependencyProperty.UnsetValue)
+                Canvas.SetLeft(listBoxItem, Canvas.GetLeft(uiElement) - 1); // - 1 to adjust for the ListBox 
 
-                listBoxItem.DrawingCanvas = DrawingCanvas;
-            }
+            if (uiElement.ReadLocalValue(Canvas.TopProperty) != DependencyProperty.UnsetValue)
+                Canvas.SetTop(listBoxItem, Canvas.GetTop(uiElement) - 1); // - 1 to adjust for the ListBox 
+            
+            this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            this.VerticalContentAlignment = VerticalAlignment.Stretch;
+            
+            listBoxItem.DrawingCanvas = DrawingCanvas;
         }
 
         protected override void ClearContainerForItemOverride(DependencyObject element, object item)
@@ -79,6 +82,9 @@ namespace SnippingToolWPF.Control
             this.BorderThickness = new(0);
             this.Margin = new(0);
             this.Padding = new(0);
+                        
+            this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            this.VerticalContentAlignment = VerticalAlignment.Stretch;
         }
 
         /// <summary>

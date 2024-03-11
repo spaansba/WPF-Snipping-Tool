@@ -28,7 +28,7 @@
                                 </control:DrawingCanvasListBox.ItemsPanel>
 
                             </control:DrawingCanvasListBox>
-                            <Canvas ClipToBounds="True" 
+                            <Canvas ClipToBounds="True"
                                     Focusable="True" x:Name="PART_CurrentCanvas"/> <!-- For work in progress items (still drawing etc) its second so its always on top of the saved items -->
                         </Grid>
                         

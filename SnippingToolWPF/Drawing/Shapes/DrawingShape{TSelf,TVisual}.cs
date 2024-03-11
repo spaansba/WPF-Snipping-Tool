@@ -24,6 +24,9 @@ public class DrawingShape<TSelf, TVisual> : DrawingShape<TSelf>
 
     private TVisual CreateVisual() => new(); // Can override this if you want to customize /how/ the visual is created.
 
+    /// <summary>
+    /// If Visual changes clear and set the bindings
+    /// </summary>
     private void OnVisualChanged(TVisual? oldValue, TVisual? newValue)
     {
         if (oldValue is not null)
@@ -31,8 +34,9 @@ public class DrawingShape<TSelf, TVisual> : DrawingShape<TSelf>
         if (newValue is not null)
             SetUpBindings(newValue);
     }
-    protected override void OnVisualChanged(UIElement? oldValue, UIElement? newValue)
-        => OnVisualChanged(oldValue as TVisual, newValue as TVisual);
+
+    protected override void OnVisualChangedOverride(UIElement? oldValue, UIElement? newValue) =>
+        OnVisualChanged(oldValue as TVisual, newValue as TVisual);
 
     // ReSharper disable once UnusedParameter.Local
     private void ClearBindings(TVisual visual)

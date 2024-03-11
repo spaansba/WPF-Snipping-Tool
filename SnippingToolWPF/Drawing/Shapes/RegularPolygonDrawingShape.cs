@@ -15,7 +15,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
 
     private Polygon CreateVisual()
     {
-        return new()
+        return new Polygon
         {
             Points = GetPolygonPoints(),
             Stroke = Brushes.Black,
@@ -29,7 +29,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         typeof(int),
         typeof(RegularPolygonDrawingShape),
         new FrameworkPropertyMetadata(
-            DefaultNumberOfSides,
+            defaultValue: DefaultNumberOfSides,
             FrameworkPropertyMetadataOptions.AffectsRender
         ),
         validateValueCallback: static proposedValue => proposedValue is >= 3

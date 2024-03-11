@@ -13,7 +13,7 @@ public readonly record struct DrawingToolActionItem
     /// <summary>
     /// If withUndo remove all other flags from kind except UndoableKinds
     /// </summary>
-    /// <returns>DrawingToolActionItem with only undoablekinds as flags</returns>
+    /// <returns>DrawingToolActionItem with only undoable kinds as flags</returns>
     public DrawingToolActionItem OnlyUndoableActions()
     {
         return this with { Kind = this.Kind & UndoableKinds };
@@ -36,7 +36,7 @@ public readonly record struct DrawingToolActionItem
         return new() { Kind = DrawingToolActionKind.Shape, Item = item };
     }
 
-    /// Combine methodes are the same but for difference contexts
+    /// Combine methods are the same but for difference contexts
     public static DrawingToolActionItem Combine(DrawingToolActionItem a, DrawingToolActionItem b)
     {
         return new()

@@ -48,14 +48,14 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         startPoint = position;
         this.DrawingShape.Left = position.X;
         this.DrawingShape.Top = position.Y;
-        this.DrawingShape.Stroke = options.ShapeStroke;
+        this.DrawingShape.Stroke = Brushes.Aqua;
         this.DrawingShape.StrokeDashCap = PenLineCap.Round;
         this.DrawingShape.StrokeStartLineCap = PenLineCap.Round;
         this.DrawingShape.StrokeEndLineCap = PenLineCap.Round;
         this.DrawingShape.StrokeLineJoin = PenLineJoin.Round;
         this.DrawingShape.StrokeThickness = options.Thickness;
         this.DrawingShape.Opacity = options.RealOpacity;
-        this.DrawingShape.Fill = options.ShapeFill;
+        this.DrawingShape.Fill = Brushes.Aquamarine;
         return DrawingToolAction.StartMouseCapture();
     }
 
@@ -82,6 +82,7 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         IsDrawing = false;
         var finalPolygon = this.DrawingShape.Clone(new(this.DrawingShape.Width, this.DrawingShape.Height));
         ResetVisual();
+        finalPolygon.Stretch = Stretch.Fill;
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalPolygon), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 
@@ -90,11 +91,10 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
     /// </summary>
     public override void RightButtonDown()
     {
-        if (IsDrawing)
-        {
-            ResetVisual();
-            IsDrawing = false;
-        }
+        if (!IsDrawing) return;
+        
+        ResetVisual();
+        IsDrawing = false;
     }
     #endregion
 

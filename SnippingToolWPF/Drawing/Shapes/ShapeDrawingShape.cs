@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 using System.Windows.Shapes;
 
 namespace SnippingToolWPF;

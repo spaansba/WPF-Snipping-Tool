@@ -42,14 +42,25 @@ public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
             this.OnVisualChanged(e.OldValue as UIElement, e.NewValue as UIElement);
     }
 
-    protected virtual void OnVisualChanged(UIElement? oldValue, UIElement? newValue)
+    /// <summary>
+    /// Add the shape to the canvas on visual changed
+    /// </summary>
+    /// <param name="oldValue"></param>
+    /// <param name="newValue"></param>
+    protected void OnVisualChanged(UIElement? oldValue, UIElement? newValue)
     {
         this.canvas.Children.Clear();
         if (newValue is not null)
             this.canvas.Children.Add(newValue);
         this.canvas.Children.Add(this.textBlock);
+        OnVisualChangedOverride(oldValue, newValue);
     }
 
+    protected virtual void OnVisualChangedOverride(UIElement? oldValue, UIElement? newValue)
+    {
+        // We don't do anything in here this is purely for override so we protect OnVisualChanged making it unoverrideable
+    }
+    
     public static readonly DependencyProperty VisualProperty = DependencyProperty.Register(
         nameof(Visual),
         typeof(UIElement),
@@ -185,7 +196,7 @@ public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
     }
 
     public static readonly DependencyProperty AngleProperty = RotateTransform.AngleProperty.AddOwner(typeof(DrawingShape)
-        , new(1.0));
+        , new(defaultValue: 1.0));
     public double Angle
     {
         get => this.GetValue<double>(AngleProperty);

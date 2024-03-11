@@ -184,11 +184,11 @@ public class DrawingCanvas : System.Windows.Controls.Control
     protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonUp(e);
-        if (this.isDrawing)
-        {
-            this.Tool?.RightButtonDown();
-            isDrawing = false;
-        }
+        
+        if (!this.isDrawing) return;
+        
+        this.Tool?.RightButtonDown();
+        isDrawing = false;
     }
 
 
@@ -289,12 +289,9 @@ public class DrawingCanvas : System.Windows.Controls.Control
     {
         get => this.GetValue<ObservableCollection<DrawingShape>>(ShapesProperty)
             ?? this.SetValue<ObservableCollection<DrawingShape>>(ShapesProperty, new()); // < dont return a null value
-        set
-        {
-            this.SetValue<ObservableCollection<DrawingShape>>(ShapesProperty, value);
-        }
+        set => this.SetValue<ObservableCollection<DrawingShape>>(ShapesProperty, value);
     }
-
+    
     #endregion
 
     #region Screenshot Property
