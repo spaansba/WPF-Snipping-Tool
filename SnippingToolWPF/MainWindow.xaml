@@ -3,7 +3,7 @@
         xmlns:fa6="http://schemas.fontawesome.com/icons/svg" xmlns:local="clr-namespace:SnippingToolWPF"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="Snipping Tool"
         Width="800" Height="550"
-        Background="#FFF4F4F4" FontFamily="Segou UI Light" AllowsTransparency="True" ResizeMode="CanResize"
+        Background="#FFF4F4F4" FontFamily="Segou UI Light" AllowsTransparency="True"
         FontSize="13" UseLayoutRounding="True" mc:Ignorable="d" WindowStyle="None">
     <!--  TODO Make custom title bar  -->
     <Window.DataContext>
@@ -14,17 +14,47 @@
         <!--  TODO: Add slider control for zoom in  -->
 
         <!--  TODO: if user pastes on the canvas (with text) select the text panel + paste the text in a textbox  -->
-        <Canvas x:Key="ScreenshotImage" Width="30"
-                Height="30" x:Shared="False">
-            <fa6:SvgAwesome Canvas.Left="0" Canvas.Top="8"
-                            Width="20" Height="20"
-                            Icon="Solid_Camera"
-                            PrimaryColor="{StaticResource MainForegroundBrush}" />
-            <Rectangle Canvas.Left="5" Canvas.Top="0"
-                       Width="25" Height="25"
-                       Stroke="{StaticResource MainForegroundBrush}"
-                       StrokeDashArray="3 3" StrokeThickness="1" />
+        <Canvas x:Key="ScreenshotImage" Width="32"
+                Height="32" x:Shared="False">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/ScreenCapture.png" 
+                   Width="32" Height="32"/>
         </Canvas>
+
+        <Canvas x:Key="ScreenshotIconDataTemplate" Width="32"
+                Height="32" x:Shared="False">
+            <Image x:Name="iconImage" Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/pencilsTopBar.png" 
+                   Width="32" Height="32"/>
+        </Canvas>
+
+        <!-- Images for the Top Bar Icons-->
+        <DataTemplate x:Key="PencilsTemplate">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/pencilsTopBar.png"  Width="32" Height="32"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ShapesTemplate">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/shapesTopBar.png"  Width="32" Height="32"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StickersTemplate">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/stickerTopBar.png"  Width="32" Height="32"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TextTemplate">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/textTopBar.png"  Width="32" Height="32"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EditTemplate">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/editTopBar.png"  Width="32" Height="32"/>
+        </DataTemplate>
+        
+        <Canvas x:Key="HistoryTemplate" Width="32" Height="32">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/historyTopBar.png"  Width="32" Height="32"/>
+        </Canvas>
+
+        <Canvas x:Key="MenuTemplate" Width="32" Height="32">
+            <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/menuTopBar.png"  Width="32" Height="32"/>
+        </Canvas>
+
 
         <GridLength x:Key="SidePanelWidthGrid">240</GridLength>
     </Window.Resources>
@@ -81,10 +111,9 @@
             </DockPanel.Resources>
 
             <ToggleButton x:Name="MenuButton"
-                          local:ButtonWithIcon.Icon="{StaticResource ScreenshotImage}"
-                          local:ButtonWithIcon.IconLocation="Top" Content="Menu"
+                          local:ButtonWithIcon.Icon="{StaticResource MenuTemplate}"
                           DockPanel.Dock="Left" />
-            <Button local:ButtonWithIcon.Icon="{StaticResource ScreenshotImage}"
+            <Button local:ButtonWithIcon.Icon="{StaticResource HistoryTemplate}"
                     local:ButtonWithIcon.IconLocation="Top" Content="History"
                     DockPanel.Dock="Right" />
 
@@ -97,14 +126,12 @@
                      SelectedItem="{Binding SidePanelContentKind}">
                 <ListBox.Resources>
                     <!--  Selecting the correct sidepanel based on topbar button press  -->
-                    <DataTemplate x:Key="ScreenshotIconDataTemplate">
-                        <ContentPresenter Content="{StaticResource ScreenshotImage}" />
-                    </DataTemplate>
                     <local:SidePanelContentKindIconSelector x:Key="SidePanelContentKindIconSelector"
-                                                            Pencils="{StaticResource ScreenshotIconDataTemplate}"
-                                                            Shapes="{StaticResource ScreenshotIconDataTemplate}"
-                                                            Stickers="{StaticResource ScreenshotIconDataTemplate}"
-                                                            Text="{StaticResource ScreenshotIconDataTemplate}" />
+                                                            Pencils="{StaticResource PencilsTemplate}"
+                                                            Shapes="{StaticResource ShapesTemplate}"
+                                                            Stickers="{StaticResource StickersTemplate}"
+                                                            Text="{StaticResource TextTemplate}" 
+                                                            Edit="{StaticResource EditTemplate}" />
                 </ListBox.Resources>
                 <ListBox.ItemContainerStyle>
                     <Style BasedOn="{StaticResource CustomListBoxItem}" TargetType="ListBoxItem">

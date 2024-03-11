@@ -33,6 +33,8 @@ public static class CreateInitialPolygon
         }
     }
 
+    public static Polygon CreatePolygon(PremadePolygonInfo polygonInfo) =>
+        new Polygon() { Stretch = Stretch.Fill, Points = new PointCollection(GeneratePolygonPoints(polygonInfo.NumberOfSides, polygonInfo.RotationAngle) )};
     private static Polygon CreatePolygon(IEnumerable<Point> points, double thickness, Brush stroke) =>
         new() { Stretch = Stretch.Fill, Points = new PointCollection(points), StrokeThickness = thickness, Stroke = stroke };
     #endregion

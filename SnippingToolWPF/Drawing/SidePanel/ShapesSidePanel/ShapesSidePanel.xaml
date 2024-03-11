@@ -3,15 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:control="clr-namespace:SnippingToolWPF.Control"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:uc="SnippingToolWPF.Control.ColorSelector"
-             xmlns:local="clr-namespace:SnippingToolWPF" xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:SnippingToolWPF" xmlns:system="clr-namespace:System;assembly=mscorlib" xmlns:local1="clr-namespace:SnippingToolWPF.Drawing.Tools.PolygonTools"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:ShapesSidePanelViewModel, IsDesignTimeCreatable=False}"
              Background="Transparent" d:DesignHeight="400" d:DesignWidth="240">
-    
+
     <UserControl.Resources>
         <system:Double x:Key="GridCellSize">30</system:Double>
     </UserControl.Resources>
-    
+
     <DockPanel Background="{StaticResource AlternateBackgroundBrush}">
 
 
@@ -44,9 +44,17 @@
                         <Border Width="{StaticResource GridCellSize}" 
                                 Height="{StaticResource GridCellSize}" 
                                 Padding="1" BorderThickness="0">
-                            <ContentControl Content="{Binding Visual}" />
-                            <!-- Bind to the Visual of the Polygons-->
-
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <!-- Bind to GeneratedPoints property of Polygons -->
+                                        <Polygon Points="{Binding GeneratedPoints}" 
+                                     Stroke="Black"
+                                     StrokeThickness="1"
+                                     Stretch="Fill"/>
+                                    </DataTemplate>
+                                </ContentControl.ContentTemplate>
+                            </ContentControl>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

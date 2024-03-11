@@ -13,7 +13,7 @@ namespace SnippingToolWPF;
 /// </summary>
 public sealed class SidePanelContentKindIconSelector : DataTemplateSelector
 {
-    public DataTemplate? Pencils { get; set; }
+    public DataTemplate? Pencils { get; set; } 
     public DataTemplate? Shapes { get; set; }
     public DataTemplate? Stickers { get; set; }
     public DataTemplate? Text { get; set; }

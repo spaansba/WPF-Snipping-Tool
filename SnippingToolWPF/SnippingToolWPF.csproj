@@ -31,7 +31,10 @@
 	
   <ItemGroup>
     <None Remove="Assets\Images\eraserTemp.png" />
+    <None Remove="Assets\Images\pencilsTopBar.png" />
     <None Remove="Assets\Images\PencilTemp2.png" />
+    <None Remove="Assets\Images\ScreenCapture.png" />
+    <None Remove="Assets\Images\shapesTopBar.png" />
     <None Remove="Assets\Images\TempPencil.png" />
     <None Remove="Assets\UI Icons\NewScreenshot.png" />
   </ItemGroup>
@@ -51,18 +54,54 @@
     <Resource Include="Assets\Images\eraserTemp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Images\pencilsTopBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\PencilTemp2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\shapesTopBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\TempPencil.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\UI Icons\NewScreenshot.png" />
+    <None Remove="Assets\Images\stickerTopBar.png" />
+    <Resource Include="Assets\Images\stickerTopBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="Assets\Images\editTopBar.png" />
+    <Resource Include="Assets\Images\editTopBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="Assets\Images\textTopBar.png" />
+    <Resource Include="Assets\Images\textTopBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="Assets\Images\letter-t.png" />
+    <Resource Include="Assets\Images\letter-t.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="Assets\Images\historyTopBar.png" />
+    <Resource Include="Assets\Images\historyTopBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <None Remove="Assets\Images\menuTopBar.png" />
+    <Resource Include="Assets\Images\menuTopBar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Drawing\Editing\" />
     <Folder Include="Drawing\Effects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Images\ScreenCapture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

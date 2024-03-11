@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Media;
 using SnippingToolWPF.Drawing.Shapes;
+using SnippingToolWPF.Drawing.Tools.PolygonTools;
+using System.Windows.Shapes;
 
 namespace SnippingToolWPF;
 
@@ -17,13 +19,11 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     private IDrawingTool? tool;
     public override IDrawingTool? Tool => tool;
 
-    public RegularPolygonDrawingShape polygonOption = new(); // Pre selected polygon
-
     /// <summary>
     /// Get the Shape selected by the user in the sidepanel, the enum is stored in the shapes Tag
     /// </summary>
-    private RegularPolygonDrawingShape? polygonSelected;
-    public RegularPolygonDrawingShape? PolygonSelected
+    private PremadePolygonInfo? polygonSelected;
+    public PremadePolygonInfo? PolygonSelected
     {
         get => polygonSelected;
         set
@@ -31,7 +31,6 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
             if (value is not null)
             {
                 polygonSelected = value;
-                polygonOption = new RegularPolygonDrawingShape(value.NumberOfSides,value.PointGenerationRotationAngle); //TODO: Add innercicrle
                 UpdateTool(); // Update the Tool to give it the new shape
             }
         }
@@ -48,34 +47,32 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     #endregion
 
     #region ctor
-    public List<DrawingShape> Polygons { get; set; }
+    public IReadOnlyList<PremadePolygonInfo> Polygons { get; set; }
 
     public ShapesSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
     {
         UpdateTool();
-        Polygons = CreateButtonShapes();
-        foreach (DrawingShape sidepanelPolygon in Polygons)
-        {
-            sidepanelPolygon.Stroke = Brushes.Black;
-            sidepanelPolygon.Stretch = Stretch.Fill;
-        }
+        Polygons = CreateButtonPolygons();
+
+        PolygonSelected = new PremadePolygonInfo(4,0,false);
     }
 
     /// <summary>
     /// Create the shapes presented on the buttons in the sidepanel
     /// </summary>
-    public static List<DrawingShape> CreateButtonShapes() =>
+    public static IReadOnlyList<PremadePolygonInfo> CreateButtonPolygons() =>
     [
-        new RegularPolygonDrawingShape(4, 45), // Tetragon (rectangle)
-        new RegularPolygonDrawingShape(1000, 0), // Ellipse
-        new RegularPolygonDrawingShape(3, 30), // Triangle
-        new RegularPolygonDrawingShape(4, 0), // Diamond
-        new RegularPolygonDrawingShape(5, 126), // Pentagon
-        new RegularPolygonDrawingShape( 6, 30), // Hexagon
-        new RegularPolygonDrawingShape( 7, 13), // Septagon
-        new RegularPolygonDrawingShape(8, 0), // Octagon
-        new RegularPolygonDrawingShape(10, 0, 0.4), // 5 pointed Star
+        new PremadePolygonInfo(4, 45), // Tetragon (rectangle)
+        new PremadePolygonInfo(1000, 0), // Ellipse
+        new PremadePolygonInfo(3, 30), // Triangle
+        new PremadePolygonInfo(4, 0), // Diamond
+        new PremadePolygonInfo(5, 126), // Pentagon
+        new PremadePolygonInfo( 6, 30), // Hexagon
+        new PremadePolygonInfo( 7, 13), // Septagon
+        new PremadePolygonInfo(8, 0), // Octagon
+        new PremadePolygonInfo(10, 0, true), // 5 pointed Star
     ];
+
     #endregion
 
     #region Thickness - Connecting the Slider / Textbox with eachother and data clamping

@@ -1,12 +1,13 @@
-﻿
+﻿ 
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Shapes;
 
 namespace SnippingToolWPF.Drawing.Shapes;
 
-public abstract class ShapeDrawingShape<TVisual> : DrawingShape<TVisual>
+public abstract class ShapeDrawingShape<TSelf, TVisual> : DrawingShape<TSelf, TVisual>
     where TVisual : Shape, new()
+    where TSelf : DrawingShape<TSelf>, new()
 {
     protected override void ClearBindings(TVisual visual)
     {

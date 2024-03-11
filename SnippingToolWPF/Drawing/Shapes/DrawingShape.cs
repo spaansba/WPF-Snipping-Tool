@@ -7,10 +7,11 @@ using System.Windows.Shapes;
 
 namespace SnippingToolWPF.Drawing.Shapes;
 
-public abstract class DrawingShape : Decorator, IShape
+public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
 {
     private readonly TextBlock textBlock;
     private readonly Canvas canvas;
+    public abstract DrawingShape Clone();
     public DrawingShape()
     {
         this.textBlock = SetupTextBlock(this);
@@ -60,8 +61,6 @@ public abstract class DrawingShape : Decorator, IShape
         textBlock.SetBinding(TextBlock.TextProperty, new Binding() { Source = parent, Path = new PropertyPath(DrawingShape.TextProperty) });
         return textBlock;
     }
-
-
     #region Dependency properties
     public static readonly DependencyProperty TextProperty = TextBlock.TextProperty.AddOwner(typeof(DrawingShape));
     public string? Text

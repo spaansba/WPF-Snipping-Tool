@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace SnippingToolWPF.Drawing.Shapes;
 
-public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<Polygon>
+public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygonDrawingShape, Polygon>
 {
     public RegularPolygonDrawingShape()
     {
@@ -85,6 +85,8 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<Polygon>
         get => this.GetValue<double>(PointGenerationRotationAngleProperty);
         private set => this.SetValue(PointGenerationRotationAnglePropertyKey, value);
     }
-
-
+    protected override void PopulateClone(RegularPolygonDrawingShape clone)
+    {
+        base.PopulateClone(clone);
+    }
 }

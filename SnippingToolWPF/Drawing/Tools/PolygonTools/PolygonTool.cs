@@ -1,7 +1,9 @@
 ﻿using SnippingToolWPF.Drawing.Shapes;
+using SnippingToolWPF.Drawing.Tools.PolygonTools;
 using SnippingToolWPF.ExtensionMethods;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -19,9 +21,23 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
     public PolygonTool(ShapesSidePanelViewModel options)
     {
         this.options = options;
-        this.DrawingShape = options.polygonOption;
-        ResetVisual();
+
+        //TODO: Fix WithBindingPathParts bugs so we can use it instead of WithBinding
+        this.DrawingShape = new RegularPolygonDrawingShape()
+        .WithBinding(
+        RegularPolygonDrawingShape.NumberOfSidesProperty,
+        new($"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.NumberOfSides)}"),
+        options)
+        .WithBinding(
+            RegularPolygonDrawingShape.AngleProperty,
+        new($"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.RotationAngle)}"),
+        options)
+        .WithBinding(
+            RegularPolygonDrawingShape.StrokeThicknessProperty,
+        new($"{nameof(ShapesSidePanelViewModel.Thickness)}"),
+        options);
     }
+
     public override void ResetVisual()
     {
         this.DrawingShape.Width = 0;
@@ -33,8 +49,8 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
     {
         IsDrawing = true;
         startPoint = position;
-        Canvas.SetLeft(this.DrawingShape, position.X);
-        Canvas.SetTop(this.DrawingShape, position.Y);
+        this.DrawingShape.Left = position.X;
+        this.DrawingShape.Top = position.Y;
         this.DrawingShape.Stroke = options.shapeStroke;
         this.DrawingShape.StrokeDashCap = PenLineCap.Round;
         this.DrawingShape.StrokeStartLineCap = PenLineCap.Round;
@@ -60,8 +76,8 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         this.DrawingShape.Height = Math.Abs(position.Y - startPoint.Y);
 
         // Set the new position of the polygon (we do this because otherwise a polygon can only be drawn to bottom right and not in any direction)
-        Canvas.SetLeft(this.DrawingShape, Math.Min(startPoint.X, position.X)); 
-        Canvas.SetTop(this.DrawingShape, Math.Min(startPoint.Y, position.Y));
+        this.DrawingShape.Left = Math.Min(startPoint.X, position.X);
+        this.DrawingShape.Top = Math.Min(startPoint.Y, position.Y);
         return DrawingToolAction.DoNothing;  
     }
     public override DrawingToolAction LeftButtonUp()
