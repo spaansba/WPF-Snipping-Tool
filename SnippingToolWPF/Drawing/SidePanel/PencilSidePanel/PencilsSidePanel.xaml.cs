@@ -1,13 +1,12 @@
-﻿namespace SnippingToolWPF.SidePanel.PencilSidePanel
+﻿namespace SnippingToolWPF.SidePanel.PencilSidePanel;
+
+/// <summary>
+///     Interaction logic for PencilsSidePanel.xaml
+/// </summary>
+public partial class PencilsSidePanel
 {
-    /// <summary>
-    /// Interaction logic for PencilsSidePanel.xaml
-    /// </summary>
-    public partial class PencilsSidePanel
+    public PencilsSidePanel()
     {
-        public PencilsSidePanel()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

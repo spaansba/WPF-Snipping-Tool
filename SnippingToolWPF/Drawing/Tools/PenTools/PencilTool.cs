@@ -11,41 +11,67 @@ namespace SnippingToolWPF.Tools.PenTools;
 public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
 {
     private readonly PencilsSidePanelViewModel options;
+
     public PencilTool(PencilsSidePanelViewModel options)
     {
         this.options = options;
     }
-
-    public override RegularPolylineDrawingShape DrawingShape { get; } = new();
-
+    
     // TODO: If user holds shift draw a perfect straight line
     public override bool LockedAspectRatio { get; set; } = false;
     public override bool IsDrawing { get; set; }
 
     //public override void ResetVisual() => this.DrawingShape.Points.Clear();
-    public override void ResetVisual() => this.DrawingShape.StrokeThickness = 10;
+    public override void ResetVisual()
+    {
+        DrawingShape.StrokeThickness = 10;
+    }
+
+
+    //TODO: make the XAML colorPicker have an option for Rainbow Gradient
+    public static LinearGradientBrush GetRainbowGradientBrush()
+    {
+        var rainbowBrush = new LinearGradientBrush();
+        rainbowBrush.StartPoint = new Point(0, 0);
+        rainbowBrush.EndPoint = new Point(1, 0);
+
+        var gradientStops = new GradientStopCollection();
+        gradientStops.Add(new GradientStop(Colors.Red, 0));
+        gradientStops.Add(new GradientStop(Colors.Orange, 0.17));
+        gradientStops.Add(new GradientStop(Colors.Yellow, 0.33));
+        gradientStops.Add(new GradientStop(Colors.Green, 0.5));
+        gradientStops.Add(new GradientStop(Colors.Blue, 0.67));
+        gradientStops.Add(new GradientStop(Colors.Indigo, 0.83));
+        gradientStops.Add(new GradientStop(Colors.Violet, 1.0));
+
+        rainbowBrush.GradientStops = gradientStops;
+
+        return rainbowBrush;
+    }
+
     #region Mouse Events
+
     public override DrawingToolAction LeftButtonDown(Point position, DrawingShape? element)
     {
         IsDrawing = true;
-        this.DrawingShape.StrokeThickness = this.options.Thickness;
-        this.DrawingShape.Stroke = this.options.SelectedBrush;
-        this.DrawingShape.Opacity = this.options.RealOpacity;
-        this.DrawingShape.UseLayoutRounding = true;
-        this.DrawingShape.StrokeDashCap = PenLineCap.Round;
-        this.DrawingShape.StrokeStartLineCap = PenLineCap.Round;
-        this.DrawingShape.StrokeEndLineCap = PenLineCap.Round;
-        this.DrawingShape.StrokeLineJoin = PenLineJoin.Round;
+        DrawingShape.StrokeThickness = options.Thickness;
+        DrawingShape.Stroke = options.SelectedBrush;
+        DrawingShape.Opacity = options.RealOpacity;
+        DrawingShape.UseLayoutRounding = true;
+        DrawingShape.StrokeDashCap = PenLineCap.Round;
+        DrawingShape.StrokeStartLineCap = PenLineCap.Round;
+        DrawingShape.StrokeEndLineCap = PenLineCap.Round;
+        DrawingShape.StrokeLineJoin = PenLineJoin.Round;
         //Visual.Points.Clear();
         ////     Visual.Effect = customEffect;
         //Visual.Points.Add(position);
         return DrawingToolAction.StartMouseCapture();
-
     }
 
     //The amount of points between every line within the polyline drawn
     // ReSharper disable once UnusedMember.Local
     private const int FreehandSensitivity = 4;
+
     public override DrawingToolAction MouseMove(Point position, DrawingShape? element)
     {
         //if (!IsDrawing)
@@ -92,16 +118,16 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
 
         //ResetVisual();
         return DrawingToolAction.DoNothing;
-   //     return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
+        //     return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 
     /// <summary>
-    /// Resets the visual if drawing and right clicking
+    ///     Resets the visual if drawing and right clicking
     /// </summary>
     public override void RightButtonDown()
     {
         if (!IsDrawing) return;
-        
+
         ResetVisual();
         IsDrawing = false;
     }
@@ -114,7 +140,7 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     private void AddArrowHead(Polyline visual)
     {
         if (visual.Points is not [.., _, var point1, var point2]) return;
-        var(arrowPoint1, arrowPoint2) = GetArrowHeadPoints(point1, point2);
+        var (arrowPoint1, arrowPoint2) = GetArrowHeadPoints(point1, point2);
 
         visual.Points.Add(arrowPoint1);
         visual.Points.Add(point2); // make sure it doesn't become a triangle
@@ -124,7 +150,8 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     private (Point A, Point B) GetArrowHeadPoints(Point position1, Point position2)
     {
         var lineDirection = position2 - position1;
-        var arrowheadLength = Math.Min(this.DrawingShape.StrokeThickness / 1.2, 30); // change the first value to make the line smaller/bigger
+        var arrowheadLength =
+            Math.Min(DrawingShape.StrokeThickness / 1.2, 30); // change the first value to make the line smaller/bigger
 
         var rotatedDirection1 = lineDirection.RotateDegrees(140);
         var rotatedDirection2 = lineDirection.RotateDegrees(-140);
@@ -140,30 +167,8 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     {
         var newX = vector.X * Math.Cos(angle) - vector.Y * Math.Sin(angle);
         var newY = vector.X * Math.Sin(angle) + vector.Y * Math.Cos(angle);
-        return new(newX, newY);
+        return new Vector(newX, newY);
     }
 
     #endregion
-
-
-    //TODO: make the XAML colorPicker have an option for Rainbow Gradient
-    public static LinearGradientBrush GetRainbowGradientBrush()
-    {
-        var rainbowBrush = new LinearGradientBrush();
-        rainbowBrush.StartPoint = new(0, 0);
-        rainbowBrush.EndPoint = new(1, 0);
-
-        var gradientStops = new GradientStopCollection();
-        gradientStops.Add(new(Colors.Red, 0));
-        gradientStops.Add(new(Colors.Orange, 0.17));
-        gradientStops.Add(new(Colors.Yellow, 0.33));
-        gradientStops.Add(new(Colors.Green, 0.5));
-        gradientStops.Add(new(Colors.Blue, 0.67));
-        gradientStops.Add(new(Colors.Indigo, 0.83));
-        gradientStops.Add(new(Colors.Violet, 1.0));
-
-        rainbowBrush.GradientStops = gradientStops;
-
-        return rainbowBrush;
-    }
 }

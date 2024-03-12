@@ -5,11 +5,12 @@ namespace SnippingToolWPF.SidePanel;
 
 public abstract class SidePanelViewModel : ObservableValidator
 {
-    public abstract string Header { get; }
-    protected DrawingViewModel DrawingViewModel { get; }
     protected SidePanelViewModel(DrawingViewModel drawingViewModel)
     {
-        this.DrawingViewModel = drawingViewModel;
+        DrawingViewModel = drawingViewModel;
     }
+
+    public abstract string Header { get; }
+    protected DrawingViewModel DrawingViewModel { get; }
     public virtual IDrawingTool? Tool => null;
 }

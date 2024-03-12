@@ -8,7 +8,7 @@ public static class PanelExtensions
     public static TPanel AddChildren<TPanel>(this TPanel panel, IEnumerable<UIElement> children)
         where TPanel : Panel
     {
-        foreach (var child in children) 
+        foreach (var child in children)
             panel.Children.Add(child);
         return panel;
     }
@@ -20,6 +20,4 @@ public static class PanelExtensions
             panel.Children.Add(child);
         return panel;
     }
-
-
 }

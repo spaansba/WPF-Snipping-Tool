@@ -7,18 +7,18 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid ShowGridLines="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Rectangle Grid.Row="0" Grid.Column="0" Stroke="Red" StrokeThickness="10" Margin="10" />
         <Ellipse Grid.Row="0" Grid.Column="1" Stroke="Green" StrokeThickness="10" Margin="10" />
         <Polygon Grid.Row="1" Grid.Column="0" Stroke="Blue" StrokeThickness="10" Margin="10"
-         Stretch="Fill">
+                 Stretch="Fill">
             <Polygon.Points>
                 <Point X="0" Y="1" />
                 <Point X="1" Y="1" />
@@ -26,13 +26,13 @@
             </Polygon.Points>
         </Polygon>
         <Polygon Grid.Column="1" Stroke="Purple" StrokeThickness="10" Margin="40,46,111,55"
-         Stretch="Fill" RenderTransformOrigin="0.577,-0.506" Grid.Row="1">
+                 Stretch="Fill" RenderTransformOrigin="0.577,-0.506" Grid.Row="1">
             <Polygon.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="-4.284"/>
-                    <RotateTransform Angle="358.536"/>
-                    <TranslateTransform X="-4.663" Y="-15.893"/>
+                    <ScaleTransform />
+                    <SkewTransform AngleY="-4.284" />
+                    <RotateTransform Angle="358.536" />
+                    <TranslateTransform X="-4.663" Y="-15.893" />
                 </TransformGroup>
             </Polygon.RenderTransform>
             <Polygon.Points>

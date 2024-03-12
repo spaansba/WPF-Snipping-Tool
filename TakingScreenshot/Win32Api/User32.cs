@@ -2,7 +2,7 @@
 
 namespace SnippingTool.Interop.Win32Api;
 
-class User32
+internal class User32
 {
     [DllImport("user32.dll")]
     public static extern IntPtr GetDesktopWindow();
@@ -30,6 +30,4 @@ class User32
 
     [DllImport("user32.dll")]
     public static extern IntPtr WindowFromPoint(Win32Point pt);
-
-
 }

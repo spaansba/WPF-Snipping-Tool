@@ -6,7 +6,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:specialUiElements="clr-namespace:SnippingToolWPF.Control.SpecialUIElements"
              xmlns:shapesSidePanel="clr-namespace:SnippingToolWPF.SidePanel.ShapesSidePanel"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=shapesSidePanel:ShapesSidePanelViewModel, IsDesignTimeCreatable=False}"
              Background="Transparent" d:DesignHeight="400" d:DesignWidth="240">
 
@@ -17,43 +17,42 @@
     <DockPanel Background="{StaticResource AlternateBackgroundBrush}">
 
 
-
         <Grid MinHeight="250" Margin="12,10,12,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-        
+
             <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                      DockPanel.Dock="Top" ItemsSource="{Binding Polygons}"
-                     Background="{StaticResource AlternateBackgroundBrush}" 
+                     Background="{StaticResource AlternateBackgroundBrush}"
                      BorderThickness="0" SelectedItem="{Binding PolygonSelected}"
                      Margin="0,10,0,0">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="6"/>
+                        <UniformGrid Columns="6" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="{StaticResource GridCellSize}" 
-                                Height="{StaticResource GridCellSize}" 
+                        <Border Width="{StaticResource GridCellSize}"
+                                Height="{StaticResource GridCellSize}"
                                 Padding="1" BorderThickness="0">
                             <ContentControl Content="{Binding}">
                                 <ContentControl.ContentTemplate>
                                     <DataTemplate>
                                         <!-- Bind to GeneratedPoints property of Polygons -->
-                                        <Polygon Points="{Binding GeneratedPoints}" 
-                                     Stroke="Black"
-                                     StrokeThickness="1"
-                                     Stretch="Fill"/>
+                                        <Polygon Points="{Binding GeneratedPoints}"
+                                                 Stroke="Black"
+                                                 StrokeThickness="1"
+                                                 Stretch="Fill" />
                                     </DataTemplate>
                                 </ContentControl.ContentTemplate>
                             </ContentControl>
@@ -64,39 +63,39 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <Setter Property="Padding" Value="0" />
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Width" Value="{StaticResource GridCellSize}"/>
-                        <Setter Property="Height" Value="{StaticResource GridCellSize}"/>
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Width" Value="{StaticResource GridCellSize}" />
+                        <Setter Property="Height" Value="{StaticResource GridCellSize}" />
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-        
+
             <Slider x:Name="ThicknessSlider"
-             Style="{StaticResource SliderTitleAndTextBox}" 
-             Grid.Column="0" Grid.Row="1" 
-             Grid.ColumnSpan="2"
-             Minimum="{x:Static shapesSidePanel:ShapesSidePanelViewModel.MinimumThickness}"
-             Maximum="{x:Static shapesSidePanel:ShapesSidePanelViewModel.MaximumThickness}"
-             Value="{Binding Thickness}"
-             specialUiElements:SliderTitleAndTextBox.StaticTextBoxText="px"
-             specialUiElements:SliderTitleAndTextBox.SliderHeader="Thickness"
-             specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding ThicknessString, UpdateSourceTrigger=PropertyChanged}"/>
+                    Style="{StaticResource SliderTitleAndTextBox}"
+                    Grid.Column="0" Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Minimum="{x:Static shapesSidePanel:ShapesSidePanelViewModel.MinimumThickness}"
+                    Maximum="{x:Static shapesSidePanel:ShapesSidePanelViewModel.MaximumThickness}"
+                    Value="{Binding Thickness}"
+                    specialUiElements:SliderTitleAndTextBox.StaticTextBoxText="px"
+                    specialUiElements:SliderTitleAndTextBox.SliderHeader="Thickness"
+                    specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding ThicknessString, UpdateSourceTrigger=PropertyChanged}" />
 
             <Slider x:Name="OpacitySlider"
-             Style="{StaticResource SliderTitleAndTextBox}" 
-             Grid.Column="0" Grid.Row="2" 
-             Grid.ColumnSpan="2"
-             Minimum="{x:Static shapesSidePanel:ShapesSidePanelViewModel.MinimumOpacity}"
-             Maximum="{x:Static shapesSidePanel:ShapesSidePanelViewModel.MaximumOpacity}"
-             Value="{Binding Opacity}"
-             specialUiElements:SliderTitleAndTextBox.StaticTextBoxText="% "
-             specialUiElements:SliderTitleAndTextBox.SliderHeader="Opacity"
-             specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}"/>
+                    Style="{StaticResource SliderTitleAndTextBox}"
+                    Grid.Column="0" Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Minimum="{x:Static shapesSidePanel:ShapesSidePanelViewModel.MinimumOpacity}"
+                    Maximum="{x:Static shapesSidePanel:ShapesSidePanelViewModel.MaximumOpacity}"
+                    Value="{Binding Opacity}"
+                    specialUiElements:SliderTitleAndTextBox.StaticTextBoxText="% "
+                    specialUiElements:SliderTitleAndTextBox.SliderHeader="Opacity"
+                    specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}" />
             <!-- placeholder -->
         </Grid>
     </DockPanel>

@@ -1,4 +1,5 @@
-﻿using System.Windows.Data;
+﻿using System.Windows;
+using System.Windows.Data;
 using System.Windows.Shapes;
 
 namespace SnippingToolWPF;
@@ -27,17 +28,26 @@ public abstract class ShapeDrawingShape<TSelf, TVisual> : DrawingShape<TSelf, TV
     protected void SetUpBindings(TVisual visual)
     {
         // is equivalent to: Stroke="{Binding RelativeSource={RelativeSource Self}, Path=Stroke}"
-        visual.SetBinding(Shape.StrokeProperty, new Binding() { Source = this, Path = new(StrokeProperty)});
-        visual.SetBinding(Shape.FillProperty, new Binding() { Source = this, Path = new(FillProperty) });
-        visual.SetBinding(Shape.StrokeThicknessProperty, new Binding() { Source = this, Path = new(StrokeThicknessProperty)});
-        visual.SetBinding(Shape.StretchProperty, new Binding() { Source = this, Path = new(StretchProperty) });
-        visual.SetBinding(Shape.StrokeDashArrayProperty, new Binding() { Source = this, Path = new(StrokeDashArrayProperty) });
-        visual.SetBinding(Shape.StrokeDashOffsetProperty, new Binding() { Source = this, Path = new(StrokeDashOffsetProperty) });
-        visual.SetBinding(Shape.StrokeDashCapProperty, new Binding() { Source = this, Path = new(StrokeDashCapProperty) });
-        visual.SetBinding(Shape.StrokeEndLineCapProperty, new Binding() { Source = this, Path = new(StrokeEndLineCapProperty) });
-        visual.SetBinding(Shape.StrokeStartLineCapProperty, new Binding() { Source = this, Path = new(StrokeStartLineCapProperty) });
-        visual.SetBinding(Shape.StrokeMiterLimitProperty, new Binding() { Source = this, Path = new(StrokeMiterLimitProperty) });
-        visual.SetBinding(Shape.StrokeLineJoinProperty, new Binding() { Source = this, Path = new(StrokeLineJoinProperty) });
+        visual.SetBinding(Shape.StrokeProperty, new Binding { Source = this, Path = new PropertyPath(StrokeProperty) });
+        visual.SetBinding(Shape.FillProperty, new Binding { Source = this, Path = new PropertyPath(FillProperty) });
+        visual.SetBinding(Shape.StrokeThicknessProperty,
+            new Binding { Source = this, Path = new PropertyPath(StrokeThicknessProperty) });
+        visual.SetBinding(Shape.StretchProperty,
+            new Binding { Source = this, Path = new PropertyPath(StretchProperty) });
+        visual.SetBinding(Shape.StrokeDashArrayProperty,
+            new Binding { Source = this, Path = new PropertyPath(StrokeDashArrayProperty) });
+        visual.SetBinding(Shape.StrokeDashOffsetProperty,
+            new Binding { Source = this, Path = new PropertyPath(StrokeDashOffsetProperty) });
+        visual.SetBinding(Shape.StrokeDashCapProperty,
+            new Binding { Source = this, Path = new PropertyPath(StrokeDashCapProperty) });
+        visual.SetBinding(Shape.StrokeEndLineCapProperty,
+            new Binding { Source = this, Path = new PropertyPath(StrokeEndLineCapProperty) });
+        visual.SetBinding(Shape.StrokeStartLineCapProperty,
+            new Binding { Source = this, Path = new PropertyPath(StrokeStartLineCapProperty) });
+        visual.SetBinding(Shape.StrokeMiterLimitProperty,
+            new Binding { Source = this, Path = new PropertyPath(StrokeMiterLimitProperty) });
+        visual.SetBinding(Shape.StrokeLineJoinProperty,
+            new Binding { Source = this, Path = new PropertyPath(StrokeLineJoinProperty) });
         // visual.SetBinding(Canvas.LeftProperty, new Binding() { Source = this, Path = new(LeftProperty) });
         // visual.SetBinding(Canvas.TopProperty, new Binding() { Source = this, Path = new(TopProperty) });
     }

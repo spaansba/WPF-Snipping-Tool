@@ -7,12 +7,9 @@ using SnippingToolWPF.Tools.ToolAction;
 
 namespace SnippingToolWPF.Tools.PolygonTools;
 
-public sealed class PolygonTool : DraggingTool<DrawingShape>
+public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
 {
     private readonly ShapesSidePanelViewModel options;
-    public override bool IsDrawing { get; set; }
-    public override DrawingShape DrawingShape { get; }
-
     private Point startPoint;
 
     public PolygonTool(ShapesSidePanelViewModel options)
@@ -20,47 +17,53 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         this.options = options;
 
         //TODO: Fix WithBindingPathParts bugs so we can use it instead of WithBinding
-        this.DrawingShape = new RegularPolygonDrawingShape()
-        .WithBinding(
-        RegularPolygonDrawingShape.NumberOfSidesProperty,
-        new($"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.NumberOfSides)}"),
-        options)
-        .WithBinding(
-            DrawingShape.AngleProperty,
-        new($"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.RotationAngle)}"),
-        options)
-        .WithBinding(
-            DrawingShape.StrokeThicknessProperty,
-        new($"{nameof(ShapesSidePanelViewModel.Thickness)}"),
-        options)
-        .WithBinding(
-            DrawingShape.StrokeProperty,
-            new($"{nameof(ShapesSidePanelViewModel.ShapeStroke)}"),
-            options);
+        DrawingShape.WithBinding(
+                RegularPolygonDrawingShape.NumberOfSidesProperty,
+                new PropertyPath(
+                    $"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.NumberOfSides)}"),
+                options)
+            .WithBinding(
+                SnippingToolWPF.DrawingShape.AngleProperty,
+                new PropertyPath(
+                    $"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.RotationAngle)}"),
+                options)
+            .WithBinding(
+                SnippingToolWPF.DrawingShape.StrokeThicknessProperty,
+                new PropertyPath($"{nameof(ShapesSidePanelViewModel.Thickness)}"),
+                options)
+            .WithBinding(
+                SnippingToolWPF.DrawingShape.StrokeProperty,
+                new PropertyPath($"{nameof(ShapesSidePanelViewModel.Stroke)}"),
+                options);
     }
+
+    public override bool IsDrawing { get; set; }
 
     public override void ResetVisual()
     {
-        this.DrawingShape.Width = 0;
-        this.DrawingShape.Height = 0;
+        DrawingShape.Width = 0;
+        DrawingShape.Height = 0;
     }
 
     #region Mouse Events
+
     public override DrawingToolAction LeftButtonDown(Point position, DrawingShape? item)
     {
+        DrawingShape.NumberOfSides = 5;
         IsDrawing = true;
         startPoint = position;
-        this.DrawingShape.Left = position.X;
-        this.DrawingShape.Top = position.Y;
-        this.DrawingShape.Stroke = Brushes.Aqua;
-        this.DrawingShape.StrokeDashCap = PenLineCap.Round;
-        this.DrawingShape.StrokeStartLineCap = PenLineCap.Round;
-        this.DrawingShape.StrokeEndLineCap = PenLineCap.Round;
-        this.DrawingShape.StrokeLineJoin = PenLineJoin.Round;
-        this.DrawingShape.StrokeThickness = options.Thickness;
-        this.DrawingShape.Opacity = options.RealOpacity;
-        this.DrawingShape.Fill = options.ShapeFill;
-        this.DrawingShape.Tag = "For Testing";
+        DrawingShape.Left = position.X;
+        DrawingShape.Top = position.Y;
+        DrawingShape.Stroke = Brushes.Aqua;
+        DrawingShape.StrokeDashCap = PenLineCap.Round;
+        DrawingShape.StrokeStartLineCap = PenLineCap.Round;
+        DrawingShape.StrokeEndLineCap = PenLineCap.Round;
+        DrawingShape.StrokeLineJoin = PenLineJoin.Round;
+        DrawingShape.StrokeThickness = options.Thickness;
+        DrawingShape.Opacity = options.RealOpacity;
+        DrawingShape.Fill = options.ShapeFill;
+        DrawingShape.Tag = "For Testing";
+        DrawingShape.Stretch = Stretch.Fill;
         return DrawingToolAction.StartMouseCapture();
     }
 
@@ -74,41 +77,50 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
             position = GetLockedAspectRatioEndPoint(position);
 
         // Set current size of the polygon (like a rectangle)
-        this.DrawingShape.Width = Math.Abs(position.X - startPoint.X);
-        this.DrawingShape.Height = Math.Abs(position.Y - startPoint.Y);
+        DrawingShape.Width = Math.Abs(position.X - startPoint.X);
+        DrawingShape.Height = Math.Abs(position.Y - startPoint.Y);
 
         // Set the new position of the polygon (we do this because otherwise a polygon can only be drawn to bottom right and not in any direction)
-        this.DrawingShape.Left = Math.Min(startPoint.X, position.X);
-        this.DrawingShape.Top = Math.Min(startPoint.Y, position.Y);
-        return DrawingToolAction.DoNothing;  
+        DrawingShape.Left = Math.Min(startPoint.X, position.X);
+        DrawingShape.Top = Math.Min(startPoint.Y, position.Y);
+        return DrawingToolAction.DoNothing;
     }
+
     public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
-        var finalPolygon = this.DrawingShape.Clone(new Size(this.DrawingShape.Width, this.DrawingShape.Height));
+        var finalPolygon = DrawingShape.Clone(new Size(DrawingShape.Width, DrawingShape.Height));
         ResetVisual();
         finalPolygon.Stretch = Stretch.Fill;
-        return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalPolygon), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
+        return new DrawingToolAction(DrawingToolActionItem.Shape(finalPolygon), DrawingToolActionItem.MouseCapture())
+            .WithUndo();
     }
 
     /// <summary>
-    /// Resets the visual if drawing and pressing right mouse button
+    ///     Resets the visual if drawing and pressing right mouse button
     /// </summary>
     public override void RightButtonDown()
     {
         if (!IsDrawing) return;
-        
+
         ResetVisual();
         IsDrawing = false;
     }
+
     #endregion
 
     #region Locked Aspect Ratio
+
     /// <summary>
-    /// If user holds shift, return true, else false
-    /// When locked Aspect Ratio is activated, the polygon drawn on the canvas will have perfect perportions. e.g. perfect Rectangle / triangle
+    ///     If user holds shift, return true, else false
+    ///     When locked Aspect Ratio is activated, the polygon drawn on the canvas will have perfect perportions. e.g. perfect
+    ///     Rectangle / triangle
     /// </summary>
-    private void CheckIfLockedAspectRatio() => LockedAspectRatio = Keyboard.Modifiers == ModifierKeys.Shift;
+    private void CheckIfLockedAspectRatio()
+    {
+        LockedAspectRatio = Keyboard.Modifiers == ModifierKeys.Shift;
+    }
+
     public override bool LockedAspectRatio { get; set; }
 
     public Point GetLockedAspectRatioEndPoint(Point location)
@@ -118,7 +130,8 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         var max = Math.Max(Math.Abs(dx), Math.Abs(dy));
         var x = startPoint.X + Math.Sign(dx) * max;
         var y = startPoint.Y + Math.Sign(dy) * max;
-        return new(x, y);
+        return new Point(x, y);
     }
+
     #endregion
 }

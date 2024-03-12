@@ -6,10 +6,20 @@ namespace SnippingToolWPF.Control.IsEnumChecked;
 
 public class EqualConverter : MarkupExtension, IValueConverter
 {
-    public static EqualConverter Instance { get; } = new();
+    public static EqualConverter Instance { get; } = new EqualConverter();
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value?.Equals(parameter);
+    {
+        return value?.Equals(parameter);
+    }
+
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value?.Equals(true) == true ? parameter : Binding.DoNothing;
-    public override object ProvideValue(IServiceProvider serviceProvider) => Instance;
+    {
+        return value?.Equals(true) == true ? parameter : Binding.DoNothing;
+    }
+
+    public override object ProvideValue(IServiceProvider serviceProvider)
+    {
+        return Instance;
+    }
 }

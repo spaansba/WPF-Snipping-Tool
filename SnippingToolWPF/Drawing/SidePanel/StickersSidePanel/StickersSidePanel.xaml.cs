@@ -1,14 +1,12 @@
-﻿
-namespace SnippingToolWPF.SidePanel.StickersSidePanel
+﻿namespace SnippingToolWPF.SidePanel.StickersSidePanel;
+
+/// <summary>
+///     Interaction logic for StickersSidePanel.xaml
+/// </summary>
+public partial class StickersSidePanel
 {
-    /// <summary>
-    /// Interaction logic for StickersSidePanel.xaml
-    /// </summary>
-    public partial class StickersSidePanel
+    public StickersSidePanel()
     {
-        public StickersSidePanel()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

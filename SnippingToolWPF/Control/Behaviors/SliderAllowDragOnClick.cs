@@ -9,14 +9,13 @@ namespace SnippingToolWPF.Control.Behaviors;
 public class SliderAllowDragOnClick : Behavior<Slider>
 {
     private Thumb? thumb;
+
     private Thumb Thumb
     {
         get
         {
             if (thumb == null)
-            {
                 thumb = ((Track)AssociatedObject.Template.FindName("PART_Track", AssociatedObject)).Thumb;
-            }
             return thumb;
         }
     }

@@ -1,14 +1,12 @@
-﻿
-namespace SnippingToolWPF.SidePanel.EditSidePanel
+﻿namespace SnippingToolWPF.SidePanel.EditSidePanel;
+
+/// <summary>
+///     Interaction logic for EditSidePanel.xaml
+/// </summary>
+public partial class EditSidePanel
 {
-    /// <summary>
-    /// Interaction logic for EditSidePanel.xaml
-    /// </summary>
-    public partial class EditSidePanel
+    public EditSidePanel()
     {
-        public EditSidePanel()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

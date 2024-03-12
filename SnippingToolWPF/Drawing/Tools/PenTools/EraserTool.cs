@@ -5,14 +5,14 @@ namespace SnippingToolWPF.Tools.PenTools;
 
 public sealed class EraserTool : IDrawingTool
 {
-
     public DrawingShape? DrawingShape => null;
 
     public bool LockedAspectRatio => throw new NotImplementedException();
 
-    public bool IsDrawing {get; private set; }
+    public bool IsDrawing { get; private set; }
 
     #region Mouse Events
+
     public DrawingToolAction LeftButtonDown(Point position, DrawingShape? item)
     {
         IsDrawing = true;
@@ -37,5 +37,6 @@ public sealed class EraserTool : IDrawingTool
     public void RightButtonDown()
     {
     }
+
     #endregion
 }

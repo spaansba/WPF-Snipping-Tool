@@ -11,15 +11,16 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
 {
     public override string Header => "Shapes";
 
-    #region Shape/Tool Selection 
-   
+    #region Shape/Tool Selection
+
     private IDrawingTool? tool;
     public override IDrawingTool? Tool => tool;
 
     /// <summary>
-    /// Get the Shape selected by the user in the sidepanel, the enum is stored in the shapes Tag
+    ///     Get the Shape selected by the user in the sidepanel, the enum is stored in the shapes Tag
     /// </summary>
     private PremadePolygonInfo? polygonSelected;
+
     public PremadePolygonInfo? PolygonSelected
     {
         get => polygonSelected;
@@ -32,8 +33,9 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
             }
         }
     }
+
     /// <summary>
-    /// Used to update the Tool Property and notify the change
+    ///     Used to update the Tool Property and notify the change
     /// </summary>
     private void UpdateTool()
     {
@@ -44,6 +46,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     #endregion
 
     #region ctor
+
     public IReadOnlyList<PremadePolygonInfo> Polygons { get; set; }
 
     public ShapesSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
@@ -51,24 +54,27 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         UpdateTool();
         Polygons = CreateButtonPolygons();
 
-        PolygonSelected = new(4);
+        PolygonSelected = new PremadePolygonInfo(4);
     }
 
     /// <summary>
-    /// Create the shapes presented on the buttons in the sidepanel
+    ///     Create the shapes presented on the buttons in the sidepanel
     /// </summary>
-    private static IReadOnlyList<PremadePolygonInfo> CreateButtonPolygons() =>
-    [
-        new(4, 45), // Tetragon (rectangle)
-        new(1000), // Ellipse
-        new(3, 30), // Triangle
-        new(4), // Diamond
-        new(5, 126), // Pentagon
-        new( 6, 30), // Hexagon
-        new( 7, 13), // Septagon
-        new(8), // Octagon
-        new(10, 0, true), // 5 pointed Star
-    ];
+    private static IReadOnlyList<PremadePolygonInfo> CreateButtonPolygons()
+    {
+        return
+        [
+            new PremadePolygonInfo(4, 45), // Tetragon (rectangle)
+            new PremadePolygonInfo(1000), // Ellipse
+            new PremadePolygonInfo(3, 30), // Triangle
+            new PremadePolygonInfo(4), // Diamond
+            new PremadePolygonInfo(5, 126), // Pentagon
+            new PremadePolygonInfo(6, 30), // Hexagon
+            new PremadePolygonInfo(7, 13), // Septagon
+            new PremadePolygonInfo(8), // Octagon
+            new PremadePolygonInfo(10, 0, true) // 5 pointed Star
+        ];
+    }
 
     #endregion
 
@@ -82,19 +88,18 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     private double LastValidThickness { get; set; }
 
     /// <summary>
-    /// ThicknessString is bound to the textbox, on property change, clamp the value if needed and update the slider (Thickness)
+    ///     ThicknessString is bound to the textbox, on property change, clamp the value if needed and update the slider
+    ///     (Thickness)
     /// </summary>
     public string ThicknessString
     {
         get => thicknessString;
         set
         {
-            if (this.SetProperty(ref thicknessString, value, validate: true))
-            {
-                OnPropertyChangedThickness(value);
-            }
+            if (SetProperty(ref thicknessString, value, true)) OnPropertyChangedThickness(value);
         }
     }
+
     private void OnPropertyChangedThickness(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -103,32 +108,32 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         if (double.TryParse(value, CultureInfo.CurrentCulture, out var doubleValue))
         {
             var clampedValue = Math.Clamp(doubleValue, MinimumThickness, MaximumThickness);
-            this.Thickness = clampedValue;
-            this.LastValidThickness = clampedValue;
+            Thickness = clampedValue;
+            LastValidThickness = clampedValue;
         }
         else //invalid entry use last valid thickness
         {
-            this.Thickness = this.LastValidThickness;
+            Thickness = LastValidThickness;
         }
     }
 
     public double Thickness
     {
-        get
-        {
-            return double.TryParse(this.ThicknessString, CultureInfo.CurrentCulture, out var value)
-            ? value : DefaultThickness;
-        }
+        get =>
+            double.TryParse(ThicknessString, CultureInfo.CurrentCulture, out var value)
+                ? value
+                : DefaultThickness;
         set
         {
             OnPropertyChanged();
-            this.ThicknessString = value.ToString(CultureInfo.InvariantCulture);
+            ThicknessString = value.ToString(CultureInfo.InvariantCulture);
         }
     }
 
     #endregion
 
     #region Shape Opacity
+
     public const double MinimumOpacity = 1;
     public const double MaximumOpacity = 100;
     private const double DefaultOpacity = 100;
@@ -139,19 +144,18 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     private double LastValidOpacity { get; set; }
 
     /// <summary>
-    /// OpacityString is bound to the textbox, on property change, clamp the value if needed and update the slider (Opacity)
+    ///     OpacityString is bound to the textbox, on property change, clamp the value if needed and update the slider
+    ///     (Opacity)
     /// </summary>
     public string OpacityString
     {
         get => opacityString;
         set
         {
-            if (this.SetProperty(ref opacityString, value, validate: true))
-            {
-                OnPropertyChangedOpacity(value);
-            }
+            if (SetProperty(ref opacityString, value, true)) OnPropertyChangedOpacity(value);
         }
     }
+
     private void OnPropertyChangedOpacity(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -160,39 +164,60 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         if (double.TryParse(value, CultureInfo.CurrentCulture, out var doubleValue))
         {
             var clampedValue = Math.Clamp(doubleValue, MinimumOpacity, MaximumOpacity);
-            this.Opacity = clampedValue;
-            this.LastValidOpacity = clampedValue;
+            Opacity = clampedValue;
+            LastValidOpacity = clampedValue;
         }
         else //invalid entry use last valid Opacity
         {
-            this.Opacity = this.LastValidOpacity;
+            Opacity = LastValidOpacity;
         }
     }
 
     /// <summary>
-    /// Opacity is bound to the slider, OpacityString to the textbox.
+    ///     Opacity is bound to the slider, OpacityString to the textbox.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public double Opacity
     {
-        get => double.TryParse(this.OpacityString, CultureInfo.CurrentCulture, out var value)
-                ? value : DefaultOpacity;
+        get => double.TryParse(OpacityString, CultureInfo.CurrentCulture, out var value)
+            ? value
+            : DefaultOpacity;
         set
         {
             OnPropertyChanged();
-            this.OpacityString = value.ToString(CultureInfo.InvariantCulture);
+            OpacityString = value.ToString(CultureInfo.InvariantCulture);
         }
     }
 
     /// <summary>
-    /// Use This value for any opacity properties, as opacity is a value between 0 and 1.0
+    ///     Use This value for any opacity properties, as opacity is a value between 0 and 1.0
     /// </summary>
     public double RealOpacity => Opacity / 100;
+
     #endregion
 
-    #region Shape Fill
-    public readonly Brush ShapeStroke = Brushes.Black;
+    #region Shape Fill / Stroke
+
+
+    private Color? selectedColor;
+    
+    // Brush that is in connection with the SelectedColor
+    private static readonly Color defaultPenColor = Colors.Black;
+    public Brush Stroke { get; private set; } = new SolidColorBrush(defaultPenColor);
+    public Color? SelectedColor
+    {
+        get => selectedColor;
+        set
+        {
+            if (!SetProperty(ref selectedColor, value)) return;
+            Stroke = value.HasValue ? new SolidColorBrush(value.Value) : new SolidColorBrush(defaultPenColor);
+        }
+    }
+    
+
+
     public readonly Brush ShapeFill = Brushes.Transparent;
     //TODO: Shape Fill
+
     #endregion
 }

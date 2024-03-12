@@ -4,25 +4,26 @@ namespace SnippingToolWPF.Tools;
 
 public sealed class UndoRedo
 {
-    private readonly Stack<DrawingToolAction> visibleActions = new();
-    private readonly Stack<DrawingToolAction> redoActions = new();
+    private readonly Stack<DrawingToolAction> redoActions = new Stack<DrawingToolAction>();
+    private readonly Stack<DrawingToolAction> visibleActions = new Stack<DrawingToolAction>();
 
     public bool TryUndo(out DrawingToolAction item)
     {
         // If there is an item on top of the stack, pop it and return true
-        if (!this.visibleActions.TryPop(out item))
+        if (!visibleActions.TryPop(out item))
             return false;
 
-        this.redoActions.Push(item);
+        redoActions.Push(item);
         return true;
     }
+
     public bool TryRedo(out DrawingToolAction item)
     {
         // If there is an item on top of the stack, pop it and return true
-        if (!this.redoActions.TryPop(out item))
+        if (!redoActions.TryPop(out item))
             return false;
 
-        this.visibleActions.Push(item);
+        visibleActions.Push(item);
         return true;
     }
 

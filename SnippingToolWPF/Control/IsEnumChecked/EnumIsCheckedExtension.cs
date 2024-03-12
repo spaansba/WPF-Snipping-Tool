@@ -31,8 +31,7 @@ public class EnumIsCheckedExtension : MarkupExtension
     public bool ValidatesOnDataErrors { get; set; }
     public bool ValidatesOnExceptions { get; set; }
 
-    [ConstructorArgument("path")]
-    public PropertyPath? Path { get; set; }
+    [ConstructorArgument("path")] public PropertyPath? Path { get; set; }
 
     [TypeConverter(typeof(CultureInfoIetfLanguageTagConverter))]
     public CultureInfo? ConverterCulture { get; set; }
@@ -45,23 +44,21 @@ public class EnumIsCheckedExtension : MarkupExtension
         var bindingTarget = valueProvider.TargetObject as ToggleButton;
         var bindingProperty = valueProvider.TargetProperty as DependencyProperty;
         if (bindingProperty?.Name is not nameof(ToggleButton.IsChecked) || bindingTarget is null)
-        {
             ThrowException(valueProvider.TargetProperty, valueProvider.TargetObject);
-        }
         var binding = new Binding
         {
-            Path = this.Path,
+            Path = Path,
             Converter = EqualConverter.Instance,
-            ConverterCulture = this.ConverterCulture,
-            ConverterParameter = this.Value,
+            ConverterCulture = ConverterCulture,
+            ConverterParameter = Value,
             Mode = BindingMode.Default,
-            ValidatesOnDataErrors = this.ValidatesOnDataErrors,
-            ValidatesOnExceptions = this.ValidatesOnExceptions,
+            ValidatesOnDataErrors = ValidatesOnDataErrors,
+            ValidatesOnExceptions = ValidatesOnExceptions
         };
-        if (this.ElementName is not null) binding.ElementName = this.ElementName;
-        if (this.RelativeSource is not null) binding.RelativeSource = this.RelativeSource;
-        if (this.Source is not null) binding.Source = this.Source;
-        if (this.AlsoSetContent) bindingTarget.Content = this.Value;
+        if (ElementName is not null) binding.ElementName = ElementName;
+        if (RelativeSource is not null) binding.RelativeSource = RelativeSource;
+        if (Source is not null) binding.Source = Source;
+        if (AlsoSetContent) bindingTarget.Content = Value;
         return SetBinding(bindingTarget, bindingProperty, binding);
     }
 
@@ -75,7 +72,8 @@ public class EnumIsCheckedExtension : MarkupExtension
         ));
     }
 
-    private static object? SetBinding(DependencyObject bindingTarget, DependencyProperty bindingTargetProperty, Binding binding)
+    private static object? SetBinding(DependencyObject bindingTarget, DependencyProperty bindingTargetProperty,
+        Binding binding)
     {
         BindingOperations.SetBinding(bindingTarget, bindingTargetProperty, binding);
         return bindingTarget.GetValue(bindingTargetProperty);

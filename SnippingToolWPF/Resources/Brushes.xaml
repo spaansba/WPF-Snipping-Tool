@@ -1,4 +1,5 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Color x:Key="SemiWhiteColor">#E1E1DE</Color>
     <Color x:Key="SemiDarkColor">#363941</Color>
     <Color x:Key="DarkGray">#949493</Color>
@@ -20,5 +21,5 @@
     <SolidColorBrush x:Key="HoveredFill" Color="{StaticResource DarkBlue}" />
     <SolidColorBrush x:Key="SelectedFill" Color="{StaticResource DarkerBlue}" />
 
-    <SolidColorBrush x:Key="UserFillBoxBackground" Color="#fffffc"/>
+    <SolidColorBrush x:Key="UserFillBoxBackground" Color="#fffffc" />
 </ResourceDictionary>

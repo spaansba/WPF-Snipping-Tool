@@ -1,13 +1,12 @@
-﻿namespace SnippingToolWPF.SidePanel.TextSidePanel
+﻿namespace SnippingToolWPF.SidePanel.TextSidePanel;
+
+/// <summary>
+///     Interaction logic for TextSidePanel.xaml
+/// </summary>
+public partial class TextSidePanel
 {
-    /// <summary>
-    /// Interaction logic for TextSidePanel.xaml
-    /// </summary>
-    public partial class TextSidePanel
+    public TextSidePanel()
     {
-        public TextSidePanel()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

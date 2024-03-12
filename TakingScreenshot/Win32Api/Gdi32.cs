@@ -1,12 +1,16 @@
 ﻿using System.Runtime.InteropServices;
 
 namespace SnippingTool.Interop.Win32Api;
-class Gdi32
+
+internal class Gdi32
 {
+    public const int SRCCOPY = 0xCC0020;
+
     // http://msdn.microsoft.com/en-us/library/dd183370(VS.85).aspx
     [DllImport("gdi32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool BitBlt(IntPtr hDestDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, Int32 dwRop);
+    public static extern bool BitBlt(IntPtr hDestDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc,
+        int ySrc, int dwRop);
 
     // http://msdn.microsoft.com/en-us/library/dd183488(VS.85).aspx
     [DllImport("gdi32.dll")]
@@ -23,8 +27,4 @@ class Gdi32
     // http://msdn.microsoft.com/en-us/library/dd183539(VS.85).aspx
     [DllImport("gdi32.dll")]
     public static extern bool DeleteObject(IntPtr hObject);
-
-
-    public const int SRCCOPY = 0xCC0020;
 }
-

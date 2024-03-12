@@ -9,5 +9,5 @@ public enum PencilOptions
     Chalk,
     Graffiti,
     Bucket,
-    Oil,
+    Oil
 }

@@ -11,20 +11,20 @@ public class SingleItemCollectionContainer : CollectionContainer
         nameof(Item),
         typeof(object),
         typeof(SingleItemCollectionContainer),
-        new FrameworkPropertyMetadata()
+        new FrameworkPropertyMetadata
         {
-            PropertyChangedCallback = ItemChangedCallback,
+            PropertyChangedCallback = ItemChangedCallback
         }
     );
+
+
+    private bool createdCollection;
 
     public object? Item
     {
         get => this.GetValue<object?>(ItemProperty);
         set => this.SetValue<object?>(ItemProperty, value);
     }
-
-
-    private bool createdCollection;
 
     private static void ItemChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

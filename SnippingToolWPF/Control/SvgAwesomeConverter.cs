@@ -41,17 +41,13 @@ public sealed class FontAwesomeExtension : MarkupExtension
         Stretch = stretch;
     }
 
-    [ConstructorArgument("icon")]
-    public EFontAwesomeIcon Icon { get; set; } = EFontAwesomeIcon.None;
+    [ConstructorArgument("icon")] public EFontAwesomeIcon Icon { get; set; } = EFontAwesomeIcon.None;
 
-    [ConstructorArgument("stretch")]
-    public Stretch Stretch { get; set; } = Stretch.Uniform;
+    [ConstructorArgument("stretch")] public Stretch Stretch { get; set; } = Stretch.Uniform;
 
-    [ConstructorArgument("height")]
-    public double Height { get; set; } = double.NaN;
+    [ConstructorArgument("height")] public double Height { get; set; } = double.NaN;
 
-    [ConstructorArgument("width")]
-    public double Width { get; set; } = double.NaN;
+    [ConstructorArgument("width")] public double Width { get; set; } = double.NaN;
 
     public Brush? PrimaryColor { get; set; }
 
@@ -76,7 +72,9 @@ public sealed class FontAwesomeExtension : MarkupExtension
 
 
     private static Brush? GetBrush(FrameworkElement? resourceLocator, object? resourceKey)
-        => resourceKey is null ? null : resourceLocator?.TryFindResource(resourceKey) as Brush;
+    {
+        return resourceKey is null ? null : resourceLocator?.TryFindResource(resourceKey) as Brush;
+    }
 
 
     public override object ProvideValue(IServiceProvider? serviceProvider)
@@ -104,8 +102,7 @@ public sealed class FontAwesomeExtension : MarkupExtension
             Width = Width,
             VerticalAlignment = VerticalAlignment,
             HorizontalAlignment = HorizontalAlignment,
-            Margin = Margin,
+            Margin = Margin
         };
     }
-
 }

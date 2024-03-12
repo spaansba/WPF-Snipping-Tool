@@ -3,10 +3,10 @@
     <!-- Buttons being used in the Top Title bar of the application like the minimize,maximize and close buttons-->
     <Style x:Key="TitleBarButton" TargetType="{x:Type Button}">
 
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="LightGray" />
-        <Setter Property="Width" Value="30"/>
-        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -15,12 +15,12 @@
                             CornerRadius="2">
                         <ContentPresenter VerticalAlignment="Center"
                                           HorizontalAlignment="Center"
-                                          Margin="{TemplateBinding Padding}"/>
+                                          Margin="{TemplateBinding Padding}" />
                     </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource HoverBrush}"/>
+                            <Setter Property="Background" Value="{StaticResource HoverBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

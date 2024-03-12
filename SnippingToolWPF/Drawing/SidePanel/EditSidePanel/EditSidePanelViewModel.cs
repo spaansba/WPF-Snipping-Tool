@@ -8,5 +8,4 @@ public sealed class EditSidePanelViewModel : SidePanelViewModel
     }
 
     public override string Header => "Edit";
-
 }

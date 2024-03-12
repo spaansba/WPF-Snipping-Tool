@@ -13,8 +13,10 @@ public static class VectorExtensions
     }
 
     /// <summary>
-    /// First converts Radians to Degrees, then Uses the RotateDegrees method
+    ///     First converts Radians to Degrees, then Uses the RotateDegrees method
     /// </summary>
-    public static Vector RotateRadians(this Vector vector, double angle) => vector.RotateDegrees(double.RadiansToDegrees(angle));
-
+    public static Vector RotateRadians(this Vector vector, double angle)
+    {
+        return vector.RotateDegrees(double.RadiansToDegrees(angle));
+    }
 }

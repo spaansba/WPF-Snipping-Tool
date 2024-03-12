@@ -40,7 +40,7 @@
             </DataTrigger>
             <!-- Removes the overflow button whenever its disabled -->
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Visibility" Value="Collapsed"/>
+                <Setter Property="Visibility" Value="Collapsed" />
             </Trigger>
         </Style.Triggers>
 
@@ -199,7 +199,7 @@
 
     <Style x:Key="{x:Type ToolBar}"
            TargetType="{x:Type ToolBar}">
-        <Setter Property="Background" Value="{StaticResource ToolBarHorizontalBackground}"/>
+        <Setter Property="Background" Value="{StaticResource ToolBarHorizontalBackground}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToolBar}">
@@ -223,18 +223,18 @@
                                    Focusable="false"
                                    PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
                                 <Border Background="{StaticResource ToolBarSubMenuBackground}"
-                                            BorderBrush="{StaticResource ToolBarMenuBorder}"
-                                            BorderThickness="1"
-                                            RenderOptions.ClearTypeHint="Enabled"
-                                            x:Name="ToolBarSubMenuBorder">
+                                        BorderBrush="{StaticResource ToolBarMenuBorder}"
+                                        BorderThickness="1"
+                                        RenderOptions.ClearTypeHint="Enabled"
+                                        x:Name="ToolBarSubMenuBorder">
                                     <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel"
-                                                              Margin="2"
-                                                              WrapWidth="200"
-                                                              Focusable="true"
-                                                              FocusVisualStyle="{x:Null}"
-                                                              KeyboardNavigation.TabNavigation="Cycle"
-                                                              KeyboardNavigation.DirectionalNavigation="Cycle"
-                                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                          Margin="2"
+                                                          WrapWidth="200"
+                                                          Focusable="true"
+                                                          FocusVisualStyle="{x:Null}"
+                                                          KeyboardNavigation.TabNavigation="Cycle"
+                                                          KeyboardNavigation.DirectionalNavigation="Cycle"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                 </Border>
                             </Popup>
                         </Grid>

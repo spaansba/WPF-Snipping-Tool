@@ -8,45 +8,47 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Slider}">
-  
+
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="{Binding Path=(specialUiElements:SliderTitleAndTextBox.SliderHeader), RelativeSource={RelativeSource TemplatedParent}}"
-                                       Grid.Column="0" VerticalAlignment="Center" Padding="0,5,0,0"
-                                       Foreground="{StaticResource AlternateForegroundBrush}"/>
+                        <TextBlock
+                            Text="{Binding Path=(specialUiElements:SliderTitleAndTextBox.SliderHeader), RelativeSource={RelativeSource TemplatedParent}}"
+                            Grid.Column="0" VerticalAlignment="Center" Padding="0,5,0,0"
+                            Foreground="{StaticResource AlternateForegroundBrush}" />
                         <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right">
                             <!-- TODO: Fix not being to handle doubles -->
                             <TextBox x:Name="UserValue"
-                                 VerticalContentAlignment="Bottom"
-                                 HorizontalContentAlignment="Right"
-                                 Padding="0,0,16,2"
-                                 behaviors:NumericTextBox.AllowNegative="False"
-                                 behaviors:NumericTextBox.FloatingPoint="True"
-                                 HorizontalAlignment="Right" 
-                                 Panel.ZIndex="1"
-                                 TextAlignment="Right" Width="80" Height="30"
-                                 BorderBrush="{StaticResource LightBorderBrush}"
-                                 Background="{StaticResource UserFillBoxBackground}"
-                                 SelectionBrush="{StaticResource LightBorderBrush}" 
-                                 Text="{Binding Path=Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                 Foreground="{StaticResource AlternateForegroundBrush}"/>
+                                     VerticalContentAlignment="Bottom"
+                                     HorizontalContentAlignment="Right"
+                                     Padding="0,0,16,2"
+                                     behaviors:NumericTextBox.AllowNegative="False"
+                                     behaviors:NumericTextBox.FloatingPoint="True"
+                                     HorizontalAlignment="Right"
+                                     Panel.ZIndex="1"
+                                     TextAlignment="Right" Width="80" Height="30"
+                                     BorderBrush="{StaticResource LightBorderBrush}"
+                                     Background="{StaticResource UserFillBoxBackground}"
+                                     SelectionBrush="{StaticResource LightBorderBrush}"
+                                     Text="{Binding Path=Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     Foreground="{StaticResource AlternateForegroundBrush}" />
 
                             <!-- TextBlock overlapped on top of TextBox -->
-                            <TextBlock Text="{Binding Path=(specialUiElements:SliderTitleAndTextBox.StaticTextBoxText), RelativeSource={RelativeSource TemplatedParent}}" 
-                                   HorizontalAlignment="Right" 
-                                   VerticalAlignment="Center" 
-                                   Panel.ZIndex="2"
-                                   Height="20"
-                                   Margin="0,9,0,0"
-                                   Foreground="#59595A"/>
+                            <TextBlock
+                                Text="{Binding Path=(specialUiElements:SliderTitleAndTextBox.StaticTextBoxText), RelativeSource={RelativeSource TemplatedParent}}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Panel.ZIndex="2"
+                                Height="20"
+                                Margin="0,9,0,0"
+                                Foreground="#59595A" />
                         </Grid>
 
                         <Slider Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
@@ -69,7 +71,7 @@
                                 TickFrequency="{TemplateBinding TickFrequency}"
                                 TickPlacement="{TemplateBinding TickPlacement}"
                                 Ticks="{TemplateBinding Ticks}"
-                                Style="{StaticResource BaseSlider}"/>
+                                Style="{StaticResource BaseSlider}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

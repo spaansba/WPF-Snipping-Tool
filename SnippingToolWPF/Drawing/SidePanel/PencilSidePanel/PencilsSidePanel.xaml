@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="SnippingToolWPF.SidePanel.PencilSidePanel.PencilsSidePanel" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl x:Class="SnippingToolWPF.SidePanel.PencilSidePanel.PencilsSidePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -38,69 +39,77 @@
             </Grid.RowDefinitions>
 
             <!--  Tool Selector  -->
-            <WrapPanel Grid.ColumnSpan="2" 
+            <WrapPanel Grid.ColumnSpan="2"
                        Grid.Row="0" Grid.Column="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center">
                 <WrapPanel.Resources>
                     <Style BasedOn="{StaticResource ButtonBaseStyle}" TargetType="RadioButton">
                         <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="Margin" Value="3"/>
-                        <Setter Property="Padding" Value="3"/>
+                        <Setter Property="Margin" Value="3" />
+                        <Setter Property="Padding" Value="3" />
                         <Setter Property="Width" Value="45" />
                         <Setter Property="Height" Value="45" />
                     </Style>
                 </WrapPanel.Resources>
 
-                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Pen}}">
+                <RadioButton
+                    IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Pen}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Calligraphy}}">
+                <RadioButton
+                    IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Calligraphy}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.RegularPencil}}">
+                <RadioButton
+                    IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.RegularPencil}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Graffiti}}">
+                <RadioButton
+                    IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Graffiti}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Eraser}}">
+                <RadioButton
+                    IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Eraser}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/eraserTemp.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Bucket}}">
+                <RadioButton
+                    IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Bucket}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Oil}}">
+                <RadioButton
+                    IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Oil}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
-                <RadioButton IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Chalk}}">
+                <RadioButton
+                    IsChecked="{Binding PencilOption, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static penTools:PencilOptions.Chalk}}">
                     <Image Source="pack://application:,,,/SnippingToolWPF;component/Assets/Images/PencilTemp2.png" />
                 </RadioButton>
             </WrapPanel>
 
             <Slider x:Name="ThicknessSlider"
-                    Style="{StaticResource SliderTitleAndTextBox}" 
-                    Grid.Column="0" Grid.Row="1" 
+                    Style="{StaticResource SliderTitleAndTextBox}"
+                    Grid.Column="0" Grid.Row="1"
                     Grid.ColumnSpan="2"
                     Minimum="{x:Static pencilSidePanel:PencilsSidePanelViewModel.MinimumThickness}"
                     Maximum="{x:Static pencilSidePanel:PencilsSidePanelViewModel.MaximumThickness}"
                     Value="{Binding Thickness}"
                     specialUiElements:SliderTitleAndTextBox.StaticTextBoxText="px"
                     specialUiElements:SliderTitleAndTextBox.SliderHeader="Thickness"
-                    specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding ThicknessString, UpdateSourceTrigger=PropertyChanged}"/>
+                    specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding ThicknessString, UpdateSourceTrigger=PropertyChanged}" />
 
             <Slider x:Name="OpacitySlider"
-                    Style="{StaticResource SliderTitleAndTextBox}" 
-                    Grid.Column="0" Grid.Row="2" 
+                    Style="{StaticResource SliderTitleAndTextBox}"
+                    Grid.Column="0" Grid.Row="2"
                     Grid.ColumnSpan="2"
                     Minimum="{x:Static pencilSidePanel:PencilsSidePanelViewModel.MinimumOpacity}"
                     Maximum="{x:Static pencilSidePanel:PencilsSidePanelViewModel.MaximumOpacity}"
                     Value="{Binding Opacity}"
                     specialUiElements:SliderTitleAndTextBox.StaticTextBoxText="% "
                     specialUiElements:SliderTitleAndTextBox.SliderHeader="Opacity"
-                    specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}"/>
+                    specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}" />
 
-            <CheckBox Grid.Row="3" Style="{StaticResource BaseCheckBox}" 
+            <CheckBox Grid.Row="3" Style="{StaticResource BaseCheckBox}"
                       Grid.ColumnSpan="2" Grid.Column="0"
                       Margin="0,15,0,15"
                       IsChecked="{Binding PenTipArrow}">
@@ -110,9 +119,9 @@
         </Grid>
 
         <ListBox BorderBrush="Transparent"
-                Margin="0,0,0,30" DockPanel.Dock="Bottom"
-                Style="{StaticResource ColorSelectorListBox}"
-                SelectedItem="{Binding SelectedColor, Mode=TwoWay}"/>
+                 Margin="0,0,0,30" DockPanel.Dock="Bottom"
+                 Style="{StaticResource ColorSelectorListBox}"
+                 SelectedItem="{Binding SelectedColor, Mode=TwoWay}" />
 
     </DockPanel>
 </UserControl>

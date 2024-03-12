@@ -5,40 +5,67 @@ namespace SnippingToolWPF.Control.SpecialUIElements;
 
 public static class ButtonWithIcon
 {
-    public static readonly DependencyProperty IconLocationProperty = DependencyProperty.RegisterAttached( 
-    name: "IconLocation",
-    propertyType: typeof(Dock), 
-    ownerType: typeof(ButtonWithIcon),
-    defaultMetadata: new FrameworkPropertyMetadata(default(Dock)));
-
-    public static Dock GetIconLocation(DependencyObject target) => (Dock)target.GetValue(IconLocationProperty);
-    public static void SetIconLocation(DependencyObject target, Dock value) => target.SetValue(IconLocationProperty, value);
+    public static readonly DependencyProperty IconLocationProperty = DependencyProperty.RegisterAttached(
+        "IconLocation",
+        typeof(Dock),
+        typeof(ButtonWithIcon),
+        new FrameworkPropertyMetadata(default(Dock)));
 
     public static readonly DependencyProperty IconProperty = DependencyProperty.RegisterAttached(
-    name: "Icon",
-    propertyType: typeof(object),
-    ownerType: typeof(ButtonWithIcon),
-    defaultMetadata: new FrameworkPropertyMetadata());
-
-    public static object? GetIcon(DependencyObject target) => target.GetValue(IconProperty);
-    public static void SetIcon(DependencyObject target, object? value) => target.SetValue(IconProperty, value);
+        "Icon",
+        typeof(object),
+        typeof(ButtonWithIcon),
+        new FrameworkPropertyMetadata());
 
     public static readonly DependencyProperty IconTemplateProperty = DependencyProperty.RegisterAttached(
-    name: "IconTemplate",
-    propertyType: typeof(DataTemplate),
-    ownerType: typeof(ButtonWithIcon),
-    defaultMetadata: new FrameworkPropertyMetadata());
-
-    public static DataTemplate? GetIconTemplate(DependencyObject target) => (DataTemplate?)target.GetValue(IconTemplateProperty);
-    public static void SetIconTemplate(DependencyObject target, DataTemplate? value) => target.SetValue(IconTemplateProperty, value);
+        "IconTemplate",
+        typeof(DataTemplate),
+        typeof(ButtonWithIcon),
+        new FrameworkPropertyMetadata());
 
     public static readonly DependencyProperty IconTemplateSelectorProperty = DependencyProperty.RegisterAttached(
-    name: "IconTemplateSelector",
-    propertyType: typeof(DataTemplateSelector),
-    ownerType: typeof(ButtonWithIcon),
-    defaultMetadata: new FrameworkPropertyMetadata());
+        "IconTemplateSelector",
+        typeof(DataTemplateSelector),
+        typeof(ButtonWithIcon),
+        new FrameworkPropertyMetadata());
 
-    public static DataTemplateSelector? GetIconTemplateSelector(DependencyObject target) => (DataTemplateSelector?)target.GetValue(IconTemplateSelectorProperty);
+    public static Dock GetIconLocation(DependencyObject target)
+    {
+        return (Dock)target.GetValue(IconLocationProperty);
+    }
 
-    public static void SetIconTemplateSelector(DependencyObject target, DataTemplateSelector? value) => target.SetValue(IconTemplateSelectorProperty, value);
+    public static void SetIconLocation(DependencyObject target, Dock value)
+    {
+        target.SetValue(IconLocationProperty, value);
+    }
+
+    public static object? GetIcon(DependencyObject target)
+    {
+        return target.GetValue(IconProperty);
+    }
+
+    public static void SetIcon(DependencyObject target, object? value)
+    {
+        target.SetValue(IconProperty, value);
+    }
+
+    public static DataTemplate? GetIconTemplate(DependencyObject target)
+    {
+        return (DataTemplate?)target.GetValue(IconTemplateProperty);
+    }
+
+    public static void SetIconTemplate(DependencyObject target, DataTemplate? value)
+    {
+        target.SetValue(IconTemplateProperty, value);
+    }
+
+    public static DataTemplateSelector? GetIconTemplateSelector(DependencyObject target)
+    {
+        return (DataTemplateSelector?)target.GetValue(IconTemplateSelectorProperty);
+    }
+
+    public static void SetIconTemplateSelector(DependencyObject target, DataTemplateSelector? value)
+    {
+        target.SetValue(IconTemplateSelectorProperty, value);
+    }
 }

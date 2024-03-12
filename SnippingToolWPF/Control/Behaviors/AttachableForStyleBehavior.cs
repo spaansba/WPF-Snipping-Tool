@@ -5,8 +5,8 @@ using SnippingToolWPF.WPFExtensions;
 namespace SnippingToolWPF.Control.Behaviors;
 
 public abstract class AttachableForStyleBehavior<TSelf, TComponent> : Behavior<TComponent>
-where TComponent : DependencyObject
-where TSelf : AttachableForStyleBehavior<TSelf, TComponent>, new()
+    where TComponent : DependencyObject
+    where TSelf : AttachableForStyleBehavior<TSelf, TComponent>, new()
 {
     public static readonly DependencyProperty IsEnabledForStyleProperty = DependencyProperty.RegisterAttached(
         nameof(IsEnabledForStyle),
@@ -26,12 +26,8 @@ where TSelf : AttachableForStyleBehavior<TSelf, TComponent>, new()
         if (d is not TComponent component)
             return;
         if (e.NewValue is true)
-        {
             component.EnsureBehavior<TSelf>();
-        }
         else
-        {
             component.RemoveBehaviors<TSelf>();
-        }
     }
 }

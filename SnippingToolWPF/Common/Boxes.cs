@@ -3,19 +3,16 @@
 namespace SnippingToolWPF.Common;
 
 /// <summary>
-/// Boxes allow us to cache values, for example if we cache TRUE / FALSE there will be only 2 boxes instead of N * 2 boxes
-/// We create a generic Boxes class so each type can create boxes and thus safe memory
-/// 
-/// e.g. if int box 10 exists > use that box
-/// if it doesnt exist > create new box
-/// 
-/// Basically we transform Value types into Reference Types (hold the reference of a value in memory, not the value)
+///     Boxes allow us to cache values, for example if we cache TRUE / FALSE there will be only 2 boxes instead of N * 2
+///     boxes
+///     We create a generic Boxes class so each type can create boxes and thus safe memory
+///     e.g. if int box 10 exists > use that box
+///     if it doesnt exist > create new box
+///     Basically we transform Value types into Reference Types (hold the reference of a value in memory, not the value)
 /// </summary>
 /// If using this dont forget to copy DependencyObjectExtensions class
-
 internal static class Boxes
 {
-
     //Dont use => as it will create a new box every time instead of reusing existing box
     public static object True { get; } = true;
 
@@ -38,6 +35,7 @@ internal static class Boxes
             return IntegerZero;
         return value;
     }
+
     public static object Box(double value)
     {
         if (double.IsNaN(value))

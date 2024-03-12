@@ -3,7 +3,7 @@
 
     <Style x:Key="ColorSelectorListBox" TargetType="ListBox">
         <Setter Property="SelectedItem" Value="{Binding SelectedColor}" />
-        <Setter Property="Background" Value="{StaticResource AlternateBackgroundBrush}"/>
+        <Setter Property="Background" Value="{StaticResource AlternateBackgroundBrush}" />
         <Setter Property="ItemsSource">
             <Setter.Value>
                 <CompositeCollection>
@@ -55,14 +55,14 @@
             <Setter.Value>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Padding" Value="0" />
-                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="BorderThickness" Value="0" />
                     <!-- Change if you want gaps between the colors -->
 
                     <!-- New Trigger to highlight the selected item -->
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}"/>
-                            <Setter Property="BorderThickness" Value="2"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource HoverBorderBrush}" />
+                            <Setter Property="BorderThickness" Value="2" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>

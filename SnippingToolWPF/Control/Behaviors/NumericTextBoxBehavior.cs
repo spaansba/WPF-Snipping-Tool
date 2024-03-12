@@ -8,6 +8,30 @@ namespace SnippingToolWPF.Control.Behaviors;
 
 public partial class NumericTextBoxBehavior : AttachableForStyleBehavior<NumericTextBoxBehavior, TextBox>
 {
+    public bool FloatingPoint
+    {
+        get => (bool)AssociatedObject.GetValue(NumericTextBox.FloatingPointProperty);
+        set => AssociatedObject.SetValue(NumericTextBox.FloatingPointProperty, value);
+    }
+
+    public bool AllowNegative
+    {
+        get => (bool)AssociatedObject.GetValue(NumericTextBox.AllowNegativeProperty);
+        set => AssociatedObject.SetValue(NumericTextBox.AllowNegativeProperty, value);
+    }
+
+    private Regex Regex => (FloatingPoint, AllowNegative) switch
+    {
+        (FloatingPoint: true, AllowNegative: true) => SignedFloatingPointRegex(),
+        (FloatingPoint: true, AllowNegative: false) => UnsignedFloatingPointRegex(),
+        (FloatingPoint: false, AllowNegative: true) => SignedIntegerRegex(),
+        (FloatingPoint: false, AllowNegative: false) => UnsignedIntegerRegex()
+    };
+
+    /// <summary>
+    ///     Check if input is valid no matter source the input is generated (keystrokes / pasting)
+    /// </summary>
+    private int SelectionEnd => AssociatedObject.SelectionStart + AssociatedObject.SelectionLength;
 
     [GeneratedRegex(@"^-?[0-9]*\.?[0-9]*$")]
     private static partial Regex SignedFloatingPointRegex();
@@ -21,42 +45,18 @@ public partial class NumericTextBoxBehavior : AttachableForStyleBehavior<Numeric
     [GeneratedRegex(@"^[0-9]*$")]
     private static partial Regex UnsignedIntegerRegex();
 
-    public bool FloatingPoint
-    {
-        get => (bool)this.AssociatedObject.GetValue(NumericTextBox.FloatingPointProperty);
-        set => this.AssociatedObject.SetValue(NumericTextBox.FloatingPointProperty, value);
-    }
-
-    public bool AllowNegative
-    {
-        get => (bool)this.AssociatedObject.GetValue(NumericTextBox.AllowNegativeProperty);
-        set => this.AssociatedObject.SetValue(NumericTextBox.AllowNegativeProperty, value);
-    }
-
-    private Regex Regex => (this.FloatingPoint, this.AllowNegative) switch
-    {
-        (FloatingPoint: true, AllowNegative: true) => SignedFloatingPointRegex(),
-        (FloatingPoint: true, AllowNegative: false) => UnsignedFloatingPointRegex(),
-        (FloatingPoint: false, AllowNegative: true) => SignedIntegerRegex(),
-        (FloatingPoint: false, AllowNegative: false) => UnsignedIntegerRegex(),
-    };
-
-    /// <summary>
-    /// Check if input is valid no matter source the input is generated (keystrokes / pasting)
-    /// </summary>
-    private int SelectionEnd => this.AssociatedObject.SelectionStart + this.AssociatedObject.SelectionLength;
     private bool IsValidInput(string newInput)
     {
-        var beforeSelection = this.AssociatedObject.Text[..this.AssociatedObject.SelectionStart];
-        var afterSelection = this.AssociatedObject.Text[this.SelectionEnd..];
+        var beforeSelection = AssociatedObject.Text[..AssociatedObject.SelectionStart];
+        var afterSelection = AssociatedObject.Text[SelectionEnd..];
         var newText = new StringBuilder().Append(beforeSelection).Append(newInput).Append(afterSelection).ToString();
-        return this.Regex.IsMatch(newText);
+        return Regex.IsMatch(newText);
     }
 
     private void OnPasting(object sender, DataObjectPastingEventArgs e)
     {
         var success = e.DataObject.GetDataPresent(typeof(string))
-          && this.IsValidInput(e.DataObject.GetData(typeof(string))?.ToString() ?? string.Empty);
+                      && IsValidInput(e.DataObject.GetData(typeof(string))?.ToString() ?? string.Empty);
         if (!success)
             e.CancelCommand();
     }
@@ -69,14 +69,14 @@ public partial class NumericTextBoxBehavior : AttachableForStyleBehavior<Numeric
     protected override void OnAttached()
     {
         base.OnAttached();
-        this.AssociatedObject.PreviewTextInput += OnPreviewTextInput;
-        this.AssociatedObject.AddHandler(DataObject.PastingEvent, new DataObjectPastingEventHandler(this.OnPasting));
+        AssociatedObject.PreviewTextInput += OnPreviewTextInput;
+        AssociatedObject.AddHandler(DataObject.PastingEvent, new DataObjectPastingEventHandler(OnPasting));
     }
 
     protected override void OnDetaching()
     {
-        this.AssociatedObject.PreviewTextInput -= OnPreviewTextInput;
-        this.AssociatedObject.RemoveHandler(DataObject.PastingEvent, new DataObjectPastingEventHandler(this.OnPasting));
+        AssociatedObject.PreviewTextInput -= OnPreviewTextInput;
+        AssociatedObject.RemoveHandler(DataObject.PastingEvent, new DataObjectPastingEventHandler(OnPasting));
         base.OnDetaching();
     }
 }

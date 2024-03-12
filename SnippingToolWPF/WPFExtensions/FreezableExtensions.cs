@@ -7,14 +7,14 @@ public static class FreezableExtensions
 {
     [return: NotNullIfNotNull("freezable")]
     public static T? CloneIfNotFrozen<T>(
-    this T? freezable
+        this T? freezable
     ) where T : Freezable
     {
         return freezable?.IsFrozen switch
         {
             null => null,
             true => freezable,
-            false => (T)freezable.Clone(),
+            false => (T)freezable.Clone()
         };
     }
 }

@@ -3,30 +3,41 @@
              xmlns:control="clr-namespace:SnippingToolWPF.Control"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Resources/Brushes.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Resources/Templates.xaml" />
 
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseComboBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/CustomScrollbar.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseCheckBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseButtonStyle.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseSlider.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseTextBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseComboBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/CustomScrollbar.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseCheckBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseButtonStyle.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseSlider.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/BaseUIElements/BaseTextBox.xaml" />
 
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ButtonWithIcon.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/SliderTitleAndTextBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/RadioButtonWithIcon.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ColorSelectorListBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/TitleBarButton.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ButtonWithIcon.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/SliderTitleAndTextBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/RadioButtonWithIcon.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/ColorSelectorListBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/SnippingToolWPF;component/Control/SpecialUIElements/TitleBarButton.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
-            
+
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <control:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
-    
+            <control:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+
 
             <!-- Default Error message template -->
             <!--<ControlTemplate x:Key="ErrorTemplate">
@@ -41,7 +52,7 @@
             </Style>-->
 
         </ResourceDictionary>
-        
+
     </Application.Resources>
 
 

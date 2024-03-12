@@ -12,19 +12,17 @@ public static class BehaviorExtensions
         var behavior = behaviors.OfType<TBehavior>().FirstOrDefault();
         if (behavior is not null)
             return behavior;
-        behavior = new();
+        behavior = new TBehavior();
         behaviors.Add(behavior);
         return behavior;
     }
 
     public static void RemoveBehaviors<TBehavior>(this DependencyObject obj)
-    where TBehavior : Behavior
+        where TBehavior : Behavior
     {
         var behaviors = Interaction.GetBehaviors(obj);
         for (var i = behaviors.Count - 1; i >= 0; --i)
-        {
             if (behaviors[i] is TBehavior)
                 behaviors.RemoveAt(i);
-        }
     }
 }

@@ -3,7 +3,8 @@
 namespace SnippingToolWPF;
 
 /// <summary>
-/// Interface for our DrawingShape, if a class does not want to abstract from DrawingShape it can still implement this interface 
+///     Interface for our DrawingShape, if a class does not want to abstract from DrawingShape it can still implement this
+///     interface
 /// </summary>
 public interface IShape
 {
@@ -12,14 +13,17 @@ public interface IShape
     public string? Text { get; }
     public double StrokeThickness { get; }
     public double FontSize { get; }
+
     /// <summary>
-    /// AKA > X value
+    ///     AKA > X value
     /// </summary>
     public double Left { get; }
+
     /// <summary>
-    /// AKA > Y value
+    ///     AKA > Y value
     /// </summary>
     public double Top { get; }
+
     public double Width { get; }
     public double Height { get; }
     public double Angle { get; }

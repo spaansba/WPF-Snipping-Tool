@@ -10,10 +10,11 @@ public class DrawingShape<TSelf, TVisual> : DrawingShape<TSelf>
 {
     public DrawingShape()
     {
-        this.VisualInternal = CreateVisual();
+        VisualInternal = CreateVisual();
     }
+
     /// <summary>
-    /// The Shape Portion of the DrawingShape
+    ///     The Shape Portion of the DrawingShape
     /// </summary>
     [AllowNull]
     private TVisual VisualInternal
@@ -22,10 +23,14 @@ public class DrawingShape<TSelf, TVisual> : DrawingShape<TSelf>
         set => this.SetValue<TVisual?>(VisualProperty, value);
     }
 
-    private TVisual CreateVisual() => new(); // Can override this if you want to customize /how/ the visual is created.
+    private TVisual CreateVisual()
+    {
+        return new TVisual();
+        // Can override this if you want to customize /how/ the visual is created.
+    }
 
     /// <summary>
-    /// If Visual changes clear and set the bindings
+    ///     If Visual changes clear and set the bindings
     /// </summary>
     private void OnVisualChanged(TVisual? oldValue, TVisual? newValue)
     {
@@ -35,8 +40,10 @@ public class DrawingShape<TSelf, TVisual> : DrawingShape<TSelf>
             SetUpBindings(newValue);
     }
 
-    protected override void OnVisualChangedOverride(UIElement? oldValue, UIElement? newValue) =>
+    protected override void OnVisualChangedOverride(UIElement? oldValue, UIElement? newValue)
+    {
         OnVisualChanged(oldValue as TVisual, newValue as TVisual);
+    }
 
     // ReSharper disable once UnusedParameter.Local
     private void ClearBindings(TVisual visual)

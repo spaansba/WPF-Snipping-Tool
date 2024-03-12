@@ -10,74 +10,82 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
 {
     public RegularPolygonDrawingShape()
     {
-        this.Visual = CreateVisual();
+        Visual = CreateVisual();
     }
     private Polygon CreateVisual()
     {
-        var poly =  new Polygon
+        var poly = new Polygon
         {
-            Points = GetPolygonPoints(),
+            Points = GetPolygonPoints()
         };
         ClearBindings(poly);
         SetUpBindings(poly);
         return poly;
     }
-
-    private const int DefaultNumberOfSides = 3;
-
-    public static readonly DependencyProperty NumberOfSidesProperty = DependencyProperty.Register(
-        nameof(NumberOfSides),
-        typeof(int),
-        typeof(RegularPolygonDrawingShape),
-        new FrameworkPropertyMetadata(
-            defaultValue: DefaultNumberOfSides,
-            FrameworkPropertyMetadataOptions.AffectsRender
-        ),
-        validateValueCallback: static proposedValue => proposedValue is >= 3
-    );
-
-    public int NumberOfSides
+    
+    private void RegeneratePoints()
     {
-        get => this.GetValue<int>(NumberOfSidesProperty);
-        set => this.SetValue<int>(NumberOfSidesProperty, value);
+        this.Visual = CreateVisual();
+    }
+
+    private PointCollection GetPolygonPoints()
+    {
+        return new PointCollection(
+            CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, PointGenerationRotationAngle));
+    }
+
+    protected override void PopulateClone(RegularPolygonDrawingShape clone)
+    {
+        base.PopulateClone(clone);
+        Console.WriteLine();
     }
 
     protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
         if (e.Property == NumberOfSidesProperty) //Recalc points if we change the number of sides
-            this.RegeneratePoints();
+            RegeneratePoints();
         if (e.Property == PointGenerationRotationAngleProperty) // Recalc points if we change the Angle
-            this.RegeneratePoints();
+            RegeneratePoints();
+    }
+    
+    #region  Dependency Properties
+    private const int DefaultNumberOfSides = 4;
+
+    public static readonly DependencyProperty NumberOfSidesProperty = DependencyProperty.Register(
+        nameof(NumberOfSides),
+        typeof(int),
+        typeof(RegularPolygonDrawingShape),
+        new FrameworkPropertyMetadata(
+            DefaultNumberOfSides,
+            FrameworkPropertyMetadataOptions.AffectsRender
+        ),
+        static proposedValue => proposedValue is >= 3
+    );
+    public int NumberOfSides
+    {
+        get => this.GetValue<int>(NumberOfSidesProperty);
+        set => this.SetValue<int>(NumberOfSidesProperty, value);
     }
 
-    private void RegeneratePoints()
-    {
-        this.Points = GetPolygonPoints();
-    } 
+    private static readonly DependencyPropertyKey PointGenerationRotationAnglePropertyKey =
+        DependencyProperty.RegisterReadOnly(
+            nameof(PointGenerationRotationAngle),
+            typeof(double),
+            typeof(RegularPolygonDrawingShape),
+            new FrameworkPropertyMetadata(
+                0d,
+                FrameworkPropertyMetadataOptions.AffectsMeasure
+            )
+        );
 
-    private PointCollection GetPolygonPoints() => new(CreateInitialPolygon.GeneratePolygonPoints(this.NumberOfSides, PointGenerationRotationAngle));
-
-    private static readonly DependencyPropertyKey PointGenerationRotationAnglePropertyKey = DependencyProperty.RegisterReadOnly(
-        name: nameof(PointGenerationRotationAngle),
-        propertyType: typeof(double),
-        ownerType: typeof(RegularPolygonDrawingShape),
-        typeMetadata: new FrameworkPropertyMetadata(
-            defaultValue: 0d,
-            FrameworkPropertyMetadataOptions.AffectsMeasure
-        )
-    );
-
-    public static readonly DependencyProperty PointGenerationRotationAngleProperty = PointGenerationRotationAnglePropertyKey.DependencyProperty;
-
+    public static readonly DependencyProperty PointGenerationRotationAngleProperty =
+        PointGenerationRotationAnglePropertyKey.DependencyProperty;
+    
     public double PointGenerationRotationAngle
     {
         get => this.GetValue<double>(PointGenerationRotationAngleProperty);
-        private set => this.SetValue(PointGenerationRotationAnglePropertyKey, value);
+        private set => SetValue(PointGenerationRotationAnglePropertyKey, value);
     }
-    protected override void PopulateClone(RegularPolygonDrawingShape clone)
-    {
-        base.PopulateClone(clone);
-        Console.WriteLine();
-    }
+    #endregion
 }

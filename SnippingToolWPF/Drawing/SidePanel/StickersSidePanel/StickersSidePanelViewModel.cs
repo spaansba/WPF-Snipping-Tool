@@ -2,8 +2,9 @@
 
 public sealed class StickersSidePanelViewModel : SidePanelViewModel
 {
-    public override string Header => "Stickers";
     public StickersSidePanelViewModel(DrawingViewModel drawingViewModel) : base(drawingViewModel)
     {
     }
+
+    public override string Header => "Stickers";
 }

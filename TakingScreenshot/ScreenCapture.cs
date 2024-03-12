@@ -1,16 +1,20 @@
 ﻿using System.Runtime.Versioning;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SnippingTool.Interop.Win32Api;
 
 namespace SnippingTool.Interop;
+
 public class ScreenCapture
 {
     public static BitmapSource CaptureFullScreen(bool addToClipboard)
     {
-        return OperatingSystem.IsWindowsVersionAtLeast(6) ? // API calls require windows 7.0 >
-            CaptureFullScreenWindows_Version6(addToClipboard) : CaptureFullScreenWindows_Legacy(addToClipboard);
+        return OperatingSystem.IsWindowsVersionAtLeast(6)
+            ? // API calls require windows 7.0 >
+            CaptureFullScreenWindows_Version6(addToClipboard)
+            : CaptureFullScreenWindows_Legacy(addToClipboard);
     }
 
     [SupportedOSPlatform("windows6.0")]
@@ -36,7 +40,8 @@ public class ScreenCapture
     // capture a window. This doesn't do the alt-prtscrn version that loses the window shadow.
     // this version captures the shadow and optionally inserts a blank (usually white) area behind
     // it to keep the screen shot clean
-    public static BitmapSource CaptureWindow(IntPtr hWnd, bool recolorBackground, Color substituteBackgroundColor, bool addToClipboard)
+    public static BitmapSource CaptureWindow(IntPtr hWnd, bool recolorBackground, Color substituteBackgroundColor,
+        bool addToClipboard)
     {
         var rect = GetWindowActualRect(hWnd);
 
@@ -44,7 +49,7 @@ public class ScreenCapture
 
         if (recolorBackground)
         {
-            blankingWindow = new()
+            blankingWindow = new Window
             {
                 WindowStyle = WindowStyle.None,
                 Title = string.Empty,
@@ -61,7 +66,6 @@ public class ScreenCapture
             blankingWindow.Top = rect.Y - fudge / 2;
             blankingWindow.Width = rect.Width + fudge;
             blankingWindow.Height = rect.Height + fudge;
-
         }
 
         // bring the to-be-captured window to capture to the foreground
@@ -118,7 +122,7 @@ public class ScreenCapture
 
             // Here's the WPF glue to make it all work. It converts from an 
             // hBitmap to a BitmapSource. Love the WPF interop functions
-            bitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            bitmap = Imaging.CreateBitmapSourceFromHBitmap(
                 compatibleBitmapHandle, IntPtr.Zero, Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions());
 
@@ -129,11 +133,11 @@ public class ScreenCapture
                 data.SetData(DataFormats.Dib, bitmap, false);
                 Clipboard.SetDataObject(data, false);
             }
-
         }
         catch (Exception ex)
         {
-            throw new ScreenCaptureException(string.Format("Error capturing region {0},{1},{2},{3}", x, y, width, height), ex);
+            throw new ScreenCaptureException(
+                string.Format("Error capturing region {0},{1},{2},{3}", x, y, width, height), ex);
         }
         finally
         {
@@ -169,5 +173,4 @@ public class ScreenCapture
 
         return actualRect;
     }
-
 }

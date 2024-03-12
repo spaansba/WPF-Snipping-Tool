@@ -5,7 +5,7 @@ using SnippingToolWPF.Common;
 namespace SnippingToolWPF.WPFExtensions;
 
 /// <summary>
-/// Create generic GetValue and SetValue for DependencyObjects
+///     Create generic GetValue and SetValue for DependencyObjects
 /// </summary>
 public static class DependencyObjectExtensions
 {

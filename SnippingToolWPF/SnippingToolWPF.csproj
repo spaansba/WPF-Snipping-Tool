@@ -1,111 +1,120 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <RootNamespace>SnippingToolWPF</RootNamespace>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-	
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <RootNamespace>SnippingToolWPF</RootNamespace>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
     <Target Name="EffectCompile" Condition="'@(Effect)' != '' ">
-	    <Exec Command="&quot;$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe&quot; /T ps_3_0 /Fo %(Effect.RelativeDir)%(Effect.FileName).ps %(Effect.Identity)" />
+        <Exec Command="&quot;$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.22621.0\x64\fxc.exe&quot; /T ps_3_0 /Fo %(Effect.RelativeDir)%(Effect.FileName).ps %(Effect.Identity)"/>
     </Target>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0414</WarningsNotAsErrors>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <WarningsNotAsErrors>CS0414</WarningsNotAsErrors>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0414</WarningsNotAsErrors>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <WarningsNotAsErrors>CS0414</WarningsNotAsErrors>
+    </PropertyGroup>
 
 
-   <ItemGroup>
-	  <InternalsVisibleTo Include="SnippingWPFTests" />
-   </ItemGroup>
-	
-  <ItemGroup>
-    <None Remove="Assets\Images\eraserTemp.png" />
-    <None Remove="Assets\Images\pencilsTopBar.png" />
-    <None Remove="Assets\Images\PencilTemp2.png" />
-    <None Remove="Assets\Images\ScreenCapture.png" />
-    <None Remove="Assets\Images\shapesTopBar.png" />
-    <None Remove="Assets\Images\TempPencil.png" />
-    <None Remove="Assets\UI Icons\NewScreenshot.png" />
-  </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="SnippingWPFTests"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="FontAwesome6.Svg" Version="2.5.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="Assets\Images\eraserTemp.png"/>
+        <None Remove="Assets\Images\pencilsTopBar.png"/>
+        <None Remove="Assets\Images\PencilTemp2.png"/>
+        <None Remove="Assets\Images\ScreenCapture.png"/>
+        <None Remove="Assets\Images\shapesTopBar.png"/>
+        <None Remove="Assets\Images\TempPencil.png"/>
+        <None Remove="Assets\UI Icons\NewScreenshot.png"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TakingScreenshot\SnippingTool.Interop.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2"/>
+        <PackageReference Include="FontAwesome6.Svg" Version="2.5.1"/>
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77"/>
+        <PackageReference Include="System.Drawing.Common" Version="8.0.1"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Assets\Images\eraserTemp.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Images\pencilsTopBar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Images\PencilTemp2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Images\shapesTopBar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Images\TempPencil.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\UI Icons\NewScreenshot.png" />
-    <None Remove="Assets\Images\stickerTopBar.png" />
-    <Resource Include="Assets\Images\stickerTopBar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <None Remove="Assets\Images\editTopBar.png" />
-    <Resource Include="Assets\Images\editTopBar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <None Remove="Assets\Images\textTopBar.png" />
-    <Resource Include="Assets\Images\textTopBar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <None Remove="Assets\Images\letter-t.png" />
-    <Resource Include="Assets\Images\letter-t.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <None Remove="Assets\Images\historyTopBar.png" />
-    <Resource Include="Assets\Images\historyTopBar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <None Remove="Assets\Images\menuTopBar.png" />
-    <Resource Include="Assets\Images\menuTopBar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <None Remove="Assets\Images\emptyCanvas.png" />
-    <Resource Include="Assets\Images\emptyCanvas.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\TakingScreenshot\SnippingTool.Interop.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Drawing\Editing\" />
-    <Folder Include="Drawing\Effects\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Resource Include="Assets\Images\eraserTemp.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Assets\Images\pencilsTopBar.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Assets\Images\PencilTemp2.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Assets\Images\shapesTopBar.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Assets\Images\TempPencil.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Assets\UI Icons\NewScreenshot.png"/>
+        <None Remove="Assets\Images\stickerTopBar.png"/>
+        <Resource Include="Assets\Images\stickerTopBar.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <None Remove="Assets\Images\editTopBar.png"/>
+        <Resource Include="Assets\Images\editTopBar.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <None Remove="Assets\Images\textTopBar.png"/>
+        <Resource Include="Assets\Images\textTopBar.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <None Remove="Assets\Images\letter-t.png"/>
+        <Resource Include="Assets\Images\letter-t.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <None Remove="Assets\Images\historyTopBar.png"/>
+        <Resource Include="Assets\Images\historyTopBar.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <None Remove="Assets\Images\menuTopBar.png"/>
+        <Resource Include="Assets\Images\menuTopBar.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <None Remove="Assets\Images\emptyCanvas.png"/>
+        <Resource Include="Assets\Images\emptyCanvas.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Assets\Images\ScreenCapture.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Drawing\Editing\"/>
+        <Folder Include="Drawing\Effects\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Resource Include="Assets\Images\ScreenCapture.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Drawing\Shapes\DrawingShape{TSelf}.cs">
+        <DependentUpon>DrawingShape.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Drawing\Shapes\DrawingShape{TSelf,TVisual}.cs">
+        <DependentUpon>DrawingShape.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
 
 </Project>
