@@ -32,7 +32,11 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         .WithBinding(
             DrawingShape.StrokeThicknessProperty,
         new($"{nameof(ShapesSidePanelViewModel.Thickness)}"),
-        options);
+        options)
+        .WithBinding(
+            DrawingShape.StrokeProperty,
+            new($"{nameof(ShapesSidePanelViewModel.ShapeStroke)}"),
+            options);
     }
 
     public override void ResetVisual()
@@ -55,7 +59,8 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
         this.DrawingShape.StrokeLineJoin = PenLineJoin.Round;
         this.DrawingShape.StrokeThickness = options.Thickness;
         this.DrawingShape.Opacity = options.RealOpacity;
-        this.DrawingShape.Fill = Brushes.Aquamarine;
+        this.DrawingShape.Fill = options.ShapeFill;
+        this.DrawingShape.Tag = "For Testing";
         return DrawingToolAction.StartMouseCapture();
     }
 
@@ -80,7 +85,7 @@ public sealed class PolygonTool : DraggingTool<DrawingShape>
     public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
-        var finalPolygon = this.DrawingShape.Clone(new(this.DrawingShape.Width, this.DrawingShape.Height));
+        var finalPolygon = this.DrawingShape.Clone(new Size(this.DrawingShape.Width, this.DrawingShape.Height));
         ResetVisual();
         finalPolygon.Stretch = Stretch.Fill;
         return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalPolygon), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();

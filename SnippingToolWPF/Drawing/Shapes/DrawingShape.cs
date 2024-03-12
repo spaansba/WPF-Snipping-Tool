@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -45,8 +44,6 @@ public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
     /// <summary>
     /// Add the shape to the canvas on visual changed
     /// </summary>
-    /// <param name="oldValue"></param>
-    /// <param name="newValue"></param>
     protected void OnVisualChanged(UIElement? oldValue, UIElement? newValue)
     {
         this.canvas.Children.Clear();

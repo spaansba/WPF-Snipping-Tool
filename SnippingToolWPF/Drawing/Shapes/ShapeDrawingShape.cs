@@ -20,6 +20,8 @@ public abstract class ShapeDrawingShape<TSelf, TVisual> : DrawingShape<TSelf, TV
         BindingOperations.ClearBinding(visual, Shape.StrokeStartLineCapProperty);
         BindingOperations.ClearBinding(visual, Shape.StrokeMiterLimitProperty);
         BindingOperations.ClearBinding(visual, Shape.StrokeLineJoinProperty);
+        // BindingOperations.ClearBinding(visual, Canvas.LeftProperty);
+        // BindingOperations.ClearBinding(visual, Canvas.TopProperty);
     }
 
     protected void SetUpBindings(TVisual visual)
@@ -36,5 +38,7 @@ public abstract class ShapeDrawingShape<TSelf, TVisual> : DrawingShape<TSelf, TV
         visual.SetBinding(Shape.StrokeStartLineCapProperty, new Binding() { Source = this, Path = new(StrokeStartLineCapProperty) });
         visual.SetBinding(Shape.StrokeMiterLimitProperty, new Binding() { Source = this, Path = new(StrokeMiterLimitProperty) });
         visual.SetBinding(Shape.StrokeLineJoinProperty, new Binding() { Source = this, Path = new(StrokeLineJoinProperty) });
+        // visual.SetBinding(Canvas.LeftProperty, new Binding() { Source = this, Path = new(LeftProperty) });
+        // visual.SetBinding(Canvas.TopProperty, new Binding() { Source = this, Path = new(TopProperty) });
     }
 }

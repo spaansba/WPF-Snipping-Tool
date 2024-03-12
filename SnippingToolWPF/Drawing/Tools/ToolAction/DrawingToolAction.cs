@@ -19,7 +19,7 @@ public readonly record struct DrawingToolAction(DrawingToolActionItem StartActio
     {
         var start = this.StartAction.OnlyUndoableActions();
         var stop = this.StopAction.OnlyUndoableActions();
-        return new(
+        return new DrawingToolAction(
             StartAction: start,
             StopAction: stop,
             IncludeInUndoStack: this.IncludeInUndoStack && (start != default || stop != default));
@@ -27,11 +27,12 @@ public readonly record struct DrawingToolAction(DrawingToolActionItem StartActio
     #endregion
 
     #region Actions
-    public static DrawingToolAction Start(DrawingToolActionItem item) => new(
+
+    private static DrawingToolAction Start(DrawingToolActionItem item) => new(
         StartAction: item,
         StopAction: default);
 
-    public static DrawingToolAction Stop(DrawingToolActionItem item) => new(
+    private static DrawingToolAction Stop(DrawingToolActionItem item) => new(
         StartAction: default,
         StopAction: item);
 

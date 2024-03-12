@@ -6,9 +6,20 @@
         xmlns:sidePanel1="clr-namespace:SnippingToolWPF.SidePanel"
         Title="Snipping Tool"
         Width="800" Height="550"
-        Background="#FFF4F4F4" FontFamily="Segou UI Light" AllowsTransparency="True"
-        FontSize="13" UseLayoutRounding="True" mc:Ignorable="d" WindowStyle="None">
+        Background="#FFF4F4F4" FontFamily="Segue UI Light" AllowsTransparency="True"
+        FontSize="13" UseLayoutRounding="True" mc:Ignorable="d" WindowStyle="None" ResizeMode="CanResize">
     <!--  TODO Make custom title bar  -->
+    
+    <!-- This makes it so the user can resize the window even without borders (AllowTransparency = true) -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="1"
+            CornerRadius ="0"
+            ResizeBorderThickness="4"
+            GlassFrameThickness="0">
+        </WindowChrome>
+    </WindowChrome.WindowChrome>
+    
     <Window.DataContext>
         <local:DrawingViewModel/>
     </Window.DataContext>
@@ -112,7 +123,13 @@
         <DockPanel Background="{StaticResource MainBackgroundBrush}"
                    DockPanel.Dock="Top"
                    TextElement.Foreground="{StaticResource MainForegroundBrush}">
-
+            
+            
+            <DockPanel.InputBindings>
+                <!-- Make it so the user can drag the window from next to the topbar -->
+                <MouseBinding MouseAction="LeftClick"
+                              Command="{Binding MoveWindowCommand}"/>
+            </DockPanel.InputBindings>
             <DockPanel.Resources>
                 <Style BasedOn="{StaticResource ButtonWithIcon}" TargetType="ToggleButton" />
                 <Style BasedOn="{StaticResource ButtonWithIcon}" TargetType="Button" />
