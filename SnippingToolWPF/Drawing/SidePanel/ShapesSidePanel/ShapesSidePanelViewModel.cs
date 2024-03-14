@@ -26,11 +26,10 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         get => polygonSelected;
         set
         {
-            if (value is not null)
-            {
-                polygonSelected = value;
-                UpdateTool(); // Update the Tool to give it the new shape
-            }
+            if (value is null) return;
+            
+            polygonSelected = value;
+            UpdateTool(); // Update the Tool to give it the new shape
         }
     }
 
@@ -54,7 +53,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
         UpdateTool();
         Polygons = CreateButtonPolygons();
 
-        PolygonSelected = new PremadePolygonInfo(4);
+        PolygonSelected = new PremadePolygonInfo(4,45);
     }
 
     /// <summary>
@@ -72,7 +71,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
             new PremadePolygonInfo(6, 30), // Hexagon
             new PremadePolygonInfo(7, 13), // Septagon
             new PremadePolygonInfo(8), // Octagon
-            new PremadePolygonInfo(10, 0, true) // 5 pointed Star
+            new PremadePolygonInfo(10, 0, 0.6) // 5 pointed Star
         ];
     }
 
@@ -199,17 +198,18 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     #region Shape Fill / Stroke
 
 
-    private Color? selectedColor;
+
     
     // Brush that is in connection with the SelectedColor
     private static readonly Color defaultPenColor = Colors.Black;
     public Brush Stroke { get; private set; } = new SolidColorBrush(defaultPenColor);
-    public Color? SelectedColor
+    private Color? selectedStroke;
+    public Color? SelectedStroke
     {
-        get => selectedColor;
+        get => selectedStroke;
         set
         {
-            if (!SetProperty(ref selectedColor, value)) return;
+            if (!SetProperty(ref selectedStroke, value)) return;
             Stroke = value.HasValue ? new SolidColorBrush(value.Value) : new SolidColorBrush(defaultPenColor);
         }
     }

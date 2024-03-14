@@ -10,7 +10,7 @@ namespace SnippingToolWPF.Tools.PolygonTools;
 /// </summary>
 public static class CreateInitialPolygon
 {
-    #region Create Polygon Shape
+    #region Polygon Points Creating
 
     /// <summary>
     ///     Returns a Polygon with N vertices in a 1x1 plane
@@ -20,40 +20,13 @@ public static class CreateInitialPolygon
     /// <param name="innerCircleSize">
     ///     the size of the circumscribed circle of the inner circle, must be a value from 0.1 to 1.
     ///     When this is set the Polygon will be shaped like a star figure
-    /// </param>
-    /// <param name="thickness">thickness of the polygon line</param>
-    /// <returns></returns>
-    public static Polygon Create(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0,
-        double thickness = 2)
+    public static Point[] GeneralPolygonPoints(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0)
     {
-        //Check if innerCircleSize = 1.0
-        if (DoubleUtil.IsOne(innerCircleSize))
-            return CreatePolygon(GeneratePolygonPoints(vertices, rotationDegrees, innerCircleSize), thickness,
-                Brushes.Black);
-        return CreatePolygon(GenerateStarPoints(vertices, rotationDegrees, innerCircleSize), thickness, Brushes.Black);
+        return innerCircleSize >= 1.0
+            ? GeneratePolygonPoints(vertices, rotationDegrees)
+            : GenerateStarPoints(vertices / 2, rotationDegrees, innerCircleSize);
     }
-
-    public static Polygon CreatePolygon(PremadePolygonInfo polygonInfo)
-    {
-        return new Polygon
-        {
-            Stretch = Stretch.Fill,
-            Points = new PointCollection(GeneratePolygonPoints(polygonInfo.NumberOfSides, polygonInfo.RotationAngle))
-        };
-    }
-
-    private static Polygon CreatePolygon(IEnumerable<Point> points, double thickness, Brush stroke)
-    {
-        return new Polygon
-        {
-            Stretch = Stretch.Fill, Points = new PointCollection(points), StrokeThickness = thickness, Stroke = stroke
-        };
-    }
-
-    #endregion
-
-    #region Polygon Points Creating
-
+    
     public static Point[] GeneratePolygonPoints(int vertices, double rotationDegrees = 0, double innerCircleSize = 1.0)
     {
         var points = new Point[vertices];

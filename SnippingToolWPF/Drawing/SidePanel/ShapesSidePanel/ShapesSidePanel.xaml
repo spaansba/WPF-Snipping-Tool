@@ -17,20 +17,20 @@
     <DockPanel Background="{StaticResource AlternateBackgroundBrush}">
 
 
-        <Grid MinHeight="250" Margin="12,10,12,0">
+        <Grid MinHeight="250" Margin="12,10,12,0" DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*" MinHeight="62"/> <!-- Make it so the Sliders cant be cut off while shrinking the screen -->
+                <RowDefinition Height="*" MinHeight="62"/>
+                <RowDefinition Height="*" MinHeight="120"/>
             </Grid.RowDefinitions>
 
             <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                     DockPanel.Dock="Top" ItemsSource="{Binding Polygons}"
+                      ItemsSource="{Binding Polygons}"
                      Background="{StaticResource AlternateBackgroundBrush}"
                      BorderThickness="0" SelectedItem="{Binding PolygonSelected}"
                      Margin="0,10,0,0">
@@ -97,6 +97,15 @@
                     specialUiElements:SliderTitleAndTextBox.SliderHeader="Opacity"
                     specialUiElements:SliderTitleAndTextBox.SliderValueInText="{Binding OpacityString, UpdateSourceTrigger=PropertyChanged}" />
             <!-- placeholder -->
+            
+            <ListBox BorderBrush="Transparent"
+                     Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+                     Margin="0,15,0,0" DockPanel.Dock="Bottom"
+                     Style="{StaticResource ColorSelectorListBox}"
+                     SelectedItem="{Binding SelectedStroke, Mode=TwoWay}" />
         </Grid>
+        
+        <TextBlock DockPanel.Dock="Bottom" Height="1"/>
+        
     </DockPanel>
 </UserControl>

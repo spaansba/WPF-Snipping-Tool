@@ -12,7 +12,7 @@ public abstract class DraggingTool<T> : IDrawingTool where T : DrawingShape, new
     /// <summary>
     /// Create a generic drawingshape
     /// </summary>
-    public T DrawingShape { get; } = new T();
+    protected T DrawingShape { get; init; } = new T();
 
     public abstract bool LockedAspectRatio { get; set; }
 

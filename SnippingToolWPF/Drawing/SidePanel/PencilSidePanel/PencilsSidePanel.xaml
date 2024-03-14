@@ -33,9 +33,10 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="105" />
+                <RowDefinition Height="*" MinHeight="62"/> <!-- Make it so the Sliders cant be cut off while shrinking the screen -->
+                <RowDefinition Height="*" MinHeight="62"/>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="*" MinHeight="120"/>
             </Grid.RowDefinitions>
 
             <!--  Tool Selector  -->
@@ -111,17 +112,20 @@
 
             <CheckBox Grid.Row="3" Style="{StaticResource BaseCheckBox}"
                       Grid.ColumnSpan="2" Grid.Column="0"
-                      Margin="0,15,0,15"
+                      Margin="0,15,0,0"
                       IsChecked="{Binding PenTipArrow}">
                 <TextBlock Text="Add Arrowhead" />
             </CheckBox>
 
+            <ListBox BorderBrush="Transparent"
+                     Margin="0,15,0,0" Grid.Row="4" Grid.Column="0"
+                     Grid.ColumnSpan="2"
+                     Style="{StaticResource ColorSelectorListBox}"
+                     SelectedItem="{Binding SelectedStroke, Mode=TwoWay}" />
+            
         </Grid>
 
-        <ListBox BorderBrush="Transparent"
-                 Margin="0,0,0,30" DockPanel.Dock="Bottom"
-                 Style="{StaticResource ColorSelectorListBox}"
-                 SelectedItem="{Binding SelectedColor, Mode=TwoWay}" />
+        <TextBlock DockPanel.Dock="Bottom"/>
 
     </DockPanel>
 </UserControl>

@@ -1,13 +1,16 @@
-﻿using System.Windows;
+﻿using System.Collections;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF;
 
-public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
+public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<DrawingShape>
 {
     public static readonly DependencyProperty VisualProperty = DependencyProperty.Register(
         nameof(Visual),
@@ -26,23 +29,9 @@ public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
         var rotateTransform = new RotateTransform();
         BindingOperations.SetBinding(rotateTransform, RotateTransform.AngleProperty,
             new Binding { Source = this, Path = new PropertyPath(AngleProperty) });
-        // this.canvas = new Canvas
-        //     {
-        //         Children = { textBlock},
-        //         LayoutTransform = rotateTransform, // TODO: Is RenderTransform enough?  We should use that, if we can.
-        //     };
-        // this.Child = this.canvas;
+        
     }
-
-    /// <summary>
-    ///     We purely override child so we can seal it and set it in the constructor
-    /// </summary>
-    public sealed override UIElement Child
-    {
-        get => base.Child;
-        set => base.Child = value; // Set to base child
-    }
-
+    
     public UIElement? Visual
     {
         get => this.GetValue<UIElement?>(VisualProperty);
@@ -64,29 +53,78 @@ public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
     /// </summary>
     protected void OnVisualChanged(UIElement? oldValue, UIElement? newValue)
     {
+        if (oldValue is not null)
+        {
+            this.RemoveVisualChild(oldValue);
+            this.RemoveLogicalChild(oldValue);
+        }
+
         if (newValue is not null)
-            Child = newValue;
+        {
+            this.AddVisualChild(newValue);
+            this.AddLogicalChild(newValue);
+        }
         OnVisualChangedOverride(oldValue, newValue);
-        // this.canvas.Children.Clear();
-        // if (newValue is not null)
-        //     this.canvas.Children.Add(newValue);
-        // this.canvas.Children.Add(this.textBlock);
-        // OnVisualChangedOverride(oldValue, newValue);
     }
 
     protected virtual void OnVisualChangedOverride(UIElement? oldValue, UIElement? newValue)
     {
         // We don't do anything in here this is purely for override so we protect OnVisualChanged making it unoverrideable
     }
-
+    
     private static TextBlock SetupTextBlock(DrawingShape parent)
     {
         var textBlock = new TextBlock();
         textBlock.SetBinding(TextBlock.TextProperty,
             new Binding { Source = parent, Path = new PropertyPath(TextProperty) });
+        parent.AddVisualChild(textBlock);
+        parent.AddLogicalChild(textBlock);
         return textBlock;
     }
 
+    #region Visual Children override FrameworkElement
+    protected override IEnumerator LogicalChildren
+    {
+        get
+        {
+            if (this.Visual is not null)
+                yield return this.Visual;
+            yield return this.textBlock;
+        }
+    }
+
+    protected override int VisualChildrenCount => this.Visual is not null ? 2 : 1;
+
+    protected override Visual GetVisualChild(int index) => index switch
+    {
+        0 when this.Visual is not null => this.Visual,
+        0 => this.textBlock,
+        1 when this.Visual is not null => this.textBlock,
+        _ => throw new ArgumentOutOfRangeException(nameof(index)),
+    };
+    
+    #endregion
+
+    /// <summary>
+    /// Measure lets me tell my parent how much space I want, given a constraint
+    ///  Arrange lets my parent tell me how much space I get.
+    /// </summary>
+
+    protected override Size MeasureOverride(Size constraint)
+    {
+        var (visualWidth, visualHeight) = this.Visual.MeasureAndReturn(constraint); //Nullable allowed in extension
+        var (textWidth, textHeight) = this.textBlock.MeasureAndReturn(constraint);
+        return new Size(Math.Max(visualWidth,textWidth), Math.Max(visualHeight,textHeight));
+    }
+
+    protected override Size ArrangeOverride(Size arrangeSize)
+    {
+        //TODO: allow movement of textblock within drawingshape
+        this.Visual?.Arrange((new Rect(arrangeSize)));
+        this.textBlock.Arrange(new Rect(arrangeSize));
+        return arrangeSize;
+    }
+    
     #region Dependency properties
 
     public static readonly DependencyProperty TextProperty = TextBlock.TextProperty.AddOwner(typeof(DrawingShape));
@@ -236,14 +274,6 @@ public abstract class DrawingShape : Decorator, IShape, ICloneable<DrawingShape>
     {
         get => this.GetValue<double>(AngleProperty);
         set => this.SetValue<double>(AngleProperty, value);
-    }
-
-    public static readonly DependencyProperty PointsProperty = Polygon.PointsProperty.AddOwner(typeof(DrawingShape));
-
-    public PointCollection? Points
-    {
-        get => this.GetValue<PointCollection?>(PointsProperty);
-        set => this.SetValue<PointCollection?>(PointsProperty, value);
     }
 
     #endregion Dependency properties

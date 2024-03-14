@@ -11,11 +11,15 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
 {
     private readonly ShapesSidePanelViewModel options;
     private Point startPoint;
-
+    
     public PolygonTool(ShapesSidePanelViewModel options)
     {
         this.options = options;
-
+        
+        // If there is a standard Rotation Angle, create a new DrawingShape. Otherwise use DraggingTool's DawingShape
+        if (options.PolygonSelected is not null && options.PolygonSelected.RotationAngle > 0 )
+            this.DrawingShape = new RegularPolygonDrawingShape(options.PolygonSelected.RotationAngle);
+        
         //TODO: Fix WithBindingPathParts bugs so we can use it instead of WithBinding
         DrawingShape.WithBinding(
                 RegularPolygonDrawingShape.NumberOfSidesProperty,
@@ -23,18 +27,21 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
                     $"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.NumberOfSides)}"),
                 options)
             .WithBinding(
-                SnippingToolWPF.DrawingShape.AngleProperty,
-                new PropertyPath(
-                    $"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.RotationAngle)}"),
-                options)
-            .WithBinding(
                 SnippingToolWPF.DrawingShape.StrokeThicknessProperty,
                 new PropertyPath($"{nameof(ShapesSidePanelViewModel.Thickness)}"),
+                options)
+            .WithBinding(
+                RegularPolygonDrawingShape.StarInnerCircleSizeProperty,
+                new PropertyPath(
+                    $"{nameof(ShapesSidePanelViewModel.PolygonSelected)}.{nameof(PremadePolygonInfo.StarInnerCircleSize)}"),
                 options)
             .WithBinding(
                 SnippingToolWPF.DrawingShape.StrokeProperty,
                 new PropertyPath($"{nameof(ShapesSidePanelViewModel.Stroke)}"),
                 options);
+        //TODO: Create Angle property and bind to drawingshape.Angle
+        
+        ResetVisual(); //Reset otherwise after switching polygon shapes there will be a small shape in the top left of the screen
     }
 
     public override bool IsDrawing { get; set; }
@@ -49,12 +56,11 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
 
     public override DrawingToolAction LeftButtonDown(Point position, DrawingShape? item)
     {
-        DrawingShape.NumberOfSides = 5;
         IsDrawing = true;
         startPoint = position;
         DrawingShape.Left = position.X;
         DrawingShape.Top = position.Y;
-        DrawingShape.Stroke = Brushes.Aqua;
+        DrawingShape.Stroke = options.Stroke;
         DrawingShape.StrokeDashCap = PenLineCap.Round;
         DrawingShape.StrokeStartLineCap = PenLineCap.Round;
         DrawingShape.StrokeEndLineCap = PenLineCap.Round;
@@ -123,7 +129,7 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
 
     public override bool LockedAspectRatio { get; set; }
 
-    public Point GetLockedAspectRatioEndPoint(Point location)
+    private Point GetLockedAspectRatioEndPoint(Point location)
     {
         var dx = location.X - startPoint.X;
         var dy = location.Y - startPoint.Y;

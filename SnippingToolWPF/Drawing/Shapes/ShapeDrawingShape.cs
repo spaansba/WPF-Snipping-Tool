@@ -3,12 +3,14 @@ using System.Windows.Data;
 using System.Windows.Shapes;
 
 namespace SnippingToolWPF;
-
+/// <summary>
+/// ShapeDrawingShape handles all of the properties that pertain to ALL Shape
+/// </summary>
 public abstract class ShapeDrawingShape<TSelf, TVisual> : DrawingShape<TSelf, TVisual>
     where TVisual : Shape, new()
     where TSelf : DrawingShape<TSelf>, new()
 {
-    protected void ClearBindings(TVisual visual)
+    protected override void ClearBindings(TVisual visual)
     {
         BindingOperations.ClearBinding(visual, Shape.StrokeProperty);
         BindingOperations.ClearBinding(visual, Shape.FillProperty);
@@ -25,7 +27,7 @@ public abstract class ShapeDrawingShape<TSelf, TVisual> : DrawingShape<TSelf, TV
         // BindingOperations.ClearBinding(visual, Canvas.TopProperty);
     }
 
-    protected void SetUpBindings(TVisual visual)
+    protected override void SetUpBindings(TVisual visual)
     {
         // is equivalent to: Stroke="{Binding RelativeSource={RelativeSource Self}, Path=Stroke}"
         visual.SetBinding(Shape.StrokeProperty, new Binding { Source = this, Path = new PropertyPath(StrokeProperty) });
