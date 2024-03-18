@@ -20,6 +20,7 @@
                             <!-- Where saved items are place -->
                             <control:DrawingCanvasListBox x:Name="PART_ItemsControl" ClipToBounds="True"
                                                           SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem}">
+
                                 <!-- Bind the DrawingCanvasListBox SelectedItem to the DrawingCanvas SelectedItem-->
                                 <control:DrawingCanvasListBox.ItemsPanel>
                                     <ItemsPanelTemplate>

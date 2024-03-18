@@ -71,7 +71,9 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
             new PremadePolygonInfo(6, 30), // Hexagon
             new PremadePolygonInfo(7, 13), // Septagon
             new PremadePolygonInfo(8), // Octagon
-            new PremadePolygonInfo(10, 0, 0.6) // 5 pointed Star
+            new PremadePolygonInfo(10, 126, 0.5), // 5 pointed Star
+            new PremadePolygonInfo(14, 13, 0.5), // 7 pointed Star
+            
         ];
     }
 
@@ -216,7 +218,7 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     
 
 
-    public readonly Brush ShapeFill = Brushes.Transparent;
+    public readonly Brush? ShapeFill = null;
     //TODO: Shape Fill
 
     #endregion

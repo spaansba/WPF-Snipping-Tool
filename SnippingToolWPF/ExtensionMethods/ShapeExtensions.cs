@@ -27,26 +27,7 @@ public static class ShapeExtensions
     }
 
     //   public static Shape Clone(this Ellipse shape) => CloneCore(shape);
-
-    public static RegularPolygonDrawingShape Clone(this RegularPolygonDrawingShape polygon, Size scaleSize)
-    {
-        ArgumentNullException.ThrowIfNull(polygon);
-
-        var scaledPoints = new PointCollection();
-
-        if (polygon.Points is not null)
-            foreach (var point in polygon.Points)
-                scaledPoints.Add(new Point(point.X * scaleSize.Width, point.Y * scaleSize.Height));
-
-        var clonedPolygon = new RegularPolygonDrawingShape
-        {
-            Points = scaledPoints,
-            FillRule = polygon.FillRule
-        };
-
-        clonedPolygon = CloneCore(polygon, clonedPolygon);
-        return clonedPolygon;
-    }
+    
 
     // public static DrawingShape Clone(this RegularPolylineDrawingShape shape)
     //      => CloneCore(shape, new() { Points = new(shape.Points), FillRule = shape.FillRule });

@@ -3,8 +3,10 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SnippingToolWPF.Control;
 using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.WPFExtensions;
 
@@ -29,7 +31,6 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         var rotateTransform = new RotateTransform();
         BindingOperations.SetBinding(rotateTransform, RotateTransform.AngleProperty,
             new Binding { Source = this, Path = new PropertyPath(AngleProperty) });
-        
     }
     
     public UIElement? Visual
@@ -45,9 +46,17 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     {
         base.OnPropertyChanged(e);
         if (e.Property == VisualProperty) //If Visual gets replaced call OnVisualChanged
+        {
             OnVisualChanged(e.OldValue as UIElement, e.NewValue as UIElement);
+        }
     }
-
+    protected void AddAdornerToUIElement(UIElement visual)
+    {
+        var adornerLayer = AdornerLayer.GetAdornerLayer(visual);
+        var myAdorner = new ResizeAdorner(visual);
+        if (adornerLayer != null) adornerLayer.Add(myAdorner);
+    }
+    
     /// <summary>
     ///     Add the shape to the canvas on visual changed
     /// </summary>

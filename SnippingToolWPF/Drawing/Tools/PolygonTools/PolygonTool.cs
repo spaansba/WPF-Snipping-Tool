@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using SnippingToolWPF.ExtensionMethods;
@@ -95,9 +96,8 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
     public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
-        var finalPolygon = DrawingShape.Clone(new Size(DrawingShape.Width, DrawingShape.Height));
-        ResetVisual();
-        finalPolygon.Stretch = Stretch.Fill;
+        var finalPolygon = DrawingShape.Clone();
+         ResetVisual();
         return new DrawingToolAction(DrawingToolActionItem.Shape(finalPolygon), DrawingToolActionItem.MouseCapture())
             .WithUndo();
     }

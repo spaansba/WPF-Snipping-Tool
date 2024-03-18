@@ -2,5 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Drawing/DrawingCanvas.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/UserControls/DrawingCanvasListBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -14,6 +15,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         this.Visual = CreateVisual();
         //Because Visual has bound to PointsProperty, setting this.Points will update this.Visual 
         this.Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, PointGenerationRotationAngle));
+        AddAdornerToUIElement(this.Visual);
     }
     
     public RegularPolygonDrawingShape(double pointGenerationRotationAngle)
@@ -22,12 +24,29 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         this.PointGenerationRotationAngle = pointGenerationRotationAngle;
         //Because Visual has bound to PointsProperty, setting this.Points will update this.Visual 
         this.Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, PointGenerationRotationAngle));
+        AddAdornerToUIElement(this.Visual);
     }
     
     protected override void PopulateClone(RegularPolygonDrawingShape clone)
     {
         base.PopulateClone(clone);
-        Console.WriteLine();
+        clone.Stretch = this.Stretch;
+        clone.Stroke = this.Stroke;
+        clone.StrokeThickness = this.StrokeThickness;
+        clone.Opacity = this.Opacity;
+        clone.StrokeDashCap = this.StrokeDashCap;
+        clone.StrokeStartLineCap = this.StrokeStartLineCap;
+        clone.StrokeEndLineCap = this.StrokeEndLineCap;
+        clone.UseLayoutRounding = this.UseLayoutRounding;
+        clone.StrokeLineJoin = this.StrokeLineJoin;
+        clone.Fill = this.Fill;
+        clone.Effect = this.Effect;
+        clone.Left = this.Left;
+        clone.Top = this.Top;
+        clone.Width = this.Width;
+        clone.Height = this.Height;
+        clone.Points = this.Points;
+        clone.FillRule = this.FillRule;
     }
 
     protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
@@ -35,7 +54,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         base.OnPropertyChanged(e);
         if (e.Property == NumberOfSidesProperty) //Recalc points if we change the number of sides
             this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(NumberOfSides, PointGenerationRotationAngle,
-                    StarInnerCircleSize));
+                StarInnerCircleSize));
         if (e.Property == PointGenerationRotationAngleProperty) // Recalc points if we change the Angle
             this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(NumberOfSides, PointGenerationRotationAngle,
                 StarInnerCircleSize));
@@ -125,7 +144,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
     public double PointGenerationRotationAngle
     {
         get => this.GetValue<double>(PointGenerationRotationAngleProperty);
-        private set => SetValue(PointGenerationRotationAnglePropertyKey, value);
+        private init => SetValue(PointGenerationRotationAnglePropertyKey, value);
     }
     
     public static readonly DependencyProperty PointsProperty = Polygon.PointsProperty.AddOwner(typeof(RegularPolygonDrawingShape));

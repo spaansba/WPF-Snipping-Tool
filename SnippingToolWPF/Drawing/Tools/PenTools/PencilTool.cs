@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using SnippingToolWPF.ExtensionMethods;
@@ -24,29 +25,8 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     //public override void ResetVisual() => this.DrawingShape.Points.Clear();
     public override void ResetVisual()
     {
+        DrawingShape.Points.Clear();
         DrawingShape.StrokeThickness = 10;
-    }
-
-
-    //TODO: make the XAML colorPicker have an option for Rainbow Gradient
-    public static LinearGradientBrush GetRainbowGradientBrush()
-    {
-        var rainbowBrush = new LinearGradientBrush();
-        rainbowBrush.StartPoint = new Point(0, 0);
-        rainbowBrush.EndPoint = new Point(1, 0);
-
-        var gradientStops = new GradientStopCollection();
-        gradientStops.Add(new GradientStop(Colors.Red, 0));
-        gradientStops.Add(new GradientStop(Colors.Orange, 0.17));
-        gradientStops.Add(new GradientStop(Colors.Yellow, 0.33));
-        gradientStops.Add(new GradientStop(Colors.Green, 0.5));
-        gradientStops.Add(new GradientStop(Colors.Blue, 0.67));
-        gradientStops.Add(new GradientStop(Colors.Indigo, 0.83));
-        gradientStops.Add(new GradientStop(Colors.Violet, 1.0));
-
-        rainbowBrush.GradientStops = gradientStops;
-
-        return rainbowBrush;
     }
 
     #region Mouse Events
@@ -62,9 +42,10 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
         DrawingShape.StrokeStartLineCap = PenLineCap.Round;
         DrawingShape.StrokeEndLineCap = PenLineCap.Round;
         DrawingShape.StrokeLineJoin = PenLineJoin.Round;
+        DrawingShape.Points.Add(position);
+
         //Visual.Points.Clear();
         ////     Visual.Effect = customEffect;
-        //Visual.Points.Add(position);
         return DrawingToolAction.StartMouseCapture();
     }
 
@@ -74,19 +55,19 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
 
     public override DrawingToolAction MouseMove(Point position, DrawingShape? element)
     {
-        //if (!IsDrawing)
-        // return DrawingToolAction.DoNothing;
+        if (!IsDrawing)
+         return DrawingToolAction.DoNothing;
 
-        //if (Visual.Points.Count > 0)
-        //{
-        //    Point lastPoint = Visual.Points[Visual.Points.Count - 1];
-        //    double distance = Point.Subtract(lastPoint, position).Length;
+        if (DrawingShape.Points.Count > 0)
+        {
+            var lastPoint = DrawingShape.Points[^1];
+            var distance = Point.Subtract(lastPoint, position).Length;
 
-        //    if (distance < FreehandSensitivity)
-        //        return DrawingToolAction.DoNothing;
-        //}
+            if (distance < FreehandSensitivity)
+                return DrawingToolAction.DoNothing;
+        }
 
-        //Visual.Points.Add(position);
+        DrawingShape.Points.Add(position);
 
         //// TODO: Make it working so the arrow is getting added while drawing
 
@@ -95,30 +76,15 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
 
     public override DrawingToolAction LeftButtonUp()
     {
-        //IsDrawing = false;
-        //if (options.PenTipArrow)
-        //    AddArrowHead(Visual);
-
-        //// Get the smallest X and Y and create a new point list based on the Visual.Points
-        //// In this list we substract the minY and minX from each point so we can set the canvas of the Shape correctly to match the DrawingCanvas
-        //var minX = this.Visual.Points.Min(static p => p.X);
-        //var minY = this.Visual.Points.Min(static p => p.Y);
-        //var newPoints = new PointCollection(this.Visual.Points.Count);
-        //foreach (var point in this.Visual.Points)
-        //{
-        //    newPoints.Add(new Point(point.X - minX, point.Y - minY));
-        //}
-
-        //// Clone the Polyline so we remove the parent and put it on the canvas, als now we can clear the current Visual
-        //Polyline finalLine = (Polyline)this.Visual.Clone();
-        //finalLine.Points = newPoints;
-
-        //Canvas.SetLeft(finalLine, minX);
-        //Canvas.SetTop(finalLine, minY);
-
-        //ResetVisual();
-        return DrawingToolAction.DoNothing;
-        //     return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
+        IsDrawing = false;
+        if (options.PenTipArrow)
+            AddArrowHead(DrawingShape);
+        
+        // Clone the Polyline so we remove the parent and put it on the canvas, als now we can clear the current Visual
+        var finalLine = this.DrawingShape.Clone();
+        
+        ResetVisual();
+        return new DrawingToolAction(StartAction: DrawingToolActionItem.Shape(finalLine), StopAction: DrawingToolActionItem.MouseCapture()).WithUndo();
     }
 
     /// <summary>
@@ -137,7 +103,7 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     #region Calculate / add arrow head
 
     // ReSharper disable once UnusedMember.Local
-    private void AddArrowHead(Polyline visual)
+    private void AddArrowHead(RegularPolylineDrawingShape visual)
     {
         if (visual.Points is not [.., _, var point1, var point2]) return;
         var (arrowPoint1, arrowPoint2) = GetArrowHeadPoints(point1, point2);
@@ -171,4 +137,25 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     }
 
     #endregion
+    
+    //TODO: make the XAML colorPicker have an option for Rainbow Gradient
+    public static LinearGradientBrush GetRainbowGradientBrush()
+    {
+        var rainbowBrush = new LinearGradientBrush();
+        rainbowBrush.StartPoint = new Point(0, 0);
+        rainbowBrush.EndPoint = new Point(1, 0);
+
+        var gradientStops = new GradientStopCollection();
+        gradientStops.Add(new GradientStop(Colors.Red, 0));
+        gradientStops.Add(new GradientStop(Colors.Orange, 0.17));
+        gradientStops.Add(new GradientStop(Colors.Yellow, 0.33));
+        gradientStops.Add(new GradientStop(Colors.Green, 0.5));
+        gradientStops.Add(new GradientStop(Colors.Blue, 0.67));
+        gradientStops.Add(new GradientStop(Colors.Indigo, 0.83));
+        gradientStops.Add(new GradientStop(Colors.Violet, 1.0));
+
+        rainbowBrush.GradientStops = gradientStops;
+
+        return rainbowBrush;
+    }
 }

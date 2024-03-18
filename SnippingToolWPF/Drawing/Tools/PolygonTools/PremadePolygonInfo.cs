@@ -8,5 +8,5 @@ public sealed record PremadePolygonInfo(
     double RotationAngle = 0,
     double StarInnerCircleSize = 1.0)
 {
-    public PointCollection GeneratedPoints => new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(NumberOfSides, RotationAngle, StarInnerCircleSize));
+    public PointCollection GeneratedPoints => new (CreateInitialPolygon.GeneralPolygonPoints(NumberOfSides, RotationAngle, StarInnerCircleSize));
 }

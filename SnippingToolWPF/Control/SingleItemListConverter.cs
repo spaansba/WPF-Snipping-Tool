@@ -17,7 +17,6 @@ public class SingleItemCollectionContainer : CollectionContainer
         }
     );
 
-
     private bool createdCollection;
 
     public object? Item
