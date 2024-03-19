@@ -123,7 +123,7 @@ public partial class DrawingViewModel : ObservableObject
     #region Shape Selection
 
     private object? selectedShape;
-
+    
     public object? SelectedShape
     {
         get => selectedShape;

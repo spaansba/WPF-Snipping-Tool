@@ -12,10 +12,10 @@ public class ResizeAdorner : Adorner
     private const double angle = 0.0;
     private Point transformOrigin = new Point(0, 0);
     private readonly VisualCollection visualChilderns;
-    private readonly Thumb LeftTop = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25};
-    private readonly Thumb RightTop = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25};
-    private readonly Thumb RightBottom = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25};
-    private readonly Thumb LeftBottom = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25};
+    private readonly Thumb LeftTop = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25, Cursor = Cursors.SizeNWSE};
+    private readonly Thumb RightTop = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25, Cursor = Cursors.SizeNESW};
+    private readonly Thumb RightBottom = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25, Cursor = Cursors.SizeNWSE};
+    private readonly Thumb LeftBottom = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25, Cursor = Cursors.SizeNESW};
     private readonly FrameworkElement childElement;
     private bool dragStarted;
     private bool isHorizontalDrag;
@@ -29,7 +29,7 @@ public class ResizeAdorner : Adorner
             CreateThumbPart(ref RightBottom),
             CreateThumbPart(ref LeftBottom)
         };
-        LeftTop.DragDelta += (sender, e) =>
+        LeftTop.DragDelta += (_, e) =>
         {
             var hor = e.HorizontalChange;
             var vert = e.VerticalChange;
@@ -43,7 +43,7 @@ public class ResizeAdorner : Adorner
             dragStarted = false;
             e.Handled = true;
         };
-        RightTop.DragDelta += (sender, e) =>
+        RightTop.DragDelta += (_, e) =>
         {
             var hor = e.HorizontalChange;
             var vert = e.VerticalChange;
@@ -59,7 +59,7 @@ public class ResizeAdorner : Adorner
             e.Handled = true;
         };
         
-        LeftBottom.DragDelta += (sender, e) =>
+        LeftBottom.DragDelta += (_, e) =>
         {
             var hor = e.HorizontalChange;
             var vert = e.VerticalChange;
@@ -75,7 +75,7 @@ public class ResizeAdorner : Adorner
             e.Handled = true;
         };
         
-        RightBottom.DragDelta += (sender, e) =>
+        RightBottom.DragDelta += (_, e) =>
         {
             var hor = e.HorizontalChange;
             var vert = e.VerticalChange;
@@ -91,13 +91,19 @@ public class ResizeAdorner : Adorner
         };
     }
     
+    private Thumb CreateThumbPart(ref Thumb cornerThumb)
+    {
+        cornerThumb.DragStarted += (object sender, DragStartedEventArgs e) => dragStarted = true;
+        return cornerThumb;
+    }
+    
     private void ResizeWidth(double e)
     {
         var deltaHorizontal = Math.Min(-e, childElement.ActualWidth - childElement.MinWidth);
-        Canvas.SetTop(childElement, Canvas.GetTop(childElement) - transformOrigin.X * deltaHorizontal * Math.Sin(angle));
-        Canvas.SetLeft(childElement, Canvas.GetLeft(childElement) + (deltaHorizontal * transformOrigin.X * (1 - Math.Cos(angle))));
+        Canvas.SetLeft(childElement, Canvas.GetLeft(childElement) + deltaHorizontal * transformOrigin.X * (1 - Math.Cos(angle)));
         childElement.Width -= deltaHorizontal;
     }
+
     private void ResizeX(double e)
     {
         var deltaHorizontal = Math.Min(e, childElement.ActualWidth - childElement.MinWidth);
@@ -108,8 +114,7 @@ public class ResizeAdorner : Adorner
     private void ResizeHeight(double e)
     {
         var deltaVertical = Math.Min(-e, childElement.ActualHeight - childElement.MinHeight);
-        Canvas.SetTop(childElement, Canvas.GetTop(childElement) + (transformOrigin.Y * deltaVertical * (1 - Math.Cos(-angle))));
-        Canvas.SetLeft(childElement, Canvas.GetLeft(childElement) - deltaVertical * transformOrigin.Y * Math.Sin(-angle));
+        Canvas.SetTop(childElement, Canvas.GetTop(childElement) + deltaVertical * transformOrigin.Y * (1 - Math.Cos(-angle)));
         childElement.Height -= deltaVertical;
     }
     private void ResizeY(double e)
@@ -118,12 +123,6 @@ public class ResizeAdorner : Adorner
         Canvas.SetTop(childElement, Canvas.GetTop(childElement) + deltaVertical * Math.Cos(-angle) + (transformOrigin.Y * deltaVertical * (1 - Math.Cos(-angle))));
         Canvas.SetLeft(childElement, Canvas.GetLeft(childElement) + deltaVertical * Math.Sin(-angle) - (transformOrigin.Y * deltaVertical * Math.Sin(-angle)));
         childElement.Height -= deltaVertical;
-    }
-    
-    private Thumb CreateThumbPart(ref Thumb cornerThumb)
-    {
-        cornerThumb.DragStarted += (object sender, DragStartedEventArgs e) => dragStarted = true;
-        return cornerThumb;
     }
 
     /// <summary>

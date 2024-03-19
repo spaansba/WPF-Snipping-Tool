@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -332,10 +332,26 @@ public class DrawingCanvas : System.Windows.Controls.Control
     public object? SelectedItem
     {
         get => GetValue(SelectedItemProperty);
-        set
+        set => SetValue(SelectedItemProperty, value);
+    }
+
+    private ResizeAdorner? ResizeAdorner { get; set; }
+
+    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        if (e.Property == SelectedItemProperty)
         {
-            SetValue(SelectedItemProperty, value);
-            Debug.WriteLine("object selected - DrawingCanvas");
+            if (e.OldValue is UIElement oldValue)
+            {
+                if (ResizeAdorner != null) AdornerLayer.GetAdornerLayer(oldValue)?.Remove(ResizeAdorner);
+            }
+            
+            if (e.NewValue is UIElement newValue)
+            {
+                ResizeAdorner = new ResizeAdorner(newValue);
+                AdornerLayer.GetAdornerLayer(newValue)?.Add(ResizeAdorner);
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using SnippingToolWPF.WPFExtensions;
 
@@ -86,11 +85,11 @@ public class DrawingCanvasListBoxItem : ListBoxItem
         {
             if (IsAdornerLayerVisible)
             { 
-                AdornerLayer.GetAdornerLayer(this)?.Add(this.ResizeAdorner);
+             //   AdornerLayer.GetAdornerLayer(this)?.Add(this.ResizeAdorner);
             }
             else
             {
-                AdornerLayer.GetAdornerLayer(this)?.Remove(this.ResizeAdorner);
+            //   AdornerLayer.GetAdornerLayer(this)?.Remove(this.ResizeAdorner);
             }
         }
     }

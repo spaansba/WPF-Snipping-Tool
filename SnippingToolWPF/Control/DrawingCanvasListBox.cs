@@ -23,18 +23,16 @@ public class DrawingCanvasListBox : ListBox
     internal DrawingCanvas? DrawingCanvas { get; set; }
 
     /// <summary>
-    ///     Returns true if the item is (or should be) its own item container, basically recreating the base ItemsControl
+    ///  Returns true if the item is (or should be) its own item container, basically recreating the base ItemsControl
     /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
     protected override bool IsItemItsOwnContainerOverride(object item)
     {
         return item is DrawingCanvasListBoxItem;
     }
 
     /// <summary>
-    ///     Create or identify the element used to display the given item (returns new content presenter), basically recreating
-    ///     the base ItemsControl
+    ///  Create or identify the element used to display the given item (returns new content presenter), basically recreating
+    ///  the base ItemsControl
     /// </summary>
     protected override DependencyObject GetContainerForItemOverride()
     {
