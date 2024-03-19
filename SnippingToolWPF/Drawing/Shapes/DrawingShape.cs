@@ -29,7 +29,7 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         BindingOperations.SetBinding(rotateTransform, RotateTransform.AngleProperty,
             new Binding { Source = this, Path = new PropertyPath(AngleProperty) });
     }
-    
+
     public UIElement? Visual
     {
         get => this.GetValue<UIElement?>(VisualProperty);

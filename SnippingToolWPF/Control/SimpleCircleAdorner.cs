@@ -16,13 +16,13 @@ public class SimpleCircleAdorner : Adorner
     // method, which is called by the layout system as part of a rendering pass.
     protected override void OnRender(DrawingContext drawingContext)
     {
-        Rect adornedElementRect = new Rect(this.AdornedElement.DesiredSize);
+        var adornedElementRect = new Rect(this.AdornedElement.DesiredSize);
 
         // Some arbitrary drawing implements.
-        SolidColorBrush renderBrush = new SolidColorBrush(Colors.Green);
+        var renderBrush = new SolidColorBrush(Colors.Green);
         renderBrush.Opacity = 0.2;
-        Pen renderPen = new Pen(new SolidColorBrush(Colors.Navy), 1.5);
-        double renderRadius = 5.0;
+        var renderPen = new Pen(new SolidColorBrush(Colors.Navy), 1.5);
+        var renderRadius = 5.0;
 
         // Draw a circle at each corner.
         drawingContext.DrawEllipse(renderBrush, renderPen, adornedElementRect.TopLeft, renderRadius, renderRadius);
