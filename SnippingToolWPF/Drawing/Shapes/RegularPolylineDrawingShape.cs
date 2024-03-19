@@ -1,6 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -77,12 +75,4 @@ public sealed class RegularPolylineDrawingShape : ShapeDrawingShape<RegularPolyl
         set => this.SetValue<PointCollection>(PointsProperty, value);
     }
     
-}
-
-public class FreezableDefaultValueFactory
-{
-    public FreezableDefaultValueFactory(object empty)
-    {
-        throw new NotImplementedException();
-    }
 }

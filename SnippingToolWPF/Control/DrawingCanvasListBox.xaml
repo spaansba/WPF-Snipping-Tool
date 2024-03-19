@@ -9,9 +9,15 @@
       <Setter Property="BorderBrush" Value="{x:Null}"/>
       <Setter Property="BorderThickness" Value="0"/>
    </Style>
+       
    <Style TargetType="{x:Type local:DrawingCanvasListBoxItem}"
       BasedOn="{StaticResource {x:Type ListBoxItem}}">
-      
+            
+       <Setter Property="Background" Value="{x:Null}"/>
+       <Setter Property="BorderBrush" Value="{x:Null}"/>
+       <Setter Property="BorderThickness" Value="0"/>
+       <Setter Property="Margin" Value="0,0,0,0"/>
+       <Setter Property="Padding" Value="0,0,0,0"/>
       <!-- Remove the default border of listboxitem -->
         <Setter Property="Template">
             <Setter.Value>
@@ -22,47 +28,35 @@
                         Background="{TemplateBinding Background}" 
                         Padding="{TemplateBinding Padding}" 
                         SnapsToDevicePixels="true">
-                        <ContentPresenter 
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <AdornerDecorator>
+                            <ContentPresenter 
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </AdornerDecorator>
                     </Border>
+                    
+
                     <ControlTemplate.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="Black" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="Black" />
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="Selector.IsSelectionActive" Value="False" />
-                                <Condition Property="IsSelected" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="Blue" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="Blue" />
-                        </MultiTrigger>
+                        
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="Selector.IsSelectionActive" Value="True" />
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="Gray" />
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="Gray" />
+                            <!-- <Setter TargetName="Bd" Property="Background" Value="Gray" /> -->
+                            <!-- <Setter TargetName="Bd" Property="BorderBrush" Value="Gray" /> -->
+                            <Setter Property="local:DrawingCanvasListBoxItem.IsAdornerLayerVisible" Value="True"/>
                         </MultiTrigger>
+                        
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            <!-- <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/> -->
+                            <Setter Property="local:DrawingCanvasListBoxItem.IsAdornerLayerVisible" Value="False"/>
                         </Trigger>
+                        
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-      
-      <Setter Property="Background" Value="{x:Null}"/>
-      <Setter Property="BorderBrush" Value="{x:Null}"/>
-      <Setter Property="BorderThickness" Value="0"/>
-      <Setter Property="Margin" Value="0,0,0,0"/>
-      <Setter Property="Padding" Value="0,0,0,0"/>
    </Style>
 </ResourceDictionary>

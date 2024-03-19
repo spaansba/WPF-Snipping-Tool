@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -15,7 +14,6 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         this.Visual = CreateVisual();
         //Because Visual has bound to PointsProperty, setting this.Points will update this.Visual 
         this.Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, PointGenerationRotationAngle));
-        AddAdornerToUIElement(this.Visual);
     }
     
     public RegularPolygonDrawingShape(double pointGenerationRotationAngle)
@@ -24,7 +22,6 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         this.PointGenerationRotationAngle = pointGenerationRotationAngle;
         //Because Visual has bound to PointsProperty, setting this.Points will update this.Visual 
         this.Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, PointGenerationRotationAngle));
-        AddAdornerToUIElement(this.Visual);
     }
     
     protected override void PopulateClone(RegularPolygonDrawingShape clone)

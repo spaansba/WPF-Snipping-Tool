@@ -7,7 +7,7 @@ namespace SnippingToolWPF.Control;
 
 public class ResizeAdorner : Adorner
 {
-    private readonly VisualCollection adornerVisuals;
+    private readonly VisualCollection visualChilderns;
     private readonly Thumb topLeftThumb = new() {Background = Brushes.Aqua, Height = 10, Width = 10};
     private readonly Thumb bottomRightThumb = new() {Background = Brushes.Aqua, Height = 10, Width = 10};
 
@@ -16,7 +16,7 @@ public class ResizeAdorner : Adorner
         topLeftThumb.DragDelta += TopLeftThumb_DragDelta;
         bottomRightThumb.DragDelta += BottomRightThumb_DragDelta;
         
-        adornerVisuals = new VisualCollection(this)
+        visualChilderns = new VisualCollection(this)
         {
             topLeftThumb,
             bottomRightThumb,

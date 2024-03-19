@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
+using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF.Control;
 
@@ -19,17 +19,15 @@ public class DrawingCanvasListBoxItem : ListBoxItem
             new FrameworkPropertyMetadata(typeof(DrawingCanvasListBoxItem)));
     }
 
-    internal DrawingCanvas? DrawingCanvas { get; set; }
-
-    protected override void OnRender(DrawingContext context)
+    public DrawingCanvasListBoxItem()
     {
-        // Find first Adorner Layer in Visual tree and add the custom ResizeAdorner
-      //  AdornerLayer.GetAdornerLayer(this)?.Add(new ResizeAdorner(this));
-        base.OnRender(context);
+        this.ResizeAdorner = new ResizeAdorner(this);
     }
 
-/// <summary>
-    ///     when a shape on the convas gets clicked, notify the drawing canvas so that it can do the Mouse events over there
+    #region DrawingCanvas events
+    internal DrawingCanvas? DrawingCanvas { get; set; }
+    /// <summary>
+    ///   when a shape on the convas gets clicked, notify the drawing canvas so that it can do the Mouse events over there
     /// </summary>
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
@@ -61,4 +59,42 @@ public class DrawingCanvasListBoxItem : ListBoxItem
         base.OnSelected(e);
         Debug.WriteLine("Select");
     }
+
+    #endregion
+    
+    #region Adorner Layers
+
+    public static readonly DependencyProperty IsAdornerLayerVisibleProperty =
+        DependencyProperty.RegisterAttached(
+            nameof(IsAdornerLayerVisible),
+            typeof(bool),
+            typeof(DrawingCanvasListBoxItem),
+            new FrameworkPropertyMetadata(false));
+    
+    public bool IsAdornerLayerVisible
+    {
+        get => this.GetValue<bool>(IsAdornerLayerVisibleProperty);
+        set => SetValue(IsAdornerLayerVisibleProperty, value);
+    }
+
+    private ResizeAdorner ResizeAdorner { get; }
+    
+    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        if (e.Property == IsAdornerLayerVisibleProperty) 
+        {
+            if (IsAdornerLayerVisible)
+            { 
+                AdornerLayer.GetAdornerLayer(this)?.Add(this.ResizeAdorner);
+            }
+            else
+            {
+                AdornerLayer.GetAdornerLayer(this)?.Remove(this.ResizeAdorner);
+            }
+        }
+    }
+
+    #endregion
+    
 }

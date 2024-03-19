@@ -115,13 +115,17 @@
       <Compile Update="Drawing\Shapes\DrawingShape{TSelf,TVisual}.cs">
         <DependentUpon>DrawingShape.cs</DependentUpon>
       </Compile>
+      <Compile Update="Control\DrawingCanvasListBoxItem.cs">
+        <DependentUpon>DrawingCanvasListBox.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="Control\UserControls\DrawingCanvasListBox.xaml">
+      <Page Update="Control\DrawingCanvasListBox.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
+        <DependentUpon>DrawingCanvasListBox.cs</DependentUpon>
       </Page>
     </ItemGroup>
 

@@ -4,12 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using SnippingToolWPF.Control;
-using SnippingToolWPF.Control.UserControls;
 using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.Tools;
 using SnippingToolWPF.Tools.ToolAction;
@@ -290,7 +288,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         }
 
     }
-
+    
     #endregion
 
     #region Shapes
