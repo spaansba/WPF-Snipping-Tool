@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -326,6 +325,8 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     #region Shape Selection
 
+    //Mike: Make SelectedItemProperty work with SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem}"> in DrawingCanvas.xaml
+    // so we can remove the multiutrigger in DrawingCanvasListBoxItem
     public static readonly DependencyProperty SelectedItemProperty =
         Selector.SelectedItemProperty.AddOwner(typeof(DrawingCanvas));
 
@@ -334,26 +335,6 @@ public class DrawingCanvas : System.Windows.Controls.Control
         get => GetValue(SelectedItemProperty);
         set => SetValue(SelectedItemProperty, value);
     }
-
-    private ResizeAdorner? ResizeAdorner { get; set; }
-
-    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-        if (e.Property == SelectedItemProperty)
-        {
-            if (e.OldValue is UIElement oldValue)
-            {
-            //    if (ResizeAdorner != null) AdornerLayer.GetAdornerLayer(oldValue)?.Remove(ResizeAdorner);
-            }
-            
-            if (e.NewValue is UIElement newValue)
-            {
-                // ResizeAdorner = new ResizeAdorner(newValue);
-                // AdornerLayer.GetAdornerLayer(newValue)?.Add(ResizeAdorner);
-            }
-        }
-    }
-
+    
     #endregion
 }

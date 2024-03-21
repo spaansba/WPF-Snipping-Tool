@@ -17,9 +17,17 @@
                             Background="{TemplateBinding Background}">
                         <Grid>
 
-                            <!-- Where saved items are place -->
                             <control:DrawingCanvasListBox x:Name="PART_ItemsControl" ClipToBounds="True"
                                                           SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem}">
+                                
+                                <!--- DrawingCanvasListBoxItem is the Item Container -->
+                                <!-- Data Context = the DrawingShapoe --> 
+                                <control:DrawingCanvasListBox.ItemContainerStyle >
+                                    <Style TargetType="{x:Type control:DrawingCanvasListBoxItem}">
+                                        <Setter Property="Canvas.Left" Value="{Binding Path=(local:DrawingShape.Left)}" />
+                                        <Setter Property="Canvas.Top" Value="{Binding Path=(local:DrawingShape.Top)}" />
+                                    </Style>
+                                </control:DrawingCanvasListBox.ItemContainerStyle>
 
                                 <!-- Bind the DrawingCanvasListBox SelectedItem to the DrawingCanvas SelectedItem-->
                                 <control:DrawingCanvasListBox.ItemsPanel>

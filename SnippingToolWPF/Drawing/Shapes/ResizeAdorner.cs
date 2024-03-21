@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -16,12 +15,12 @@ public class ResizeAdorner : Adorner
     private AdornerThumb RightTop { get; }
     private AdornerThumb RightBottom { get; }
     private AdornerThumb LeftBottom { get; }
-    private readonly FrameworkElement childElement;
+    private readonly DrawingShape childElement;
     private bool dragStarted;
     private bool isHorizontalDrag;
-    public ResizeAdorner(UIElement adornedElement) : base(adornedElement)
+    public ResizeAdorner(DrawingShape adornedElement) : base(adornedElement)
     {
-        childElement = (FrameworkElement)AdornedElement;
+        childElement = adornedElement;
         
         LeftTop = CreateThumbPart(Cursors.SizeNWSE);
         RightTop = CreateThumbPart(Cursors.SizeNESW);
@@ -109,28 +108,28 @@ public class ResizeAdorner : Adorner
     private void ResizeWidth(double e)
     {
         var deltaHorizontal = Math.Min(-e, childElement.ActualWidth - childElement.MinWidth);
-        Canvas.SetLeft(childElement, Canvas.GetLeft(childElement) + deltaHorizontal * transformOrigin.X * (1 - Math.Cos(angle)));
+        childElement.Left = childElement.Left + deltaHorizontal * transformOrigin.X * (1 - Math.Cos(angle));
         childElement.Width -= deltaHorizontal;
     }
 
     private void ResizeX(double e)
     {
         var deltaHorizontal = Math.Min(e, childElement.ActualWidth - childElement.MinWidth);
-        Canvas.SetTop(childElement, Canvas.GetTop(childElement) + deltaHorizontal * Math.Sin(angle) - transformOrigin.X * deltaHorizontal * Math.Sin(angle));
-        Canvas.SetLeft(childElement, Canvas.GetLeft(childElement) + deltaHorizontal * Math.Cos(angle) + (transformOrigin.X * deltaHorizontal * (1 - Math.Cos(angle))));
+        childElement.Top = childElement.Top + deltaHorizontal * Math.Sin(angle) - transformOrigin.X * deltaHorizontal * Math.Sin(angle);
+        childElement.Left = childElement.Left + deltaHorizontal * Math.Cos(angle) + (transformOrigin.X * deltaHorizontal * (1 - Math.Cos(angle)));
         childElement.Width -= deltaHorizontal;
     }
     private void ResizeHeight(double e)
     {
         var deltaVertical = Math.Min(-e, childElement.ActualHeight - childElement.MinHeight);
-        Canvas.SetTop(childElement, Canvas.GetTop(childElement) + deltaVertical * transformOrigin.Y * (1 - Math.Cos(-angle)));
+        childElement.Top = childElement.Top + deltaVertical * transformOrigin.Y * (1 - Math.Cos(-angle));
         childElement.Height -= deltaVertical;
     }
     private void ResizeY(double e)
     {
         var deltaVertical = Math.Min(e, childElement.ActualHeight - childElement.MinHeight);
-        Canvas.SetTop(childElement, Canvas.GetTop(childElement) + deltaVertical * Math.Cos(-angle) + (transformOrigin.Y * deltaVertical * (1 - Math.Cos(-angle))));
-        Canvas.SetLeft(childElement, Canvas.GetLeft(childElement) + deltaVertical * Math.Sin(-angle) - (transformOrigin.Y * deltaVertical * Math.Sin(-angle)));
+        childElement.Top = childElement.Top + deltaVertical * Math.Cos(-angle) + (transformOrigin.Y * deltaVertical * (1 - Math.Cos(-angle)));
+        childElement.Left = childElement.Left + deltaVertical * Math.Sin(-angle) - (transformOrigin.Y * deltaVertical * Math.Sin(-angle));
         childElement.Height -= deltaVertical;
     }
     

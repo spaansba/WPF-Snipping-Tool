@@ -164,7 +164,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style BasedOn="{StaticResource CustomListBoxItem}" TargetType="ListBoxItem">
                         <Setter Property="specialUiElements:ButtonWithIcon.Icon"
-                                Value="{Binding}" />
+                                Value="{Binding }" />
                         <Setter Property="specialUiElements:ButtonWithIcon.IconTemplateSelector"
                                 Value="{StaticResource SidePanelContentKindIconSelector}" />
                         <Setter Property="specialUiElements:ButtonWithIcon.IconLocation"

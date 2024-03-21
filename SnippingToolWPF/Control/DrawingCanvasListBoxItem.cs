@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF.Control;
 

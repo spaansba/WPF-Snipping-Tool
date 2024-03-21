@@ -6,7 +6,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using SnippingToolWPF.Control;
 using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.WPFExtensions;
 
@@ -297,7 +296,7 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
 
     public static readonly DependencyProperty TopProperty = Canvas.TopProperty.AddOwner(typeof(DrawingShape));
 
-    public double Top
+    public double  Top
     {
         get => this.GetValue<double>(TopProperty);
         set => this.SetValue<double>(TopProperty, value);
