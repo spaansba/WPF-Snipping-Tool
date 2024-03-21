@@ -8,6 +8,7 @@ namespace SnippingToolWPF;
 
 public class ResizeAdorner : Adorner
 {
+    
     private const double angle = 0.0;
     private Point transformOrigin = new Point(0, 0);
     private readonly VisualCollection visualChilderns;
