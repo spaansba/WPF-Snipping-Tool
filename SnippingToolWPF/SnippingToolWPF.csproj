@@ -118,6 +118,9 @@
       <Compile Update="Control\DrawingCanvasListBoxItem.cs">
         <DependentUpon>DrawingCanvasListBox.cs</DependentUpon>
       </Compile>
+      <Compile Update="Drawing\Shapes\CornerOrSide.cs">
+        <DependentUpon>ResizeThumb.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -131,8 +134,9 @@
         <Generator>MSBuild:Compile</Generator>
         <DependentUpon>DrawingShape.cs</DependentUpon>
       </Page>
-      <Page Update="Drawing\Shapes\AdornerThumb.xaml">
+      <Page Update="Drawing\Shapes\ResizeThumb.xaml">
         <Generator>MSBuild:Compile</Generator>
+        <DependentUpon>ResizeThumb.cs</DependentUpon>
       </Page>
     </ItemGroup>
 

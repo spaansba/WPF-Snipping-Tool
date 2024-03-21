@@ -43,17 +43,11 @@ public class DrawingCanvasListBox : ListBox
     {
         base.PrepareContainerForItemOverride(element, item);
 
-        if (element is not DrawingCanvasListBoxItem listBoxItem || item is not UIElement uiElement) return;
-
-
+        if (element is not DrawingCanvasListBoxItem listBoxItem || item is not UIElement) return;
+        
         // Reason we only check for Left and Top
         // https://source.dot.net/#PresentationFramework/System/Windows/Controls/Canvas.cs,286
-        if (uiElement.ReadLocalValue(Canvas.LeftProperty) != DependencyProperty.UnsetValue)
-            Canvas.SetLeft(listBoxItem, Canvas.GetLeft(uiElement) - 1); // - 1 to adjust for the ListBox 
-
-        if (uiElement.ReadLocalValue(Canvas.TopProperty) != DependencyProperty.UnsetValue)
-            Canvas.SetTop(listBoxItem, Canvas.GetTop(uiElement) - 1); // - 1 to adjust for the ListBox 
-
+        
         HorizontalContentAlignment = HorizontalAlignment.Stretch;
         VerticalContentAlignment = VerticalAlignment.Stretch;
 

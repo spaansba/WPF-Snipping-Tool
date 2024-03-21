@@ -8,20 +8,24 @@ namespace SnippingToolWPF;
 
 public class ResizeAdorner : Adorner
 {
-    
     private const double angle = 0.0;
     private Point transformOrigin = new Point(0, 0);
     private readonly VisualCollection visualChilderns;
-    private AdornerThumb LeftTop { get; }
-    private AdornerThumb RightTop { get; }
-    private AdornerThumb RightBottom { get; }
-    private AdornerThumb LeftBottom { get; }
+    private ResizeThumb LeftTop { get; }
+    private ResizeThumb RightTop { get; }
+    private ResizeThumb RightBottom { get; }
+    private ResizeThumb LeftBottom { get; }
     private readonly DrawingShape childElement;
     private bool dragStarted;
     private bool isHorizontalDrag;
     public ResizeAdorner(DrawingShape adornedElement) : base(adornedElement)
     {
         childElement = adornedElement;
+        
+        LeftTop = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
+        RightTop = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
+        RightBottom = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
+        LeftBottom = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
         
         LeftTop = CreateThumbPart(Cursors.SizeNWSE);
         RightTop = CreateThumbPart(Cursors.SizeNESW);
@@ -95,9 +99,9 @@ public class ResizeAdorner : Adorner
         };
     }
     
-    private AdornerThumb CreateThumbPart(Cursor cursor)
+    private ResizeThumb CreateThumbPart(Cursor cursor)
     {
-        var cornerThumb = new AdornerThumb
+        var cornerThumb = new ResizeThumb
         {
             Cursor = cursor
         };

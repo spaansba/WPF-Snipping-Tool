@@ -4,6 +4,6 @@
         <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Drawing/DrawingCanvas.xaml" />
         <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/DrawingCanvasListBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Drawing/Shapes/DrawingShape.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Drawing/Shapes/AdornerThumb.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Drawing/Shapes/ResizeThumb.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
