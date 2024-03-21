@@ -5,30 +5,34 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace SnippingToolWPF.Control;
+namespace SnippingToolWPF;
 
 public class ResizeAdorner : Adorner
 {
     private const double angle = 0.0;
     private Point transformOrigin = new Point(0, 0);
     private readonly VisualCollection visualChilderns;
-    private readonly Thumb LeftTop = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25, Cursor = Cursors.SizeNWSE};
-    private readonly Thumb RightTop = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25, Cursor = Cursors.SizeNESW};
-    private readonly Thumb RightBottom = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25, Cursor = Cursors.SizeNWSE};
-    private readonly Thumb LeftBottom = new Thumb() { Background = Brushes.Aqua, Width = 25, Height = 25, Cursor = Cursors.SizeNESW};
+    private AdornerThumb LeftTop { get; }
+    private AdornerThumb RightTop { get; }
+    private AdornerThumb RightBottom { get; }
+    private AdornerThumb LeftBottom { get; }
     private readonly FrameworkElement childElement;
     private bool dragStarted;
     private bool isHorizontalDrag;
     public ResizeAdorner(UIElement adornedElement) : base(adornedElement)
     {
         childElement = (FrameworkElement)AdornedElement;
+        
+        LeftTop = CreateThumbPart(Cursors.SizeNWSE);
+        RightTop = CreateThumbPart(Cursors.SizeNESW);
+        RightBottom = CreateThumbPart(Cursors.SizeNWSE);
+        LeftBottom = CreateThumbPart(Cursors.SizeNESW);
+        
         visualChilderns = new VisualCollection(this)
         {
-            CreateThumbPart(ref LeftTop),
-            CreateThumbPart(ref RightTop),
-            CreateThumbPart(ref RightBottom),
-            CreateThumbPart(ref LeftBottom)
+            LeftTop,RightTop,RightBottom,LeftBottom
         };
+        
         LeftTop.DragDelta += (_, e) =>
         {
             var hor = e.HorizontalChange;
@@ -91,8 +95,13 @@ public class ResizeAdorner : Adorner
         };
     }
     
-    private Thumb CreateThumbPart(ref Thumb cornerThumb)
+    private AdornerThumb CreateThumbPart(Cursor cursor)
     {
+        var cornerThumb = new AdornerThumb
+        {
+            Cursor = cursor
+        };
+        
         cornerThumb.DragStarted += (object sender, DragStartedEventArgs e) => dragStarted = true;
         return cornerThumb;
     }
@@ -124,7 +133,10 @@ public class ResizeAdorner : Adorner
         Canvas.SetLeft(childElement, Canvas.GetLeft(childElement) + deltaVertical * Math.Sin(-angle) - (transformOrigin.Y * deltaVertical * Math.Sin(-angle)));
         childElement.Height -= deltaVertical;
     }
-
+    
+    // Location of the Adorner relative to the AdornerdElement
+    private const int adornerOffset = 0; 
+    
     /// <summary>
     /// Used during the layout process, when ResizeAdorner is being rendered on the screen this method gets called.
     /// Gets the visual associated with the adornerVisuals
@@ -136,10 +148,10 @@ public class ResizeAdorner : Adorner
         var desireHeight = AdornedElement.DesiredSize.Height;
         var adornerWidth = this.DesiredSize.Width;
         var adornerHeight = this.DesiredSize.Height;
-        LeftTop.Arrange(new Rect(-adornerWidth / 2 - 15, -adornerHeight / 2 - 15, adornerWidth, adornerHeight));
-        RightTop.Arrange(new Rect(desireWidth - adornerWidth / 2 + 15, -adornerHeight / 2 - 15, adornerWidth, adornerHeight));
-        LeftBottom.Arrange(new Rect(-adornerWidth / 2 - 15, desireHeight - adornerHeight / 2 + 15, adornerWidth, adornerHeight));
-        RightBottom.Arrange(new Rect(desireWidth - adornerWidth / 2 + 15, desireHeight - adornerHeight / 2 + 15, adornerWidth, adornerHeight));
+        LeftTop.Arrange(new Rect(-adornerWidth / 2 - adornerOffset, -adornerHeight / 2 - adornerOffset, adornerWidth, adornerHeight));
+        RightTop.Arrange(new Rect(desireWidth - adornerWidth / 2 + adornerOffset, -adornerHeight / 2 - adornerOffset, adornerWidth, adornerHeight));
+        LeftBottom.Arrange(new Rect(-adornerWidth / 2 - adornerOffset, desireHeight - adornerHeight / 2 + adornerOffset, adornerWidth, adornerHeight));
+        RightBottom.Arrange(new Rect(desireWidth - adornerWidth / 2 + adornerOffset, desireHeight - adornerHeight / 2 + adornerOffset, adornerWidth, adornerHeight));
         return finalSize;
     }
     protected override int VisualChildrenCount => visualChilderns.Count;

@@ -344,13 +344,13 @@ public class DrawingCanvas : System.Windows.Controls.Control
         {
             if (e.OldValue is UIElement oldValue)
             {
-                if (ResizeAdorner != null) AdornerLayer.GetAdornerLayer(oldValue)?.Remove(ResizeAdorner);
+            //    if (ResizeAdorner != null) AdornerLayer.GetAdornerLayer(oldValue)?.Remove(ResizeAdorner);
             }
             
             if (e.NewValue is UIElement newValue)
             {
-                ResizeAdorner = new ResizeAdorner(newValue);
-                AdornerLayer.GetAdornerLayer(newValue)?.Add(ResizeAdorner);
+                // ResizeAdorner = new ResizeAdorner(newValue);
+                // AdornerLayer.GetAdornerLayer(newValue)?.Add(ResizeAdorner);
             }
         }
     }

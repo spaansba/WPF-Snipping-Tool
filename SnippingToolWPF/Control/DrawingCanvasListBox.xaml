@@ -42,15 +42,11 @@
                                 <Condition Property="Selector.IsSelectionActive" Value="True" />
                                 <Condition Property="IsSelected" Value="True" />
                             </MultiTrigger.Conditions>
-                            <!-- <Setter TargetName="Bd" Property="Background" Value="Gray" /> -->
-                            <!-- <Setter TargetName="Bd" Property="BorderBrush" Value="Gray" /> -->
-                            <Setter Property="local:DrawingCanvasListBoxItem.IsAdornerLayerVisible" Value="True"/>
                             <Setter Property="main:DrawingCanvas.SelectedItem" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:DrawingCanvasListBox}}, Path=SelectedItem}"/>
                         </MultiTrigger>
                         
                         <Trigger Property="IsEnabled" Value="False">
                             <!-- <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/> -->
-                            <Setter Property="local:DrawingCanvasListBoxItem.IsAdornerLayerVisible" Value="False"/>
                         </Trigger>
                         
                     </ControlTemplate.Triggers>

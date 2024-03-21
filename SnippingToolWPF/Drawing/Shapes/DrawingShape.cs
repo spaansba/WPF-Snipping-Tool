@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SnippingToolWPF.Control;
 using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.WPFExtensions;
 
@@ -11,6 +14,23 @@ namespace SnippingToolWPF;
 
 public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<DrawingShape>
 {
+    static DrawingShape()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(
+            typeof(DrawingShape),
+            new FrameworkPropertyMetadata(typeof(DrawingShape)));
+    }
+
+    protected DrawingShape()
+    {
+        textBlock = SetupTextBlock(this);
+        var rotateTransform = new RotateTransform();
+        BindingOperations.SetBinding(rotateTransform, RotateTransform.AngleProperty,
+            new Binding { Source = this, Path = new PropertyPath(AngleProperty) });
+    }
+
+    #region Text and Visual Setup
+
     public static readonly DependencyProperty VisualProperty = DependencyProperty.Register(
         nameof(Visual),
         typeof(UIElement),
@@ -21,23 +41,28 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
 
     // ReSharper disable once NotAccessedField.Local
     private readonly TextBlock textBlock;
-
-    protected DrawingShape()
-    {
-        textBlock = SetupTextBlock(this);
-        var rotateTransform = new RotateTransform();
-        BindingOperations.SetBinding(rotateTransform, RotateTransform.AngleProperty,
-            new Binding { Source = this, Path = new PropertyPath(AngleProperty) });
-    }
-
+    
     public UIElement? Visual
     {
         get => this.GetValue<UIElement?>(VisualProperty);
         set => this.SetValue<UIElement?>(VisualProperty, value);
     }
-
-    //   private readonly Canvas canvas;
+    
+    private static TextBlock SetupTextBlock(DrawingShape parent)
+    {
+        var textBlock = new TextBlock();
+        textBlock.SetBinding(TextBlock.TextProperty,
+            new Binding { Source = parent, Path = new PropertyPath(TextProperty) });
+        parent.AddVisualChild(textBlock);
+        parent.AddLogicalChild(textBlock);
+        return textBlock;
+    }
+    
     public abstract DrawingShape Clone();
+
+    #endregion
+
+    #region On Property Change methods (Visual Change / Selection Change)
 
     protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
@@ -45,6 +70,23 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         if (e.Property == VisualProperty) //If Visual gets replaced call OnVisualChanged
         {
             OnVisualChanged(e.OldValue as UIElement, e.NewValue as UIElement);
+        }
+        else if (e.Property == IsSelectedProperty)
+        {
+            OnIsSelectedChange(e.NewValue is true);
+        }
+    }
+    private ResizeAdorner? ResizeAdorner { get; set; }
+    private void OnIsSelectedChange(bool isSelected)
+    {
+        if (isSelected)
+        {
+            ResizeAdorner = new ResizeAdorner(this);
+            AdornerLayer.GetAdornerLayer(this)?.Add(ResizeAdorner);
+        }
+        else
+        {
+            if (this.ResizeAdorner != null) AdornerLayer.GetAdornerLayer(this)?.Remove(this.ResizeAdorner);
         }
     }
 
@@ -71,16 +113,7 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     {
         // We don't do anything in here this is purely for override so we protect OnVisualChanged making it unoverrideable
     }
-    
-    private static TextBlock SetupTextBlock(DrawingShape parent)
-    {
-        var textBlock = new TextBlock();
-        textBlock.SetBinding(TextBlock.TextProperty,
-            new Binding { Source = parent, Path = new PropertyPath(TextProperty) });
-        parent.AddVisualChild(textBlock);
-        parent.AddLogicalChild(textBlock);
-        return textBlock;
-    }
+    #endregion
 
     #region Visual Children override FrameworkElement
     protected override IEnumerator LogicalChildren
@@ -105,6 +138,8 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     
     #endregion
 
+    #region Measure / Arrange
+
     /// <summary>
     /// Measure lets me tell my parent how much space I want, given a constraint
     ///  Arrange lets my parent tell me how much space I get.
@@ -124,8 +159,10 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         this.textBlock.Arrange(new Rect(arrangeSize));
         return arrangeSize;
     }
+
+    #endregion
     
-    #region Dependency properties
+    #region Remaining Dependency properties
 
     public static readonly DependencyProperty TextProperty = TextBlock.TextProperty.AddOwner(typeof(DrawingShape));
 
@@ -274,6 +311,15 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     {
         get => this.GetValue<double>(AngleProperty);
         set => this.SetValue<double>(AngleProperty, value);
+    }
+    
+    public static readonly DependencyProperty IsSelectedProperty =
+        Selector.IsSelectedProperty.AddOwner(typeof(DrawingShape));
+
+    public bool IsSelected
+    {
+        get => this.GetValue<bool>(IsSelectedProperty);
+        set => this.SetValue<bool>(IsSelectedProperty, value);
     }
 
     #endregion Dependency properties

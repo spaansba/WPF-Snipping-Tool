@@ -127,6 +127,13 @@
         <SubType>Designer</SubType>
         <DependentUpon>DrawingCanvasListBox.cs</DependentUpon>
       </Page>
+      <Page Update="Drawing\Shapes\DrawingShape.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <DependentUpon>DrawingShape.cs</DependentUpon>
+      </Page>
+      <Page Update="Drawing\Shapes\AdornerThumb.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 
 </Project>

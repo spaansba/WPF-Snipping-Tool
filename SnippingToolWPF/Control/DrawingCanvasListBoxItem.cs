@@ -18,11 +18,6 @@ public class DrawingCanvasListBoxItem : ListBoxItem
             new FrameworkPropertyMetadata(typeof(DrawingCanvasListBoxItem)));
     }
 
-    public DrawingCanvasListBoxItem()
-    {
-        this.ResizeAdorner = new ResizeAdorner(this);
-    }
-
     #region DrawingCanvas events
     internal DrawingCanvas? DrawingCanvas { get; set; }
     /// <summary>
@@ -57,41 +52,6 @@ public class DrawingCanvasListBoxItem : ListBoxItem
     {
         base.OnSelected(e);
         Debug.WriteLine("Select");
-    }
-
-    #endregion
-    
-    #region Adorner Layers
-
-    public static readonly DependencyProperty IsAdornerLayerVisibleProperty =
-        DependencyProperty.RegisterAttached(
-            nameof(IsAdornerLayerVisible),
-            typeof(bool),
-            typeof(DrawingCanvasListBoxItem),
-            new FrameworkPropertyMetadata(false));
-    
-    public bool IsAdornerLayerVisible
-    {
-        get => this.GetValue<bool>(IsAdornerLayerVisibleProperty);
-        set => SetValue(IsAdornerLayerVisibleProperty, value);
-    }
-
-    private ResizeAdorner ResizeAdorner { get; }
-    
-    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-    {
-        base.OnPropertyChanged(e);
-        if (e.Property == IsAdornerLayerVisibleProperty) 
-        {
-            if (IsAdornerLayerVisible)
-            { 
-             //   AdornerLayer.GetAdornerLayer(this)?.Add(this.ResizeAdorner);
-            }
-            else
-            {
-            //   AdornerLayer.GetAdornerLayer(this)?.Remove(this.ResizeAdorner);
-            }
-        }
     }
 
     #endregion
