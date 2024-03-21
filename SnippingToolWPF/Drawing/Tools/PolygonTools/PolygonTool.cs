@@ -68,7 +68,6 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
         DrawingShape.StrokeThickness = options.Thickness;
         DrawingShape.Opacity = options.RealOpacity;
         DrawingShape.Fill = options.ShapeFill;
-        DrawingShape.Tag = "For Testing";
         DrawingShape.Stretch = Stretch.Fill;
         return DrawingToolAction.StartMouseCapture();
     }
@@ -95,6 +94,14 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
     public override DrawingToolAction LeftButtonUp()
     {
         IsDrawing = false;
+        
+        // Only create a Polygon when there is an actual visual shape
+        if (DrawingShape.Height == 0 || DrawingShape.Width == 0)
+        {
+            ResetVisual();
+            return DrawingToolAction.StopMouseCapture();
+        }
+        
         var finalPolygon = DrawingShape.Clone();
          ResetVisual();
         return new DrawingToolAction(DrawingToolActionItem.Shape(finalPolygon), DrawingToolActionItem.MouseCapture())

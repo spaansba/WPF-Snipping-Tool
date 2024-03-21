@@ -44,7 +44,7 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     public UIElement? Visual
     {
         get => this.GetValue<UIElement?>(VisualProperty);
-        set => this.SetValue<UIElement?>(VisualProperty, value);
+        init => this.SetValue<UIElement?>(VisualProperty, value);
     }
     
     private static TextBlock SetupTextBlock(DrawingShape parent)
@@ -75,17 +75,17 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
             OnIsSelectedChange(e.NewValue is true);
         }
     }
-    private ResizeAdorner? ResizeAdorner { get; set; }
+    private DrawingShapeAdorner? DrawingShapeAdorner { get; set; }
     private void OnIsSelectedChange(bool isSelected)
     {
         if (isSelected)
         {
-            ResizeAdorner = new ResizeAdorner(this);
-            AdornerLayer.GetAdornerLayer(this)?.Add(ResizeAdorner);
+            this.DrawingShapeAdorner = new DrawingShapeAdorner(this);
+            AdornerLayer.GetAdornerLayer(this)?.Add(this.DrawingShapeAdorner);
         }
         else
         {
-            if (this.ResizeAdorner != null) AdornerLayer.GetAdornerLayer(this)?.Remove(this.ResizeAdorner);
+            if (this.DrawingShapeAdorner != null) AdornerLayer.GetAdornerLayer(this)?.Remove(this.DrawingShapeAdorner);
         }
     }
 

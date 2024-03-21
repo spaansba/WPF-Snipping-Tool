@@ -6,148 +6,38 @@ using System.Windows.Media;
 
 namespace SnippingToolWPF;
 
-public class ResizeAdorner : Adorner
+public class DrawingShapeAdorner : Adorner
 {
-    private const double angle = 0.0;
-    private Point transformOrigin = new Point(0, 0);
-    private readonly VisualCollection visualChilderns;
-    private ResizeThumb LeftTop { get; }
-    private ResizeThumb RightTop { get; }
-    private ResizeThumb RightBottom { get; }
-    private ResizeThumb LeftBottom { get; }
+    private readonly VisualCollection visualChildren;
+    private ResizeThumb TopLeft { get; }
+    private ResizeThumb TopRight { get; }
+    private ResizeThumb BottomRight { get; }
+    private ResizeThumb BottomLeft { get; }
+    private ResizeThumb Top { get; }
+    private ResizeThumb Bottom { get; }
+    private ResizeThumb Left { get; }
+    private ResizeThumb Right { get; }
+
     private readonly DrawingShape childElement;
-    private bool dragStarted;
-    public ResizeAdorner(DrawingShape adornedElement) : base(adornedElement)
+    public DrawingShapeAdorner(DrawingShape adornedElement) : base(adornedElement)
     {
         childElement = adornedElement;
         
-        // LeftTop = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
-        // RightTop = new ResizeThumb(adornedElement, CornerOrSide.TopRight);
-        // RightBottom = new ResizeThumb(adornedElement, CornerOrSide.BottomRight);
-        // LeftBottom = new ResizeThumb(adornedElement, CornerOrSide.BottomLeft);
+        TopLeft = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
+        TopRight = new ResizeThumb(adornedElement, CornerOrSide.TopRight);
+        BottomRight = new ResizeThumb(adornedElement, CornerOrSide.BottomRight);
+        BottomLeft = new ResizeThumb(adornedElement, CornerOrSide.BottomLeft);
+        Top = new ResizeThumb(adornedElement, CornerOrSide.Top);
+        Bottom = new ResizeThumb(adornedElement, CornerOrSide.Bottom);
+        Left = new ResizeThumb(adornedElement, CornerOrSide.Left);
+        Right = new ResizeThumb(adornedElement, CornerOrSide.Right);
         
-        LeftTop = CreateThumbPart(Cursors.SizeNWSE);
-        RightTop = CreateThumbPart(Cursors.SizeNESW);
-        RightBottom = CreateThumbPart(Cursors.SizeNWSE);
-        LeftBottom = CreateThumbPart(Cursors.SizeNESW);
-        
-        visualChilderns = new VisualCollection(this)
+        visualChildren = new VisualCollection(this)
         {
-            LeftTop,RightTop,RightBottom,LeftBottom
+            TopLeft,TopRight,BottomRight,BottomLeft,Top,Bottom,Left,Right
         };
         
-        LeftTop.DragDelta += OnLeftTopOnDragDelta;
-        RightTop.DragDelta += OnRightTopOnDragDelta;
-        LeftBottom.DragDelta += OnLeftBottomOnDragDelta;
-        RightBottom.DragDelta += OnRightBottomOnDragDelta;
     }
-    
-    private (double hor, double vert) GetChange(DragDeltaEventArgs e, bool invert)
-    {
-        var hor = e.HorizontalChange;
-        var vert = e.VerticalChange;
-        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            (hor, vert) = RetainAspectRatioCalculation(hor, vert, invert);
-        return (hor, vert);
-    }
-    
-    private void OnLeftTopOnDragDelta(object _, DragDeltaEventArgs e)
-    {
-        var (hor, vert) = GetChange(e, false);
-        ResizeX(hor);
-        ResizeY(vert);
-        dragStarted = false;
-        e.Handled = true;
-    }
-
-    private void OnRightBottomOnDragDelta(object _, DragDeltaEventArgs e)
-    {
-        var (hor, vert) = GetChange(e, false);
-        ResizeWidth(hor);
-        ResizeHeight(vert);
-        dragStarted = false;
-        e.Handled = true;
-    }
-    
-    private void OnLeftBottomOnDragDelta(object _, DragDeltaEventArgs e)
-    {
-        var (hor, vert) = GetChange(e, true);
-        ResizeX(hor);
-        ResizeHeight(vert);
-        dragStarted = false;
-        e.Handled = true;
-    }
-
-    private void OnRightTopOnDragDelta(object _, DragDeltaEventArgs e)
-    {
-        var (hor, vert) = GetChange(e, true);
-        ResizeWidth(hor);
-        ResizeY(vert);
-        dragStarted = false;
-        e.Handled = true;
-    }
-    
-    /// <summary>
-    /// Calculates the new horizontal and vertical changes to retain the aspect ratio of the adorned element during resizing (while holding shift).
-    /// </summary>
-    private (double newHorizontalChange, double newVerticalChange) RetainAspectRatioCalculation(double horizontalChange,
-        double verticalChange, bool invert)
-    {
-        if (dragStarted) isHorizontalDrag = Math.Abs(horizontalChange) > Math.Abs(verticalChange);
-        if (isHorizontalDrag)
-        {
-            if (invert)
-                return (horizontalChange, -horizontalChange);
-            else
-                return (horizontalChange, horizontalChange);
-        }
-        
-        if (invert)
-            return (-verticalChange, verticalChange);
-        else
-            return (verticalChange, verticalChange);
-    }
-
-    private ResizeThumb CreateThumbPart(Cursor cursor)
-    {
-        var cornerThumb = new ResizeThumb()
-        {
-            Cursor = cursor
-        };
-        cornerThumb.DragStarted += (object sender, DragStartedEventArgs e) => dragStarted = true;
-        return cornerThumb;
-    }
-    
-    private void ResizeWidth(double e)
-    {
-        var deltaHorizontal = Math.Min(-e, childElement.ActualWidth - childElement.MinWidth);
-        childElement.Left = childElement.Left + deltaHorizontal * transformOrigin.X * (1 - Math.Cos(angle));
-        childElement.Width -= deltaHorizontal;
-    }
-
-    private void ResizeX(double e)
-    {
-        var deltaHorizontal = Math.Min(e, childElement.ActualWidth - childElement.MinWidth);
-        childElement.Top = childElement.Top + deltaHorizontal * Math.Sin(angle) - transformOrigin.X * deltaHorizontal * Math.Sin(angle);
-        childElement.Left = childElement.Left + deltaHorizontal * Math.Cos(angle) + (transformOrigin.X * deltaHorizontal * (1 - Math.Cos(angle)));
-        childElement.Width -= deltaHorizontal;
-    }
-    private void ResizeHeight(double e)
-    {
-        var deltaVertical = Math.Min(-e, childElement.ActualHeight - childElement.MinHeight);
-        childElement.Top = childElement.Top + deltaVertical * transformOrigin.Y * (1 - Math.Cos(-angle));
-        childElement.Height -= deltaVertical;
-    }
-    private void ResizeY(double e)
-    {
-        var deltaVertical = Math.Min(e, childElement.ActualHeight - childElement.MinHeight);
-        childElement.Top = childElement.Top + deltaVertical * Math.Cos(-angle) + (transformOrigin.Y * deltaVertical * (1 - Math.Cos(-angle)));
-        childElement.Left = childElement.Left + deltaVertical * Math.Sin(-angle) - (transformOrigin.Y * deltaVertical * Math.Sin(-angle));
-        childElement.Height -= deltaVertical;
-    }
-    
-    // Location of the Adorner relative to the AdornerdElement
-    private const int adornerOffset = 0; 
     
     /// <summary>
     /// Used during the layout process, when ResizeAdorner is being rendered on the screen this method gets called.
@@ -155,17 +45,24 @@ public class ResizeAdorner : Adorner
     /// </summary>
     protected override Size ArrangeOverride(Size finalSize)
     {
+        const int offset = 0; // Location of the AdornerThumb relative to the AdornerdElement
         base.ArrangeOverride(finalSize);
         var desireWidth = AdornedElement.DesiredSize.Width;
         var desireHeight = AdornedElement.DesiredSize.Height;
         var adornerWidth = this.DesiredSize.Width;
         var adornerHeight = this.DesiredSize.Height;
-        LeftTop.Arrange(new Rect(-adornerWidth / 2 - adornerOffset, -adornerHeight / 2 - adornerOffset, adornerWidth, adornerHeight));
-        RightTop.Arrange(new Rect(desireWidth - adornerWidth / 2 + adornerOffset, -adornerHeight / 2 - adornerOffset, adornerWidth, adornerHeight));
-        LeftBottom.Arrange(new Rect(-adornerWidth / 2 - adornerOffset, desireHeight - adornerHeight / 2 + adornerOffset, adornerWidth, adornerHeight));
-        RightBottom.Arrange(new Rect(desireWidth - adornerWidth / 2 + adornerOffset, desireHeight - adornerHeight / 2 + adornerOffset, adornerWidth, adornerHeight));
+        var halfAdornerWidth = adornerWidth / 2;
+        var halfAdornerHeight = adornerHeight / 2;
+        TopLeft.Arrange(new Rect(-halfAdornerWidth - offset, -halfAdornerHeight - offset, adornerWidth, adornerHeight));
+        TopRight.Arrange(new Rect(desireWidth - halfAdornerWidth + offset, -halfAdornerHeight - offset, adornerWidth, adornerHeight));
+        BottomRight.Arrange(new Rect(desireWidth - halfAdornerWidth + offset, desireHeight - halfAdornerHeight + offset, adornerWidth, adornerHeight));
+        BottomLeft.Arrange(new Rect(-halfAdornerWidth - offset, desireHeight - halfAdornerHeight + offset, adornerWidth, adornerHeight));
+        Top.Arrange(new Rect(desireWidth / 2 - halfAdornerWidth, -halfAdornerHeight - offset, adornerWidth, adornerHeight));
+        Bottom.Arrange(new Rect(desireWidth / 2 - halfAdornerWidth, desireHeight - halfAdornerHeight + offset, adornerWidth, adornerHeight));
+        Left.Arrange(new Rect(-halfAdornerWidth - offset, desireHeight / 2 - halfAdornerHeight, adornerWidth, adornerHeight));
+        Right.Arrange(new Rect(desireWidth - halfAdornerWidth + offset, desireHeight / 2 - halfAdornerHeight, adornerWidth, adornerHeight));
         return finalSize;
     }
-    protected override int VisualChildrenCount => visualChilderns.Count;
-    protected override Visual GetVisualChild(int index) => visualChilderns[index];
+    protected override int VisualChildrenCount => visualChildren.Count;
+    protected override Visual GetVisualChild(int index) => visualChildren[index];
 }

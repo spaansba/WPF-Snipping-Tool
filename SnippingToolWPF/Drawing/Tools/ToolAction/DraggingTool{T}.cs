@@ -27,7 +27,7 @@ public abstract class DraggingTool<T> : IDrawingTool where T : DrawingShape, new
     public abstract DrawingToolAction MouseMove(Point position, DrawingShape? item);
 
     /// <summary>
-    ///     Reset the visual of the DrawingTool, this is the reason we needed this abstract class.
+    ///  Reset the visual of the DrawingTool, this is the reason we needed this abstract class.
     /// </summary>
     public abstract void ResetVisual();
 }

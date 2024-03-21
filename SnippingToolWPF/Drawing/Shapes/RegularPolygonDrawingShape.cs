@@ -146,7 +146,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
     
     public static readonly DependencyProperty PointsProperty = Polygon.PointsProperty.AddOwner(typeof(RegularPolygonDrawingShape));
 
-    public PointCollection? Points
+    private PointCollection? Points
     {
         get => this.GetValue<PointCollection?>(PointsProperty);
         set => this.SetValue<PointCollection?>(PointsProperty, value);
