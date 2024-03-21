@@ -17,15 +17,14 @@ public class ResizeAdorner : Adorner
     private ResizeThumb LeftBottom { get; }
     private readonly DrawingShape childElement;
     private bool dragStarted;
-    private bool isHorizontalDrag;
     public ResizeAdorner(DrawingShape adornedElement) : base(adornedElement)
     {
         childElement = adornedElement;
         
-        LeftTop = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
-        RightTop = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
-        RightBottom = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
-        LeftBottom = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
+        // LeftTop = new ResizeThumb(adornedElement, CornerOrSide.TopLeft);
+        // RightTop = new ResizeThumb(adornedElement, CornerOrSide.TopRight);
+        // RightBottom = new ResizeThumb(adornedElement, CornerOrSide.BottomRight);
+        // LeftBottom = new ResizeThumb(adornedElement, CornerOrSide.BottomLeft);
         
         LeftTop = CreateThumbPart(Cursors.SizeNWSE);
         RightTop = CreateThumbPart(Cursors.SizeNESW);
@@ -37,75 +36,84 @@ public class ResizeAdorner : Adorner
             LeftTop,RightTop,RightBottom,LeftBottom
         };
         
-        LeftTop.DragDelta += (_, e) =>
-        {
-            var hor = e.HorizontalChange;
-            var vert = e.VerticalChange;
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                if (dragStarted) isHorizontalDrag = Math.Abs(hor) > Math.Abs(vert);
-                if (isHorizontalDrag) vert = hor; else hor = vert;
-            }
-            ResizeX(hor);
-            ResizeY(vert);
-            dragStarted = false;
-            e.Handled = true;
-        };
-        RightTop.DragDelta += (_, e) =>
-        {
-            var hor = e.HorizontalChange;
-            var vert = e.VerticalChange;
-            System.Diagnostics.Debug.WriteLine(hor + "," + vert + "," + (Math.Abs(hor) > Math.Abs(vert)) + "," + childElement.Height + "," + childElement.Width + "," + dragStarted + "," + isHorizontalDrag);
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                if (dragStarted) isHorizontalDrag = Math.Abs(hor) > Math.Abs(vert);
-                if (isHorizontalDrag) vert = -hor; else hor = -vert;
-            }
-            ResizeWidth(hor);
-            ResizeY(vert);
-            dragStarted = false;
-            e.Handled = true;
-        };
-        
-        LeftBottom.DragDelta += (_, e) =>
-        {
-            var hor = e.HorizontalChange;
-            var vert = e.VerticalChange;
-            System.Diagnostics.Debug.WriteLine(hor + "," + vert + "," + (Math.Abs(hor) > Math.Abs(vert)) + "," + childElement.Height + "," + childElement.Width + "," + dragStarted + "," + isHorizontalDrag);
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                if (dragStarted) isHorizontalDrag = Math.Abs(hor) > Math.Abs(vert);
-                if (isHorizontalDrag) vert = -hor; else hor = -vert;
-            }
-            ResizeX(hor);
-            ResizeHeight(vert);
-            dragStarted = false;
-            e.Handled = true;
-        };
-        
-        RightBottom.DragDelta += (_, e) =>
-        {
-            var hor = e.HorizontalChange;
-            var vert = e.VerticalChange;
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                if (dragStarted) isHorizontalDrag = Math.Abs(hor) > Math.Abs(vert);
-                if (isHorizontalDrag) vert = hor; else hor = vert;
-            }
-            ResizeWidth(hor);
-            ResizeHeight(vert);
-            dragStarted = false;
-            e.Handled = true;
-        };
+        LeftTop.DragDelta += OnLeftTopOnDragDelta;
+        RightTop.DragDelta += OnRightTopOnDragDelta;
+        LeftBottom.DragDelta += OnLeftBottomOnDragDelta;
+        RightBottom.DragDelta += OnRightBottomOnDragDelta;
     }
     
+    private (double hor, double vert) GetChange(DragDeltaEventArgs e, bool invert)
+    {
+        var hor = e.HorizontalChange;
+        var vert = e.VerticalChange;
+        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            (hor, vert) = RetainAspectRatioCalculation(hor, vert, invert);
+        return (hor, vert);
+    }
+    
+    private void OnLeftTopOnDragDelta(object _, DragDeltaEventArgs e)
+    {
+        var (hor, vert) = GetChange(e, false);
+        ResizeX(hor);
+        ResizeY(vert);
+        dragStarted = false;
+        e.Handled = true;
+    }
+
+    private void OnRightBottomOnDragDelta(object _, DragDeltaEventArgs e)
+    {
+        var (hor, vert) = GetChange(e, false);
+        ResizeWidth(hor);
+        ResizeHeight(vert);
+        dragStarted = false;
+        e.Handled = true;
+    }
+    
+    private void OnLeftBottomOnDragDelta(object _, DragDeltaEventArgs e)
+    {
+        var (hor, vert) = GetChange(e, true);
+        ResizeX(hor);
+        ResizeHeight(vert);
+        dragStarted = false;
+        e.Handled = true;
+    }
+
+    private void OnRightTopOnDragDelta(object _, DragDeltaEventArgs e)
+    {
+        var (hor, vert) = GetChange(e, true);
+        ResizeWidth(hor);
+        ResizeY(vert);
+        dragStarted = false;
+        e.Handled = true;
+    }
+    
+    /// <summary>
+    /// Calculates the new horizontal and vertical changes to retain the aspect ratio of the adorned element during resizing (while holding shift).
+    /// </summary>
+    private (double newHorizontalChange, double newVerticalChange) RetainAspectRatioCalculation(double horizontalChange,
+        double verticalChange, bool invert)
+    {
+        if (dragStarted) isHorizontalDrag = Math.Abs(horizontalChange) > Math.Abs(verticalChange);
+        if (isHorizontalDrag)
+        {
+            if (invert)
+                return (horizontalChange, -horizontalChange);
+            else
+                return (horizontalChange, horizontalChange);
+        }
+        
+        if (invert)
+            return (-verticalChange, verticalChange);
+        else
+            return (verticalChange, verticalChange);
+    }
+
     private ResizeThumb CreateThumbPart(Cursor cursor)
     {
-        var cornerThumb = new ResizeThumb
+        var cornerThumb = new ResizeThumb()
         {
             Cursor = cursor
         };
-        
         cornerThumb.DragStarted += (object sender, DragStartedEventArgs e) => dragStarted = true;
         return cornerThumb;
     }
