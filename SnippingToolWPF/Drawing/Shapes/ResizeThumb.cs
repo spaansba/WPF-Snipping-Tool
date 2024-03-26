@@ -1,15 +1,15 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using SnippingToolWPF.ExtensionMethods;
 
 namespace SnippingToolWPF;
 
-public class ResizeThumb : Thumb
+public class ResizeThumb : AnchoredThumb
 {
-    private const double angle = 0.0;
-    private Point transformOrigin = new Point(0, 0);
-    private bool dragStarted;
+    //TODO make Resize work within the Redo / Undo Stack
+    //TODO create a Locked aspect ratio class
+    private readonly bool dragStarted = false; // Dont ask why this is needed
     private bool isHorizontalDrag;
     static ResizeThumb()
     {
@@ -19,106 +19,108 @@ public class ResizeThumb : Thumb
     
     private readonly DrawingShape childElement;
     
-    public ResizeThumb(DrawingShape adornedElement, CornerOrSide thumbCornerOrSide)
+    public ResizeThumb(DrawingShape adornedElement, ThumbLocation thumbCornerOrSide) : base(thumbCornerOrSide, new Point(0,0))
     {
         this.childElement = adornedElement;
 
         switch (thumbCornerOrSide)
         {
-            case CornerOrSide.TopLeft:
+            case ThumbLocation.TopLeft:
                 this.DragDelta += OnTopLeftDragDelta;
                 break;
-            case CornerOrSide.TopRight:
+            case ThumbLocation.TopRight:
                 this.DragDelta += OnTopRightDragDelta;
                 break;
-            case CornerOrSide.BottomRight:
+            case ThumbLocation.BottomRight:
                 this.DragDelta += OnBottomRightDragDelta;
                 break;
-            case CornerOrSide.BottomLeft:
+            case ThumbLocation.BottomLeft:
                 this.DragDelta += OnBottomLeftDragDelta;
                 break;
-            case CornerOrSide.Top:
+            case ThumbLocation.Top:
                 this.DragDelta += OnTopDragDelta;
                 break;
-            case CornerOrSide.Bottom:
+            case ThumbLocation.Bottom:
                 this.DragDelta += OnBottomDragDelta;
                 break;
-            case CornerOrSide.Left:
+            case ThumbLocation.Left:
                 this.DragDelta += OnLeftDragDelta;
                 break;
-            case CornerOrSide.Right:
+            case ThumbLocation.Right:
                 this.DragDelta += OnRightDragDelta;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(thumbCornerOrSide), thumbCornerOrSide, null);
         }
-        
-        this.DragStarted += (object sender, DragStartedEventArgs e) => dragStarted = true;
+        this.DragStarted += OnDragStarted;
     }
 
     #region Drag Delta Events per Thumb
-    
+
+    private Point bottomRight;
+    private Point topLeft;
+    private Point topRight;
+    private Point bottomLeft;
+    private void OnDragStarted(object _, DragStartedEventArgs e)
+    {
+        bottomRight = new Point(childElement.Left + childElement.Width, childElement.Top + childElement.Height);
+        topLeft = new Point(childElement.Left, childElement.Top);
+        topRight = new Point(childElement.Left + childElement.Width, childElement.Top);
+        bottomLeft = new Point(childElement.Left, childElement.Top + childElement.Height);
+    } 
+
     private void OnTopDragDelta(object _, DragDeltaEventArgs e)
     {
-        ResizeY(e.VerticalChange);
-        FinishDragDelta(e);
+        var currentPoint = new Point(childElement.Left, childElement.Top + e.VerticalChange);
+        childElement.SetOppositeCorners(currentPoint, bottomRight);
     }
+
     private void OnBottomDragDelta(object _, DragDeltaEventArgs e)
     {
-        ResizeHeight(e.VerticalChange);
-        FinishDragDelta(e);
+        var currentPoint = new Point(childElement.Left, childElement.Top + childElement.Height + e.VerticalChange);
+        childElement.SetOppositeCorners(currentPoint, topRight);
     }
+
     private void OnLeftDragDelta(object _, DragDeltaEventArgs e)
     {
-        ResizeX(e.HorizontalChange);
-        FinishDragDelta(e);
+        var currentPoint = new Point(childElement.Left + e.HorizontalChange, childElement.Top);
+        childElement.SetOppositeCorners(currentPoint, bottomRight);
     }
+
     private void OnRightDragDelta(object _, DragDeltaEventArgs e)
     {
-        ResizeWidth(e.HorizontalChange);
-        FinishDragDelta(e);
+        var currentPoint = new Point(childElement.Left + childElement.Width + e.HorizontalChange, childElement.Top);
+        childElement.SetOppositeCorners(currentPoint, bottomLeft);
     }
     
     private void OnTopLeftDragDelta(object _, DragDeltaEventArgs e)
     {
         var (hor, vert) = GetHorizontalVerticalChange(e, false);
-        ResizeX(hor);
-        ResizeY(vert);
-        FinishDragDelta(e);
+        var currentPoint = new Point(childElement.Left + hor, childElement.Top + vert);
+        childElement.SetOppositeCorners(currentPoint, bottomRight);
     }
 
     private void OnBottomRightDragDelta(object _, DragDeltaEventArgs e)
     {
         var (hor, vert) = GetHorizontalVerticalChange(e, false);
-        ResizeWidth(hor);
-        ResizeHeight(vert);
-        FinishDragDelta(e);
+        var currentPoint = new Point(childElement.Left + childElement.Width + hor, childElement.Top + childElement.Height + vert);
+        childElement.SetOppositeCorners(currentPoint, topLeft);
     }
     
     private void OnBottomLeftDragDelta(object _, DragDeltaEventArgs e)
     {
         var (hor, vert) = GetHorizontalVerticalChange(e, true);
-        ResizeX(hor);
-        ResizeHeight(vert);
-        FinishDragDelta(e);
+        var currentPoint = new Point(childElement.Left + hor, childElement.Top + childElement.Height + vert);
+        childElement.SetOppositeCorners(currentPoint, topRight);
     }
-
+    
     private void OnTopRightDragDelta(object _, DragDeltaEventArgs e)
     {
         var (hor, vert) = GetHorizontalVerticalChange(e, true);
-        ResizeWidth(hor);
-        ResizeY(vert);
-        FinishDragDelta(e);
+        var currentPoint = new Point(childElement.Left + childElement.Width + hor, childElement.Top + vert);
+        childElement.SetOppositeCorners(currentPoint, bottomLeft);
     }
     
-    /// <summary>
-    /// puts dragStarted to false and makes sure the DragDeltaEventArgs is handled
-    /// </summary>
-    private void FinishDragDelta(DragDeltaEventArgs e)
-    {
-        dragStarted = false;
-        e.Handled = true;
-    }
     #endregion
 
     #region Get Correct Horitonzal / Vertical Change while draggine any thumb
@@ -145,7 +147,8 @@ public class ResizeThumb : Thumb
     private (double newHorizontalChange, double newVerticalChange) RetainAspectRatioCalculation(double horizontalChange,
         double verticalChange, bool invert)
     {
-        if (dragStarted) isHorizontalDrag = Math.Abs(horizontalChange) > Math.Abs(verticalChange);
+        //Mike no clue why but I cant remove dragStarted, even though its always false
+        if (dragStarted)(isHorizontalDrag) = Math.Abs(horizontalChange) > Math.Abs(verticalChange);
         if (isHorizontalDrag)
         {
             if (invert)
@@ -161,39 +164,4 @@ public class ResizeThumb : Thumb
     }
 
     #endregion
-    
-    #region Resize Width / Height / X / Y methods
-
-    private void ResizeWidth(double e)
-    {
-        var deltaHorizontal = Math.Min(-e, childElement.ActualWidth - childElement.MinWidth);
-        childElement.Left = childElement.Left + deltaHorizontal * transformOrigin.X * (1 - Math.Cos(angle));
-        childElement.Width -= deltaHorizontal;
-    }
-
-    private void ResizeX(double e)
-    {
-        var deltaHorizontal = Math.Min(e, childElement.ActualWidth - childElement.MinWidth);
-        childElement.Top = childElement.Top + deltaHorizontal * Math.Sin(angle) - transformOrigin.X * deltaHorizontal * Math.Sin(angle);
-        childElement.Left = childElement.Left + deltaHorizontal * Math.Cos(angle) + (transformOrigin.X * deltaHorizontal * (1 - Math.Cos(angle)));
-        childElement.Width -= deltaHorizontal;
-    }
-    private void ResizeHeight(double e)
-    {
-        var deltaVertical = Math.Min(-e, childElement.ActualHeight - childElement.MinHeight);
-        childElement.Top = childElement.Top + deltaVertical * transformOrigin.Y * (1 - Math.Cos(-angle));
-        childElement.Height -= deltaVertical;
-        
-        Debug.WriteLine($"height:{childElement.Height}, Width:{childElement.Width} Top:{childElement.Top}, Left{childElement.Left}");
-    }
-    private void ResizeY(double e)
-    {
-        var deltaVertical = Math.Min(e, childElement.ActualHeight - childElement.MinHeight);
-        childElement.Top = childElement.Top + deltaVertical * Math.Cos(-angle) + (transformOrigin.Y * deltaVertical * (1 - Math.Cos(-angle)));
-        childElement.Left = childElement.Left + deltaVertical * Math.Sin(-angle) - (transformOrigin.Y * deltaVertical * Math.Sin(-angle));
-        childElement.Height -= deltaVertical;
-    }
-
-    #endregion
-    
 }

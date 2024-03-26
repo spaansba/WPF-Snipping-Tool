@@ -17,7 +17,7 @@ public partial class MainWindow
 
     private void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
-        AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizeAdorner2(MyButton));
+        AdornerLayer.GetAdornerLayer(MyGrid)?.Add(new ResizeAdorner2(MyButton));
     }
     
 }

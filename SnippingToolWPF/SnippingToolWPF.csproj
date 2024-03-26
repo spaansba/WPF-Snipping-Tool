@@ -121,6 +121,9 @@
       <Compile Update="Drawing\Shapes\CornerOrSide.cs">
         <DependentUpon>ResizeThumb.cs</DependentUpon>
       </Compile>
+      <Compile Update="Drawing\Shapes\RotationThumb.cs">
+        <DependentUpon>ShapeRotation.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -137,6 +140,14 @@
       <Page Update="Drawing\Shapes\ResizeThumb.xaml">
         <Generator>MSBuild:Compile</Generator>
         <DependentUpon>ResizeThumb.cs</DependentUpon>
+      </Page>
+      <Page Update="Drawing\Shapes\RotationThumb.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <DependentUpon>RotationThumb.cs</DependentUpon>
+      </Page>
+      <Page Update="Drawing\Shapes\AngleCircle.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <DependentUpon>ShapeRotation.cs</DependentUpon>
       </Page>
     </ItemGroup>
 

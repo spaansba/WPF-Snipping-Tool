@@ -28,7 +28,6 @@ public partial class ColorSelector
         InitializeComponent();
     }
 
-
     public Color SelectedColor
     {
         get => (Color)GetValue(SelectedColorProperty);

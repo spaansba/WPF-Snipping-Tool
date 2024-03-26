@@ -20,12 +20,16 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
             new FrameworkPropertyMetadata(typeof(DrawingShape)));
     }
 
+    public RotateTransform RotateTransform { get; set; } = new RotateTransform();
+    
     protected DrawingShape()
     {
         textBlock = SetupTextBlock(this);
-        var rotateTransform = new RotateTransform();
-        BindingOperations.SetBinding(rotateTransform, RotateTransform.AngleProperty,
+        BindingOperations.SetBinding(RotateTransform, RotateTransform.AngleProperty,
             new Binding { Source = this, Path = new PropertyPath(AngleProperty) });
+        this.LayoutTransform = RotateTransform;
+        this.RenderTransformOrigin = new Point(0.5,0.5);
+
     }
 
     #region Text and Visual Setup
@@ -151,6 +155,9 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         return new Size(Math.Max(visualWidth,textWidth), Math.Max(visualHeight,textHeight));
     }
 
+    /// <summary>
+    /// Gets called after MeasureOverride
+    /// </summary>
     protected override Size ArrangeOverride(Size arrangeSize)
     {
         //TODO: allow movement of textblock within drawingshape
@@ -301,10 +308,18 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         get => this.GetValue<double>(TopProperty);
         set => this.SetValue<double>(TopProperty, value);
     }
+    
+    public static readonly DependencyProperty BottomProperty = Canvas.BottomProperty.AddOwner(typeof(DrawingShape));
+
+    public double  Bottom
+    {
+        get => this.GetValue<double>(BottomProperty);
+        set => this.SetValue<double>(BottomProperty, value);
+    }
 
     public static readonly DependencyProperty AngleProperty = RotateTransform.AngleProperty.AddOwner(
         typeof(DrawingShape)
-        , new PropertyMetadata(1.0));
+        , new PropertyMetadata(0.0));
 
     public double Angle
     {

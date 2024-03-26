@@ -12,6 +12,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
     public RegularPolygonDrawingShape()
     {
         this.Visual = CreateVisual();
+        
         //Because Visual has bound to PointsProperty, setting this.Points will update this.Visual 
         this.Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, PointGenerationRotationAngle));
     }
@@ -20,6 +21,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
     {
         this.Visual = CreateVisual();
         this.PointGenerationRotationAngle = pointGenerationRotationAngle;
+        
         //Because Visual has bound to PointsProperty, setting this.Points will update this.Visual 
         this.Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, PointGenerationRotationAngle));
     }

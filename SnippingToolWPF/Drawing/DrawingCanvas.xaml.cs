@@ -9,6 +9,7 @@ using System.Windows.Media;
 using SnippingToolWPF.Control;
 using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.Tools;
+using SnippingToolWPF.Tools.PenTools;
 using SnippingToolWPF.Tools.ToolAction;
 using SnippingToolWPF.WPFExtensions;
 
@@ -61,28 +62,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
     }
 
     #endregion
-
-    #region On Item Mouse Events
-
-    /// <summary>
-    ///     Gets Mouse Events from the DrawingCanvasListBoxItem so that the DrawingCanvas can handle them
-    /// </summary>
-    /// <param name="drawingCanvasPoint">Point Relative to the Drawing Canvas not Relative to the DrawingCanvasListBoxItem</param>
-    /// <param name="item"></param>
-    internal void OnItemMouseEvent(DrawingCanvasListBoxItem item, MouseEventArgs e, Point drawingCanvasPoint)
-    {
-        if (item.Content is not DrawingShape element)
-            return;
-
-        if (e.RoutedEvent == MouseLeftButtonDownEvent)
-            Perform(Tool?.LeftButtonDown(drawingCanvasPoint, element));
-
-        if (e.RoutedEvent == MouseMoveEvent && e.LeftButton == MouseButtonState.Pressed)
-            Perform(Tool?.MouseMove(drawingCanvasPoint, element));
-    }
-
-    #endregion
-
+    
     #region set-up / tool change etc
 
     /// <summary>
@@ -201,40 +181,91 @@ public class DrawingCanvas : System.Windows.Controls.Control
 
     #region Drawing on the canvas
 
-    private bool isDrawing;
+    /// <summary>
+    /// Redirect the Mouse Events from the Item to the Canvas when the user clicks on an Item
+    /// </summary>
+    internal void OnItemOnMouseLeftButtonDown(MouseButtonEventArgs e) => OnMouseLeftButtonDown(e);
+    internal void OnItemOnMouseMove(MouseEventArgs e) => OnMouseMove(e);
+    internal void OnItemOnMouseRightButtonDown(MouseButtonEventArgs e) => OnMouseRightButtonDown(e);
 
+    
+    /// <summary>
+    /// You aren't "dragging" until your horizontal distance is greater than MinimumHorizontalDragDistance,
+    /// or your vertical distance is greater than MinimumVerticalDragDistance
+    /// </summary>
+    private static bool MeetsDragThreshold(Point a, Point b)
+        => Math.Abs(a.X - b.X) > SystemParameters.MinimumHorizontalDragDistance
+           || Math.Abs(a.Y - b.Y) > SystemParameters.MinimumVerticalDragDistance;
+    
+    private Point dragStart;
+    private bool hasClicked;
+    private bool dragActuallyStarted;
+    private MouseButton dragButton;
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
+        this.dragActuallyStarted = false;
+        this.dragStart = e.GetPosition(this);
+        this.dragButton = e.ChangedButton;
+        this.hasClicked = true;
+        
+        if (Tool is EraserTool)
+        {
+            this.Perform(this.Tool?.OnDragStarted(e.GetPosition(this),null));
+        }
+        
         base.OnMouseLeftButtonDown(e);
-        Perform(Tool?.LeftButtonDown(e.GetPosition(this), null));
     }
 
     protected override void OnMouseMove(MouseEventArgs e)
     {
         base.OnMouseMove(e);
+        var position = e.GetPosition(this);
 
-        if (isDrawing)
-            Perform(Tool?.MouseMove(e.GetPosition(this), null));
+        if (this.dragActuallyStarted)
+        {
+            this.Perform(this.Tool?.OnDragContinued(position,null));
+        }
+        else if (MeetsDragThreshold(position,this.dragStart) && hasClicked)
+        {
+            this.dragActuallyStarted = true;
+            this.Perform(this.Tool?.OnDragStarted(e.GetPosition(this),null));
+        }
     }
 
     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonUp(e);
-        if (isDrawing)
+        if (dragActuallyStarted)
         {
-            Perform(Tool?.MouseMove(e.GetPosition(this), null));
-            Perform(Tool?.LeftButtonUp());
+            Perform(Tool?.OnDragContinued(e.GetPosition(this), null));
+            Perform(Tool?.OnDragFinished());
         }
+        hasClicked = false;
+        dragActuallyStarted = false;
     }
 
     protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
     {
-        base.OnMouseLeftButtonUp(e);
+        base.OnMouseRightButtonDown(e);
 
-        if (!isDrawing) return;
-
-        Tool?.RightButtonDown();
-        isDrawing = false;
+        if (dragActuallyStarted)
+        {
+            Tool?.RightButtonDown(); // when drawing and clicking right click will remove the current drawing
+            hasClicked = false;
+        }
+        else
+        {
+            //Mike: how to make it so the tool switches to Eraser and switches back to the previous tool
+            this.dragStart = e.GetPosition(this);
+            this.hasClicked = true;
+        }
+    }
+    
+    
+    protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
+    {
+        hasClicked = false;
+        dragActuallyStarted = false;
     }
 
 
@@ -259,7 +290,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         if (action.IsMouseCapture)
         {
             ReleaseMouseCapture();
-            isDrawing = false;
+            hasClicked = false;
         }
 
         if (action.IsKeyboardFocus) Keyboard.Focus(this);
@@ -272,7 +303,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         if (action.IsMouseCapture)
         {
             CaptureMouse();
-            isDrawing = true;
+            hasClicked = true;
         }
 
         if (action.IsKeyboardFocus)

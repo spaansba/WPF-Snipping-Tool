@@ -5,5 +5,6 @@
         <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Control/DrawingCanvasListBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Drawing/Shapes/DrawingShape.xaml" />
         <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Drawing/Shapes/ResizeThumb.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SnippingToolWPF;component/Drawing/Shapes/RotationThumb.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

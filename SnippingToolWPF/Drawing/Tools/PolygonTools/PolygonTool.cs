@@ -53,8 +53,8 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
     }
 
     #region Mouse Events
-
-    public override DrawingToolAction LeftButtonDown(Point position, DrawingShape? item)
+    
+    public override DrawingToolAction OnDragStarted(Point position, DrawingShape? item)
     {
         IsDrawing = true;
         startPoint = position;
@@ -72,7 +72,7 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
         return DrawingToolAction.StartMouseCapture();
     }
 
-    public override DrawingToolAction MouseMove(Point position, DrawingShape? item)
+    public override DrawingToolAction OnDragContinued(Point position, DrawingShape? item)
     {
         if (!IsDrawing)
             return DrawingToolAction.DoNothing;
@@ -80,27 +80,15 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
         CheckIfLockedAspectRatio();
         if (LockedAspectRatio)
             position = GetLockedAspectRatioEndPoint(position);
-
-        // Set current size of the polygon (like a rectangle)
-        DrawingShape.Width = Math.Abs(position.X - startPoint.X);
-        DrawingShape.Height = Math.Abs(position.Y - startPoint.Y);
-
-        // Set the new position of the polygon (we do this because otherwise a polygon can only be drawn to bottom right and not in any direction)
-        DrawingShape.Left = Math.Min(startPoint.X, position.X);
-        DrawingShape.Top = Math.Min(startPoint.Y, position.Y);
+        
+        DrawingShape.SetOppositeCorners(startPoint,position);
+        
         return DrawingToolAction.DoNothing;
     }
 
-    public override DrawingToolAction LeftButtonUp()
+    public override DrawingToolAction OnDragFinished()
     {
         IsDrawing = false;
-        
-        // Only create a Polygon when there is an actual visual shape
-        if (DrawingShape.Height == 0 || DrawingShape.Width == 0)
-        {
-            ResetVisual();
-            return DrawingToolAction.StopMouseCapture();
-        }
         
         var finalPolygon = DrawingShape.Clone();
          ResetVisual();
@@ -110,6 +98,7 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
 
     /// <summary>
     ///     Resets the visual if drawing and pressing right mouse button
+    ///     Does not create a DrawingShape clone of the drawn visual
     /// </summary>
     public override void RightButtonDown()
     {

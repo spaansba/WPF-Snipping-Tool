@@ -29,7 +29,7 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
 
     #region Mouse Events
 
-    public override DrawingToolAction LeftButtonDown(Point position, DrawingShape? element)
+    public override DrawingToolAction OnDragStarted(Point position, DrawingShape? element)
     {
         IsDrawing = true;
         DrawingShape.StrokeThickness = options.Thickness;
@@ -51,7 +51,7 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
     // ReSharper disable once UnusedMember.Local
     private const int FreehandSensitivity = 4;
 
-    public override DrawingToolAction MouseMove(Point position, DrawingShape? element)
+    public override DrawingToolAction OnDragContinued(Point position, DrawingShape? element)
     {
         if (!IsDrawing)
          return DrawingToolAction.DoNothing;
@@ -72,7 +72,7 @@ public sealed class PencilTool : DraggingTool<RegularPolylineDrawingShape>
         return DrawingToolAction.DoNothing;
     }
 
-    public override DrawingToolAction LeftButtonUp()
+    public override DrawingToolAction OnDragFinished()
     {
         IsDrawing = false;
         if (options.PenTipArrow)

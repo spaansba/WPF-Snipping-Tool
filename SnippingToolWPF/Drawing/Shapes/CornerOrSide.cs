@@ -1,6 +1,6 @@
 ﻿namespace SnippingToolWPF;
 
-public enum CornerOrSide 
+public enum ThumbLocation 
 {
     TopLeft,
     Top,

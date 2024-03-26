@@ -11,10 +11,10 @@ public interface IDrawingTool
 
     public bool LockedAspectRatio{ get; } // Implement that if user holds shift while moving the mouse that aspect ratio stays perfect
     public bool IsDrawing { get; }
-    public DrawingToolAction LeftButtonDown(Point position, DrawingShape? item);
+    public DrawingToolAction OnDragStarted(Point position, DrawingShape? item);
     public void RightButtonDown();
-    public DrawingToolAction MouseMove(Point position, DrawingShape? item);
-    public DrawingToolAction LeftButtonUp();
+    public DrawingToolAction OnDragContinued(Point position, DrawingShape? item);
+    public DrawingToolAction OnDragFinished();
 }
 
 public interface IDrawingTool<out T> : IDrawingTool

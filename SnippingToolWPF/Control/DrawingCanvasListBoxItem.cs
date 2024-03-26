@@ -17,42 +17,32 @@ public class DrawingCanvasListBoxItem : ListBoxItem
             new FrameworkPropertyMetadata(typeof(DrawingCanvasListBoxItem)));
     }
 
-    #region DrawingCanvas events
+
     internal DrawingCanvas? DrawingCanvas { get; set; }
-    /// <summary>
-    ///   when a shape on the convas gets clicked, notify the drawing canvas so that it can do the Mouse events over there
-    /// </summary>
+
+    #region Send Mouse Events back to the Drawing Canvas so they can get handled there
+
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonDown(e);
-
-        // Get the Position of the mouse on the Drawing Canvas not on the DrawingCanvasListBoxItem
-        var drawingCanvasPoint = e.GetPosition(DrawingCanvas);
-
-        DrawingCanvas?.OnItemMouseEvent(this, e, drawingCanvasPoint);
+        DrawingCanvas?.OnItemOnMouseLeftButtonDown(e);
     }
-
-    /// <summary>
-    ///     when item/shape on the canvas gets hovered over while mouse is down, notify drawing canvas so that it can do the
-    ///     Mouse events over there
-    /// </summary>
-    /// <param name="e"></param>
     protected override void OnMouseMove(MouseEventArgs e)
     {
         base.OnMouseMove(e);
-
-        // Get the Position of the mouse on the Drawing Canvas not on the DrawingCanvasListBoxItem
-        var drawingCanvasPoint = e.GetPosition(DrawingCanvas);
-
-        DrawingCanvas?.OnItemMouseEvent(this, e, drawingCanvasPoint);
+        DrawingCanvas?.OnItemOnMouseMove(e);
     }
-
+    protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+    {
+        base.OnMouseRightButtonDown(e);
+        DrawingCanvas?.OnItemOnMouseRightButtonDown(e);
+    }
+    #endregion
+    
     protected override void OnSelected(RoutedEventArgs e)
     {
         base.OnSelected(e);
         Debug.WriteLine("Select");
     }
-
-    #endregion
     
 }

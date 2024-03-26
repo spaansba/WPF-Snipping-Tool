@@ -20,11 +20,10 @@ public abstract class DraggingTool<T> : IDrawingTool where T : DrawingShape, new
 
     DrawingShape IDrawingTool.DrawingShape => DrawingShape;
 
-    public abstract DrawingToolAction LeftButtonDown(Point position, DrawingShape? item);
+    public abstract DrawingToolAction OnDragStarted(Point startPosition, DrawingShape? item);
     public abstract void RightButtonDown();
-    public abstract DrawingToolAction LeftButtonUp();
-
-    public abstract DrawingToolAction MouseMove(Point position, DrawingShape? item);
+    public abstract DrawingToolAction OnDragContinued(Point position, DrawingShape? item);
+    public abstract DrawingToolAction OnDragFinished();
 
     /// <summary>
     ///  Reset the visual of the DrawingTool, this is the reason we needed this abstract class.

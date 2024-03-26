@@ -13,13 +13,13 @@ public sealed class EraserTool : IDrawingTool
 
     #region Mouse Events
 
-    public DrawingToolAction LeftButtonDown(Point position, DrawingShape? item)
+    public DrawingToolAction OnDragStarted(Point position, DrawingShape? item)
     {
         IsDrawing = true;
         return item is not null ? DrawingToolAction.RemoveShape(item).WithUndo() : DrawingToolAction.DoNothing;
     }
 
-    public DrawingToolAction MouseMove(Point position, DrawingShape? item)
+    public DrawingToolAction OnDragContinued(Point position, DrawingShape? item)
     {
         if (!IsDrawing)
             return DrawingToolAction.DoNothing;
@@ -28,7 +28,7 @@ public sealed class EraserTool : IDrawingTool
         return DrawingToolAction.DoNothing;
     }
 
-    public DrawingToolAction LeftButtonUp()
+    public DrawingToolAction OnDragFinished()
     {
         IsDrawing = false;
         return DrawingToolAction.StopMouseCapture();

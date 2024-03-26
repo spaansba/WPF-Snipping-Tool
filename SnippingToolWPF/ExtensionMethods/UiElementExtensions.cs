@@ -15,5 +15,4 @@ public static class UiElementExtensions
         obj.Measure(constraint);
         return obj.DesiredSize;
     }
-    
 }
