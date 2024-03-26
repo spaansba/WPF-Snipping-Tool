@@ -4,73 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:snippingToolWpf="clr-namespace:SnippingToolWPF"
-             mc:Ignorable="d"
+             mc:Ignorable="d" Width="300" Height="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
-        <Grid>
-            <!-- <Path> -->
-            <!--     <Path.Data> -->
-            <!--         <CombinedGeometry GeometryCombineMode="Exclude"> -->
-            <!--             <CombinedGeometry.Geometry1> -->
-            <!--                 <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100"/> -->
-            <!--             </CombinedGeometry.Geometry1> -->
-            <!--             <CombinedGeometry.Geometry2> -->
-            <!--                 <EllipseGeometry Center="100,100" RadiusX="75" RadiusY="75"/> -->
-            <!--             </CombinedGeometry.Geometry2> -->
-            <!--         </CombinedGeometry> -->
-            <!--     </Path.Data> -->
-            <!--     <Path.Fill> -->
-            <!--         <SolidColorBrush Color="Brown"/> -->
-            <!--     </Path.Fill> -->
-            <!-- </Path> -->
-            <!-- -->
-            <!-- ~1~ Modified Path for Arc as Combined Geometry @1@ -->
-            <!-- <Path> -->
-            <!--     <Path.Data> -->
-            <!--         <CombinedGeometry GeometryCombineMode="Exclude"> -->
-            <!--             <CombinedGeometry.Geometry1> -->
-            <!--                 <PathGeometry> -->
-            <!--                     <PathFigure StartPoint="100,0"> -->
-            <!--                         <ArcSegment Point="100,200" Size="100,100" IsLargeArc="True" SweepDirection="Clockwise"/> -->
-            <!--                     </PathFigure> -->
-            <!--                 </PathGeometry> -->
-            <!--             </CombinedGeometry.Geometry1> -->
-            <!--             <CombinedGeometry.Geometry2> -->
-            <!--                 <EllipseGeometry Center="100,100" RadiusX="75" RadiusY="75"/> -->
-            <!--             </CombinedGeometry.Geometry2> -->
-            <!--         </CombinedGeometry> -->
-            <!--     </Path.Data> -->
-            <!--     <Path.Fill> -->
-            <!--         <SolidColorBrush Color="Black"/> -->
-            <!--     </Path.Fill> -->
-            <!-- </Path> -->
-            
-            <Grid.Clip>
-                <GeometryGroup FillRule="EvenOdd">
-                    <RectangleGeometry Rect="0,0,200,200"/>
-                    <EllipseGeometry Center="100,100" RadiusX="75" RadiusY="75"/>
-                </GeometryGroup>
-            </Grid.Clip>
-            <Path Fill="Red">
-                <Path.Data>
-                    <PathGeometry>
-                        <PathFigure StartPoint="100,0">
-                            <ArcSegment Point="100,200" Size="100,100" IsLargeArc="True" SweepDirection="Clockwise"></ArcSegment>
-                        </PathFigure>
-                    </PathGeometry>
-                </Path.Data>
-            </Path>
-            <Path Fill="Blue">
-                <Path.Data>
-                    <PathGeometry>
-                        <PathFigure StartPoint="100,0">
-                            <ArcSegment Point="100,200" Size="100,100" IsLargeArc="True" RotationAngle="40" SweepDirection="Counterclockwise"></ArcSegment>
-                        </PathFigure>
-                    </PathGeometry>
-                </Path.Data>
-            </Path>
-        </Grid>
-        <TextBlock Text="{Binding AngleTextBox}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        <!-- <Grid> -->
+        <!--     <Grid.Clip> -->
+        <!--         <GeometryGroup FillRule="EvenOdd"> -->
+        <!--             <RectangleGeometry Rect="0,0,200,200"/> -->
+        <!--             <EllipseGeometry Center="100,100" RadiusX="75" RadiusY="75"/> -->
+        <!--         </GeometryGroup> -->
+        <!--     </Grid.Clip> -->
+        <!--     <Path Fill="Red" Opacity="0.7"> -->
+        <!--         <Path.Data> -->
+        <!--             <PathGeometry> -->
+        <!--                 <PathFigure StartPoint="100,0"> -->
+        <!--                     <ArcSegment Point="186.6,150" Size="100,100" SweepDirection="Clockwise"/> -->
+        <!--                 </PathFigure> -->
+        <!--             </PathGeometry> -->
+        <!--         </Path.Data> -->
+        <!--     </Path> -->
+        <!--     <Path Fill="Blue" Opacity="0.7"> -->
+        <!--         <Path.Data> -->
+        <!--             <PathGeometry> -->
+        <!--                 <PathFigure StartPoint="100,0"> -->
+        <!--                     <ArcSegment Point="100,200" Size="100,100" SweepDirection="Counterclockwise"/> -->
+        <!--                 </PathFigure> -->
+        <!--             </PathGeometry> -->
+        <!--         </Path.Data> -->
+        <!--     </Path> -->
+        <!--   -->
+        <!-- </Grid> -->
+        <!-- <Path Data="M 100,20 L 100,0 A 100,100 90 0 1 200,100 L 180,100 M 100,20 A 80,80 90 0 1 180,100" Fill="Black"/> -->
+        <snippingToolWpf:DonutPiece Stroke="Red" Fill="Black" />
+        <TextBlock Text="{Binding AngleTextBox}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        
     </Grid>
 
 </UserControl>
