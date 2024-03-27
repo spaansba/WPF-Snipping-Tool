@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -6,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SnippingToolWPF.Common;
 using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.WPFExtensions;
 
@@ -19,19 +21,27 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
             typeof(DrawingShape),
             new FrameworkPropertyMetadata(typeof(DrawingShape)));
     }
-
-    public RotateTransform RotateTransform { get; set; } = new RotateTransform();
     
     protected DrawingShape()
     {
         textBlock = SetupTextBlock(this);
-        BindingOperations.SetBinding(RotateTransform, RotateTransform.AngleProperty,
+
+        var translateTransform = new TranslateTransform();
+        var rotateTransform = new RotateTransform();
+        
+        BindingOperations.SetBinding(rotateTransform, RotateTransform.AngleProperty,
             new Binding { Source = this, Path = new PropertyPath(AngleProperty) });
-        this.LayoutTransform = RotateTransform;
-        this.RenderTransformOrigin = new Point(0.5,0.5);
+        
+        // Allowing Rotation of the Shape (not the adorner)
+        this.RenderTransform = new TransformGroup()
+        {
+            Children = { translateTransform, rotateTransform }
+        };
 
+        this.Angle = 0;
+        this.RenderTransformOrigin = new Point(0.5, 0.5);
     }
-
+    
     #region Text and Visual Setup
 
     public static readonly DependencyProperty VisualProperty = DependencyProperty.Register(
@@ -54,8 +64,9 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     private static TextBlock SetupTextBlock(DrawingShape parent)
     {
         var textBlock = new TextBlock();
-        textBlock.SetBinding(TextBlock.TextProperty,
-            new Binding { Source = parent, Path = new PropertyPath(TextProperty) });
+        textBlock.SetBinding(TextBlock.TextProperty, new Binding { Source = parent, Path = new PropertyPath(AngleProperty), StringFormat = "{0:G3}°"});
+        textBlock.HorizontalAlignment = HorizontalAlignment.Center;
+        textBlock.VerticalAlignment = VerticalAlignment.Center;
         parent.AddVisualChild(textBlock);
         parent.AddLogicalChild(textBlock);
         return textBlock;
@@ -74,25 +85,64 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         {
             OnVisualChanged(e.OldValue as UIElement, e.NewValue as UIElement);
         }
-        else if (e.Property == IsSelectedProperty)
+        if (e.Property == IsListBoxSelectedProperty)
         {
-            OnIsSelectedChange(e.NewValue is true);
+            Debug.WriteLine(e.NewValue);
+            OnShapeSelectedChange(e.NewValue is true);
         }
     }
+    
+    #region Adorners
+
     private DrawingShapeAdorner? DrawingShapeAdorner { get; set; }
-    private void OnIsSelectedChange(bool isSelected)
+
+    private void OnShapeSelectedChange(bool isSelected)
     {
         if (isSelected)
         {
-            this.DrawingShapeAdorner = new DrawingShapeAdorner(this);
-            AdornerLayer.GetAdornerLayer(this)?.Add(this.DrawingShapeAdorner);
+            CreateAdorners();
+            AddAdorners();
         }
         else
         {
-            if (this.DrawingShapeAdorner != null) AdornerLayer.GetAdornerLayer(this)?.Remove(this.DrawingShapeAdorner);
+            RemoveAdorners();
         }
     }
+    private void CreateAdorners() => DrawingShapeAdorner ??= new DrawingShapeAdorner(this);
+    
+    private void AddAdorners()
+    {
+        AdornerLayer.GetAdornerLayer(this)?.Add(this.DrawingShapeAdorner ?? throw new InvalidOperationException());
+        this.DrawingShapeAdorner?.AdornerVisibility(true);
+    }
 
+    private void RemoveAdorners()
+    {
+        if (this.DrawingShapeAdorner != null) AdornerLayer.GetAdornerLayer(this)?.Remove(this.DrawingShapeAdorner);
+    }
+    
+    /// <summary>
+    /// For when the Shape is being changed, for example being rotated / resized / moved
+    /// </summary>
+    internal void StartChanging()
+    {
+        this.IsChanging = true;
+        this.DrawingShapeAdorner?.AdornerVisibility(false);
+        RegenerateDrawingShapeRectanglePoints(this);
+    }
+    
+    /// <summary>
+    /// For when the Shape stops being changed, for example being rotated / resized / moved
+    /// </summary>
+    internal void FinishChanging()
+    {
+        this.IsChanging = false;
+        this.DrawingShapeAdorner?.AdornerVisibility(true);
+        RegenerateDrawingShapeRectanglePoints(this);
+    }
+
+    #endregion
+    
     /// <summary>
     /// Add the shape to the canvas on visual changed
     /// </summary>
@@ -118,7 +168,41 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     }
     #endregion
 
-    #region Visual Children override FrameworkElement
+    #region Points of Rectangle Around DrawingShape
+
+    public Point BottomRightPoint { get; private set; }
+    public Point TopLeftPoint { get; private set; }
+    public Point TopRightPoint { get; private set; }
+    public Point BottomLeftPoint { get; private set; }
+    public Point TopPoint { get; private set; }
+    public Point BottomPoint { get; private set; }
+    public Point RightPoint { get; private set; }
+    public Point LeftPoint { get; private set; }
+
+    /// <summary>
+    ///     Calculates the points around the rectangle of the DrawingShape
+    ///     These Points are relative to the DrawingCanvas (top left of DrawingCanvas = TopLeftPoint 0,0)
+    /// </summary>
+    public static void RegenerateDrawingShapeRectanglePoints(DrawingShape shape)
+    {
+        var halfHeight = shape.Height / 2;
+        var halfWidth = shape.Width / 2;
+                
+        shape.TopPoint = new Point(shape.Left + halfWidth, shape.Top);
+        shape.BottomPoint = new Point(shape.Left + halfWidth, shape.Top + shape.Height);
+        shape.RightPoint = new Point(shape.Left + shape.Width, shape.Top + halfHeight);
+        shape.LeftPoint = new Point(shape.Left, shape.Top + halfHeight);
+
+        shape.TopLeftPoint = new Point(shape.Left, shape.Top);
+        shape.TopRightPoint = new Point(shape.Left + shape.Width, shape.Top);
+        shape.BottomLeftPoint = new Point(shape.Left, shape.Top + shape.Height);
+        shape.BottomRightPoint = new Point(shape.Left + shape.Width, shape.Top + shape.Height);
+
+    }
+
+    #endregion
+    
+    #region Visual Children override FrameworkElement & Measure / Arrange
     protected override IEnumerator LogicalChildren
     {
         get
@@ -138,10 +222,6 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         1 when this.Visual is not null => this.textBlock,
         _ => throw new ArgumentOutOfRangeException(nameof(index)),
     };
-    
-    #endregion
-
-    #region Measure / Arrange
 
     /// <summary>
     /// Measure lets me tell my parent how much space I want, given a constraint
@@ -247,7 +327,6 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         set => this.SetValue<double>(StrokeDashOffsetProperty, value);
     }
 
-
     public static readonly DependencyProperty StrokeEndLineCapProperty =
         Shape.StrokeEndLineCapProperty.AddOwner(typeof(DrawingShape));
 
@@ -327,14 +406,34 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         set => this.SetValue<double>(AngleProperty, value);
     }
     
-    public static readonly DependencyProperty IsSelectedProperty =
+    /// <summary>
+    /// Only a single DrawingShape will ever have this as True as that is the last ListBox Selected
+    /// For multi Select check IsShapeSelectedProperty
+    /// </summary>
+    public static readonly DependencyProperty IsListBoxSelectedProperty =
         Selector.IsSelectedProperty.AddOwner(typeof(DrawingShape));
 
-    public bool IsSelected
+    public bool IsListBoxSelected
     {
-        get => this.GetValue<bool>(IsSelectedProperty);
-        set => this.SetValue<bool>(IsSelectedProperty, value);
+        get => this.GetValue<bool>(IsListBoxSelectedProperty);
+        set => this.SetValue<bool>(IsListBoxSelectedProperty, value);
     }
+    
 
+    private static readonly DependencyProperty IsChangingProperty = DependencyProperty.Register(
+        name: nameof(IsChanging),
+        propertyType: typeof(bool),
+        ownerType: typeof(DrawingShape),
+        typeMetadata: new FrameworkPropertyMetadata(Boxes.False)
+    );
+
+    public bool IsChanging
+    {
+        get => this.GetValue<bool>(IsChangingProperty);
+        private set => this.SetValue<bool>(IsChangingProperty, value);
+    }
+    
     #endregion Dependency properties
+
+
 }

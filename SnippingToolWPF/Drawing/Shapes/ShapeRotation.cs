@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using SnippingToolWPF.Common;
@@ -36,42 +34,42 @@ public class ShapeRotation
     
     private void OnDragStarted(object sender, DragStartedEventArgs e)
     {
+        this.childElement.StartChanging();
         this.AngleCircle.MakeVisible();
-        this.shapeCenter = childElement.PointToScreen(new Point(
-            childElement.ActualWidth / 2,
-            childElement.ActualHeight / 2
-        ));
-
-        this.startingPoint = Mouse.GetPosition(null);
+        this.shapeCenter = childElement.PointToScreen(childElement.GetCenterPoint());
+        this.startingPoint = RotationThumb.PointToScreen(Mouse.GetPosition(RotationThumb));
         this.currentAngle = childElement.Angle;
     }
 
     private void OnRotationDragDelta(object sender, DragDeltaEventArgs e)
     {
-        Debug.WriteLine($"horChange {e.HorizontalChange}, verChange {e.VerticalChange}");
-        var currentPoint = this.startingPoint + new Vector(
-            e.HorizontalChange,
-            e.VerticalChange);
-
-        Debug.WriteLine($"startingPoint {startingPoint}, currentPoint {currentPoint}");
+        
+    //    Debug.WriteLine($"horChange {e.HorizontalChange}, verChange {e.VerticalChange}");
+    
+        var currentPoint = RotationThumb.PointToScreen(Mouse.GetPosition(RotationThumb));
+     //   var currentPoint = this.startingPoint + new Vector(
+            // e.HorizontalChange,
+            // e.VerticalChange);
+            
+        // Debug.WriteLine($"startingPoint {startingPoint}, currentPoint {currentPoint}");
 
         var angleChange = MathExtra.AngleBetweenInDegrees(
-            startingPoint.MakeRelativeTo(shapeCenter),
-            currentPoint.MakeRelativeTo(shapeCenter));
-        
+            currentPoint.MakeRelativeTo(shapeCenter),startingPoint.MakeRelativeTo(shapeCenter));
+
         totalAngleChange += angleChange;
         
-        Debug.WriteLine($"startingPoint {startingPoint.MakeRelativeTo(shapeCenter)}, currentpoint {currentPoint.MakeRelativeTo(shapeCenter)}, shapeCenter {shapeCenter}");
-        Debug.WriteLine($"CurrentAngle {childElement.Angle}, angleChange {angleChange}. total angle change {totalAngleChange}");
-        Debug.WriteLine(" ");
-      
+        // Debug.WriteLine($"startingPoint {startingPoint.MakeRelativeTo(shapeCenter)}, currentPoint {currentPoint.MakeRelativeTo(shapeCenter)}, shapeCenter {shapeCenter}");
+        // Debug.WriteLine($"CurrentAngle {childElement.Angle}, angleChange {angleChange}. total angle change {totalAngleChange}");
+        // Debug.WriteLine(" ");
+        //
         this.childElement.Angle = currentAngle + totalAngleChange;
-        this.AngleCircle.AngleTextBox = Math.Round(childElement.Angle).ToString(CultureInfo.InvariantCulture) + "°";
+        this.AngleCircle.ChangeAngleTextBox(childElement.Angle);
     }
 
     private void OnDragCompleted(object sender, DragCompletedEventArgs e)
     {
-        this.AngleCircle.MakeInvisible();
+        this.childElement.FinishChanging();
+        this.AngleCircle.MakeVisible();
         this.totalAngleChange = 0;
     }
 }

@@ -11,6 +11,7 @@ public abstract class DrawingShape<TSelf> : DrawingShape, ICloneable<TSelf>
     {
         var clone = new TSelf();
         PopulateClone(clone);
+        RegenerateDrawingShapeRectanglePoints(clone);
         return clone;
     }
 

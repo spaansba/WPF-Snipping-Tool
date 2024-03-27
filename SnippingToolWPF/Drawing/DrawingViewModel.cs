@@ -36,9 +36,9 @@ public partial class DrawingViewModel : ObservableObject
         editPanel = new EditSidePanelViewModel(this);
         ClearCanvas = new RelayCommand(ExecuteClearCanvasButton);
         TakeScreenshot = new RelayCommand(ExecuteTakeScreenshot);
+        
         // Top bar Relay Commands
-        Application.Current.MainWindow!.MaxHeight =
-            SystemParameters.MaximizedPrimaryScreenHeight; // Make full screen not overlap task bar
+        Application.Current.MainWindow!.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; // Make full screen not overlap task bar
         MoveWindowCommand = new RelayCommand(_ => { Application.Current.MainWindow.DragMove(); });
         ShutDownWindowCommand = new RelayCommand(_ => { Application.Current.Shutdown(); });
         // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
@@ -75,8 +75,8 @@ public partial class DrawingViewModel : ObservableObject
 
     #region Drawing Objects creating / clearing
 
-    public ObservableCollection<DrawingShape> DrawingObjects { get; } = new ObservableCollection<DrawingShape>();
-
+    public ObservableCollection<DrawingShape> DrawingObjects { get; } = new();
+    
     /// <summary>
     ///     Button in Xaml is linked via the RelayCommand class so the button can be in the viewmodel instead of the
     ///     code-behind
@@ -135,6 +135,5 @@ public partial class DrawingViewModel : ObservableObject
             Debug.WriteLine("object selected - DrawingViewModel");
         }
     }
-
     #endregion
 }

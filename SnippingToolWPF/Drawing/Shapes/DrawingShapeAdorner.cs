@@ -1,13 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace SnippingToolWPF;
 
 public class DrawingShapeAdorner : Adorner
 {
     private readonly VisualCollection visualChildren;
+    private DrawingShape childElement;
     private ResizeThumb TopLeft { get; }
     private ResizeThumb TopRight { get; }
     private ResizeThumb BottomRight { get; }
@@ -20,6 +20,7 @@ public class DrawingShapeAdorner : Adorner
     
     public DrawingShapeAdorner(DrawingShape adornedElement) : base(adornedElement)
     {
+        this.childElement = adornedElement;
         this.TopLeft = new ResizeThumb(adornedElement, ThumbLocation.TopLeft);
         this.TopRight = new ResizeThumb(adornedElement, ThumbLocation.TopRight);
         this.BottomRight = new ResizeThumb(adornedElement, ThumbLocation.BottomRight);
@@ -32,9 +33,8 @@ public class DrawingShapeAdorner : Adorner
         
         visualChildren = new VisualCollection(this)
         {
-            TopLeft,TopRight,BottomRight,BottomLeft,Top,Bottom,Left,Right,ShapeRotation.RotationThumb,ShapeRotation.AngleCircle 
-        };
-        
+            TopLeft,TopRight,BottomRight,BottomLeft,Top,Bottom,Left,Right,ShapeRotation.RotationThumb
+        }; 
     }
     
     /// <summary>
@@ -44,18 +44,34 @@ public class DrawingShapeAdorner : Adorner
     protected override Size ArrangeOverride(Size finalSize)
     {
         base.ArrangeOverride(finalSize);
-        this.Top.ArrangeIntoParent(finalSize);
-        this.Bottom.ArrangeIntoParent(finalSize);
-        this.Left.ArrangeIntoParent(finalSize);
-        this.Right.ArrangeIntoParent(finalSize);
-        this.TopLeft.ArrangeIntoParent(finalSize);
-        this.BottomLeft.ArrangeIntoParent(finalSize);
-        this.TopRight.ArrangeIntoParent(finalSize);
-        this.BottomRight.ArrangeIntoParent(finalSize);
-        this.ShapeRotation.RotationThumb.ArrangeIntoParent(finalSize);
-    //    this.ShapeRotation.AngleCircle.ArrangeIntoParent(finalSize);
+        foreach (var visual in visualChildren)
+        {
+            if (visual is AnchoredThumb thumb)
+            {
+                if (finalSize.Width < 30 || finalSize.Height < 30)
+                {
+                    //Mike: Ask why element gets shrinked when offset parameter is reached (for now its 0 to not cause buggs)
+                    thumb.ArrangeIntoParentWithOffset(finalSize, 0);
+                }
+                else
+                {
+                    thumb.ArrangeIntoParent(finalSize);
+                }
+            }
+        }
         return finalSize;
     }
+    
+    /// <param name="visible">True makes the Adorner Visible, False hides the adorner</param>
+    public void AdornerVisibility(bool visible)
+    {
+        if (visible)
+            visualChildren.OfType<AnchoredThumb>().ToList().ForEach(thumb => thumb.UnHide());
+        else
+            visualChildren.OfType<AnchoredThumb>().ToList().ForEach(thumb => thumb.Hide());
+    }
+    
     protected override int VisualChildrenCount => visualChildren.Count;
     protected override Visual GetVisualChild(int index) => visualChildren[index];
+    
 }

@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using SnippingToolWPF.Tools.PolygonTools;
@@ -12,7 +14,6 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
     public RegularPolygonDrawingShape()
     {
         this.Visual = CreateVisual();
-        
         //Because Visual has bound to PointsProperty, setting this.Points will update this.Visual 
         this.Points = new PointCollection(CreateInitialPolygon.GeneratePolygonPoints(NumberOfSides, PointGenerationRotationAngle));
     }
@@ -46,21 +47,69 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         clone.Height = this.Height;
         clone.Points = this.Points;
         clone.FillRule = this.FillRule;
+        clone.NumberOfSides = this.NumberOfSides;
+        clone.PointGenerationRotationAngle = this.PointGenerationRotationAngle;
+        clone.Angle = this.Angle;
+        clone.StarInnerCircleSize = this.StarInnerCircleSize;
     }
 
     protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
+        
         if (e.Property == NumberOfSidesProperty) //Recalc points if we change the number of sides
-            this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(NumberOfSides, PointGenerationRotationAngle,
-                StarInnerCircleSize));
+            this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(this.NumberOfSides, this.PointGenerationRotationAngle,
+                this.StarInnerCircleSize));
+        
         if (e.Property == PointGenerationRotationAngleProperty) // Recalc points if we change the Angle
-            this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(NumberOfSides, PointGenerationRotationAngle,
-                StarInnerCircleSize));
+            this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(this.NumberOfSides, this.PointGenerationRotationAngle,
+                this.StarInnerCircleSize));
+        
         if (e.Property == StarInnerCircleSizeProperty) // Recalc points if we change the Angle
-            this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(NumberOfSides, PointGenerationRotationAngle,
-                StarInnerCircleSize));
+            this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(this.NumberOfSides, this.PointGenerationRotationAngle,
+                this.StarInnerCircleSize));
+        
+        if (e.Property == AngleProperty)
+            this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(this.NumberOfSides, this.PointGenerationRotationAngle,
+                this.StarInnerCircleSize));
+        
+        if (e.Property == IsListBoxSelectedProperty)
+        {
+            Debug.WriteLine(e.NewValue);
+            OnShapeSelectedChange(e.NewValue is true);
+        }
     }
+    
+    private DrawingShapeAdorner? DrawingShapeAdorner { get; set; }
+
+    private void OnShapeSelectedChange(bool isSelected)
+    {
+        if (isSelected)
+        {
+            //   RemoveAdorners();
+            AddAdorners();
+        }
+        else
+        {
+            RemoveAdorners();
+        }
+        
+    }
+    
+    private void RemoveAdorners()
+    {
+        if (this.DrawingShapeAdorner != null) AdornerLayer.GetAdornerLayer(this)?.Remove(this.DrawingShapeAdorner);
+    }
+    private void AddAdorners()
+    {
+        // Create Adorners
+        this.DrawingShapeAdorner = new DrawingShapeAdorner(this);
+        
+        // Add adorners
+        AdornerLayer.GetAdornerLayer(this)?.Add(this.DrawingShapeAdorner);
+        this.DrawingShapeAdorner?.AdornerVisibility(true);
+    }
+    
     
     #region  Bindings
     protected override void SetUpBindings(Polygon visual)
@@ -74,7 +123,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
             new Binding
             {
                 Source = this,
-                Path = new PropertyPath(RegularPolygonDrawingShape.PointsProperty),
+                Path = new PropertyPath(PointsProperty),
             });
     }
     
@@ -140,10 +189,14 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
     public static readonly DependencyProperty PointGenerationRotationAngleProperty =
         PointGenerationRotationAnglePropertyKey.DependencyProperty;
     
+    /// <summary>
+    ///  The default rotation a default shape has, this value can not be changed. If you want to angle the shape after creation
+    ///  Use the Angle Property
+    /// </summary>
     public double PointGenerationRotationAngle
     {
         get => this.GetValue<double>(PointGenerationRotationAngleProperty);
-        private init => SetValue(PointGenerationRotationAnglePropertyKey, value);
+        internal set => SetValue(PointGenerationRotationAnglePropertyKey, value);
     }
     
     public static readonly DependencyProperty PointsProperty = Polygon.PointsProperty.AddOwner(typeof(RegularPolygonDrawingShape));

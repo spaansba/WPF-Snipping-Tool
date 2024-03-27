@@ -7,37 +7,9 @@
              mc:Ignorable="d" Width="300" Height="300"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
-        <!-- <Grid> -->
-        <!--     <Grid.Clip> -->
-        <!--         <GeometryGroup FillRule="EvenOdd"> -->
-        <!--             <RectangleGeometry Rect="0,0,200,200"/> -->
-        <!--             <EllipseGeometry Center="100,100" RadiusX="75" RadiusY="75"/> -->
-        <!--         </GeometryGroup> -->
-        <!--     </Grid.Clip> -->
-        <!--     <Path Fill="Red" Opacity="0.7"> -->
-        <!--         <Path.Data> -->
-        <!--             <PathGeometry> -->
-        <!--                 <PathFigure StartPoint="100,0"> -->
-        <!--                     <ArcSegment Point="186.6,150" Size="100,100" SweepDirection="Clockwise"/> -->
-        <!--                 </PathFigure> -->
-        <!--             </PathGeometry> -->
-        <!--         </Path.Data> -->
-        <!--     </Path> -->
-        <!--     <Path Fill="Blue" Opacity="0.7"> -->
-        <!--         <Path.Data> -->
-        <!--             <PathGeometry> -->
-        <!--                 <PathFigure StartPoint="100,0"> -->
-        <!--                     <ArcSegment Point="100,200" Size="100,100" SweepDirection="Counterclockwise"/> -->
-        <!--                 </PathFigure> -->
-        <!--             </PathGeometry> -->
-        <!--         </Path.Data> -->
-        <!--     </Path> -->
-        <!--   -->
-        <!-- </Grid> -->
         <!-- <Path Data="M 100,20 L 100,0 A 100,100 90 0 1 200,100 L 180,100 M 100,20 A 80,80 90 0 1 180,100" Fill="Black"/> -->
         <snippingToolWpf:DonutPiece Stroke="Red" Fill="Black" />
         <TextBlock Text="{Binding AngleTextBox}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        
     </Grid>
 
 </UserControl>

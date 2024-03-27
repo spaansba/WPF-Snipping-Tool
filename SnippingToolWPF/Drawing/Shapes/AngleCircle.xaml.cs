@@ -1,6 +1,7 @@
-﻿using System.Windows;
-using SnippingToolWPF.Control.UserControls;
+﻿using System.Globalization;
+using System.Windows;
 using SnippingToolWPF.ExtensionMethods;
+using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF;
 
@@ -9,11 +10,19 @@ public partial class AngleCircle
     public AngleCircle(Size parentSize)
     {
         InitializeComponent();
-        this.Visibility = Visibility.Hidden;
-        this.Arrange(new Rect(parentSize));
+        if (parentSize.Width > 0 && parentSize.Height > 0)
+        {
+            this.Visibility = Visibility.Hidden;
+            this.Arrange(new Rect(parentSize));
+        }
+
     }
 
-    public void MakeVisible() => this.Visibility = Visibility.Visible;
+    public void MakeVisible()
+    {
+        this.Visibility = Visibility.Visible;
+        this.Arrange(new Rect(new Point(0,0), this.DesiredSize));
+    }
     public void MakeInvisible() => this.Visibility = Visibility.Hidden;
 
     internal void ArrangeIntoParent(Size parentSize)
@@ -30,19 +39,24 @@ public partial class AngleCircle
     
     public double EllipseRadius
     {
-        get => (double)GetValue(EllipseRadiusProperty);
-        set => SetValue(EllipseRadiusProperty, value);
+        get => this.GetValue<double>(EllipseRadiusProperty);
+        set => this.SetValue<double>(EllipseRadiusProperty, value);
+    }
+    
+    internal void ChangeAngleTextBox(double angle)
+    {
+        this.AngleTextBox = $"{Math.Round(angle).ToString(CultureInfo.InvariantCulture)}°";
     }
     
     public static readonly DependencyProperty AngleTextBoxProperty = DependencyProperty.Register(
         nameof(AngleTextBox),
         typeof(string),
-        typeof(AngleCircle),
-        new FrameworkPropertyMetadata("0°"));
+        typeof(AngleCircle),new FrameworkPropertyMetadata( "0°"));
     
-    public string AngleTextBox
+    public string? AngleTextBox
     {
-        get => (string)GetValue(AngleTextBoxProperty);
-        set => SetValue(AngleTextBoxProperty, value);
+        get => this.GetValue<string?>(AngleTextBoxProperty);
+        set => this.SetValue<string?>(AngleTextBoxProperty, value);
     }
+    
 }

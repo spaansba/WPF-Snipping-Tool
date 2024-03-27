@@ -237,7 +237,7 @@
                                  Shapes="{Binding DrawingObjects}"
                                  Tool="{Binding SidePanelContent.Tool, FallbackValue={x:Null}}"
                                  Screenshot="{Binding Screenshot}"
-                                 SelectedItem="{Binding SelectedShape}" />
+                                 SelectedItem="{Binding SelectedShape}" d:DataContext="{d:DesignInstance }" />
 
             <Border x:Name="SidePanel" Grid.Row="1"
                     Grid.Column="1" DockPanel.Dock="Right">

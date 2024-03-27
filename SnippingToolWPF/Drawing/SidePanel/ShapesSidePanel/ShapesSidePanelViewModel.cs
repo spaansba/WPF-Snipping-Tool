@@ -52,7 +52,6 @@ public sealed class ShapesSidePanelViewModel : SidePanelViewModel
     {
         UpdateTool();
         Polygons = CreateButtonPolygons();
-
         PolygonSelected = new PremadePolygonInfo(4,45);
     }
 

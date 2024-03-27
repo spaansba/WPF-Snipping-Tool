@@ -16,6 +16,16 @@ public sealed class UndoRedo
         redoActions.Push(item);
         return true;
     }
+    
+    // public bool TryUndo(out DrawingCanvasAction item)
+    // {
+    //     // If there is an item on top of the stack, pop it and return true
+    //     if (!visibleActions.TryPop(out item))
+    //         return false;
+    //
+    //     redoActions.Push(item);
+    //     return true;
+    // }
 
     public bool TryRedo(out DrawingToolAction item)
     {
@@ -26,6 +36,16 @@ public sealed class UndoRedo
         visibleActions.Push(item);
         return true;
     }
+    
+    // public bool TryRedo(out DrawingCanvasAction item)
+    // {
+    //     // If there is an item on top of the stack, pop it and return true
+    //     if (!redoActions.TryPop(out item))
+    //         return false;
+    //
+    //     visibleActions.Push(item);
+    //     return true;
+    // }
 
     public void AddAction(DrawingToolAction action)
     {

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Specialized;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SnippingToolWPF.Control;
@@ -19,6 +20,11 @@ public class DrawingCanvasListBox : ListBox
             typeof(DrawingCanvasListBox),
             new FrameworkPropertyMetadata(typeof(DrawingCanvasListBox)));
     }
+
+    public DrawingCanvasListBox()
+    {
+        (this.Items as INotifyCollectionChanged).CollectionChanged += ListBoxItems_CollectionChanged;
+    }
     
     internal DrawingCanvas? DrawingCanvas { get; set; }
 
@@ -28,6 +34,28 @@ public class DrawingCanvasListBox : ListBox
     protected override bool IsItemItsOwnContainerOverride(object item)
     {
         return item is DrawingCanvasListBoxItem;
+    }
+
+    private void ListBoxItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs  e)
+    {
+      //  Debug.WriteLine("changed");
+        // if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
+        //     foreach (var item in e.NewItems)
+        //     {
+        //         //this.SetSelectedItems(e.NewItems);
+        //     }
+    }
+    
+    protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+    {
+        base.OnSelectionChanged(e);
+        foreach (var item in SelectedItems)
+        {
+            if (item is DrawingShape)
+            {
+              
+            }
+        }
     }
 
     /// <summary>
@@ -53,7 +81,7 @@ public class DrawingCanvasListBox : ListBox
 
         listBoxItem.DrawingCanvas = DrawingCanvas;
     }
-
+    
     protected override void ClearContainerForItemOverride(DependencyObject element, object item)
     {
         base.ClearContainerForItemOverride(element, item);

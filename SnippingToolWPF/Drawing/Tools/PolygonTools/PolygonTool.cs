@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
+using SnippingToolWPF.Common;
 using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.SidePanel.ShapesSidePanel;
 using SnippingToolWPF.Tools.ToolAction;
@@ -40,7 +40,6 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
                 new PropertyPath($"{nameof(ShapesSidePanelViewModel.Stroke)}"),
                 options);
         //TODO: Create Angle property and bind to drawingshape.Angle
-        
         ResetVisual(); //Reset otherwise after switching polygon shapes there will be a small shape in the top left of the screen
     }
 
@@ -81,7 +80,7 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
         if (LockedAspectRatio)
             position = GetLockedAspectRatioEndPoint(position);
         
-        DrawingShape.SetOppositeCorners(startPoint,position);
+        DrawingShape.CreateRectFromOppositeCorners(startPoint,position);
         
         return DrawingToolAction.DoNothing;
     }
@@ -91,6 +90,7 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
         IsDrawing = false;
         
         var finalPolygon = DrawingShape.Clone();
+
          ResetVisual();
         return new DrawingToolAction(DrawingToolActionItem.Shape(finalPolygon), DrawingToolActionItem.MouseCapture())
             .WithUndo();
@@ -119,7 +119,7 @@ public sealed class PolygonTool : DraggingTool<RegularPolygonDrawingShape>
     /// </summary>
     private void CheckIfLockedAspectRatio()
     {
-        LockedAspectRatio = Keyboard.Modifiers == ModifierKeys.Shift;
+        LockedAspectRatio = KeyboardHelper.IsShiftPressed();
     }
 
     public override bool LockedAspectRatio { get; set; }
