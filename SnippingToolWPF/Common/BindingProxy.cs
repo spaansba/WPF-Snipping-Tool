@@ -1,8 +1,9 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF.Common;
-
+[DebuggerStepThrough]
 public abstract class BindingProxy<TSelf, T> : Freezable
     where TSelf : BindingProxy<TSelf, T>, new()
 {

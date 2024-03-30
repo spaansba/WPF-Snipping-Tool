@@ -67,7 +67,6 @@ public static class PointExtensions
         if (transform is not null)
         {
             var m = Matrix.Multiply(matrix, transform.Value);
-            Debug.WriteLine($"{name} {m.Transform(point)}");
             return  m.Transform(point);
         }
 

@@ -1,9 +1,10 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using Microsoft.Xaml.Behaviors;
 using SnippingToolWPF.WPFExtensions;
 
 namespace SnippingToolWPF.Control.Behaviors;
-
+[DebuggerStepThrough]
 public abstract class AttachableForStyleBehavior<TSelf, TComponent> : Behavior<TComponent>
     where TComponent : DependencyObject
     where TSelf : AttachableForStyleBehavior<TSelf, TComponent>, new()

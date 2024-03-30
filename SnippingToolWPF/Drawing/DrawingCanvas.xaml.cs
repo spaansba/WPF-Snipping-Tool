@@ -195,8 +195,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
             if (currentCanvas == value)
                 return;
 
-            if (currentCanvas is not null) //Reset if previously set before somehow, pure for safety
-                currentCanvas.Children.Clear();
+            currentCanvas?.Children.Clear();
 
             currentCanvas = value;
 
@@ -385,6 +384,7 @@ public class DrawingCanvas : System.Windows.Controls.Control
         if (action.IsShape)
         {
             Shapes.Add(action.Item);
+            action.Item.IsListBoxSelected = true;
         }
     }
     

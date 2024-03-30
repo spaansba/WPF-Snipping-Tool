@@ -57,7 +57,7 @@ public sealed class RegularPolylineDrawingShape : ShapeDrawingShape<RegularPolyl
             new Binding
             {
                 Source = this,
-                Path = new PropertyPath(RegularPolylineDrawingShape.PointsProperty),
+                Path = new PropertyPath(PointsProperty),
             });
     }
     

@@ -72,44 +72,7 @@ public sealed class RegularPolygonDrawingShape : ShapeDrawingShape<RegularPolygo
         if (e.Property == AngleProperty)
             this.Points = new PointCollection(CreateInitialPolygon.GeneralPolygonPoints(this.NumberOfSides, this.PointGenerationRotationAngle,
                 this.StarInnerCircleSize));
-        
-        if (e.Property == IsListBoxSelectedProperty)
-        {
-            Debug.WriteLine(e.NewValue);
-            OnShapeSelectedChange(e.NewValue is true);
-        }
     }
-    
-    private DrawingShapeAdorner? DrawingShapeAdorner { get; set; }
-
-    private void OnShapeSelectedChange(bool isSelected)
-    {
-        if (isSelected)
-        {
-            //   RemoveAdorners();
-            AddAdorners();
-        }
-        else
-        {
-            RemoveAdorners();
-        }
-        
-    }
-    
-    private void RemoveAdorners()
-    {
-        if (this.DrawingShapeAdorner != null) AdornerLayer.GetAdornerLayer(this)?.Remove(this.DrawingShapeAdorner);
-    }
-    private void AddAdorners()
-    {
-        // Create Adorners
-        this.DrawingShapeAdorner = new DrawingShapeAdorner(this);
-        
-        // Add adorners
-        AdornerLayer.GetAdornerLayer(this)?.Add(this.DrawingShapeAdorner);
-        this.DrawingShapeAdorner?.AdornerVisibility(true);
-    }
-    
     
     #region  Bindings
     protected override void SetUpBindings(Polygon visual)

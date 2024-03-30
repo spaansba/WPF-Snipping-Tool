@@ -16,7 +16,7 @@
               <Style TargetType="{x:Type control:DrawingCanvasListBoxItem}">
                   <Setter Property="Canvas.Left" Value="{Binding Path=(local:DrawingShape.Left)}"/>
                   <Setter Property="Canvas.Top" Value="{Binding Path=(local:DrawingShape.Top)}"/>
-                  <Setter Property="IsSelected" Value="{Binding Path=(local:DrawingShape.IsListBoxSelected)}"/>
+                  <Setter Property="IsSelected" Value="{Binding Path=(local:DrawingShape.IsListBoxSelected), Mode=TwoWay}"/>
               </Style>
           </Setter.Value>
       </Setter>

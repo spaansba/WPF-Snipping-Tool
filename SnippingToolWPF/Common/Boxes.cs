@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SnippingToolWPF.Common;
 
@@ -11,6 +12,7 @@ namespace SnippingToolWPF.Common;
 ///     Basically we transform Value types into Reference Types (hold the reference of a value in memory, not the value)
 /// </summary>
 /// If using this dont forget to copy DependencyObjectExtensions class
+[DebuggerStepThrough]
 internal static class Boxes
 {
     //Dont use => as it will create a new box every time instead of reusing existing box

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,7 +24,12 @@ public class DrawingCanvasListBox : ListBox
 
     public DrawingCanvasListBox()
     {
-        (this.Items as INotifyCollectionChanged).CollectionChanged += ListBoxItems_CollectionChanged;
+        ((INotifyCollectionChanged)this.Items).CollectionChanged += OnCollectionChanged;
+    }
+
+    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        Debug.WriteLine($"new item added {e.NewItems?.Count}");
     }
     
     internal DrawingCanvas? DrawingCanvas { get; set; }
@@ -34,28 +40,6 @@ public class DrawingCanvasListBox : ListBox
     protected override bool IsItemItsOwnContainerOverride(object item)
     {
         return item is DrawingCanvasListBoxItem;
-    }
-
-    private void ListBoxItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs  e)
-    {
-      //  Debug.WriteLine("changed");
-        // if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
-        //     foreach (var item in e.NewItems)
-        //     {
-        //         //this.SetSelectedItems(e.NewItems);
-        //     }
-    }
-    
-    protected override void OnSelectionChanged(SelectionChangedEventArgs e)
-    {
-        base.OnSelectionChanged(e);
-        foreach (var item in SelectedItems)
-        {
-            if (item is DrawingShape)
-            {
-              
-            }
-        }
     }
 
     /// <summary>

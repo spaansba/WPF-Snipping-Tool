@@ -1,7 +1,8 @@
-﻿using System.Windows.Input;
+﻿using System.Diagnostics;
+using System.Windows.Input;
 
 namespace SnippingToolWPF.Common;
-
+[DebuggerStepThrough]
 public static class KeyboardHelper
 {
     public static bool IsShiftOrCtrlPressed() => IsShiftPressed() || IsCtrlPressed();
@@ -14,6 +15,4 @@ public static class KeyboardHelper
     public static bool IsCtrlAndVPressed(KeyEventArgs e) => IsCtrlPressed() && e.Key == Key.V;
     public static bool IsEscapePressed() => Keyboard.IsKeyDown(Key.Escape);
     public static bool IsDeletePressed() => Keyboard.IsKeyDown(Key.Delete);
-    
-
 }

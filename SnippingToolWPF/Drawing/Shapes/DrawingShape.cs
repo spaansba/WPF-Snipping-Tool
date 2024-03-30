@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using SnippingToolWPF.Common;
 using SnippingToolWPF.ExtensionMethods;
 using SnippingToolWPF.WPFExtensions;
@@ -80,6 +81,7 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
 
     protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
+
         base.OnPropertyChanged(e);
         if (e.Property == VisualProperty) //If Visual gets replaced call OnVisualChanged
         {
@@ -87,7 +89,7 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
         }
         if (e.Property == IsListBoxSelectedProperty)
         {
-            Debug.WriteLine(e.NewValue);
+            Debug.WriteLine($"propety {e.Property} new Value {e.NewValue} old value {e.OldValue}");
             OnShapeSelectedChange(e.NewValue is true);
         }
     }
@@ -98,15 +100,17 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
 
     private void OnShapeSelectedChange(bool isSelected)
     {
-        if (isSelected)
-        {
-            CreateAdorners();
-            AddAdorners();
-        }
-        else
-        {
-            RemoveAdorners();
-        }
+        // if (isSelected)
+        // {
+        //   //  CreateAdorners();
+        //     
+        //     /// Dispatcher Allows us to select a shape on drawing
+        //     Dispatcher.CurrentDispatcher.Invoke(AddAdorners, System.Windows.Threading.DispatcherPriority.Background);
+        // }
+        // else
+        // {
+        //     RemoveAdorners();
+        // }
     }
     private void CreateAdorners() => DrawingShapeAdorner ??= new DrawingShapeAdorner(this);
     
