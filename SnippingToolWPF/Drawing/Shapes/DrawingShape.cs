@@ -102,7 +102,7 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     {
         if (isSelected)
         {
-          //  CreateAdorners();
+            CreateAdorners();
             
             /// Dispatcher Allows us to select a shape on drawing
             Dispatcher.CurrentDispatcher.Invoke(AddAdorners, System.Windows.Threading.DispatcherPriority.Background);
