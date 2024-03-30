@@ -100,17 +100,17 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
 
     private void OnShapeSelectedChange(bool isSelected)
     {
-        // if (isSelected)
-        // {
-        //   //  CreateAdorners();
-        //     
-        //     /// Dispatcher Allows us to select a shape on drawing
-        //     Dispatcher.CurrentDispatcher.Invoke(AddAdorners, System.Windows.Threading.DispatcherPriority.Background);
-        // }
-        // else
-        // {
-        //     RemoveAdorners();
-        // }
+        if (isSelected)
+        {
+          //  CreateAdorners();
+            
+            /// Dispatcher Allows us to select a shape on drawing
+            Dispatcher.CurrentDispatcher.Invoke(AddAdorners, System.Windows.Threading.DispatcherPriority.Background);
+        }
+        else
+        {
+            RemoveAdorners();
+        }
     }
     private void CreateAdorners() => DrawingShapeAdorner ??= new DrawingShapeAdorner(this);
     
@@ -438,6 +438,4 @@ public abstract class DrawingShape : FrameworkElement, IShape, ICloneable<Drawin
     }
     
     #endregion Dependency properties
-
-
 }
