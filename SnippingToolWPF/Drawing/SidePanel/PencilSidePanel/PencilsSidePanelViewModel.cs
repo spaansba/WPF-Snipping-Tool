@@ -67,8 +67,7 @@ public sealed class PencilsSidePanelViewModel : SidePanelViewModel
     public const double MinimumThickness = 1;
     public const double MaximumThickness = 100;
     private const double DefaultThickness = 6;
-
-
+    
     [Range(MinimumThickness, MaximumThickness)]
     private string thicknessString = DefaultThickness.ToString(CultureInfo.InvariantCulture);
 

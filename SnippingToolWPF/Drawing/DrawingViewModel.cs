@@ -18,7 +18,6 @@ namespace SnippingToolWPF;
 public partial class DrawingViewModel : ObservableObject
 {
     private readonly EditSidePanelViewModel editPanel;
-
     private readonly PencilsSidePanelViewModel pencilsPanel;
     private readonly ShapesSidePanelViewModel shapesPanel;
     private readonly StickersSidePanelViewModel stickersPanel;
@@ -52,17 +51,16 @@ public partial class DrawingViewModel : ObservableObject
         });
     }
 
-    //List of the side panel enums
-    public IReadOnlyList<SidePanelContentKind> AllSidePanelContentKinds { get; } =
-        Enum.GetValues<SidePanelContentKind>();
-
     public ICommand ClearCanvas { get; private set; }
     public ICommand TakeScreenshot { get; private set; }
     public ICommand MoveWindowCommand { get; private set; }
     public ICommand ShutDownWindowCommand { get; private set; }
     public ICommand MaximizeWindowCommand { get; private set; }
     public ICommand MinimizeWindowCommand { get; private set; }
-
+    
+    //List of the side panel enums
+    public IReadOnlyList<SidePanelContentKind> AllSidePanelContentKinds { get; } =
+        Enum.GetValues<SidePanelContentKind>();
     public SidePanelViewModel? SidePanelContent => SidePanelContentKind switch
     {
         SidePanelContentKind.Pencils => pencilsPanel,
